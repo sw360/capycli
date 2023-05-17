@@ -1,7 +1,7 @@
 <!--
 # SPDX-FileCopyrightText: (c) 2018-2023 Siemens
 # SPDX-License-Identifier: MIT
--->>
+-->
 
 # CaPyCli - Clearing Automation Python Command Line Tool
 

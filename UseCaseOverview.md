@@ -1,7 +1,7 @@
 <!--
 # SPDX-FileCopyrightText: (c) 2018-2023 Siemens
 # SPDX-License-Identifier: MIT
--->>
+-->
 
 # Use Case Overview
 
