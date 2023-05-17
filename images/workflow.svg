@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generiert durch Microsoft Visio, SVG Export workflow.svg Zeichenblatt-1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="3.3534in" height="5.40064in"
+		viewBox="0 0 241.445 388.846" xml:space="preserve" color-interpolation-filters="sRGB" class="st5">
+	<v:documentProperties v:langID="1031" v:metric="true" v:viewMarkup="false"/>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:#bfbfbf;stroke:none;stroke-width:0.25}
+		.st2 {fill:#000000;font-family:Calibri;font-size:1.00001em}
+		.st3 {marker-end:url(#mrkr4-36);stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
+		.st4 {fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:0.28409090909091}
+		.st5 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<defs id="Markers">
+		<g id="lend4">
+			<path d="M 2 1 L 0 0 L 2 -1 L 2 1 " style="stroke:none"/>
+		</g>
+		<marker id="mrkr4-36" class="st4" v:arrowType="4" v:arrowSize="2" v:setback="7.04" refX="-7.04" orient="auto"
+				markerUnits="strokeWidth" overflow="visible">
+			<use xlink:href="#lend4" transform="scale(-3.52,-3.52) "/>
+		</marker>
+	</defs>
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<title>Zeichenblatt-1</title>
+		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50394"
+				v:shadowOffsetY="-8.50394"/>
+		<v:layer v:name="Flussdiagramm" v:index="0"/>
+		<v:layer v:name="Verbinder" v:index="1"/>
+		<g id="shape2-1" v:mID="2" v:groupContext="shape" v:layerMember="0" transform="translate(71.1161,-320.565)">
+			<title>Prozess</title>
+			<desc>Determine SBOM</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="49.6063" cy="376.091" width="99.22" height="25.5118"/>
+			<rect x="0" y="363.335" width="99.2126" height="25.5118" class="st1"/>
+			<text x="7.06" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Determine SBOM</text>		</g>
+		<g id="shape8-4" v:mID="8" v:groupContext="shape" v:layerMember="0" transform="translate(42.7697,-280.88)">
+			<title>Prozess.8</title>
+			<desc>Find additional meta-data</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="77.9528" cy="376.091" width="155.91" height="25.5118"/>
+			<rect x="0" y="363.335" width="155.906" height="25.5118" class="st1"/>
+			<text x="14.88" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Find additional meta-data</text>		</g>
+		<g id="shape9-7" v:mID="9" v:groupContext="shape" v:layerMember="0" transform="translate(56.9429,-241.195)">
+			<title>Prozess.9</title>
+			<desc>Map SBOM to SW360</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="63.7795" cy="376.091" width="127.56" height="25.5118"/>
+			<rect x="0" y="363.335" width="127.559" height="25.5118" class="st1"/>
+			<text x="11.04" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Map SBOM to SW360</text>		</g>
+		<g id="shape13-10" v:mID="13" v:groupContext="shape" v:layerMember="0" transform="translate(14.4232,-201.51)">
+			<title>Prozess.13</title>
+			<desc>Create missing components and releases</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="106.299" cy="376.091" width="212.6" height="25.5118"/>
+			<rect x="0" y="363.335" width="212.598" height="25.5118" class="st1"/>
+			<text x="6.88" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Create missing components and releases</text>		</g>
+		<g id="shape14-13" v:mID="14" v:groupContext="shape" v:layerMember="0" transform="translate(56.9429,-161.825)">
+			<title>Prozess.14</title>
+			<desc>Create project on SW360</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="63.7795" cy="376.091" width="127.56" height="25.5118"/>
+			<rect x="0" y="363.335" width="127.559" height="25.5118" class="st1"/>
+			<text x="2.65" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Create project on SW360</text>		</g>
+		<g id="shape15-16" v:mID="15" v:groupContext="shape" v:layerMember="0" transform="translate(0.25,-122.14)">
+			<title>Prozess.15</title>
+			<desc>Track project and component clearing status</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="120.472" cy="376.091" width="240.95" height="25.5118"/>
+			<rect x="0" y="363.335" width="240.945" height="25.5118" class="st1"/>
+			<text x="11.91" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Track project and component clearing status</text>		</g>
+		<g id="shape16-19" v:mID="16" v:groupContext="shape" v:layerMember="0" transform="translate(56.9429,-82.4547)">
+			<title>Prozess.16</title>
+			<desc>Retrieve clearing results</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="63.7795" cy="376.091" width="127.56" height="25.5118"/>
+			<rect x="0" y="363.335" width="127.559" height="25.5118" class="st1"/>
+			<text x="5.14" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Retrieve clearing results</text>		</g>
+		<g id="shape17-22" v:mID="17" v:groupContext="shape" v:layerMember="0" transform="translate(56.9429,-42.7697)">
+			<title>Prozess.17</title>
+			<desc>Create Readme_OSS</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.59055118110236):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="63.7795" cy="376.091" width="127.56" height="25.5118"/>
+			<rect x="0" y="363.335" width="127.559" height="25.5118" class="st1"/>
+			<text x="13.75" y="379.69" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Create Readme_OSS</text>		</g>
+		<g id="shape18-25" v:mID="18" v:groupContext="shape" v:layerMember="0" transform="translate(85.2894,-360.25)">
+			<title>Start/Ende</title>
+			<desc>Start</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.39370078740157):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.39370078740157):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="374.673" width="70.87" height="28.3465"/>
+			<path d="M14.17 388.85 L56.69 388.85 A14.1732 14.1732 -180 0 0 56.69 360.5 L14.17 360.5 A14.1732 14.1732 -180 1 0 14.17
+						 388.85 Z" class="st1"/>
+			<text x="23.69" y="378.27" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>Start</text>		</g>
+		<g id="shape19-28" v:mID="19" v:groupContext="shape" v:layerMember="0" transform="translate(85.2894,-0.25)">
+			<title>Start/Ende.19</title>
+			<desc>End</desc>
+			<v:custProps>
+				<v:cp v:nameU="Cost" v:lbl="Kosten" v:prompt="" v:type="7" v:format="@" v:sortKey="" v:invis="false" v:ask="false"
+						v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="ProcessNumber" v:lbl="Prozessnummer" v:prompt="" v:type="2" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Owner" v:lbl="Besitzer" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Function" v:lbl="Funktionsname" v:prompt="" v:type="0" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+				<v:cp v:nameU="StartDate" v:lbl="Startdatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="EndDate" v:lbl="Enddatum" v:prompt="" v:type="5" v:format="" v:sortKey="" v:invis="false"
+						v:ask="false" v:langID="1031" v:cal="0"/>
+				<v:cp v:nameU="Status" v:lbl="Status" v:prompt="" v:type="4"
+						v:format=";Nicht begonnen;In Bearbeitung;Abgeschlossen;Zurückgestellt;Auf Eingabe wartend" v:sortKey=""
+						v:invis="false" v:ask="false" v:langID="1031" v:cal="0" v:val="VT4()"/>
+			</v:custProps>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="DefaultWidth" v:prompt="" v:val="VT0(0.98425196850394):24"/>
+				<v:ud v:nameU="DefaultHeight" v:prompt="" v:val="VT0(0.39370078740157):24"/>
+				<v:ud v:nameU="ResizeTxtHeight" v:prompt="" v:val="VT0(0.39370078740157):24"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(2,2,2,2)" v:tabSpace="42.5197"/>
+			<v:textRect cx="35.4331" cy="374.673" width="70.87" height="28.3465"/>
+			<path d="M14.17 388.85 L56.69 388.85 A14.1732 14.1732 -180 0 0 56.69 360.5 L14.17 360.5 A14.1732 14.1732 -180 1 0 14.17
+						 388.85 Z" class="st1"/>
+			<text x="26.2" y="378.27" class="st2" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>End</text>		</g>
+		<g id="shape20-31" v:mID="20" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-360.25)">
+			<title>Dynamischer Verbinder</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape21-37" v:mID="21" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-320.565)">
+			<title>Dynamischer Verbinder.21</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape22-42" v:mID="22" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-280.88)">
+			<title>Dynamischer Verbinder.22</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape23-47" v:mID="23" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-241.195)">
+			<title>Dynamischer Verbinder.23</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape24-52" v:mID="24" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-201.51)">
+			<title>Dynamischer Verbinder.24</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape25-57" v:mID="25" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-161.825)">
+			<title>Dynamischer Verbinder.25</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape26-62" v:mID="26" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-122.14)">
+			<title>Dynamischer Verbinder.26</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape27-67" v:mID="27" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-82.4547)">
+			<title>Dynamischer Verbinder.27</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+		<g id="shape28-72" v:mID="28" v:groupContext="shape" v:layerMember="1" transform="translate(113.636,-42.7697)">
+			<title>Dynamischer Verbinder.28</title>
+			<path d="M7.09 388.85 L7.09 395.98" class="st3"/>
+		</g>
+	</g>
+</svg>

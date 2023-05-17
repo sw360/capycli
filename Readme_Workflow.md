@@ -12,18 +12,7 @@ to use for which purpose and what is the right order of commands.
 
 The general idea of the clearing support worflow looks like this:
 
-```plantuml
-start
-:Determine SBOM;
-:Find additional meta-data;
-:Map SBOM to SW360;
-:Create missing components and releases;
-:Create project on SW360;
-:Track project and component clearing status;
-:Retrieve clearing results;
-:Create Readme_OSS;
-end
-```
+![workflow](images/workflow.svg)
 
 Doing all these steps without any humann interaction works only in a perfect world.
 As soon as a project get complex, it gets hard to create an accurate bill of material fully
@@ -42,9 +31,7 @@ is mandatory.
 
 ### Determine SBOM
 
-```plantuml
-rectangle "Determine SBOM"
-```
+![step_determine_sbom](images/step_determine_sbom.svg)
 
 The very fist step that we  need to find out which components are used by our project.  
 CaPyCLI offers some basic support to do this
@@ -79,28 +66,11 @@ The command `CaPyCLI bom granularity` may help you to find out where a tool prov
 in a SBOM. As OSS software license compliance focuses on the source code, we should list component on
 thei granularity level.
 
-```plantuml
-rectangle Determine_SBOM #palegreen
-rectangle Filter_SBOM
-rectangle Check_Granularity
-
-Determine_SBOM -> Filter_SBOM
-Filter_SBOM -> Check_Granularity
-Check_Granularity -> Determine_SBOM
-```
+![step_granularity](images/step_granularity.svg)
 
 ### Find additional meta-data
 
-```plantuml
-rectangle Determine_SBOM #palegreen
-rectangle Filter_SBOM #palegreen
-rectangle Check_Granularity #palegreen
-rectangle Find_Metadata
-
-Determine_SBOM -> Filter_SBOM
-Filter_SBOM -> Check_Granularity
-Check_Granularity -> Find_Metadata
-```
+![step_find_metadata](images/step_find_metadata.svg)
 
 Nearly none of the available tools provides links to the source code. But since the source code is
 crucial of OSS components, there is an extra command `CaPyCLI bom Findsources`. If there is any
@@ -119,35 +89,14 @@ The value `map-result` provides details about the mapping of each component.
 More details on the mapping can be found in an extra file, see
 [SBOM Mapping](Readme_Mapping.md).
 
-```plantuml
-rectangle Determine_SBOM #palegreen
-rectangle Filter_SBOM #palegreen
-rectangle Check_Granularity #palegreen
-rectangle Find_Metadata #palegreen
-rectangle Map_SBOM
-
-Determine_SBOM -> Filter_SBOM
-Filter_SBOM -> Check_Granularity
-Check_Granularity -> Find_Metadata
-Find_Metadata -> Map_SBOM
-```
+![step_map](images/step_map.svg)
 
 ### Create missing components and releases
 
 Depending on the results of the mapping of the SBOM to the data on SW360, missing
 components need to get created:
 
-```plantuml
-#palegreen:Map_SBOM;
-if (All Components Found?) then (yes)
-  :(All Done);
-else (no)
-  :Create Components
-  CaPyCLI bom CreateComponents;
-endif
-
-:(next step);
-```
+![step_create_components](images/step_create_components.svg)
 
 Depending on the way you manage your projects, you can either choose
 
@@ -162,22 +111,7 @@ When all information about all components that should be used for a specific pro
 available, you can run the command `CaPyCLI project Create` to create a new or update
 an existing project on SW360.
 
-```plantuml
-rectangle Determine_SBOM #palegreen
-rectangle Filter_SBOM #palegreen
-rectangle Check_Granularity #palegreen
-rectangle Find_Metadata #palegreen
-rectangle Map_SBOM #palegreen
-rectangle Create_Components #palegreen
-rectangle Create_Project
-
-Determine_SBOM -> Filter_SBOM
-Filter_SBOM -> Check_Granularity
-Check_Granularity -> Find_Metadata
-Find_Metadata -> Map_SBOM
-Map_SBOM --> Create_Components
-Create_Project <- Create_Components
-```
+![step_create_project](images/step_create_project.svg)
 
 ### Track project and component clearing status
 
@@ -186,50 +120,14 @@ components via the `CaPyCLI project show` command. It is also possible to get
 information of the known security vulnerabilities of the project via the
 `CaPyCLI project Vulnerabilities` command.
 
-```plantuml
-rectangle Determine_SBOM #palegreen
-rectangle Filter_SBOM #palegreen
-rectangle Check_Granularity #palegreen
-rectangle Find_Metadata #palegreen
-rectangle Map_SBOM #palegreen
-rectangle Create_Components #palegreen
-rectangle Create_Project #palegreen
-rectangle Get_Status
-
-Determine_SBOM -> Filter_SBOM
-Filter_SBOM -> Check_Granularity
-Check_Granularity -> Find_Metadata
-Find_Metadata -> Map_SBOM
-Map_SBOM --> Create_Components
-Create_Project <- Create_Components
-Get_Status <- Create_Project
-```
+![step_get_status](images/step_get_status.svg)
 
 ### Retrieve clearing results
 
 Once a component has been cleared, the clearing results/artifacts can get
 retrieved:
 
-```plantuml
-rectangle Determine_SBOM #palegreen
-rectangle Filter_SBOM #palegreen
-rectangle Check_Granularity #palegreen
-rectangle Find_Metadata #palegreen
-rectangle Map_SBOM #palegreen
-rectangle Create_Components #palegreen
-rectangle Create_Project #palegreen
-rectangle Get_Status #palegreen
-rectangle Get_Results
-
-Determine_SBOM -> Filter_SBOM
-Filter_SBOM -> Check_Granularity
-Check_Granularity -> Find_Metadata
-Find_Metadata -> Map_SBOM
-Map_SBOM --> Create_Components
-Create_Project <- Create_Components
-Get_Status <- Create_Project
-Get_Results <- Get_Status
-```
+![step_get_results](images/step_get_results.svg)
 
 ### Create Readme_OSS
 
@@ -237,25 +135,4 @@ The last step that can get automated is the creation of the Readme_OSS.
 Using the information from all the CLI files of the components it is no
 problem to create a list of all components, their applicable licenses and copyrights:
 
-```plantuml
-rectangle Determine_SBOM #palegreen
-rectangle Filter_SBOM #palegreen
-rectangle Check_Granularity #palegreen
-rectangle Find_Metadata #palegreen
-rectangle Map_SBOM #palegreen
-rectangle Create_Components #palegreen
-rectangle Create_Project #palegreen
-rectangle Get_Status #palegreen
-rectangle Get_Results #palegreen
-rectangle Create_Readme
-
-Determine_SBOM -> Filter_SBOM
-Filter_SBOM -> Check_Granularity
-Check_Granularity -> Find_Metadata
-Find_Metadata -> Map_SBOM
-Map_SBOM --> Create_Components
-Create_Project <- Create_Components
-Get_Status <- Create_Project
-Get_Results <- Get_Status
-Create_Readme <- Get_Results
-```
+![step_create_readme](images/step_create_readme.svg)
