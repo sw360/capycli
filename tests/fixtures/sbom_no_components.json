@@ -1,0 +1,59 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:2180ceb4-e3a4-4d8f-b4cb-444d11f892b8",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-04-07T13:16:41.903687+00:00",
+    "tools": [
+      {
+        "vendor": "Siemens AG",
+        "name": "CaPyCLI",
+        "version": "2.0.0-dev1",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/sw360/clearingautomation",
+            "type": "website"
+          }
+        ]
+      },
+      {
+        "vendor": "Siemens AG",
+        "name": "standard-bom",
+        "version": "2.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/scpautomation/standard-bom",
+            "type": "website"
+          }
+        ]
+      }
+    ],
+    "licenses": [
+      {
+        "license": {
+          "id": "CC0-1.0"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "capycli"
+      }
+    ]
+  },
+  "components": [
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/certifi@2022.12.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/certifi@2022.12.999",
+      "dependsOn": []
+    }
+  ]
+}

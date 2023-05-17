@@ -1,0 +1,40 @@
+{
+  "OverallResult": "INCOMPLETE",
+  "Details": [
+	{
+      "BomItem": "cha, 3.4",
+      "ResultCode": 1,
+      "ResultText": "Full match by id"
+    },
+	{
+      "BomItem": "det, .0.4",
+      "ResultCode": 2,
+      "ResultText": "Full match by source file hash"
+    },
+    {
+      "BomItem": "certifi, 2022.12.7",
+      "ResultCode": 3,
+      "ResultText": "Full match by name and version"
+    },
+    {
+      "BomItem": "chardet, 3.0.4",
+      "ResultCode": 4,
+      "ResultText": "Match by source code filename"
+    },
+    {
+      "BomItem": "charset-normalizer, 3.1.0",
+      "ResultCode": 5,
+      "ResultText": "Match by name"
+    },
+	{
+      "BomItem": "normalizer, 3.0",
+      "ResultCode": 6,
+      "ResultText": "Similar component found, no version check"
+    },
+    {
+      "BomItem": "cli-support, 1.3",
+      "ResultCode": 100,
+      "ResultText": "No match"
+    }
+  ]
+}

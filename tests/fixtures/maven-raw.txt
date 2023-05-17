@@ -1,0 +1,4 @@
+[INFO] Downloading from dev-repo: https://siemens.jfrog.io/artifactory/spectrum_power_fts-dev-maven-egll/org/apache/maven/shared/maven-shared-jar/1.2/maven-shared-jar-1.2-sources.jar
+[INFO] Downloading from dev-repo: https://siemens.jfrog.io/artifactory/spectrum_power_fts-dev-maven-egll/org/apache/maven/shared/maven-shared-jar/1.2/maven-shared-jar-1.2-source.jar
+[INFO] Downloading from remote-repos: https://devops.bt.siemens.com/artifactory/maven2-all/org/springframework/boot/spring-boot-starter-json/2.4.3/spring-boot-starter-json-2.4.3.jar
+[INFO] Downloaded from remote-repos: https://devops.bt.siemens.com/artifactory/maven2-all/org/springframework/boot/spring-boot-starter-json/2.4.3/spring-boot-starter-json-2.4.3.jar (4.7 kB at 4.8 kB/s)

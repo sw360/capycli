@@ -1,0 +1,95 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:919f1e8f-9fee-4284-ba09-b6de4e96a5ea",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-04-26T06:21:08.266956+00:00",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "cyclonedx-bom",
+        "version": "3.10.1"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/cli-support@1.3.0",
+      "name": "cli-support",
+      "version": "1.3.0",
+      "purl": "pkg:pypi/cli-support@1.3.0",
+      "externalReferences": [
+        {
+          "url": "1.3.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "ca16b16fe5320676e7bb9b384a845f20cd8968c3"
+            }
+          ]
+        },
+        {
+          "url": "https://github.com/Ousret/cli-support/releases/download/1.3.0/cli-support-1.3.0.whl",
+          "comment": "binary (download location)",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "ca16b16fe5320676e7bb9b384a845f20cd8968c3"
+            }
+          ]
+        },
+		{
+			"url": "https://github.com/Ousret/charset_normalizer",
+			"type": "vcs"
+		}
+      ],
+      "properties": [
+        {
+          "name": "capycli:componentId",
+          "value": "1cebeea9b86548bdab2e48bd503350fc"
+        },
+		{
+          "name": "capycli:sourceFileComment",
+          "value": "uploaded by unit test"
+        },
+		{
+          "name": "capycli:sourceFileType",
+          "value": "SOURCE"
+        },
+		{
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        },
+		{
+          "name": "siemens:sw360Id",
+          "value": "r002"
+        }
+      ]
+    },
+	{
+      "type": "library",
+      "bom-ref": "pkg:pypi/xx-support@1.3.0",
+      "name": "xx-support",
+      "version": "3.0",
+      "purl": "pkg:pypi/xx-support@3.0",
+	  "properties": [
+		{
+          "name": "siemens:sw360Id",
+          "value": "xxx"
+        }
+      ]
+	}
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/charset-normalizer@3.0.0",
+      "dependsOn": []
+    }
+  ]
+}

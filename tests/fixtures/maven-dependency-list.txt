@@ -1,0 +1,231 @@
+The following files have been resolved:
+   com.github.spotbugs:spotbugs-annotations:jar:4.2.3:compile[36m -- module com.github.spotbugs.annotations[0;1m [auto][m
+   com.google.code.findbugs:jsr305:jar:3.0.2:compile[36m -- module jsr305[0;1;33m (auto)[m
+   org.apache.maven.plugins:maven-site-plugin:jar:3.9.1:compile[36m -- module maven.site.plugin[0;1;33m (auto)[m
+   org.apache.maven.reporting:maven-reporting-api:jar:3.0:compile[36m -- module maven.reporting.api[0;1;33m (auto)[m
+   org.apache.maven.reporting:maven-reporting-exec:jar:1.5.1:compile[36m -- module maven.reporting.exec[0;1;33m (auto)[m
+   org.sonatype.aether:aether-util:jar:1.7:compile[36m -- module aether.util[0;1;33m (auto)[m
+   org.eclipse.aether:aether-util:jar:0.9.0.M2:compile[36m -- module aether.util[0;1;33m (auto)[m
+   org.apache.maven.shared:maven-shared-utils:jar:3.1.0:compile[36m -- module maven.shared.utils[0;1;33m (auto)[m
+   org.apache.maven:maven-artifact:jar:3.0.5:compile[36m -- module maven.artifact[0;1;33m (auto)[m
+   org.apache.maven:maven-core:jar:3.0.5:compile[36m -- module maven.core[0;1;33m (auto)[m
+   org.apache.maven:maven-model-builder:jar:3.0.5:compile[36m -- module maven.model.builder[0;1;33m (auto)[m
+   org.apache.maven:maven-aether-provider:jar:3.0.5:compile[36m -- module maven.aether.provider[0;1;33m (auto)[m
+   org.sonatype.aether:aether-spi:jar:1.13.1:compile[36m -- module aether.spi[0;1;33m (auto)[m
+   org.sonatype.aether:aether-impl:jar:1.13.1:compile[36m -- module aether.impl[0;1;33m (auto)[m
+   org.sonatype.aether:aether-api:jar:1.13.1:compile[36m -- module aether.api[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-classworlds:jar:2.4:compile[36m -- module plexus.classworlds[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:compile[36m -- module plexus.component.annotations[0;1;33m (auto)[m
+   org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:compile[36m -- module plexus.sec.dispatcher[0;1;33m (auto)[m
+   org.sonatype.plexus:plexus-cipher:jar:1.4:compile[36m -- module plexus.cipher[0;1;33m (auto)[m
+   org.apache.maven:maven-model:jar:3.0.5:compile[36m -- module maven.model[0;1;33m (auto)[m
+   org.apache.maven:maven-plugin-api:jar:3.0.5:compile[36m -- module maven.plugin.api[0;1;33m (auto)[m
+   org.apache.maven:maven-settings:jar:3.0.5:compile[36m -- module maven.settings[0;1;33m (auto)[m
+   org.apache.maven:maven-settings-builder:jar:3.0.5:compile[36m -- module maven.settings.builder[0;1;33m (auto)[m
+   org.apache.maven:maven-archiver:jar:3.5.0:compile[36m -- module maven.archiver[0;1;33m (auto)[m
+   org.sonatype.sisu:sisu-inject-plexus:jar:1.4.2:compile[36m -- module sisu.inject.plexus[0;1;33m (auto)[m
+   org.sonatype.sisu:sisu-inject-bean:jar:1.4.2:compile[36m -- module sisu.inject.bean[0;1;33m (auto)[m
+   org.sonatype.sisu:sisu-guice:jar:noaop:2.1.7:compile[36m -- module sisu.guice[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-archiver:jar:4.2.1:compile[36m -- module plexus.archiver[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-io:jar:3.2.0:compile[36m -- module plexus.io[0;1;33m (auto)[m
+   org.apache.commons:commons-compress:jar:1.19:compile[36m -- module org.apache.commons.compress[0;1m [auto][m
+   org.iq80.snappy:snappy:jar:0.4:compile[36m -- module snappy[0;1;33m (auto)[m
+   org.tukaani:xz:jar:1.8:runtime[36m -- module org.tukaani.xz[0;1m [auto][m
+   org.codehaus.plexus:plexus-i18n:jar:1.0-beta-10:compile[36m -- module plexus.i18n[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-utils:jar:3.3.0:compile[36m -- module plexus.utils[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-sink-api:jar:1.9.1:compile[36m -- module doxia.sink.api[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-logging-api:jar:1.9.1:compile[36m -- module doxia.logging.api[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-core:jar:1.9.1:compile[36m -- module doxia.core[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-container-default:jar:1.7.1:compile
+   org.apache.xbean:xbean-reflect:jar:3.7:compile[36m -- module xbean.reflect[0;1;33m (auto)[m
+   com.google.collections:google-collections:jar:1.0:compile[36m -- module google.collections[0;1;33m (auto)[m
+   org.apache.httpcomponents:httpclient:jar:4.5.13:compile[36m -- module org.apache.httpcomponents.httpclient[0;1m [auto][m
+   org.apache.httpcomponents:httpcore:jar:4.4.14:compile[36m -- module org.apache.httpcomponents.httpcore[0;1m [auto][m
+   org.apache.maven.doxia:doxia-module-xhtml:jar:1.9.1:compile[36m -- module doxia.module.xhtml[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-xhtml5:jar:1.9.1:compile[36m -- module doxia.module.xhtml5[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-apt:jar:1.9.1:runtime[36m -- module doxia.module.apt[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-xdoc:jar:1.9.1:compile[36m -- module doxia.module.xdoc[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-fml:jar:1.9.1:runtime[36m -- module doxia.module.fml[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-markdown:jar:1.9.1:runtime[36m -- module doxia.module.markdown[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-all:jar:0.42.14:runtime[36m -- module flexmark.all[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark:jar:0.42.14:runtime[36m -- module flexmark[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-abbreviation:jar:0.42.14:runtime[36m -- module flexmark.ext.abbreviation[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-admonition:jar:0.42.14:runtime[36m -- module flexmark.ext.admonition[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-anchorlink:jar:0.42.14:runtime[36m -- module flexmark.ext.anchorlink[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-aside:jar:0.42.14:runtime[36m -- module flexmark.ext.aside[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-attributes:jar:0.42.14:runtime[36m -- module flexmark.ext.attributes[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-autolink:jar:0.42.14:runtime[36m -- module flexmark.ext.autolink[0;1;33m (auto)[m
+   org.nibor.autolink:autolink:jar:0.6.0:runtime[36m -- module autolink[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-definition:jar:0.42.14:runtime[36m -- module flexmark.ext.definition[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-emoji:jar:0.42.14:runtime[36m -- module flexmark.ext.emoji[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-enumerated-reference:jar:0.42.14:runtime[36m -- module flexmark.ext.enumerated.reference[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-escaped-character:jar:0.42.14:runtime[36m -- module flexmark.ext.escaped.character[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-footnotes:jar:0.42.14:runtime[36m -- module flexmark.ext.footnotes[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-gfm-issues:jar:0.42.14:runtime[36m -- module flexmark.ext.gfm.issues[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:jar:0.42.14:runtime[36m -- module flexmark.ext.gfm.strikethrough[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-gfm-tables:jar:0.42.14:runtime[36m -- module flexmark.ext.gfm.tables[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-gfm-tasklist:jar:0.42.14:runtime[36m -- module flexmark.ext.gfm.tasklist[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-gfm-users:jar:0.42.14:runtime[36m -- module flexmark.ext.gfm.users[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-gitlab:jar:0.42.14:runtime[36m -- module flexmark.ext.gitlab[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-jekyll-front-matter:jar:0.42.14:runtime[36m -- module flexmark.ext.jekyll.front.matter[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-jekyll-tag:jar:0.42.14:runtime[36m -- module flexmark.ext.jekyll.tag[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-media-tags:jar:0.42.14:runtime[36m -- module flexmark.ext.media.tags[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-macros:jar:0.42.14:runtime[36m -- module flexmark.ext.macros[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-ins:jar:0.42.14:runtime[36m -- module flexmark.ext.ins[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-xwiki-macros:jar:0.42.14:runtime[36m -- module flexmark.ext.xwiki.macros[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-superscript:jar:0.42.14:runtime[36m -- module flexmark.ext.superscript[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-tables:jar:0.42.14:runtime[36m -- module flexmark.ext.tables[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-toc:jar:0.42.14:runtime[36m -- module flexmark.ext.toc[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-typographic:jar:0.42.14:runtime[36m -- module flexmark.ext.typographic[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-wikilink:jar:0.42.14:runtime[36m -- module flexmark.ext.wikilink[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-yaml-front-matter:jar:0.42.14:runtime[36m -- module flexmark.ext.yaml.front.matter[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-ext-youtube-embedded:jar:0.42.14:runtime[36m -- module flexmark.ext.youtube.embedded[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-formatter:jar:0.42.14:runtime[36m -- module flexmark.formatter[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-html-parser:jar:0.42.14:runtime[36m -- module flexmark.html.parser[0;1;33m (auto)[m
+   org.jsoup:jsoup:jar:1.10.2:runtime[36m -- module jsoup[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-jira-converter:jar:0.42.14:runtime[36m -- module flexmark.jira.converter[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-profile-pegdown:jar:0.42.14:runtime[36m -- module flexmark.profile.pegdown[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-util:jar:0.42.14:runtime[36m -- module flexmark.util[0;1;33m (auto)[m
+   com.vladsch.flexmark:flexmark-youtrack-converter:jar:0.42.14:runtime[36m -- module flexmark.youtrack.converter[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-confluence:jar:1.9.1:runtime[36m -- module doxia.module.confluence[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-docbook-simple:jar:1.9.1:runtime[36m -- module doxia.module.docbook.simple[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-module-twiki:jar:1.9.1:runtime[36m -- module doxia.module.twiki[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-decoration-model:jar:1.9.2:compile[36m -- module doxia.decoration.model[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-site-renderer:jar:1.9.2:compile[36m -- module doxia.site.renderer[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-skin-model:jar:1.9.2:compile[36m -- module doxia.skin.model[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-velocity:jar:1.2:compile[36m -- module plexus.velocity[0;1;33m (auto)[m
+   org.apache.velocity:velocity:jar:1.7:compile[36m -- module velocity[0;1;33m (auto)[m
+   org.apache.velocity:velocity-tools:jar:2.0:compile[36m -- module velocity.tools[0;1;33m (auto)[m
+   commons-chain:commons-chain:jar:1.1:compile[36m -- module commons.chain[0;1;33m (auto)[m
+   dom4j:dom4j:jar:1.1:compile[36m -- module dom4j[0;1;33m (auto)[m
+   oro:oro:jar:2.0.8:compile[36m -- module oro[0;1;33m (auto)[m
+   commons-collections:commons-collections:jar:3.2.2:compile[36m -- module commons.collections[0;1;33m (auto)[m
+   org.apache.maven.doxia:doxia-integration-tools:jar:1.9.2:compile[36m -- module doxia.integration.tools[0;1;33m (auto)[m
+   org.apache.maven.wagon:wagon-provider-api:jar:3.3.1:compile[36m -- module wagon.provider.api[0;1;33m (auto)[m
+   org.eclipse.jetty:jetty-server:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.server[0;1m [auto][m
+   javax.servlet:javax.servlet-api:jar:4.0.1:compile[36m -- module javax.servlet.api[0;1;33m (auto)[m
+   org.eclipse.jetty:jetty-http:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.http[0;1m [auto][m
+   org.eclipse.jetty:jetty-io:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.io[0;1m [auto][m
+   org.eclipse.jetty:jetty-servlet:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.servlet[0;1m [auto][m
+   org.eclipse.jetty:jetty-security:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.security[0;1m [auto][m
+   org.eclipse.jetty:jetty-util-ajax:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.util.ajax[0;1m [auto][m
+   org.eclipse.jetty:jetty-webapp:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.webapp[0;1m [auto][m
+   org.eclipse.jetty:jetty-xml:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.xml[0;1m [auto][m
+   org.eclipse.jetty:jetty-util:jar:9.4.36.v20210114:compile[36m -- module org.eclipse.jetty.util[0;1m [auto][m
+   org.apache.commons:commons-lang3:jar:3.11:compile[36m -- module org.apache.commons.lang3[0;1m [auto][m
+   commons-io:commons-io:jar:2.6:compile[36m -- module org.apache.commons.io[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-oauth2-client:jar:2.4.3:compile[36m -- module spring.boot.starter.oauth2.client[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter:jar:2.4.3:compile[36m -- module spring.boot.starter[0;1m [auto][m
+   org.springframework.boot:spring-boot:jar:2.4.3:compile[36m -- module spring.boot[0;1m [auto][m
+   org.springframework.boot:spring-boot-autoconfigure:jar:2.4.3:compile[36m -- module spring.boot.autoconfigure[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-logging:jar:2.4.3:compile[36m -- module spring.boot.starter.logging[0;1m [auto][m
+   ch.qos.logback:logback-classic:jar:1.2.3:compile[36m -- module logback.classic[0;1;33m (auto)[m
+   ch.qos.logback:logback-core:jar:1.2.3:compile[36m -- module logback.core[0;1;33m (auto)[m
+   org.apache.logging.log4j:log4j-to-slf4j:jar:2.13.3:compile[36m -- module org.apache.logging.slf4j[0;1m [auto][m
+   org.apache.logging.log4j:log4j-api:jar:2.13.3:compile[36m -- module org.apache.logging.log4j[m
+   org.slf4j:jul-to-slf4j:jar:1.7.30:compile[36m -- module jul.to.slf4j[0;1;33m (auto)[m
+   jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile[36m -- module java.annotation[0;1m [auto][m
+   org.yaml:snakeyaml:jar:1.27:compile[36m -- module org.yaml.snakeyaml[0;1m [auto][m
+   com.sun.mail:jakarta.mail:jar:1.6.5:compile[36m -- module jakarta.mail[0;1m [auto][m
+   com.sun.activation:jakarta.activation:jar:1.2.2:compile[36m -- module jakarta.activation[m
+   org.springframework.security:spring-security-config:jar:5.4.5:compile[36m -- module spring.security.config[0;1m [auto][m
+   org.springframework:spring-aop:jar:5.3.4:compile[36m -- module spring.aop[0;1m [auto][m
+   org.springframework:spring-beans:jar:5.3.4:compile[36m -- module spring.beans[0;1m [auto][m
+   org.springframework:spring-context:jar:5.3.4:compile[36m -- module spring.context[0;1m [auto][m
+   org.springframework.security:spring-security-core:jar:5.4.5:compile[36m -- module spring.security.core[0;1m [auto][m
+   org.springframework:spring-expression:jar:5.3.4:compile[36m -- module spring.expression[0;1m [auto][m
+   org.springframework.security:spring-security-oauth2-client:jar:5.4.5:compile[36m -- module spring.security.oauth2.client[0;1m [auto][m
+   com.nimbusds:oauth2-oidc-sdk:jar:8.36:compile[36m -- module oauth2.oidc.sdk[0;1;33m (auto)[m
+   com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile[36m -- module jcip.annotations[0;1;33m (auto)[m
+   com.nimbusds:content-type:jar:2.1:compile[36m -- module content.type[0;1;33m (auto)[m
+   com.nimbusds:lang-tag:jar:1.4.4:compile[36m -- module lang.tag[0;1;33m (auto)[m
+   org.springframework.security:spring-security-oauth2-core:jar:5.4.5:compile[36m -- module spring.security.oauth2.core[0;1m [auto][m
+   org.springframework.security:spring-security-web:jar:5.4.5:compile[36m -- module spring.security.web[0;1m [auto][m
+   org.springframework.security:spring-security-oauth2-jose:jar:5.4.5:compile[36m -- module spring.security.oauth2.jose[0;1m [auto][m
+   com.nimbusds:nimbus-jose-jwt:jar:8.20.2:compile[36m -- module com.nimbusds.jose.jwt[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-oauth2-resource-server:jar:2.4.3:compile[36m -- module spring.boot.starter.oauth2.resource.server[0;1m [auto][m
+   org.springframework.security:spring-security-oauth2-resource-server:jar:5.4.5:compile[36m -- module spring.security.oauth2.resource.server[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-actuator:jar:2.4.3:compile[36m -- module spring.boot.starter.actuator[0;1m [auto][m
+   org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.4.3:compile[36m -- module spring.boot.actuator.autoconfigure[0;1m [auto][m
+   org.springframework.boot:spring-boot-actuator:jar:2.4.3:compile[36m -- module spring.boot.actuator[0;1m [auto][m
+   com.fasterxml.jackson.core:jackson-databind:jar:2.11.4:compile[36m -- module com.fasterxml.jackson.databind[m
+   com.fasterxml.jackson.core:jackson-annotations:jar:2.11.4:compile[36m -- module com.fasterxml.jackson.annotation[m
+   com.fasterxml.jackson.core:jackson-core:jar:2.11.4:compile[36m -- module com.fasterxml.jackson.core[m
+   com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.4:compile[36m -- module com.fasterxml.jackson.datatype.jsr310[m
+   io.micrometer:micrometer-core:jar:1.6.4:compile[36m -- module micrometer.core[0;1m [auto][m
+   org.hdrhistogram:HdrHistogram:jar:2.1.12:compile[36m -- module HdrHistogram[0;1;33m (auto)[m
+   org.latencyutils:LatencyUtils:jar:2.0.3:runtime[36m -- module LatencyUtils[0;1;33m (auto)[m
+   io.micrometer:micrometer-registry-prometheus:jar:1.6.4:compile[36m -- module micrometer.registry.prometheus[0;1m [auto][m
+   io.prometheus:simpleclient_common:jar:0.9.0:compile[36m -- module simpleclient.common[0;1;33m (auto)[m
+   io.prometheus:simpleclient:jar:0.9.0:compile[36m -- module simpleclient[0;1;33m (auto)[m
+   org.springframework.boot:spring-boot-starter-web:jar:2.4.3:compile[36m -- module spring.boot.starter.web[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-json:jar:2.4.3:compile[36m -- module spring.boot.starter.json[0;1m [auto][m
+   com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.11.4:compile[36m -- module com.fasterxml.jackson.datatype.jdk8[m
+   com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.11.4:compile[36m -- module com.fasterxml.jackson.module.paramnames[m
+   org.springframework.boot:spring-boot-starter-tomcat:jar:2.4.3:compile[36m -- module spring.boot.starter.tomcat[0;1m [auto][m
+   org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.43:compile[36m -- module org.apache.tomcat.embed.core[m
+   org.glassfish:jakarta.el:jar:3.0.3:compile[36m -- module jakarta.el[0;1;33m (auto)[m
+   org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.43:compile[36m -- module org.apache.tomcat.embed.websocket[m
+   org.springframework:spring-web:jar:5.3.4:compile[36m -- module spring.web[0;1m [auto][m
+   org.springframework:spring-webmvc:jar:5.3.4:compile[36m -- module spring.webmvc[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-test:jar:2.4.3:test[36m -- module spring.boot.starter.test[0;1m [auto][m
+   org.springframework.boot:spring-boot-test:jar:2.4.3:test[36m -- module spring.boot.test[0;1m [auto][m
+   org.springframework.boot:spring-boot-test-autoconfigure:jar:2.4.3:test[36m -- module spring.boot.test.autoconfigure[0;1m [auto][m
+   com.jayway.jsonpath:json-path:jar:2.4.0:test[36m -- module json.path[0;1;33m (auto)[m
+   net.minidev:json-smart:jar:2.3:compile[36m -- module json.smart[0;1;33m (auto)[m
+   net.minidev:accessors-smart:jar:1.2:compile[36m -- module accessors.smart[0;1;33m (auto)[m
+   org.ow2.asm:asm:jar:5.0.4:compile[36m -- module asm[0;1;33m (auto)[m
+   org.slf4j:slf4j-api:jar:1.7.30:compile[36m -- module org.slf4j[0;1m [auto][m
+   jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:test[36m -- module java.xml.bind[m
+   jakarta.activation:jakarta.activation-api:jar:1.2.2:test[36m -- module jakarta.activation[m
+   org.assertj:assertj-core:jar:3.18.1:test[36m -- module org.assertj.core[m
+   org.hamcrest:hamcrest:jar:2.2:test[36m -- module org.hamcrest[0;1m [auto][m
+   org.junit.jupiter:junit-jupiter:jar:5.7.1:test[36m -- module org.junit.jupiter[m
+   org.junit.jupiter:junit-jupiter-api:jar:5.7.1:test[36m -- module org.junit.jupiter.api[m
+   org.apiguardian:apiguardian-api:jar:1.1.0:test[36m -- module org.apiguardian.api[m
+   org.opentest4j:opentest4j:jar:1.2.0:test[36m -- module org.opentest4j[m
+   org.junit.platform:junit-platform-commons:jar:1.7.1:test[36m -- module org.junit.platform.commons[m
+   org.junit.jupiter:junit-jupiter-params:jar:5.7.1:test[36m -- module org.junit.jupiter.params[m
+   org.junit.jupiter:junit-jupiter-engine:jar:5.7.1:test[36m -- module org.junit.jupiter.engine[m
+   org.junit.platform:junit-platform-engine:jar:1.7.1:test[36m -- module org.junit.platform.engine[m
+   org.mockito:mockito-core:jar:3.6.28:test[36m -- module org.mockito[0;1m [auto][m
+   net.bytebuddy:byte-buddy:jar:1.10.20:test[36m -- module net.bytebuddy[m
+   net.bytebuddy:byte-buddy-agent:jar:1.10.20:test[36m -- module net.bytebuddy.agent[m
+   org.objenesis:objenesis:jar:3.1:test[36m -- module org.objenesis[0;1m [auto][m
+   org.mockito:mockito-junit-jupiter:jar:3.6.28:test[36m -- module mockito.junit.jupiter[0;1;33m (auto)[m
+   org.skyscreamer:jsonassert:jar:1.5.0:test[36m -- module jsonassert[0;1;33m (auto)[m
+   com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test[36m -- module android.json[0;1;33m (auto)[m
+   org.springframework:spring-core:jar:5.3.4:compile[36m -- module spring.core[0;1m [auto][m
+   org.springframework:spring-jcl:jar:5.3.4:compile[36m -- module spring.jcl[0;1m [auto][m
+   org.springframework:spring-test:jar:5.3.4:test[36m -- module spring.test[0;1m [auto][m
+   org.xmlunit:xmlunit-core:jar:2.7.0:test[36m -- module org.xmlunit[0;1m [auto][m
+   org.apache.maven.plugins:maven-project-info-reports-plugin:jar:3.1.1:compile[36m -- module maven.project.info.reports.plugin[0;1;33m (auto)[m
+   org.apache.maven.reporting:maven-reporting-impl:jar:3.0.0:compile[36m -- module maven.reporting.impl[0;1;33m (auto)[m
+   org.apache.maven:maven-repository-metadata:jar:3.0:compile[36m -- module maven.repository.metadata[0;1;33m (auto)[m
+   org.apache.maven.shared:maven-dependency-tree:jar:2.2:compile[36m -- module maven.dependency.tree[0;1;33m (auto)[m
+   org.apache.maven.shared:maven-shared-jar:jar:1.2:compile[36m -- module maven.shared.jar[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-digest:jar:1.0:compile[36m -- module plexus.digest[0;1;33m (auto)[m
+   org.apache.bcel:bcel:jar:6.2:compile[36m -- module org.apache.bcel[0;1m [auto][m
+   org.apache.maven.shared:maven-common-artifact-filters:jar:3.1.0:compile[36m -- module maven.common.artifact.filters[0;1;33m (auto)[m
+   org.apache.maven.shared:maven-artifact-transfer:jar:0.12.0:compile[36m -- module maven.artifact.transfer[0;1;33m (auto)[m
+   commons-codec:commons-codec:jar:1.15:compile[36m -- module org.apache.commons.codec[0;1m [auto][m
+   org.apache.maven.scm:maven-scm-api:jar:1.10.0:compile[36m -- module maven.scm.api[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-manager-plexus:jar:1.10.0:runtime[36m -- module maven.scm.manager.plexus[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-hg:jar:1.10.0:compile[36m -- module maven.scm.provider.hg[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-perforce:jar:1.10.0:compile[36m -- module maven.scm.provider.perforce[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-starteam:jar:1.10.0:compile[36m -- module maven.scm.provider.starteam[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-svn-commons:jar:1.10.0:compile[36m -- module maven.scm.provider.svn.commons[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-svnexe:jar:1.10.0:runtime[36m -- module maven.scm.provider.svnexe[0;1;33m (auto)[m
+   commons-lang:commons-lang:jar:2.6:compile[36m -- module commons.lang[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-cvs-commons:jar:1.10.0:compile[36m -- module maven.scm.provider.cvs.commons[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-cvsexe:jar:1.10.0:runtime[36m -- module maven.scm.provider.cvsexe[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-cvsjava:jar:1.10.0:runtime[36m -- module maven.scm.provider.cvsjava[0;1;33m (auto)[m
+   org.netbeans.lib:cvsclient:jar:20060125:runtime[36m -- module cvsclient[0;1;33m (auto)[m
+   ch.ethz.ganymed:ganymed-ssh2:jar:build210:runtime[36m -- module ganymed.ssh2.build210[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-git-commons:jar:1.10.0:compile[36m -- module maven.scm.provider.git.commons[0;1;33m (auto)[m
+   org.apache.maven.scm:maven-scm-provider-gitexe:jar:1.10.0:runtime[36m -- module maven.scm.provider.gitexe[0;1;33m (auto)[m
+   org.codehaus.plexus:plexus-interpolation:jar:1.26:compile[36m -- module plexus.interpolation[0;1;33m (auto)[m
+   commons-validator:commons-validator:jar:1.6:compile[36m -- module commons.validator[0;1;33m (auto)[m
+   commons-beanutils:commons-beanutils:jar:1.9.2:compile[36m -- module commons.beanutils[0;1;33m (auto)[m
+   commons-digester:commons-digester:jar:1.8.1:compile[36m -- module commons.digester[0;1;33m (auto)[m
+   commons-logging:commons-logging:jar:1.2:compile[36m -- module commons.logging[0;1;33m (auto)[m

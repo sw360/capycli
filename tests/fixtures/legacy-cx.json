@@ -1,0 +1,268 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:b34cfeb8-d823-4113-8ede-4dfe8148d44e",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-03-17T12:15:40Z",
+    "tools": [
+      {
+        "vendor": "Siemens AG",
+        "name": "SBomFromSW360.Net",
+        "version": "0.6.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/sbom/tools/sbomfromsw360.net",
+            "type": "website"
+          }
+        ]
+      }
+    ]
+  },
+  "components": [
+	{
+      "type": "library",
+      "bom-ref": "pkg:pypi/colorama@0.4.3",
+      "name": "colorama",
+      "version": "0.4.3",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-2-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/colorama@0.4.3",
+      "externalReferences": [
+        {
+          "url": "https://pypi.org/project/colorama/#files",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "key": "language",
+          "value": "Python"
+        },
+        {
+          "key": "sw360-id",
+          "value": "44ce6d4c8b1b84baa450f29e53001702"
+        },
+        {
+          "key": "source-url",
+          "value": "https://github.com/tartley/colorama"
+        },
+        {
+          "key": "source-file",
+          "value": "colorama-0.4.3.tar.gz"
+        },
+        {
+          "key": "source-file-url",
+          "value": "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
+        },
+        {
+          "key": "source-file-hash",
+          "value": "9c372475952ad7ea297d25d9a14d225ab31f56d7"
+        },
+        {
+          "key": "source-file-type",
+          "value": "SOURCE"
+        },
+        {
+          "key": "source-file-comment",
+          "value": "James Bond"
+        },
+        {
+          "key": "binary-file",
+          "value": "colorama-0.4.3.whl"
+        },
+        {
+          "key": "binary-file-url",
+          "value": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl"
+        },
+        {
+          "key": "binary-file-hash",
+          "value": "001002003004005006007"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/python@3.8",
+      "name": "python",
+      "version": "3.8",
+      "licenses": [
+        {
+          "license": {
+            "name": "Python-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/python@3.8",
+      "externalReferences": [
+        {
+          "url": "https://github.com/python/cpython",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "key": "language",
+          "value": "Python"
+        },
+        {
+          "key": "sw360-id",
+          "value": "42ce6d4c8b1b84baa450f29e53001702"
+        },
+        {
+          "key": "source-url",
+          "value": "https://github.com/python/cpython"
+        },
+        {
+          "key": "source-file",
+          "value": "cpython-3.8.0.zip"
+        },
+        {
+          "key": "source-file-url",
+          "value": "https://github.com/python/cpython"
+        },
+        {
+          "key": "source-file-hash",
+          "value": "eb50b91f4f0d111070f5cc2cfe0dc776a1af69cf"
+        },
+        {
+          "key": "source-file-type",
+          "value": "SOURCE"
+        },
+        {
+          "key": "source-file-comment",
+          "value": "Abraham"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/tomli@2.0.1",
+      "name": "tomli",
+      "version": "2.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/tomli@2.0.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/hukkin/tomli",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "key": "language",
+          "value": "Python"
+        },
+        {
+          "key": "sw360-id",
+          "value": "43ce6d4c8b1b84baa450f29e53001702"
+        },
+        {
+          "key": "source-url",
+          "value": "https://github.com/hukkin/tomli"
+        },
+        {
+          "key": "source-file",
+          "value": "tomli-2.0.1.zip"
+        },
+        {
+          "key": "source-file-url",
+          "value": "https://files.pythonhosted.org/packages/c0/3f/d7af728f075fb08564c5949a9c95e44352e23dee646869fa104a3b2060a3/tomli-2.0.1.zip"
+        },
+        {
+          "key": "source-file-hash",
+          "value": "96bdbae215726d0ad5692003fcd558e04150175b"
+        },
+        {
+          "key": "source-file-type",
+          "value": "SOURCE"
+        },
+        {
+          "key": "source-file-comment",
+          "value": "Mickey"
+        },
+        {
+          "key": "binary-file",
+          "value": "tomli-2.0.1-py3-none-any.whl"
+        },
+        {
+          "key": "binary-file-url",
+          "value": "https://files.pythonhosted.org/packages/97/75/10a9ebee3fd790d20926a90a2547f0bf78f371b2f13aa822c759680ca7b9/tomli-2.0.1-py3-none-any.whl"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/wheel@0.34.2",
+      "name": "wheel",
+      "version": "0.34.2",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/wheel@0.34.2",
+      "externalReferences": [
+        {
+          "url": "https://pypi.org/project/wheel/0.34.2/",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "key": "language",
+          "value": "Python"
+        },
+        {
+          "key": "sw360-id",
+          "value": "44ce6d4c8b1b84baa450f29e53001702"
+        },
+        {
+          "key": "source-url",
+          "value": "https://github.com/pypa/wheel"
+        },
+        {
+          "key": "source-file",
+          "value": "wheel-0.34.2.zip"
+        },
+        {
+          "key": "source-file-url",
+          "value": "https://github.com/pypa/wheel/archive/refs/tags/0.34.2.zip"
+        },
+        {
+          "key": "source-file-hash",
+          "value": "a30b637ddfbb1f017eafb0f60a837442937c5eb0"
+        },
+        {
+          "key": "source-file-type",
+          "value": "SOURCE"
+        },
+        {
+          "key": "source-file-comment",
+          "value": "John Doe"
+        },
+        {
+          "key": "binary-file",
+          "value": "wheel-0.34.2-py2.py3-none-any.whl"
+        },
+        {
+          "key": "binary-file-url",
+          "value": "https://files.pythonhosted.org/packages/8c/23/848298cccf8e40f5bbb59009b32848a4c38f4e7f3364297ab3c3e2e2cd14/wheel-0.34.2-py2.py3-none-any.whl"
+        }
+      ]
+    }
+  ]
+}

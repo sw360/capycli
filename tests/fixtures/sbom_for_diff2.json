@@ -1,0 +1,197 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:2180ceb4-e3a4-4d8f-b4cb-444d11f892b8",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-04-07T13:16:41.903687+00:00",
+    "tools": [
+      {
+        "vendor": "Siemens AG",
+        "name": "CaPyCLI",
+        "version": "2.0.0-dev1",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/sw360/clearingautomation",
+            "type": "website"
+          }
+        ]
+      },
+      {
+        "vendor": "Siemens AG",
+        "name": "standard-bom",
+        "version": "2.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/scpautomation/standard-bom",
+            "type": "website"
+          }
+        ]
+      }
+    ],
+    "licenses": [
+      {
+        "license": {
+          "id": "CC0-1.0"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "capycli"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/certifi@2022.12.99",
+      "name": "certifi",
+      "version": "2022.12.99",
+      "description": "Python package for providing Mozilla's CA Bundle.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/certifi@2022.12.99",
+      "externalReferences": [
+        {
+          "url": "certifi-2022.12.99-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "certifi-2022.12.99.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/37/f7/2b1b/certifi-2022.12.99.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/71/4c/3db2/certifi-2022.12.99-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/certifi/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/certifi/python-certifi",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "AbrarJahin.DiffMatchPatch",
+      "version": "9.1.0",
+      "scope": "required",
+      "purl": "pkg:pkg:nuget/AbrarJahin.DiffMatchPatch@9.1.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/google/diff-match-patch",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/google/diff-match-patch",
+          "type": "vcs"
+        },
+        {
+          "url": "https://github.com/google/diff-match-patch/archive/refs/heads/master.zip",
+          "type": "distribution",
+          "comment": "source archive (download location)"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "C#"
+        },
+        {
+          "name": "siemens:sw360Id",
+          "value": "f2d5e8de3f216ab5ef88896f69017441"
+        },
+        {
+          "name": "capycli:sourceFileType",
+          "value": "SOURCE"
+        },
+        {
+          "name": "capycli:sourceFileComment",
+          "value": "James Bond"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "Autofac",
+      "version": "6.2.0",
+      "scope": "required",
+      "purl": "pkg:pkg:nuget/Autofac@6.2.0",
+      "externalReferences": [
+        {
+          "url": "https://autofac.org/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/autofac/Autofac",
+          "type": "vcs"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "C#"
+        },
+        {
+          "name": "siemens:sw360Id",
+          "value": "a5e40b97ab7d40ca8cca49f82817e044"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "Dummy",
+      "version": "9.9.9",
+      "scope": "required",
+      "purl": "pkg:pkg:nuget/Dummy@9.9.9",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dummy/Dummy",
+          "type": "vcs"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "C#"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/certifi@2022.12.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/certifi@2022.12.999",
+      "dependsOn": []
+    }
+  ]
+}

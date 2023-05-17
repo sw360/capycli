@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<ComponentLicenseInformation component="clipython-1.3.0.zip" creator="thomas.graf@siemens.com" date="2023-03-14" baseDoc="" toolUsed="CliEditor (FOSSologyNG)" componentID="" includesAcknowledgements="false" componentSHA1="0fc54fe4bb73989ce669ad26a8976e7753d31acb" Version="1.5">
+  <GeneralInformation>
+    <ReportId>6461cda6</ReportId>
+    <ReviewedBy />
+    <ComponentName>clipython</ComponentName>
+    <Community>Siemens</Community>
+    <ComponentVersion>1.3.0</ComponentVersion>
+    <ComponentHash>0FC54FE4BB73989CE669AD26A8976E7753D31ACB</ComponentHash>
+    <ComponentReleaseDate>NA</ComponentReleaseDate>
+    <LinkComponentManagement><![CDATA[NA]]></LinkComponentManagement>
+    <LinkScanTool />
+    <ComponentId>
+      <Type>package-url</Type>
+      <Id>pkg:pypi/cli-support@1.3</Id>
+    </ComponentId>
+  </GeneralInformation>
+  <AssessmentSummary>
+    <GeneralAssessment><![CDATA[NA]]></GeneralAssessment>
+    <CriticalFilesFound>None</CriticalFilesFound>
+    <DependencyNotes>None</DependencyNotes>
+    <ExportRestrictionsFound>None</ExportRestrictionsFound>
+    <UsageRestrictionsFound>None</UsageRestrictionsFound>
+    <AdditionalNotes><![CDATA[NA]]></AdditionalNotes>
+  </AssessmentSummary>
+  <License type="global" name="MIT" spdxidentifier="MIT">
+    <Content><![CDATA[Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.]]></Content>
+    <Files><![CDATA[cli_support/license_tools.py
+cli_support/cli_export_restriction.py
+cli_support/cli_file_item_base.py
+cli_support/cli_license.py
+cli_support/__init__.py
+cli_support/cli_copyright.py
+cli_support/cli_obligation.py
+cli_support/CLI.py
+Readme.md
+show_licenses.py
+pyproject.toml
+License.md]]></Files>
+    <FileHash><![CDATA[f25ed209bb834093845265cd8b42510112a4eb15
+8f334f58bf4b9f3e4d635a8cf2870c83d8ab0491
+e6277117494af20b5d1dc90a16f372cb8284093e
+f3469fa31bd6c7c3a0629ea041fe69e53908d4a1
+32b309bad3667d4e253b8d363436644a8a2989e8
+68eaceafa2d4bb0fbc6a84a209ee178fc91bd4e2
+bbffe3567ab5575fabcdb14876c5be1b753da4aa
+1eea8dc30cf9b0d02e040dd93be6c2489919b9be
+70279d03f3a42d78a36f8b971622be399d78c030
+7a7d44e2c7992679d6836288d13b27a47bbf88be
+86a6e4fc4132eb100ecfb7cc11ad1d9f6020e6c2
+9a4312764a0e66d1b74f32068bb18a14190229d2]]></FileHash>
+    <Acknowledgements><![CDATA[Some demo acknowledgement]]></Acknowledgements>
+    <Tags></Tags>
+  </License>
+  <License type="otherread" name="Bad license" spdxidentifier="LicenseRef-capycli-strange">
+    <Content><![CDATA[bla bla]]></Content>
+    <Files><![CDATA[]]></Files>
+    <FileHash><![CDATA[]]></FileHash>
+    <Tags>NOT_README_OSS</Tags>
+  </License>
+  <Copyright>
+    <Content><![CDATA[Copyright (c) 2019-2022 Siemens]]></Content>
+    <Files><![CDATA[License.md
+cli_support/CLI.py
+cli_support/__init__.py
+cli_support/cli_obligation.py
+cli_support/cli_copyright.py
+cli_support/license_tools.py
+cli_support/cli_file_item_base.py
+cli_support/cli_license.py
+cli_support/cli_export_restriction.py
+show_licenses.py]]></Files>
+    <FileHash><![CDATA[9a4312764a0e66d1b74f32068bb18a14190229d2
+1eea8dc30cf9b0d02e040dd93be6c2489919b9be
+32b309bad3667d4e253b8d363436644a8a2989e8
+bbffe3567ab5575fabcdb14876c5be1b753da4aa
+68eaceafa2d4bb0fbc6a84a209ee178fc91bd4e2
+f25ed209bb834093845265cd8b42510112a4eb15
+e6277117494af20b5d1dc90a16f372cb8284093e
+f3469fa31bd6c7c3a0629ea041fe69e53908d4a1
+8f334f58bf4b9f3e4d635a8cf2870c83d8ab0491
+7a7d44e2c7992679d6836288d13b27a47bbf88be]]></FileHash>
+  </Copyright>
+  <IrrelevantFiles>
+    <Files><![CDATA[test/testfiles/CLIXML_Licenses_source_shipping.xml
+test/testfiles/CLIXML_COMPLETE_simple.xml
+test/testfiles/CLIXML_MIT_simple.xml
+test/testfiles/CLIXML_Licenses_multi.xml
+test/__init__.py
+test/test_cli_clifile.py
+test/test_cli_licensetools.py]]></Files>
+  </IrrelevantFiles>
+  <Tags></Tags>
+  <Comment></Comment>
+  <ExternalIds />
+</ComponentLicenseInformation>

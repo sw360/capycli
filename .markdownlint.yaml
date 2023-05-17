@@ -1,0 +1,17 @@
+# markdownlint YAML configuration
+
+# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-License-Identifier: MIT
+
+# For an example, see
+# https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml
+
+# Default state for all rules
+default: true
+
+MD013:
+  # Number of characters
+  line_length: 100
+
+# MD034/no-bare-urls - Bare URL used
+MD034: false

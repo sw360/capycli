@@ -1,0 +1,495 @@
+# -------------------------------------------------------------------------------
+# Copyright (c) 2021-23 Siemens
+# All Rights Reserved.
+# Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
+#
+# SPDX-License-Identifier: MIT
+# -------------------------------------------------------------------------------
+
+import os
+import sys
+import unittest
+from io import BytesIO, TextIOWrapper
+from typing import Any
+
+import responses
+
+
+class AppArguments():
+    # Examples
+    # command=['bom', 'diff', '.\\Tests\\bom_diff_1.json', '.\\tests\\bom_diff_1.json']
+
+    def __init__(self):
+        self.cachefile = None
+        self.command = None
+        self.create_overview = None
+        self.cyclonedx = False
+        self.dbx = False
+        self.debug = False
+        self.destination = None
+        self.download = False
+        self.ex = False
+        self.filterfile = None
+        self.help = False
+        self.id = None
+        self.inputfile = None
+        self.name = None
+        self.ncli = False
+        self.nconf = False
+        self.nocache = False
+        self.oauth2 = False
+        self.old_version = None
+        self.outputfile = None
+        self.package_source = None
+        self.raw_input = None
+        self.refresh_cache = False
+        self.result_required = False
+        self.search_meta_data = False
+        self.similar = False
+        self.source = None
+        self.sw360_token = None
+        self.sw360_url = None
+        self.verbose = False
+        self.verbose2 = False
+        self.version = None
+        self.write_mapresult = None
+        self.xml = False
+        self.help = False
+        self.all = False
+        self.mode = "0"
+        self.format = ""
+        self.force_exit = ""
+        self.inputformat = ""
+        self.outputformat = ""
+
+
+class TestBase(unittest.TestCase):
+    MYTOKEN = "MYTOKEN"
+    MYURL = "https://my.server.com/"
+    ERROR_MSG_NO_LOGIN = "Unable to login"
+
+    @staticmethod
+    def delete_file(filename: str) -> None:
+        """Delete the given file."""
+        try:
+            if os.path.exists(filename):
+                os.remove(filename)
+        except Exception as ex:
+            print("Error removing file:", filename, repr(ex))
+
+    @staticmethod
+    def dump_textfile(text: str, filename: str) -> None:
+        """Dump the given text to the given file."""
+        with open(filename, "w") as outfile:
+            outfile.write(text)
+
+    @staticmethod
+    def capture_stderr(func: Any, args: Any = None) -> str:
+        """Capture stderr for the given function and return result as string"""
+        # setup the environment
+        old_stderr = sys.stderr
+        sys.stderr = TextIOWrapper(BytesIO(), sys.stderr.encoding)
+
+        if args:
+            func(args)
+        else:
+            func()
+
+        # get output
+        sys.stderr.seek(0)       # jump to the start
+        out = sys.stderr.read()  # read output
+
+        # restore stdout
+        sys.stderr.close()
+        sys.stderr = old_stderr
+
+        return out
+
+    @staticmethod
+    def capture_stdout(func: Any, args: Any = None) -> str:
+        """Capture stdout for the given function and return result as string"""
+        # setup the environment
+        old_stdout = sys.stdout
+        sys.stdout = TextIOWrapper(BytesIO(), sys.stdout.encoding)
+
+        func(args)
+
+        # get output
+        sys.stdout.seek(0)       # jump to the start
+        out = sys.stdout.read()  # read output
+
+        # restore stdout
+        sys.stdout.close()
+        sys.stdout = old_stdout
+
+        return out
+
+    @staticmethod
+    def capture_stdout_no_args(func: Any) -> str:
+        """Capture stdout for the given function and return result as string"""
+        # setup the environment
+        old_stdout = sys.stdout
+        sys.stdout = TextIOWrapper(BytesIO(), sys.stdout.encoding)
+
+        func()
+
+        # get output
+        sys.stdout.seek(0)       # jump to the start
+        out = sys.stdout.read()  # read output
+
+        # restore stdout
+        sys.stdout.close()
+        sys.stdout = old_stdout
+
+        return out
+
+    def add_login_response(self):
+        """
+        Add response for SW360 login.
+        """
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/",
+            body="{'status': 'ok'}",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+    @staticmethod
+    def get_project_for_test() -> dict:
+        """
+        Return a SW360 project for unit testing.
+        """
+        project = {
+            "name": "CaPyCLI",
+            "description": "Software clearing for CaPyCLI, the clearing automation scripts for Python",
+            "version": "1.9.0",
+            "externalIds": {
+                "com.siemens.code.project.id": "69287"
+            },
+            "additionalData": {},
+            "createdOn": "2023-03-14",
+            "businessUnit": "SI",
+            "state": "ACTIVE",
+            "tag": "Demo",
+            "clearingState": "IN_PROGRESS",
+            "projectResponsible": "thomas.graf@siemens.com",
+            "roles": {},
+            "securityResponsibles": [
+                "thomas.graf@siemens.com"
+            ],
+            "projectOwner": "thomas.graf@siemens.com",
+            "ownerAccountingUnit": "",
+            "ownerGroup": "",
+            "ownerCountry": "",
+            "preevaluationDeadline": "",
+            "systemTestStart": "",
+            "systemTestEnd": "",
+            "deliveryStart": "",
+            "phaseOutSince": "",
+            "enableSvm": True,
+            "considerReleasesFromExternalList": False,
+            "licenseInfoHeaderText": "dummy",
+            "enableVulnerabilitiesDisplay": True,
+            "clearingSummary": "",
+            "specialRisksOSS": "",
+            "generalRisks3rdParty": "",
+            "specialRisks3rdParty": "",
+            "deliveryChannels": "",
+            "remarksAdditionalRequirements": "",
+            "projectType": "INNER_SOURCE",
+            "visibility": "EVERYONE",
+            "linkedProjects": [],
+            "linkedReleases": [
+                {
+                    "createdBy": "thomas.graf@siemens.com",
+                    "release": "https://my.server.com/resource/api/releases/r001",
+                    "mainlineState": "SPECIFIC",
+                    "comment": "Automatically updated by SCC",
+                    "createdOn": "2023-03-14",
+                    "relation": "UNKNOWN"
+                },
+                {
+                    "createdBy": "thomas.graf@siemens.com",
+                    "release": "https://my.server.com/resource/api/releases/r002",
+                    "mainlineState": "SPECIFIC",
+                    "comment": "Automatically updated by SCC",
+                    "createdOn": "2023-03-14",
+                    "relation": "UNKNOWN"
+                }
+            ],
+            "_links": {
+                "self": {
+                    "href": "https://my.server.com/resource/api/projects/p001"
+                }
+            },
+            "_embedded": {
+                "createdBy": {
+                    "email": "thomas.graf@siemens.com",
+                    "deactivated": False,
+                    "fullName": "Thomas Graf",
+                    "_links": {
+                        "self": {
+                            "href": "https://my.server.com/resource/api/users/byid/thomas.graf%2540siemens.com"
+                        }
+                    }
+                },
+                "sw360:releases": [
+                    {
+                        "name": "wheel",
+                        "version": "0.38.4",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/releases/r001"
+                            }
+                        }
+                    },
+                    {
+                        "name": "cli-support",
+                        "version": "1.3",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/releases/r002"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+
+        return project
+
+    @staticmethod
+    def get_release_wheel_for_test() -> dict:
+        """
+        Return a SW360 release for unit testing.
+        """
+        release_wheel = {
+            "name": "wheel",
+            "version": "0.38.4",
+            "releaseDate": "",
+            "componentType": "OSS",
+            "externalIds": {
+                "package-url": "pkg:pypi/wheel@0.38.4"
+            },
+            "createdOn": "2023-02-16",
+            "mainlineState": "SPECIFIC",
+            "clearingState": "APPROVED",
+            "createdBy": "thomas.graf@siemens.com",
+            "contributors": [],
+            "subscribers": [],
+            "roles": {},
+            "otherLicenseIds": [],
+            "languages": [
+                "Python"
+            ],
+            "operatingSystems": [],
+            "softwarePlatforms": [],
+            "sourceCodeDownloadurl": "https://github.com/pypa/wheel/archive/refs/tags/0.38.4.zip",
+            "binaryDownloadurl": "",
+            "cpeId": "",
+            "eccInformation": {
+                "al": "N",
+                "eccn": "N",
+                "eccStatus": "APPROVED"
+            },
+            "_links": {
+                "sw360:component": {
+                    "href": "https://my.server.com/resource/api/components/c001"
+                },
+                "self": {
+                    "href": "https://my.server.com/resource/api/releases/r001"
+                },
+                "curies": [
+                    {
+                        "href": "https://my.server.com/resource/docs/{rel}.html",
+                        "name": "sw360",
+                        "templated": True
+                    }
+                ]
+            },
+            "_embedded": {
+                "sw360:licenses": [
+                    {
+                        "OSIApproved": "NA",
+                        "FSFLibre": "NA",
+                        "checked": True,
+                        "shortName": "MIT",
+                        "fullName": "MIT License",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/licenses/MIT"
+                            }
+                        }
+                    }
+                ],
+                "sw360:attachments": [
+                    {
+                        "filename": "CLIXML_wheel-0.38.4.xml",
+                        "sha1": "ccd9f1ed2f59c46ff3f0139c05bfd76f83fd9851",
+                        "attachmentType": "COMPONENT_LICENSE_INFO_XML",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/attachments/r001a001"
+                            }
+                        }
+                    },
+                    {
+                        "filename": "wheel-0.38.4.zip",
+                        "sha1": "a30b637ddfbb1f017eafb0f60a837442937c5eb0",
+                        "attachmentType": "SOURCE",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/attachments/r001a002"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+
+        return release_wheel
+
+    @staticmethod
+    def get_release_cli_for_test() -> dict:
+        """
+        Return a SW360 release for unit testing.
+        """
+        release_cli = {
+            "name": "cli-support",
+            "version": "1.3",
+            "releaseDate": "",
+            "componentType": "OSS",
+            "externalIds": {
+                "package-url": "pkg:pypi/cli-support@1.3"
+            },
+            "createdOn": "2023-03-14",
+            "mainlineState": "SPECIFIC",
+            "clearingState": "APPROVED",
+            "createdBy": "thomas.graf@siemens.com",
+            "contributors": [],
+            "subscribers": [],
+            "roles": {},
+            "otherLicenseIds": [],
+            "languages": [
+                "Python"
+            ],
+            "operatingSystems": [],
+            "softwarePlatforms": [],
+            "sourceCodeDownloadurl": "https://github.com/sw360/clipython",
+            "binaryDownloadurl": "",
+            "cpeId": "",
+            "eccInformation": {
+                "al": "N",
+                "eccn": "N",
+                "eccStatus": "APPROVED"
+            },
+            "_links": {
+                "sw360:component": {
+                    "href": "https://my.server.com/resource/api/components/c001"
+                },
+                "self": {
+                    "href": "https://my.server.com/resource/api/releases/r002"
+                },
+                "curies": [
+                    {
+                        "href": "https://my.server.com/resource/docs/{rel}.html",
+                        "name": "sw360",
+                        "templated": True
+                    }
+                ]
+            },
+            "_embedded": {
+                "sw360:licenses": [
+                    {
+                        "OSIApproved": "NA",
+                        "FSFLibre": "NA",
+                        "checked": True,
+                        "shortName": "MIT",
+                        "fullName": "MIT License",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/licenses/MIT"
+                            }
+                        }
+                    }
+                ],
+                "sw360:attachments": [
+                    {
+                        "filename": "clipython-1.3.0.zip",
+                        "sha1": "0fc54fe4bb73989ce669ad26a8976e7753d31acb",
+                        "attachmentType": "SOURCE",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/attachments/r002a001"
+                            }
+                        }
+                    },
+                    {
+                        "filename": "CLIXML_clipython-1.3.0.xml",
+                        "sha1": "dd4c38387c6811dba67d837af7742d84e61e20de",
+                        "attachmentType": "COMPONENT_LICENSE_INFO_XML",
+                        "_links": {
+                            "self": {
+                                "href": "https://my.server.com/resource/api/attachments/r002a002"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+
+        return release_cli
+
+    def get_cli_file_mit(self) -> str:
+        """
+        Return the XML contents of a CLI file with MIT license.
+        """
+        return """<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<ComponentLicenseInformation
+    component="charset_normalizer-3.1.0.zip" creator="thomas.graf@siemens.com"
+    date="2023-03-14" baseDoc="" toolUsed="CliEditor" componentID="" includesAcknowledgements="false"
+    componentSHA1="67878344e28168dd11b9d6f9c3dbd80a4c1e1b9e" Version="1.5">
+  <GeneralInformation>
+    <ReportId>168fafd4-c25b-11ed-8ced-6f5dd240728b</ReportId>
+    <ReviewedBy />
+    <ComponentName>charset-normalizer</ComponentName>
+    <Community>NA</Community>
+    <ComponentVersion>3.1.0</ComponentVersion>
+    <ComponentHash>67878344E28168DD11B9D6F9C3DBD80A4C1E1B9E</ComponentHash>
+    <ComponentReleaseDate>NA</ComponentReleaseDate>
+    <LinkComponentManagement></LinkComponentManagement>
+    <LinkScanTool />
+    <ComponentId>
+      <Type>package-url</Type>
+      <Id>pkg:pypi/charset-normalizer@3.1.0</Id>
+    </ComponentId>
+  </GeneralInformation>
+  <AssessmentSummary>
+    <GeneralAssessment><![CDATA[N/A]]></GeneralAssessment>
+    <CriticalFilesFound>None</CriticalFilesFound>
+    <DependencyNotes>None</DependencyNotes>
+    <ExportRestrictionsFound>None</ExportRestrictionsFound>
+    <UsageRestrictionsFound>None</UsageRestrictionsFound>
+    <AdditionalNotes><![CDATA[NA]]></AdditionalNotes>
+  </AssessmentSummary>
+  <License type="global" name="MIT" spdxidentifier="MIT">
+    <Content><![CDATA[Permission is hereby granted]]></Content>
+    <Files><![CDATA[charset_normalizer/__init__.py]]></Files>
+    <FileHash><![CDATA[7d1b9e407eaae7983be386ef9b9a21642ce140e9]]></FileHash>
+    <Tags></Tags>
+  </License>
+  <Copyright>
+    <Content><![CDATA[© 2012 XXX]]></Content>
+    <Files><![CDATA[README.md]]></Files>
+    <FileHash><![CDATA[4e033debe19d28cb1b17adfbf7c1b9f2383281fa]]></FileHash>
+  </Copyright>
+  <IrrelevantFiles>
+    <Files><![CDATA[]]></Files>
+  </IrrelevantFiles>
+  <Tags></Tags>
+  <Comment></Comment>
+  <ExternalIds />
+</ComponentLicenseInformation>
+            """

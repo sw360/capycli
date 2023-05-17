@@ -1,0 +1,21 @@
+{
+  "ProjectName": "CaPyCLI, 1.9.0",
+  "Format": 2,
+  "OutputFileName": "Readme_OSS.html",
+  "CompanyName": "Some Company",
+  "CompanyAddress1": "Some Company, Ltd.",
+  "CompanyAddress2": "Any Street 999",
+  "CompanyAddress3": "My City",
+  "CompanyAddress4": "This Country",
+  "Components": [
+    {
+      "ComponentName": "cli-support 1.3",
+      "CliFile": "tests/fixtures/CLIXML_clipython-1.3.0.xml",
+      "CreatedBy": "thomas.graf@siemens.com",
+      "CreatedOn": "2023-03-14",
+      "CheckedBy": "thomas.graf@siemens.com",
+      "CheckedTeam": "SI",
+      "CheckStatus": "ACCEPTED"
+    }
+  ]
+}

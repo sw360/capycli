@@ -1,0 +1,33 @@
+
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: clearingautomation
+Upstream-Contact: T. Graf
+Source: https://code.siemens.com/sw360/clearingautomation
+
+Files: .gitignore README.md
+Copyright: 2018-2023 Siemens
+License: MIT
+
+Files: SBOM/*
+Copyright: 2018-2023 Siemens
+License: CC0-1.0
+
+Files: tests/*.json
+Copyright: 2018-2023 Siemens
+License: MIT
+
+Files: tests/*.xml
+Copyright: 2018-2023 Siemens
+License: MIT
+
+Files:  tests/maven_list/*.txt
+Copyright: 2018-2023 Siemens
+License: MIT
+
+Files: granularity_list.csv requirements.txt
+Copyright: 2018-2023 Siemens
+License: MIT
+
+Files: Legacy/code.siemens.com-gitlab-ci.yml.txt  Legacy/Pipfile.lock
+Copyright: 2018-2023 Siemens
+License: MIT

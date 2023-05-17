@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-License-Identifier: MIT
+
+[tool.poetry]
+name = "capycli"
+version = "2.0.0.dev6"
+description = "CaPyCli - Clearing Automation Python Command Line Interface"
+authors = ["Thomas Graf <thomas.graf@siemens.com>"]
+license = "MIT"
+include = [
+    "LICENSE.md",
+    { path = "capycli/data/granularity_list.csv", format = "wheel" },
+    { path = "capycli/data/__init__.py", format = "wheel" },
+    { path = "capycli/data/granularity_list.csv", format = "sdist" },
+    { path = "capycli/data/__init__.py", format = "sdist" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+[tool.poetry.urls]
+issues = "https://code.siemens.com/sw360/clearingautomation/issues"
+
+[tool.poetry.scripts]
+capycli = "capycli.main.cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.8" # drop support for 3.6 and 3.7 because of wheel and cli-support
+colorama = "^0.4.3"
+requests = "^2.22.0"
+packageurl-python = ">0.8, <1.0"
+pyjwt = "^1.7.1"
+openpyxl = "^3.0.3"
+requirements-parser = "^0.2.0"
+sw360 = "^1.2.0"
+wheel = "^0.38.4"
+cli-support = "^1.3"
+chardet = "^3.0.4"
+cyclonedx-python-lib = ">3.1.1"
+cyclonedx-bom = "^3.11.0"
+tomli = "^2.0.1"
+dateparser = "^1.1.8"
+
+[tool.poetry.dev-dependencies]
+flake8 = ">=3.7.8"
+coverage = "^5.4"
+responses = "^0.17.0"
+pytest = "^7.2.2"
+vcrpy = "^4.1.1"
+cli-test-helpers = "^3.1.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    # note the use of single quote below to denote "raw" strings in TOML
+    'ignore:pkg_resources is deprecated as an API',
+]

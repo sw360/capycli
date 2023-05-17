@@ -1,0 +1,10 @@
+{
+	"description" : "CaPyCLI",
+    "businessUnit" : "SI",	
+	"tag" : "SI BP DB Demo",
+    "ownerGroup" : "SI",
+    "projectOwner" : "thomas.graf@siemens.com",
+    "projectResponsible" : "thomas.graf@siemens.com",
+    "projectType" : "INNER_SOURCE",
+    "visibility" : "EVERYONE"
+}

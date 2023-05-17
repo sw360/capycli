@@ -1,0 +1,1338 @@
+component_name;replacement_name;comment;sourec_url
+
+@angular/animations/browser;Angular;;https://github.com/angular/angular
+@angular/animations/browser/testing;Angular;;https://github.com/angular/angular
+@angular/animations;Angular;;https://github.com/angular/angular
+@angular/bazel;Angular;;https://github.com/angular/angular
+@angular/benchpress;Angular;;https://github.com/angular/angular
+@angular/common;Angular;;https://github.com/angular/angular
+@angular/common/http;Angular;;https://github.com/angular/angular
+@angular/common/http/testing;Angular;;https://github.com/angular/angular
+@angular/common/testing;Angular;;https://github.com/angular/angular
+@angular/common/upgrade;Angular;;https://github.com/angular/angular
+@angular/compiler;Angular;;https://github.com/angular/angular
+@angular/compiler/testing;Angular;;https://github.com/angular/angular
+@angular/compiler-cli;Angular;;https://github.com/angular/angular
+@angular/core;Angular;;https://github.com/angular/angular
+@angular/core/testing;Angular;;https://github.com/angular/angular
+@angular/elements;Angular;;https://github.com/angular/angular
+@angular/forms;Angular;;https://github.com/angular/angular
+@angular/http;Angular;;https://github.com/angular/angular
+@angular/language-service;Angular;;https://github.com/angular/angular
+@angular/localize/init;Angular;;https://github.com/angular/angular
+@angular/localize;Angular;;https://github.com/angular/angular
+@angular/platform-browser/animations;Angular;;https://github.com/angular/angular
+@angular/platform-browser;Angular;;https://github.com/angular/angular
+@angular/platform-browser/testing;Angular;;https://github.com/angular/angular
+@angular/platform-browser-dynamic;Angular;;https://github.com/angular/angular
+@angular/platform-browser-dynamic/testing;Angular;;https://github.com/angular/angular
+@angular/platform-server;Angular;;https://github.com/angular/angular
+@angular/platform-server/testing;Angular;;https://github.com/angular/angular
+@angular/router;Angular;;https://github.com/angular/angular
+@angular/router/testing;Angular;;https://github.com/angular/angular
+@angular/router/upgrade;Angular;;https://github.com/angular/angular
+@angular/service-worker/config;Angular;;https://github.com/angular/angular
+@angular/service-worker;Angular;;https://github.com/angular/angular
+@angular/upgrade;Angular;;https://github.com/angular/angular
+@angular/upgrade/static;Angular;;https://github.com/angular/angular
+@angular/upgrade/static/testing;Angular;;https://github.com/angular/angular
+
+tomcat-dbcp;Apache Tomcat;;
+tomcat-embed-core;Apache Tomcat;;
+tomcat-embed-el;Apache Tomcat;;
+tomcat-embed-jasper;Apache Tomcat;;
+tomcat-embed-websocket;Apache Tomcat;;
+annotations-api;Apache Tomcat;;
+catalina;Apache Tomcat;;
+catalina-ant;Apache Tomcat;;
+catalina-ha;Apache Tomcat;;
+catalina-storeconfig;Apache Tomcat;;
+catalina-tribes;Apache Tomcat;;
+ecj-4.13;Apache Tomcat;;
+el-api.;Apache Tomcat;;
+jasper;Apache Tomcat;;
+jasper-el;Apache Tomcat;;
+jsp-api;Apache Tomcat;;
+servlet-api;Apache Tomcat;;
+tomcat-api;Apache Tomcat;;
+tomcat-coyote;Apache Tomcat;;
+tomcat-dbcp;Apache Tomcat;;
+tomcat-i18n*;Apache Tomcat;multiple files;
+tomcat-jdbc;Apache Tomcat;;
+tomcat-jni;Apache Tomcat;;
+tomcat-util;Apache Tomcat;;
+tomcat-websocket;Apache Tomcat;;
+
+@babel/core;babel;;https://github.com/babel/babel
+@babel/parser;babel;;https://github.com/babel/babel
+@babel/traverse;babel;;https://github.com/babel/babel
+@babel/generator;babel;;https://github.com/babel/babel
+@babel/cli;babel;;https://github.com/babel/babel
+@babel/types;babel;;https://github.com/babel/babel
+@babel/runtime;babel;;https://github.com/babel/babel
+@babel/register;babel;;https://github.com/babel/babel
+@babel/template;babel;;https://github.com/babel/babel
+@babel/helpers;babel;;https://github.com/babel/babel
+@babel/code-frame;babel;;https://github.com/babel/babel
+@babel/standalone;babel;;https://github.com/babel/babel
+@babel/preset-env;babel;;https://github.com/babel/babel
+@babel/preset-react;babel;;https://github.com/babel/babel
+@babel/preset-typescript;babel;;https://github.com/babel/babel
+@babel/helper-plugin-utils;babel;;https://github.com/babel/babel
+@babel/helper-module-imports;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-object-rest-spread;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-class-properties;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-optional-chaining;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-decorators;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-nullish-coalescing-operator;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-export-namespace-from;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-numeric-separator;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-json-strings;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-logical-assignment-operators;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-private-methods;babel;;https://github.com/babel/babel
+@babel/plugin-transform-runtime;babel;;https://github.com/babel/babel
+@babel/plugin-transform-modules-commonjs;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-jsx;babel;;https://github.com/babel/babel
+@babel/plugin-transform-destructuring;babel;;https://github.com/babel/babel
+@babel/plugin-transform-classes;babel;;https://github.com/babel/babel
+@babel/plugin-transform-spread;babel;;https://github.com/babel/babel
+@babel/plugin-transform-template-literals;babel;;https://github.com/babel/babel
+@babel/plugin-transform-typescript;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-jsx;babel;;https://github.com/babel/babel
+@babel/helper-environment-visitor;babel;;https://github.com/babel/babel
+@babel/helper-function-name;babel;;https://github.com/babel/babel
+@babel/helper-get-function-arity;babel;;https://github.com/babel/babel
+@babel/helper-hoist-variables;babel;;https://github.com/babel/babel
+@babel/helper-module-transforms;babel;;https://github.com/babel/babel
+@babel/helper-simple-access;babel;;https://github.com/babel/babel
+@babel/helper-split-export-declaration;babel;;https://github.com/babel/babel
+@babel/helper-validator-identifier;babel;;https://github.com/babel/babel
+@babel/highlight;babel;;https://github.com/babel/babel
+
+@angular/cdk;angular/components;;https://github.com/angular/components
+@angular/google-maps;angular/components;;https://github.com/angular/components
+@angular/youtube-player;angular/components;;https://github.com/angular/components
+@angular/material;angular/components;;https://github.com/angular/components
+@angular/material-moment-adapter;angular/components;;https://github.com/angular/components
+
+@capacitor/core;capacitor;;
+@capacitor/cli;capacitor;;
+@capacitor/ios;capacitor;;
+@capacitor/android;capacitor;;
+@capacitor/create-plugin;capacitor;;
+@capacitor/create-app;capacitor;;
+@capacitor/storage;capacitor;;
+@capacitor/status-bar;capacitor;;
+@capacitor/device;capacitor;;
+@capacitor/electron;capacitor;;
+@capacitor/angular;capacitor;;
+
+hibernate-agroal;hibernate;;
+hibernate-c3p0;hibernate;;
+hibernate-commons-annotations;hibernate;;
+hibernate-core;hibernate;;
+hibernate-ehcache;hibernate;;
+hibernate-envers;hibernate;;
+hibernate-hikaricp;hibernate;;
+hibernate-jcache;hibernate;;
+hibernate-jpamodelgen;hibernate;;
+hibernate-osgi;hibernate;;
+hibernate-proxool;hibernate;;
+hibernate-spatial;hibernate;;
+hibernate-vibur;hibernate;;
+
+@ionic/cli;@ionic/cli;;
+@ionic/utils-fs;@ionic/cli;;
+@ionic/utils-array;@ionic/cli;;
+@ionic/utils-network;@ionic/cli;;
+@ionic/utils-object;@ionic/cli;;
+@ionic/utils-process;@ionic/cli;;
+@ionic/utils-stream;@ionic/cli;;
+@ionic/utils-subprocess;@ionic/cli;;
+@ionic/utils-terminal;@ionic/cli;;
+
+@ionic/core;ionic;;
+@ionic/angular;ionic;;
+@ionic/vue;ionic;;
+@ionic/react;ionic;;
+
+@ionic-native/abbyy-rtr;ionic-native;;
+@ionic-native/action-sheet;ionic-native;;
+@ionic-native/adjust;ionic-native;;
+@ionic-native/admob;ionic-native;;
+@ionic-native/admob-free;ionic-native;;
+@ionic-native/admob-plus;ionic-native;;
+@ionic-native/admob-pro;ionic-native;;
+@ionic-native/aes-256;ionic-native;;
+@ionic-native/alipay;ionic-native;;
+@ionic-native/analytics-firebase;ionic-native;;
+@ionic-native/android-exoplayer;ionic-native;;
+@ionic-native/android-fingerprint-auth;ionic-native;;
+@ionic-native/android-full-screen;ionic-native;;
+@ionic-native/android-permissions;ionic-native;;
+@ionic-native/anyline;ionic-native;;
+@ionic-native/app-availability;ionic-native;;
+@ionic-native/app-center-analytics;ionic-native;;
+@ionic-native/app-center-crashes;ionic-native;;
+@ionic-native/app-center-push;ionic-native;;
+@ionic-native/app-launcher;ionic-native;;
+@ionic-native/app-minimize;ionic-native;;
+@ionic-native/app-preferences;ionic-native;;
+@ionic-native/app-rate;ionic-native;;
+@ionic-native/app-update;ionic-native;;
+@ionic-native/app-version;ionic-native;;
+@ionic-native/apple-pay;ionic-native;;
+@ionic-native/apple-wallet;ionic-native;;
+@ionic-native/appodeal;ionic-native;;
+@ionic-native/appsflyer;ionic-native;;
+@ionic-native/audio-management;ionic-native;;
+@ionic-native/autostart;ionic-native;;
+@ionic-native/background-fetch;ionic-native;;
+@ionic-native/background-geolocation;ionic-native;;
+@ionic-native/background-mode;ionic-native;;
+@ionic-native/backlight;ionic-native;;
+@ionic-native/badge;ionic-native;;
+@ionic-native/baidu-push;ionic-native;;
+@ionic-native/barcode-scanner;ionic-native;;
+@ionic-native/base64;ionic-native;;
+@ionic-native/base64-to-gallery;ionic-native;;
+@ionic-native/battery-status;ionic-native;;
+@ionic-native/biocatch;ionic-native;;
+@ionic-native/biometric-wrapper;ionic-native;;
+@ionic-native/ble;ionic-native;;
+@ionic-native/blinkid;ionic-native;;
+@ionic-native/blinkup;ionic-native;;
+@ionic-native/bluetooth-le;ionic-native;;
+@ionic-native/bluetooth-serial;ionic-native;;
+@ionic-native/braintree;ionic-native;;
+@ionic-native/branch-io;ionic-native;;
+@ionic-native/brightness;ionic-native;;
+@ionic-native/broadcaster;ionic-native;;
+@ionic-native/browser-tab;ionic-native;;
+@ionic-native/calendar;ionic-native;;
+@ionic-native/call-directory;ionic-native;;
+@ionic-native/call-log;ionic-native;;
+@ionic-native/call-number;ionic-native;;
+@ionic-native/camera;ionic-native;;
+@ionic-native/camera-preview;ionic-native;;
+@ionic-native/card-io;ionic-native;;
+@ionic-native/chooser;ionic-native;;
+@ionic-native/class-kit;ionic-native;;
+@ionic-native/clevertap;ionic-native;;
+@ionic-native/clipboard;ionic-native;;
+@ionic-native/cloud-settings;ionic-native;;
+@ionic-native/code-push;ionic-native;;
+@ionic-native/colored-browser-tabs;ionic-native;;
+@ionic-native/contacts;ionic-native;;
+@ionic-native/couchbase-lite;ionic-native;;
+@ionic-native/crop;ionic-native;;
+@ionic-native/date-picker;ionic-native;;
+@ionic-native/db-meter;ionic-native;;
+@ionic-native/deeplinks;ionic-native;;
+@ionic-native/device;ionic-native;;
+@ionic-native/device-accounts;ionic-native;;
+@ionic-native/device-feedback;ionic-native;;
+@ionic-native/device-motion;ionic-native;;
+@ionic-native/device-orientation;ionic-native;;
+@ionic-native/diagnostic;ionic-native;;
+@ionic-native/dialogs;ionic-native;;
+@ionic-native/dns;ionic-native;;
+@ionic-native/document-picker;ionic-native;;
+@ionic-native/document-scanner;ionic-native;;
+@ionic-native/document-viewer;ionic-native;;
+@ionic-native/downloader;ionic-native;;
+@ionic-native/email-composer;ionic-native;;
+@ionic-native/estimote-beacons;ionic-native;;
+@ionic-native/extended-device-information;ionic-native;;
+@ionic-native/fabric;ionic-native;;
+@ionic-native/facebook;ionic-native;;
+@ionic-native/fcm;ionic-native;;
+@ionic-native/file;ionic-native;;
+@ionic-native/file-chooser;ionic-native;;
+@ionic-native/file-encryption;ionic-native;;
+@ionic-native/file-opener;ionic-native;;
+@ionic-native/file-path;ionic-native;;
+@ionic-native/file-picker;ionic-native;;
+@ionic-native/file-transfer;ionic-native;;
+@ionic-native/fingerprint-aio;ionic-native;;
+@ionic-native/firebase;ionic-native;;
+@ionic-native/firebase-analytics;ionic-native;;
+@ionic-native/firebase-authentication;ionic-native;;
+@ionic-native/firebase-config;ionic-native;;
+@ionic-native/firebase-crash;ionic-native;;
+@ionic-native/firebase-crashlytics;ionic-native;;
+@ionic-native/firebase-dynamic-links;ionic-native;;
+@ionic-native/firebase-messaging;ionic-native;;
+@ionic-native/flashlight;ionic-native;;
+@ionic-native/flurry-analytics;ionic-native;;
+@ionic-native/foreground-service;ionic-native;;
+@ionic-native/ftp;ionic-native;;
+@ionic-native/full-screen-image;ionic-native;;
+@ionic-native/gao-de-location;ionic-native;;
+@ionic-native/geofence;ionic-native;;
+@ionic-native/geolocation;ionic-native;;
+@ionic-native/globalization;ionic-native;;
+@ionic-native/google-analytics;ionic-native;;
+@ionic-native/google-nearby;ionic-native;;
+@ionic-native/google-play-games-services;ionic-native;;
+@ionic-native/google-plus;ionic-native;;
+@ionic-native/gyroscope;ionic-native;;
+@ionic-native/hce;ionic-native;;
+@ionic-native/header-color;ionic-native;;
+@ionic-native/health;ionic-native;;
+@ionic-native/health-kit;ionic-native;;
+@ionic-native/hot-code-push;ionic-native;;
+@ionic-native/hotspot;ionic-native;;
+@ionic-native/http;ionic-native;;
+@ionic-native/httpd;ionic-native;;
+@ionic-native/hyper-track;ionic-native;;
+@ionic-native/ibeacon;ionic-native;;
+@ionic-native/image-picker;ionic-native;;
+@ionic-native/image-resizer;ionic-native;;
+@ionic-native/in-app-browser;ionic-native;;
+@ionic-native/in-app-purchase;ionic-native;;
+@ionic-native/in-app-purchase-2;ionic-native;;
+@ionic-native/in-app-review;ionic-native;;
+@ionic-native/index-app-content;ionic-native;;
+@ionic-native/insomnia;ionic-native;;
+@ionic-native/instagram;ionic-native;;
+@ionic-native/intel-security;ionic-native;;
+@ionic-native/intercom;ionic-native;;
+@ionic-native/ionic-webview;ionic-native;;
+@ionic-native/is-debug;ionic-native;;
+@ionic-native/janalytics;ionic-native;;
+@ionic-native/jins-meme;ionic-native;;
+@ionic-native/keyboard;ionic-native;;
+@ionic-native/keychain;ionic-native;;
+@ionic-native/keychain-touch-id;ionic-native;;
+@ionic-native/last-cam;ionic-native;;
+@ionic-native/launch-navigator;ionic-native;;
+@ionic-native/launch-review;ionic-native;;
+@ionic-native/line-login;ionic-native;;
+@ionic-native/list-txt;ionic-native;;
+@ionic-native/local-notifications;ionic-native;;
+@ionic-native/location-accuracy;ionic-native;;
+@ionic-native/lottie-splash-screen;ionic-native;;
+@ionic-native/luxand;ionic-native;;
+@ionic-native/magnetometer;ionic-native;;
+@ionic-native/market;ionic-native;;
+@ionic-native/media;ionic-native;;
+@ionic-native/media-capture;ionic-native;;
+@ionic-native/mixpanel;ionic-native;;
+@ionic-native/mobile-accessibility;ionic-native;;
+@ionic-native/ms-adal;ionic-native;;
+@ionic-native/music-controls;ionic-native;;
+@ionic-native/native-audio;ionic-native;;
+@ionic-native/native-geocoder;ionic-native;;
+@ionic-native/native-keyboard;ionic-native;;
+@ionic-native/native-page-transitions;ionic-native;;
+@ionic-native/native-ringtones;ionic-native;;
+@ionic-native/native-storage;ionic-native;;
+@ionic-native/navigation-bar;ionic-native;;
+@ionic-native/network;ionic-native;;
+@ionic-native/network-interface;ionic-native;;
+@ionic-native/nfc;ionic-native;;
+@ionic-native/ocr;ionic-native;;
+@ionic-native/onesignal;ionic-native;;
+@ionic-native/open-native-settings;ionic-native;;
+@ionic-native/openalpr;ionic-native;;
+@ionic-native/paypal;ionic-native;;
+@ionic-native/pedometer;ionic-native;;
+@ionic-native/phonegap-local-notification;ionic-native;;
+@ionic-native/photo-library;ionic-native;;
+@ionic-native/photo-viewer;ionic-native;;
+@ionic-native/pin-check;ionic-native;;
+@ionic-native/pin-dialog;ionic-native;;
+@ionic-native/pinterest;ionic-native;;
+@ionic-native/power-management;ionic-native;;
+@ionic-native/printer;ionic-native;;
+@ionic-native/pro;ionic-native;;
+@ionic-native/purchases;ionic-native;;
+@ionic-native/push;ionic-native;;
+@ionic-native/qqsdk;ionic-native;;
+@ionic-native/qr-scanner;ionic-native;;
+@ionic-native/quikkly;ionic-native;;
+@ionic-native/regula-document-reader;ionic-native;;
+@ionic-native/rollbar;ionic-native;;
+@ionic-native/safari-view-controller;ionic-native;;
+@ionic-native/screen-orientation;ionic-native;;
+@ionic-native/screenshot;ionic-native;;
+@ionic-native/secure-storage;ionic-native;;
+@ionic-native/sensors;ionic-native;;
+@ionic-native/serial;ionic-native;;
+@ionic-native/shake;ionic-native;;
+@ionic-native/sim;ionic-native;;
+@ionic-native/siri-shortcuts;ionic-native;;
+@ionic-native/sms;ionic-native;;
+@ionic-native/sms-retriever;ionic-native;;
+@ionic-native/social-sharing;ionic-native;;
+@ionic-native/speech-recognition;ionic-native;;
+@ionic-native/speechkit;ionic-native;;
+@ionic-native/spinner-dialog;ionic-native;;
+@ionic-native/splash-screen;ionic-native;;
+@ionic-native/spotify-auth;ionic-native;;
+@ionic-native/sqlite;ionic-native;;
+@ionic-native/sqlite-db-copy;ionic-native;;
+@ionic-native/sqlite-porter;ionic-native;;
+@ionic-native/star-prnt;ionic-native;;
+@ionic-native/status-bar;ionic-native;;
+@ionic-native/stepcounter;ionic-native;;
+@ionic-native/streaming-media;ionic-native;;
+@ionic-native/stripe;ionic-native;;
+@ionic-native/sum-up;ionic-native;;
+@ionic-native/taptic-engine;ionic-native;;
+@ionic-native/tealium;ionic-native;;
+@ionic-native/tealium-adidentifier;ionic-native;;
+@ionic-native/tealium-installreferrer;ionic-native;;
+@ionic-native/text-to-speech;ionic-native;;
+@ionic-native/theme-detection;ionic-native;;
+@ionic-native/themeable-browser;ionic-native;;
+@ionic-native/three-dee-touch;ionic-native;;
+@ionic-native/toast;ionic-native;;
+@ionic-native/touch-id;ionic-native;;
+@ionic-native/twitter-connect;ionic-native;;
+@ionic-native/uid;ionic-native;;
+@ionic-native/unique-device-id;ionic-native;;
+@ionic-native/unvired-cordova-sdk;ionic-native;;
+@ionic-native/uptime;ionic-native;;
+@ionic-native/user-agent;ionic-native;;
+@ionic-native/vibration;ionic-native;;
+@ionic-native/video-capture-plus;ionic-native;;
+@ionic-native/video-editor;ionic-native;;
+@ionic-native/video-player;ionic-native;;
+@ionic-native/web-intent;ionic-native;;
+@ionic-native/web-server;ionic-native;;
+@ionic-native/webengage;ionic-native;;
+@ionic-native/wechat;ionic-native;;
+@ionic-native/wheel-selector;ionic-native;;
+@ionic-native/youtube-video-player;ionic-native;;
+@ionic-native/zbar;ionic-native;;
+@ionic-native/zeroconf;ionic-native;;
+@ionic-native/zip;ionic-native;;
+@ionic-native/zoom;ionic-native;;
+
+Microsoft.AspNetCore.Antiforgery;ASP.NET Core;;
+Microsoft.AspNetCore.Authentication.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Authentication.Cookies;ASP.NET Core;;
+Microsoft.AspNetCore.Authentication.Core;ASP.NET Core;;
+Microsoft.AspNetCore.Authentication;ASP.NET Core;;
+Microsoft.AspNetCore.Authentication.OAuth;ASP.NET Core;;
+Microsoft.AspNetCore.Authorization;ASP.NET Core;;
+Microsoft.AspNetCore.Authorization.Policy;ASP.NET Core;;
+Microsoft.AspNetCore.Components.Authorization;ASP.NET Core;;
+Microsoft.AspNetCore.Components;ASP.NET Core;;
+Microsoft.AspNetCore.Components.Forms;ASP.NET Core;;
+Microsoft.AspNetCore.Components.Server;ASP.NET Core;;
+Microsoft.AspNetCore.Components.Web;ASP.NET Core;;
+Microsoft.AspNetCore.Connections.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.CookiePolicy;ASP.NET Core;;
+Microsoft.AspNetCore.Cors;ASP.NET Core;;
+Microsoft.AspNetCore.Cryptography.Internal;ASP.NET Core;;
+Microsoft.AspNetCore.Cryptography.KeyDerivation;ASP.NET Core;;
+Microsoft.AspNetCore.DataProtection.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.DataProtection;ASP.NET Core;;
+Microsoft.AspNetCore.DataProtection.Extensions;ASP.NET Core;;
+Microsoft.AspNetCore.Diagnostics.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Diagnostics;ASP.NET Core;;
+Microsoft.AspNetCore.Diagnostics.HealthChecks;ASP.NET Core;;
+Microsoft.AspNetCore;ASP.NET Core;;
+Microsoft.AspNetCore.HostFiltering;ASP.NET Core;;
+Microsoft.AspNetCore.Hosting.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Hosting;ASP.NET Core;;
+Microsoft.AspNetCore.Hosting.Server.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Html.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Http.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Http.Connections.Common;ASP.NET Core;;
+Microsoft.AspNetCore.Http.Connections;ASP.NET Core;;
+Microsoft.AspNetCore.Http;ASP.NET Core;;
+Microsoft.AspNetCore.Http.Extensions;ASP.NET Core;;
+Microsoft.AspNetCore.Http.Features;ASP.NET Core;;
+Microsoft.AspNetCore.HttpOverrides;ASP.NET Core;;
+Microsoft.AspNetCore.HttpsPolicy;ASP.NET Core;;
+Microsoft.AspNetCore.Identity;ASP.NET Core;;
+Microsoft.AspNetCore.Localization;ASP.NET Core;;
+Microsoft.AspNetCore.Localization.Routing;ASP.NET Core;;
+Microsoft.AspNetCore.Metadata;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.ApiExplorer;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.Core;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.Cors;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.DataAnnotations;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.Formatters.Json;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.Formatters.Xml;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.Localization;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.Razor;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.RazorPages;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.TagHelpers;ASP.NET Core;;
+Microsoft.AspNetCore.Mvc.ViewFeatures;ASP.NET Core;;
+Microsoft.AspNetCore.Razor;ASP.NET Core;;
+Microsoft.AspNetCore.Razor.Runtime;ASP.NET Core;;
+Microsoft.AspNetCore.ResponseCaching.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.ResponseCaching;ASP.NET Core;;
+Microsoft.AspNetCore.ResponseCompression;ASP.NET Core;;
+Microsoft.AspNetCore.Rewrite;ASP.NET Core;;
+Microsoft.AspNetCore.Routing.Abstractions;ASP.NET Core;;
+Microsoft.AspNetCore.Routing;ASP.NET Core;;
+Microsoft.AspNetCore.Server.HttpSys;ASP.NET Core;;
+Microsoft.AspNetCore.Server.IIS;ASP.NET Core;;
+Microsoft.AspNetCore.Server.IISIntegration;ASP.NET Core;;
+Microsoft.AspNetCore.Server.Kestrel.Core;ASP.NET Core;;
+Microsoft.AspNetCore.Server.Kestrel;ASP.NET Core;;
+Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets;ASP.NET Core;;
+Microsoft.AspNetCore.Session;ASP.NET Core;;
+Microsoft.AspNetCore.SignalR.Common;ASP.NET Core;;
+Microsoft.AspNetCore.SignalR.Core;ASP.NET Core;;
+Microsoft.AspNetCore.SignalR;ASP.NET Core;;
+Microsoft.AspNetCore.SignalR.Protocols.Json;ASP.NET Core;;
+Microsoft.AspNetCore.StaticFiles;ASP.NET Core;;
+Microsoft.AspNetCore.WebSockets;ASP.NET Core;;
+Microsoft.AspNetCore.WebUtilities;ASP.NET Core;;
+Microsoft.Extensions.Caching.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.Caching.Memory;ASP.NET Core;;
+Microsoft.Extensions.Configuration.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.Configuration.Binder;ASP.NET Core;;
+Microsoft.Extensions.Configuration.CommandLine;ASP.NET Core;;
+Microsoft.Extensions.Configuration;ASP.NET Core;;
+Microsoft.Extensions.Configuration.EnvironmentVariables;ASP.NET Core;;
+Microsoft.Extensions.Configuration.FileExtensions;ASP.NET Core;;
+Microsoft.Extensions.Configuration.Ini;ASP.NET Core;;
+Microsoft.Extensions.Configuration.Json;ASP.NET Core;;
+Microsoft.Extensions.Configuration.KeyPerFile;ASP.NET Core;;
+Microsoft.Extensions.Configuration.UserSecrets;ASP.NET Core;;
+Microsoft.Extensions.Configuration.Xml;ASP.NET Core;;
+Microsoft.Extensions.DependencyInjection.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.DependencyInjection;ASP.NET Core;;
+Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.Diagnostics.HealthChecks;ASP.NET Core;;
+Microsoft.Extensions.FileProviders.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.FileProviders.Composite;ASP.NET Core;;
+Microsoft.Extensions.FileProviders.Embedded;ASP.NET Core;;
+Microsoft.Extensions.FileProviders.Embedded.Manifest.Task;ASP.NET Core;;
+Microsoft.Extensions.FileProviders.Physical;ASP.NET Core;;
+Microsoft.Extensions.FileSystemGlobbing;ASP.NET Core;;
+Microsoft.Extensions.Hosting.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.Hosting;ASP.NET Core;;
+Microsoft.Extensions.Http;ASP.NET Core;;
+Microsoft.Extensions.Http.Polly;ASP.NET Core;;
+Microsoft.Extensions.Identity.Core;ASP.NET Core;;
+Microsoft.Extensions.Identity.Stores;ASP.NET Core;;
+Microsoft.Extensions.Localization.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.Localization;ASP.NET Core;;
+Microsoft.Extensions.Logging.Abstractions;ASP.NET Core;;
+Microsoft.Extensions.Logging.AzureAppServices;ASP.NET Core;;
+Microsoft.Extensions.Logging.Configuration;ASP.NET Core;;
+Microsoft.Extensions.Logging.Console;ASP.NET Core;;
+Microsoft.Extensions.Logging.Debug;ASP.NET Core;;
+Microsoft.Extensions.Logging;ASP.NET Core;;
+Microsoft.Extensions.Logging.EventLog;ASP.NET Core;;
+Microsoft.Extensions.Logging.EventSource;ASP.NET Core;;
+Microsoft.Extensions.Logging.TraceSource;ASP.NET Core;;
+Microsoft.Extensions.ObjectPool;ASP.NET Core;;
+Microsoft.Extensions.Options.ConfigurationExtensions;ASP.NET Core;;
+Microsoft.Extensions.Options.DataAnnotations;ASP.NET Core;;
+Microsoft.Extensions.Options;ASP.NET Core;;
+Microsoft.Extensions.Primitives;ASP.NET Core;;
+Microsoft.Extensions.WebEncoders;ASP.NET Core;;
+Microsoft.JSInterop;ASP.NET Core;;
+Microsoft.Net.Http.Headers;ASP.NET Core;;
+Microsoft.Win32.SystemEvents;ASP.NET Core;;
+System.Diagnostics.EventLog;ASP.NET Core;;
+System.Drawing.Common;ASP.NET Core;;
+System.IO.Pipelines;ASP.NET Core;;
+System.Security.Cryptography.Pkcs;ASP.NET Core;;
+System.Security.Cryptography.Xml;ASP.NET Core;;
+System.Security.Permissions;ASP.NET Core;;
+System.Windows.Extensions;ASP.NET Core;;
+
+Microsoft.CSharp;.NET Core;part of .Net Core 2.x, 3.x;
+Microsoft.VisualBasic.Core;.NET Core;part of .Net Core 2.x, 3.x;
+Microsoft.VisualBasic;.NET Core;part of .Net Core 2.x, 3.x;
+Microsoft.Win32.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+Microsoft.Win32.Registry;.NET Core;part of .Net Core 2.x, 3.x;
+System.AppContext;.NET Core;part of .Net Core 2.x, 3.x;
+System.Buffers;.NET Core;part of .Net Core 2.x, 3.x;
+System.Collections.Concurrent;.NET Core;part of .Net Core 2.x, 3.x;
+System.Collections;.NET Core;part of .Net Core 2.x, 3.x;
+System.Collections.Immutable;.NET Core;part of .Net Core 2.x, 3.x;
+System.Collections.NonGeneric;.NET Core;part of .Net Core 2.x, 3.x;
+System.Collections.Specialized;.NET Core;part of .Net Core 2.x, 3.x;
+System.ComponentModel.Annotations;.NET Core;part of .Net Core 2.x, 3.x;
+System.ComponentModel.DataAnnotations;.NET Core;part of .Net Core 2.x, 3.x;
+System.ComponentModel;.NET Core;part of .Net Core 2.x, 3.x;
+System.ComponentModel.EventBasedAsync;.NET Core;part of .Net Core 2.x, 3.x;
+System.ComponentModel.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+System.ComponentModel.TypeConverter;.NET Core;part of .Net Core 2.x, 3.x;
+System.Configuration;.NET Core;part of .Net Core 2.x, 3.x;
+System.Console;.NET Core;part of .Net Core 2.x, 3.x;
+System.Core;.NET Core;part of .Net Core 2.x, 3.x;
+System.Data.Common;.NET Core;part of .Net Core 2.x, 3.x;
+System.Data.DataSetExtensions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Data;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.Contracts;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.Debug;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.DiagnosticSource;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.FileVersionInfo;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.Process;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.StackTrace;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.TextWriterTraceListener;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.Tools;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.TraceSource;.NET Core;part of .Net Core 2.x, 3.x;
+System.Diagnostics.Tracing;.NET Core;part of .Net Core 2.x, 3.x;
+System.Drawing;.NET Core;part of .Net Core 2.x, 3.x;
+System.Drawing.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+System.Dynamic.Runtime;.NET Core;part of .Net Core 2.x, 3.x;
+System.Globalization.Calendars;.NET Core;part of .Net Core 2.x, 3.x;
+System.Globalization;.NET Core;part of .Net Core 2.x, 3.x;
+System.Globalization.Extensions;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.Compression.Brotli;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.Compression;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.Compression.FileSystem;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.Compression.ZipFile;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.FileSystem.AccessControl;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.FileSystem;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.FileSystem.DriveInfo;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.FileSystem.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.FileSystem.Watcher;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.IsolatedStorage;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.MemoryMappedFiles;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.Pipes.AccessControl;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.Pipes;.NET Core;part of .Net Core 2.x, 3.x;
+System.IO.UnmanagedMemoryStream;.NET Core;part of .Net Core 2.x, 3.x;
+System.Linq;.NET Core;part of .Net Core 2.x, 3.x;
+System.Linq.Expressions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Linq.Parallel;.NET Core;part of .Net Core 2.x, 3.x;
+System.Linq.Queryable;.NET Core;part of .Net Core 2.x, 3.x;
+System.Memory;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.Http;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.HttpListener;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.Mail;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.NameResolution;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.NetworkInformation;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.Ping;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.Requests;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.Security;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.ServicePoint;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.Sockets;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.WebClient;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.WebHeaderCollection;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.WebProxy;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.WebSockets.Client;.NET Core;part of .Net Core 2.x, 3.x;
+System.Net.WebSockets;.NET Core;part of .Net Core 2.x, 3.x;
+System.Numerics;.NET Core;part of .Net Core 2.x, 3.x;
+System.Numerics.Vectors;.NET Core;part of .Net Core 2.x, 3.x;
+System.ObjectModel;.NET Core;part of .Net Core 2.x, 3.x;
+System.Private.CoreLib;.NET Core;part of .Net Core 2.x, 3.x;
+System.Private.DataContractSerialization;.NET Core;part of .Net Core 2.x, 3.x;
+System.Private.Uri;.NET Core;part of .Net Core 2.x, 3.x;
+System.Private.Xml;.NET Core;part of .Net Core 2.x, 3.x;
+System.Private.Xml.Linq;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.DispatchProxy;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.Emit;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.Emit.ILGeneration;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.Emit.Lightweight;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.Extensions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.Metadata;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+System.Reflection.TypeExtensions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Resources.Reader;.NET Core;part of .Net Core 2.x, 3.x;
+System.Resources.ResourceManager;.NET Core;part of .Net Core 2.x, 3.x;
+System.Resources.Writer;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.CompilerServices.Unsafe;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.CompilerServices.VisualC;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Extensions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Handles;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.InteropServices;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.InteropServices.RuntimeInformation;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.InteropServices.WindowsRuntime;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Intrinsics;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Loader;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Numerics;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Serialization;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Serialization.Formatters;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Serialization.Json;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Serialization.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.Serialization.Xml;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.WindowsRuntime;.NET Core;part of .Net Core 2.x, 3.x;
+System.Runtime.WindowsRuntime.UI.Xaml;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.AccessControl;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Claims;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Cryptography.Algorithms;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Cryptography.Cng;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Cryptography.Csp;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Cryptography.Encoding;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Cryptography.OpenSsl;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Cryptography.Primitives;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Cryptography.X509Certificates;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Principal;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.Principal.Windows;.NET Core;part of .Net Core 2.x, 3.x;
+System.Security.SecureString;.NET Core;part of .Net Core 2.x, 3.x;
+System.ServiceModel.Web;.NET Core;part of .Net Core 2.x, 3.x;
+System.ServiceProcess;.NET Core;part of .Net Core 2.x, 3.x;
+System.Text.Encoding.CodePages;.NET Core;part of .Net Core 2.x, 3.x;
+System.Text.Encoding;.NET Core;part of .Net Core 2.x, 3.x;
+System.Text.Encoding.Extensions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Text.Encodings.Web;.NET Core;part of .Net Core 2.x, 3.x;
+System.Text.Json;.NET Core;part of .Net Core 2.x, 3.x;
+System.Text.RegularExpressions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Channels;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Overlapped;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Tasks.Dataflow;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Tasks;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Tasks.Extensions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Tasks.Parallel;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Thread;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.ThreadPool;.NET Core;part of .Net Core 2.x, 3.x;
+System.Threading.Timer;.NET Core;part of .Net Core 2.x, 3.x;
+System.Transactions;.NET Core;part of .Net Core 2.x, 3.x;
+System.Transactions.Local;.NET Core;part of .Net Core 2.x, 3.x;
+System.ValueTuple;.NET Core;part of .Net Core 2.x, 3.x;
+System.Web;.NET Core;part of .Net Core 2.x, 3.x;
+System.Web.HttpUtility;.NET Core;part of .Net Core 2.x, 3.x;
+System.Windows;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.Linq;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.ReaderWriter;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.Serialization;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.XDocument;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.XmlDocument;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.XmlSerializer;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.XPath;.NET Core;part of .Net Core 2.x, 3.x;
+System.Xml.XPath.XDocument;.NET Core;part of .Net Core 2.x, 3.x;
+
+Microsoft.EntityFrameworkCore;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Abstractions;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Analyzers;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Cosmos;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.InMemory;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Proxies;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Relational;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Relational.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Sqlite;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Sqlite.Core;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Sqlite.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.SqlServer;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.SqlServer.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Tools;Microsoft.EntityFrameworkCore;;
+
+Microsoft.Extensions.Caching.Abstractions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Caching.Memory;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Caching.SqlServer;Microsoft.Extensions;;
+Microsoft.Extensions.Caching.StackExchangeRedis;Microsoft.Extensions;;
+Microsoft.Extensions.CommandLineUtils.Sources;Microsoft.Extensions;;
+Microsoft.Extensions.Configuration;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.Abstractions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.Binder;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.CommandLine;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.EnvironmentVariables;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.FileExtensions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.Ini;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.Json;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.KeyPerFile;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.Configuration.NewtonsoftJson;Microsoft.Extensions;(not in 6.x);
+Microsoft.Extensions.Configuration.UserSecrets;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Configuration.Xml;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.DependencyInjection;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.DependencyInjection.Abstractions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.DependencyInjection.Specification.Tests;Microsoft.Extensions;(not in 5.x);
+Microsoft.Extensions.DiagnosticAdapter;Microsoft.Extensions;(not in 5.x);
+Microsoft.Extensions.Diagnostics.HealthChecks;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.FileProviders.Abstractions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.FileProviders.Composite;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.FileProviders.Embedded;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.FileProviders.Embedded.Manifest.Task;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.FileProviders.Physical;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.FileSystemGlobbing;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Hosting;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Hosting.Abstractions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Hosting.Systemd;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Hosting.WindowsServices;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Http;Microsoft.Extensions; (moved to .NET in version 5.x);
+Microsoft.Extensions.Http.Polly;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.Localization;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.Localization.Abstractions;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.Logging;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.AzureAppServices;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.Logging.Analyzers;Microsoft.Extensions;;
+Microsoft.Extensions.Logging.Abstractions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.Configuration;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.Console;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.Debug;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.EventLog;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.EventSource;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.Testing;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Logging.TraceSource;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.ObjectPool;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.Extensions.Options;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Options.ConfigurationExtensions;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Options.DataAnnotations;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.Primitives;Microsoft.Extensions;(moved to .NET in version 5.x);
+Microsoft.Extensions.ValueStopwatch.Sources;Microsoft.Extensions;;
+Microsoft.Extensions.WebEncoders;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Microsoft.JSInterop;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+Mono.WebAssembly.Interop;Microsoft.Extensions;(moved to ASP.NET Core for version 5.x);
+
+Microsoft.Owin;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Cors;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Diagnostics;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.FileSystems;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Host.HttpListener;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Hosting;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Security;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Security.ActiveDirectory;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Security.Cookies;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Security.Jwt;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Security.OAuth;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Security.OpenIdConnect;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.SelfHost;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.StaticFiles;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.SystemWeb;AspNetKatana (Microsoft.Owin.*);;
+Microsoft.Owin.Testing;AspNetKatana (Microsoft.Owin.*);;
+OwinHost;AspNetKatana (Microsoft.Owin.*);;
+
+Microsoft.AspNet.SignalR;Signalr;;
+Microsoft.AspNet.SignalR.Client;Signalr;;
+Microsoft.AspNet.SignalR.Core;Signalr;;
+Microsoft.AspNet.SignalR.JS;Signalr;;
+Microsoft.AspNet.SignalR.Redis;Signalr;;
+Microsoft.AspNet.SignalR.StackExchangeRedis;Signalr;;
+Microsoft.AspNet.SignalR.SelfHost;Signalr;;
+Microsoft.AspNet.SignalR.ServiceBus;Signalr;;
+Microsoft.AspNet.SignalR.ServiceBus3;Signalr;;
+Microsoft.AspNet.SignalR.SqlServer;Signalr;;
+Microsoft.AspNet.SignalR.SystemWeb;Signalr;;
+Microsoft.AspNet.SignalR.Utils;Signalr;;
+
+logback-classic;Logback;;
+logback-core;Logback;;
+
+Microsoft.EntityFrameworkCore;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Abstractions;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Analyzers;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Cosmos;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.InMemory;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Proxies;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Relational;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Relational.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Sqlite;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Sqlite.Core;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Sqlite.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.SqlServer;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.SqlServer.Design;Microsoft.EntityFrameworkCore;;
+Microsoft.EntityFrameworkCore.Tools;Microsoft.EntityFrameworkCore;;
+
+quarkus-amazon-dynamodb;Quarkus;;
+quarkus-hibernate-validatorl;Quarkus;;
+quarkus-kafka-streamsl;Quarkus;;
+quarkus-micrometerl;Quarkus;;
+quarkus-oidc;Quarkus;;
+quarkus-rest-client-jackson;Quarkus;;
+quarkus-rest-client-mutiny;Quarkus;;
+quarkus-resteasy-jackson;Quarkus;;
+quarkus-resteasy-mutiny;Quarkus;;
+quarkus-smallrye-health;Quarkus;;
+quarkus-smallrye-openapi;Quarkus;;
+quarkus-smallrye-reactive-messaging-kafka;Quarkus;;
+
+@sentry/angular;sentry-javascript;;
+@sentry/browser;sentry-javascript;;
+@sentry/core;sentry-javascript;;
+@sentry/ember;sentry-javascript;;
+@sentry/gatsby;sentry-javascript;;
+@sentry/hub;sentry-javascript;;
+@sentry/minimal;sentry-javascript;;
+@sentry/node;sentry-javascript;;
+@sentry/types;sentry-javascript;;
+@sentry/utils;sentry-javascript;;
+@sentry/vue;sentry-javascript;;
+@sentry/wasm;sentry-javascript;;
+
+jcl-over-slf4j;slf4j;;https://github.com/qos-ch/slf4j
+jul-to-slf4j;slf4j;;https://github.com/qos-ch/slf4j
+log4j-over-slf4j;slf4j;;https://github.com/qos-ch/slf4j
+osgi-over-slf4j;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-api;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-ext;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-jdk-platform-logging;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-jdk14;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-log4j12;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-migrator;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-nop;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-reload4j;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-simple;slf4j;;https://github.com/qos-ch/slf4j
+slf4j-site;slf4j;;https://github.com/qos-ch/slf4j
+
+spring-boot-actuator-autoconfigure;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-actuator;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-autoconfigure;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-cli;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-dependencies;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-devtools;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-docs;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-parent;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-properties-migrator;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-activemq;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-actuator;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-amqp;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-aop;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-artemis;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-batch;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-cache;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-cloud-connectors;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-cassandra-reactive;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-cassandra;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-couchbase-reactive;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-couchbase;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-elasticsearch;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-jdbc;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-jpa;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-ldap;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-mongodb-reactive;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-mongodb;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-neo4j;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-redis-reactive;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-redis;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-rest;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-data-solr;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-freemarker;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-groovy-templates;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-hateoas;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-integration;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-jdbc;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-jersey;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-jetty;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-jooq;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-json;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-jta-atomikos;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-jta-bitronix;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-log4j2;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-logging;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-mail;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-mustache;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-oauth2-client;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-oauth2-resource-server;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-parent;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-quartz;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-reactor-netty;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-rsocket;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-security;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-test;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-thymeleaf;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-tomcat;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-undertow;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-validation;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-web-services;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-web;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-webflux;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-starter-websocket;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-test-autoconfigure;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-test;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-tools;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-antlib;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-autoconfigure-processor;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-buildpack-platform;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-configuration-metadata;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-configuration-processor;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-gradle-plugin;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-gradle-test-support;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-jarmode-layertools;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-loader-tools;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-loader;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-maven-plugin;spring-boot;;https://github.com/spring-projects/spring-boot
+spring-boot-test-support;spring-boot;;https://github.com/spring-projects/spring-boot
+
+spring-aop;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-aspects;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-beans;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-context;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-context-indexer;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-context-support;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-core;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-expression;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-framework;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-instrument;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-jcl;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-jdbc;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-jms;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-messaging;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-orm;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-oxm;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-test;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-tx;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-webflux;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-webmvc;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-websocket;Spring Framework;;https://github.com/spring-projects/spring-framework
+spring-web;Spring Framework;;https://github.com/spring-projects/spring-framework
+
+spring-security-acl;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-aspects;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-bom;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-cas;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-config;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-core;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-crypto;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-data;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-ldap;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-messaging;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-oauth2-client;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-oauth2-core;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-oauth2.jose;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-oauth2-resource-server;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-openid;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-remoting;Spring Security;;https://github.com/spring-projects/spring-security
+spring-security-web;Spring Security;;https://github.com/spring-projects/spring-security
+
+spring-security-kerberos-client;Spring Security Kerberos;;
+spring-security-kerberos-core;Spring Security Kerberos;;
+spring-security-kerberos-web;Spring Security Kerberos;;
+
+flexmark-all;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-core-test;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-docx-converter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-abbreviation;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-admonition;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-anchorlink;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-aside;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-attributes;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-autolink;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-definition;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-emoji;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-enumerated-reference;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-escaped-character;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-footnotes;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-gfm-issues;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-gfm-strikethrough;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-gfm-tasklist;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-gfm-users;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-gitlab;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-ins;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-jekyll-front-matter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-jekyll-tag;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-macros;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-media-tags;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-resizable-image;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-spec-example;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-superscript;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-tables;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-toc;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-typographic;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-wikilink;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-xwiki-macros;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-yaml-front-matter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-youtube-embedded;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-zzzzzz;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-formatter-test-suite;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-html2md-converter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-integration-test;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-java-samples;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-jira-converter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-osgi;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-pdf-converter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-profile-pegdown;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-test-specs;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-test-suite;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-test-util;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-tree-iteration;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-ast;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-builder;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-collection;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-data;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-dependency;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-experimental;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-format;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-html;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-misc;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-options;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-sequence;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util-visitor;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-util;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-youtrack-converter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-formatter;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-ext-gfm-tables;flexmark-java;;https://github.com/vsch/flexmark-java
+flexmark-html-parser;flexmark-java;;https://github.com/vsch/flexmark-java
+spring-data-rest-core;Spring Data Rest
+spring-data-rest-webmvc;Spring Data Rest
+spring-data-rest-distribution;Spring Data Rest
+spring-data-rest-hal-explorer;Spring Data Rest
+
+@deck.gl/aggregation-layers;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/carto;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/core;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/extensions;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/geo-layers;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/google-maps;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/json;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/layers;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/mapbox;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/mesh-layers;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/react;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/arcgis;deck.gl;;https://github.com/visgl/deck.gl
+@deck.gl/jupiter-widget;deck.gl;;https://github.com/visgl/deck.gl
+
+@probe.gl/env;probe.gl;;https://github.com/uber-web/probe.gl
+@probe.gl/log;probe.gl;;https://github.com/uber-web/probe.gl
+@probe.gl/stats;probe.gl;;https://github.com/uber-web/probe.gl
+@probe.gl/bench;probe.gl;;https://github.com/uber-web/probe.gl
+@probe.gl/react-bench;probe.gl;;https://github.com/uber-web/probe.gl
+@probe.gl/seer;probe.gl;;https://github.com/uber-web/probe.gl
+@probe.gl/stats-widget;probe.gl;;https://github.com/uber-web/probe.gl
+@probe.gl/test-utils;probe.gl;;https://github.com/uber-web/probe.gl
+@math.gl/core;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/culling;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/geospatial;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/polygon;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/web-mercator;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/geoid;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/proj4;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/sun;math.gl;;https://github.com/uber-web/math.gl
+@math.gl/types;math.gl;;https://github.com/uber-web/math.gl
+
+@loaders.gl/3d-tiles;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/core;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/draco;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/gis;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/gltf;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/images;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/loader-utils;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/math;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/mvt;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/schema;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/terrain;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/textures;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/tiles;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/worker-utils;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/arrow;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/compression;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/crypto;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/csv;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/excel;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/flatgeobuf;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/geopackage;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/geotiff;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/i3s;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/json;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/kml;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/las;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/netcdf;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/obj;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/parquet;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/pcd;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/ply;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/polyfills;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/potree;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/shapefile;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/tile-converter;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/video;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/wkt;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/worker-utils;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/zarr;loaders.gl;;https://github.com/visgl/loaders.gl
+@loaders.gl/zip;loaders.gl;;https://github.com/visgl/loaders.gl
+
+@luma.gl/constants;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/core;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/engine;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/experimental;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/gltools;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/shadertools;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/api;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/debug;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/test-utils;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/webgl;@luma.gl;;https://github.com/visgl/luma.gl
+@luma.gl/webgpu;@luma.gl;;https://github.com/visgl/luma.gl
+
+flowable-app-engine-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-app-engine-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-app-engine-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-app-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-app-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-batch-service-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-batch-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable-bpmn-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-bpmn-layout;Flowable;;https://github.com/flowable/flowable-engine
+flowable-bpmn-model;Flowable;;https://github.com/flowable/flowable-engine
+flowable-camel-cdi;Flowable;;https://github.com/flowable/flowable-engine
+flowable-camel;Flowable;;https://github.com/flowable/flowable-engine
+flowable-case-validation;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cdi;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-cdi;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-engine-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-image-generator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-json-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-model;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-spring-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cmmn-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-common-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-content-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-content-engine-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-content-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-content-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-content-spring-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-content-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-crystalball;Flowable;;https://github.com/flowable/flowable-engine
+flowable-cxf;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-engine-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-image-generator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-json-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-model;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-spring-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-dmn-xml-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-engine-common-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-engine-common;Flowable;;https://github.com/flowable/flowable-engine
+flowable-engine-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-entitylink-service-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-entitylink-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-integration-test;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-json-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-model;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-spring-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-event-registry;Flowable;;https://github.com/flowable/flowable-engine
+flowable-eventsubscription-service-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-eventsubscription-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable-external-job-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-engine-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-json-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-model;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-spring-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-form-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-groovy-script-static-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-http-common;Flowable;;https://github.com/flowable/flowable-engine
+flowable-http;Flowable;;https://github.com/flowable/flowable-engine
+flowable-identitylink-service-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-identitylink-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable-idm-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-idm-engine-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-idm-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable-idm-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-idm-spring-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-idm-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-image-generator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-jms-spring-executor;Flowable;;https://github.com/flowable/flowable-engine
+flowable-jmx;Flowable;;https://github.com/flowable/flowable-engine
+flowable-job-service-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-job-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable-job-spring-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable-json-converter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ldap-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ldap;Flowable;;https://github.com/flowable/flowable-engine
+flowable-mule;Flowable;;https://github.com/flowable/flowable-engine
+flowable-osgi;Flowable;;https://github.com/flowable/flowable-engine
+flowable-process-validation;Flowable;;https://github.com/flowable/flowable-engine
+flowable-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-secure-javascript;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-common;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-configurator;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-security;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-task-service-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-task-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui;Flowable;;https://github.com/flowable/flowable-engine
+flowable-variable-service-api;Flowable;;https://github.com/flowable/flowable-engine
+flowable-variable-service;Flowable;;https://github.com/flowable/flowable-engine
+flowable5-compatibility;Flowable;;https://github.com/flowable/flowable-engine
+flowable5-engine;Flowable;;https://github.com/flowable/flowable-engine
+flowable5-spring-compatibility;Flowable;;https://github.com/flowable/flowable-engine
+flowable5-spring;Flowable;;https://github.com/flowable/flowable-engine
+
+jetty-alpn;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-annotations;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-ant;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-bom;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-cdi;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-client;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-deploy;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-fcgi;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-gcloud;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-hazelcast;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-home;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-http-spi;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-http;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-http2;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-http3;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-infinispan;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-io;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-jaas;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-jaspi;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-jmx;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-jndi;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-jspc-maven-plugin;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-keystore;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-maven-plugin;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-memcached;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-nosql;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-openid;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-osgi;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-p2;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-plus;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-proxy;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-quic;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-quickstart;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-rewrite;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-runner;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-security;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-server;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-servlet;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-servlets;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-slf4j-impl;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-start;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-unixdomain-server;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-unixsocket;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-util-ajax;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-util;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-webapp;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-websocket;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+jetty-xml;Eclipse Jetty;;https://github.com/eclipse/jetty.project
+
+maven-scm-api;Apache Maven SCM;;https://github.com/apache/maven-scm
+maven-scm-client;Apache Maven SCM;;https://github.com/apache/maven-scm
+maven-scm-managers;Apache Maven SCM;;https://github.com/apache/maven-scm
+maven-scm-plugin;Apache Maven SCM;;https://github.com/apache/maven-scm
+maven-scm-providers;Apache Maven SCM;;https://github.com/apache/maven-scm
+
+netty-buffer;Netty Project;;https://github.com/netty/netty
+netty-codec;Netty Project;;https://github.com/netty/netty
+netty-common;Netty Project;;https://github.com/netty/netty
+netty-handler;Netty Project;;https://github.com/netty/netty
+netty-resolver;Netty Project;;https://github.com/netty/netty
+netty-transport;Netty Project;;https://github.com/netty/netty
+netty-transport-classes-epoll;Netty Project;;https://github.com/netty/netty
+netty-transport-native-epoll;Netty Project;;https://github.com/netty/netty
+netty-transport-native-unix-common;Netty Project;;https://github.com/netty/netty
+
+doxia-core;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-modules;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-sink-api;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+
+tomcat-embed-core;Apache Tomcat
+tomcat-embed-el;Apache Tomcat
+tomcat-embed-websocket;Apache Tomcat
+
+@simpl;???

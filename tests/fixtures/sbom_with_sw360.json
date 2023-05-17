@@ -1,0 +1,265 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:b34cfeb8-d823-4113-8ede-4dfe8148d44e",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-03-17T12:15:40Z",
+    "tools": [
+      {
+        "vendor": "Siemens AG",
+        "name": "standard-bom",
+        "version": "2.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/scpautomation/standard-bom",
+            "type": "website"
+          }
+        ]
+      },
+      {
+        "vendor": "Siemens AG",
+        "name": "SBomFromSW360.Net",
+        "version": "0.6.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/sbom/tools/sbomfromsw360.net",
+            "type": "website"
+          }
+        ]
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "31219cb6-66d6-4034-bb90-18fa30284a58",
+      "name": "CaPyCLI",
+      "version": "1.9.0",
+      "description": "Software clearing for CaPyCLI, the clearing automation scripts for Python",
+      "properties": [
+        {
+          "name": "siemens:sw360_id",
+          "value": "34ef5c5452014c52aa9ce4bc180624d8"
+        }
+      ]
+    },
+    "licenses": [
+      {
+        "license": {
+          "id": "CC0-1.0"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "clearing"
+      }
+    ]
+  },
+  "components": [
+	{
+      "type": "library",
+      "bom-ref": "pkg:pypi/colorama@0.4.6",
+      "name": "colorama",
+      "version": "0.4.6",
+	  "description": "console coloring for Python",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-2-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/colorama@0.4.6",
+      "externalReferences": [
+        {
+          "url": "https://pypi.org/project/colorama/#files",
+          "type": "website"
+        },
+        {
+          "url": "file:colorama-0.4.6.tar.gz",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "9c372475952ad7ea297d25d9a14d225ab31f56d7"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        },
+        {
+          "name": "siemens:sw360Id",
+          "value": "9a2373710bd44769a2560dd31280901d"
+        },
+		    {
+          "name": "capycli:clearingState",
+          "value": "OPEN"
+        },
+        {
+          "name": "capycli:projectClearingState",
+          "value": "PHASEOUT"
+        },
+        {
+          "name": "capycli:releaseMainlineState",
+          "value": "DENIED"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/python@3.8",
+      "name": "python",
+      "version": "3.8",
+      "licenses": [
+        {
+          "license": {
+            "name": "Python-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/python@3.8",
+      "externalReferences": [
+        {
+          "url": "https://github.com/python/cpython",
+          "type": "website"
+        },
+        {
+          "url": "file:cpython-3.8.0.zip",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "eb50b91f4f0d111070f5cc2cfe0dc776a1af69cf"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        },
+        {
+          "name": "siemens:sw360Id",
+          "value": "05c30bf89a512463260b57e84d99b38f"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/tomli@2.0.1",
+      "name": "tomli",
+      "version": "2.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/tomli@2.0.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/hukkin/tomli",
+          "type": "website"
+        },
+        {
+          "url": "file:tomli-2.0.1.zip",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "96bdbae215726d0ad5692003fcd558e04150175b"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        },
+        {
+          "name": "siemens:sw360Id",
+          "value": "fa0d21eb17574ba9ae17e5c9b432558e"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/wheel@0.38.4",
+      "name": "wheel",
+      "version": "0.38.4",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/wheel@0.38.4",
+      "externalReferences": [
+        {
+          "url": "https://github.com/pypa/wheel/archive/refs/tags/0.34.2.zip",
+          "type": "website"
+        },
+        {
+          "url": "file:wheel-0.38.4.zip",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "a30b637ddfbb1f017eafb0f60a837442937c5eb0"
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        },
+        {
+          "name": "siemens:sw360Id",
+          "value": "e0995819173d4ac8b1a4da3548935976"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/colorama@0.4.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/python@3.8",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/tomli@2.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/wheel@0.34.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "31219cb6-66d6-4034-bb90-18fa30284a58",
+      "dependsOn": [
+        "pkg:pypi/colorama@0.4.6",
+        "pkg:pypi/python@3.8",
+        "pkg:pypi/tomli@2.0.1",
+        "pkg:pypi/wheel@0.34.2"
+      ]
+    }
+  ]
+}

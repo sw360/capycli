@@ -1,0 +1,107 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:a7f8616a-e27f-4bce-8347-b19f80c5811b",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-04-03T14:14:02.228763+00:00",
+    "tools": [
+      {
+        "vendor": "Siemens AG XX",
+        "name": "CaPyCLI",
+        "version": "2.0.0-dev1",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/sw360/clearingautomation",
+            "type": "website"
+          }
+        ]
+      },
+      {
+        "vendor": "Siemens AG",
+        "name": "standard-bom",
+        "version": "2.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/scpautomation/standard-bom",
+            "type": "website"
+          }
+        ]
+      }
+    ],
+    "licenses": [
+      {
+        "license": {
+          "id": "MIT"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile222",
+        "value": "capycli"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/certifi@2022.12.999",
+      "name": "certifi",
+      "version": "2022.12.999",
+      "description": "Python package for providing Mozilla's CA Bundle.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/certifi@2022.12.999",
+      "externalReferences": [
+        {
+          "url": "certifi-2022.12.999-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "certifi-2022.12.999.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/37/f7/2b1b/certifi-2022.12.999.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/71/4c/3db2/certifi-2022.12.999-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/certifi/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/certifi/python-certifi",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/certifi@2022.12.7",
+      "dependsOn": []
+    }
+  ]
+}

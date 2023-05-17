@@ -1,0 +1,122 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:b34cfeb8-d823-4113-8ede-4dfe8148d44e",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-03-17T12:15:40Z",
+    "tools": [
+      {
+        "vendor": "Siemens AG",
+        "name": "standard-bom",
+        "version": "2.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/scpautomation/standard-bom",
+            "type": "website"
+          }
+        ]
+      },
+      {
+        "vendor": "Siemens AG",
+        "name": "SBomFromSW360.Net",
+        "version": "0.6.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/sbom/tools/sbomfromsw360.net",
+            "type": "website"
+          }
+        ]
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "31219cb6-66d6-4034-bb90-18fa30284a58",
+      "name": "CaPyCLI",
+      "version": "1.9.0",
+      "description": "Software clearing for CaPyCLI, the clearing automation scripts for Python",
+      "properties": [
+        {
+          "name": "siemens:sw360_id",
+          "value": "34ef5c5452014c52aa9ce4bc180624d8"
+        }
+      ]
+    },
+    "licenses": [
+      {
+        "license": {
+          "id": "CC0-1.0"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "clearing"
+      }
+    ]
+  },
+  "components": [
+	{
+      "type": "library",
+      "bom-ref": "pkg:pypi/colorama@0.4.3",
+      "name": "colorama",
+      "version": "0.4.3",
+	  "description": "console coloring for Python",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD-2-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/colorama@0.4.3",
+      "externalReferences": [
+        {
+          "url": "https://pypi.org/project/colorama/#files",
+          "type": "website"
+        },
+        {
+          "url": "file:colorama-0.4.3.tar.gz",
+          "type": "distribution",
+          "comment": "source archive (local copy)",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "e5d6a5f36e831d4258424848ff635dc931f6d77e"
+            }
+          ]
+        },
+		{
+		  "url": "certifi-2022.12.7-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "e5d6a5f36e831d4258424848ff635dc931f6d799"
+            }
+          ]
+		}
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/colorama@0.4.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "31219cb6-66d6-4034-bb90-18fa30284a58",
+      "dependsOn": [
+        "pkg:pypi/colorama@0.4.3"
+      ]
+    }
+  ]
+}

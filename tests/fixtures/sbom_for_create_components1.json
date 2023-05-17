@@ -1,0 +1,82 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:919f1e8f-9fee-4284-ba09-b6de4e96a5ea",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-04-26T06:21:08.266956+00:00",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "cyclonedx-bom",
+        "version": "3.10.1"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/charset-normalizer@3.0.0",
+      "name": "charset-normalizer",
+      "version": "3.0.0",
+      "purl": "pkg:pypi/charset-normalizer@3.0.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/Ousret/charset_normalizer/archive/refs/tags/3.0.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"
+            }
+          ]
+        },
+        {
+          "url": "https://github.com/Ousret/charset_normalizer/releases/download/3.0.0/charset_normalizer-3.0.0-cp310-cp310-win32.whl",
+          "comment": "binary (download location)",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "ca16b16fe5320676e7bb9b384a845f20cd8968c3"
+            }
+          ]
+        },
+		{
+			"url": "https://github.com/Ousret/charset_normalizer",
+			"type": "vcs"
+		}
+      ],
+      "properties": [
+        {
+          "name": "capycli:componentId",
+          "value": "1cebeea9b86548bdab2e48bd503350fc"
+        },
+        {
+          "name": "capycli:mapResult",
+          "value": 100
+        },
+		{
+          "name": "capycli:sourceFileComment",
+          "value": "uploaded by unit test"
+        },
+		{
+          "name": "capycli:sourceFileType",
+          "value": "SOURCE"
+        },
+		{
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        },
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/charset-normalizer@3.0.0",
+      "dependsOn": []
+    }
+  ]
+}

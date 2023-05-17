@@ -1,0 +1,40 @@
+[
+    {
+        "Name": "colorama",
+        "Version": "0.4.3",
+        "Description": "colorama description",
+        "Language": "Python",
+        "SourceUrl": "https://pypi.org/project/colorama/#files",
+        "SourceFile": "colorama-0.4.3.tar.gz",
+        "SourceFileHash": "9c372475952ad7ea297d25d9a14d225ab31f56d7",
+        "BinaryFile": "colorama_binary.whl",
+        "BinaryFileHash": "00000088888811111115555555555555",
+        "BinaryFileUrl": "https://pypi.org/xyz",
+        "Homepage" : "https/see_project_site",
+        "ProjectSite": "https://pypi.org/project/colorama",
+        "RepositoryType": "package-url",
+        "RepositoryId": "pkg:pypi/colorama@0.4.3",
+        "Sw360Id": "41ce6d4c8b1b84baa450f29e53001702",
+        "SourceFileType": "SRC",
+        "SourceFileComment": "Gernot",
+        "Href": "d2b15d49c42f482987963e55a6c550d3",
+        "Url": "https://sw360.siemens.com/group/guest/projects/-/project/detail/d2b15d49c42f482987963e55a6c550d3",
+        "ClearingState": "OPEN",
+        "ReleaseMainlineState": "DENIED",
+        "ProjectClearingState": "PHASEOUT"
+      },
+      {
+        "Name": "python",
+        "Version": "3.8",
+        "Language": "Python",
+        "SourceUrl": "https://github.com/python/cpython",
+        "SourceFile": "cpython-3.8.0.zip",
+        "SourceFileHash": "eb50b91f4f0d111070f5cc2cfe0dc776a1af69cf",
+        "BinaryFile": "",
+        "BinaryFileHash": "",
+        "ProjectSite": "https://github.com/python/cpython",
+        "RepositoryType": "nuget-id",
+        "RepositoryId": "python@3.8",
+        "Id": "42ce6d4c8b1b84baa450f29e53001702"
+      }
+]
