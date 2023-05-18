@@ -11,6 +11,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.8%2C3.7%2C3.9%2C3.10-yellow?logo=python)](https://www.python.org/doc/versions/)
 [![Static Checks](https://github.com/sw360/capycli/actions/workflows/static-checks.yml/badge.svg)](https://github.com/sw360/capycli/actions/workflows/static-checks.yml)
 [![Unit Tests](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/tngraf/c8f15831ecdcf6e86ab2b69cbb2d4f89/raw/df1a91c074c5ee34dc1f0dcf82bc0e76e39b5b4e/capycli-cobertura-coverage.json&color=green)](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml)
 [![SBOM](https://img.shields.io/badge/SBOM-CycloneDX-brightgreen)](https://github.com/tngraf/Tethys.Dgml/blob/master/SBOM/sbom.cyclonedx.xml)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
 
