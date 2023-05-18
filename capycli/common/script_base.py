@@ -111,7 +111,7 @@ class ScriptBase:
                     str(jcontent["status"]) + "): " + jcontent["message"]
                 return text
 
-    def find_project(self, name: str, version: str, show_results: bool = False) -> str | None:
+    def find_project(self, name: str, version: str, show_results: bool = False) -> str:
         """Find the project with the matching name and version on SW360"""
         print_text("  Searching for project...")
         try:
