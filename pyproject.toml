@@ -21,9 +21,12 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
 ]
+repository = "https://github.com/sw360/capycli"
+homepage = "https://github.com/sw360/capycli"
+
 
 [tool.poetry.urls]
-issues = "https://code.siemens.com/sw360/clearingautomation/issues"
+issues = "https://github.com/sw360/capycli/issues"
 
 [tool.poetry.scripts]
 capycli = "capycli.main.cli:main"

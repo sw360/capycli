@@ -2,7 +2,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: clearingautomation
 Upstream-Contact: T. Graf
-Source: https://code.siemens.com/sw360/clearingautomation
+Source: https://github.com/sw360/capycli
 
 Files: .gitignore README.md
 Copyright: 2018-2023 Siemens
