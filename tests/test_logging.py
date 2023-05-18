@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# (c) 2023 Siemens
+# Copyright (c) 2023 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
