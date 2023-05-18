@@ -5,6 +5,9 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sw360/capycli/blob/main/License.md)
+[![Python Version](https://img.shields.io/badge/python-3.8%2C3.7%2C3.9%2C3.10-yellow?logo=python)](https://www.python.org/doc/versions/)
+
 Python 3 scripts to allow clearing automation.
 
 ## Basic Syntax
