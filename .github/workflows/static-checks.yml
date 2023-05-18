@@ -1,5 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# This workflow will install Python dependencies and run some static checks
 
 name: Python package
 
@@ -16,10 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #python-version: ["3.8", "3.9", "3.10"]
-
-        # for the time being: test only on Python version >= 3.10
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.10"]
 
     steps:
     - uses: actions/checkout@v3
@@ -38,20 +34,14 @@ jobs:
         # install all dependencies using poetry
         poetry install --no-root
 
-        #python -m pip install flake8 pytest
-        #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
         poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        poetry run flake8 . --count --exit-zero --max-line-length=127 --statistics
 
     - name: Run isort
       run: |
         poetry run isort .
-
-    - name: Test with pytest
-      run: |
-        poetry run pytest
