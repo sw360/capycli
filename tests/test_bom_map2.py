@@ -877,6 +877,8 @@ class CapycliTestBomMap(CapycliTestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_NO_CACHED_RELEASES, sysex.code)
 
+        TestBase.delete_file(self.CACHE_FILE)
+
     @responses.activate
     def test_mapping_no_releases_no_cache(self):
         sut = MapBom()
@@ -1591,6 +1593,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+        TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
     def test_mapping_require_result_found(self):
@@ -1683,6 +1686,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+        TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
     def test_mapping_cache_name_and_version(self):
@@ -1844,6 +1848,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+        TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
     def test_mapping_cache_source_hash(self):
@@ -1993,6 +1998,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+        TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
     def test_mapping_cache_binary_hash(self):
@@ -2142,6 +2148,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+        TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
     def test_mapping_cache_source_file(self):
@@ -2291,6 +2298,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+        TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
     def test_mapping_cache_similar(self):
@@ -2425,6 +2433,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+        TestBase.delete_file(self.CACHE_FILE)
 
     def test_update_bom_item(self):
         sut = MapBom()
