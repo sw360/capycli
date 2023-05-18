@@ -15,3 +15,6 @@ MD013:
 
 # MD034/no-bare-urls - Bare URL used
 MD034: false
+
+# MD041/first-line-heading/first-line-h1 
+MD041: false
