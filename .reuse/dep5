@@ -20,14 +20,23 @@ Files: tests/*.xml
 Copyright: 2018-2023 Siemens
 License: MIT
 
-Files:  tests/maven_list/*.txt
+Files:  tests/fixtures/*
 Copyright: 2018-2023 Siemens
 License: MIT
 
-Files: granularity_list.csv requirements.txt
+Files: capycli/data/granularity_list.csv requirements.txt
 Copyright: 2018-2023 Siemens
 License: MIT
 
 Files: Legacy/code.siemens.com-gitlab-ci.yml.txt  Legacy/Pipfile.lock
 Copyright: 2018-2023 Siemens
 License: MIT
+
+Files: images/*
+Copyright: 2023 Siemens
+License: MIT
+
+Files: CODEOWNERS poetry.lock
+Copyright: 2023 Siemens
+License: MIT
+
