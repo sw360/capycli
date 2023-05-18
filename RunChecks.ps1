@@ -9,7 +9,8 @@ Write-Host "flake8 ..."
 poetry run flake8
 
 Write-Host "markdownlint ..."
-npx -q markdownlint-cli *.md
+# --disable MD041 forces NO error for the social image in Readme.md
+npx -q markdownlint-cli *.md --disable MD041
 
 Write-Host "isort ..."
 isort .
