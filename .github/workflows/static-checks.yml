@@ -1,6 +1,6 @@
 # This workflow will install Python dependencies and run some static checks
 
-name: Python package
+name: Static Checks
 
 on:
   push:
