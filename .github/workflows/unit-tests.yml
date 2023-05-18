@@ -42,6 +42,7 @@ jobs:
         poetry run coverage run -m pytest
         poetry run coverage report -m --omit "*/site-packages/*.py",*/tests/*
         poetry run coverage html --omit "*/site-packages/*.py",*/tests/*
+        poetry run coverage xml
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.3.0
