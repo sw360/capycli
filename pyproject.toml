@@ -3,10 +3,14 @@
 
 [tool.poetry]
 name = "capycli"
-version = "2.0.0.dev6"
+version = "2.0.0.dev8"
 description = "CaPyCli - Clearing Automation Python Command Line Interface"
 authors = ["Thomas Graf <thomas.graf@siemens.com>"]
 license = "MIT"
+readme="Readme.md"
+repository = "https://github.com/sw360/capycli"
+homepage = "https://github.com/sw360/capycli"
+keywords = ["sw360", "cli, automation", "license", "compliance", "clearing"]
 include = [
     "LICENSE.md",
     { path = "capycli/data/granularity_list.csv", format = "wheel" },
@@ -21,8 +25,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
 ]
-repository = "https://github.com/sw360/capycli"
-homepage = "https://github.com/sw360/capycli"
 
 
 [tool.poetry.urls]

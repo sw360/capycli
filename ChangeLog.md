@@ -5,7 +5,7 @@
 
 # Software Clearing Automation
 
-## 2.x
+## 2.0.0.dev (2023-05-19)
 
 * breaking changes
   * new command `bom convert` to import and export SBOM in mutiple formats.
