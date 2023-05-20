@@ -12,6 +12,7 @@ import os
 import pathlib
 import re
 import sys
+from enum import Enum
 from typing import Any
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType
@@ -33,26 +34,24 @@ from capycli.main.result_codes import ResultCode
 LOG = get_logger(__name__)
 
 
+class MapMode(str, Enum):
+    # default, write everything to resulting SBOM
+    ALL = "all"
+    # resulting SBOM shows only components that were found
+    FOUND = "found"
+    # resulting SBOM shows only components that were not found
+    NOT_FOUND = "notfound"
+
 class MapBom(capycli.common.script_base.ScriptBase):
     """
     Map a given SBOM to data on SW360
     """
-
-    # default, write everything to resulting SBOM
-    MAP_MODE_ALL = "0"
-
-    # resulting SBOM shows only components that were found
-    MAP_MODE_FOUND = "1"
-
-    # resulting SBOM shows only components that were not found
-    MAP_MODE_NOT_FOUND = "2"
-
     def __init__(self) -> None:
         self.releases = None
         self.old_releases = None
         self.verbosity = 1
         self.relaxed_debian_parsing = False
-        self.mode = self.MAP_MODE_ALL
+        self.mode = MapMode.ALL
         self.purl_service: PurlService = None
 
     def is_id_match(self, release, component: Component) -> bool:
@@ -717,7 +716,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         for item in result:
             newitem = None
             if item.result == MapResult.INVALID:
-                if (self.mode == self.MAP_MODE_FOUND):
+                if (self.mode == MapMode.FOUND):
                     continue
 
                 newitem = Component(name="???", version="???")
@@ -726,7 +725,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             elif (item.result == MapResult.NO_MATCH
                   or not self.is_good_match(item.result)):
 
-                if (self.mode == self.MAP_MODE_FOUND):
+                if (self.mode == MapMode.FOUND):
                     continue
 
                 newitem = item.component
@@ -755,7 +754,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     CycloneDxSupport.CDX_PROP_MAPRESULT,
                     match_item["MapResult"])
 
-                if (self.mode == self.MAP_MODE_NOT_FOUND) and (self.is_good_match(match_item["MapResult"])):
+                if (self.mode == MapMode.NOT_FOUND) and (self.is_good_match(match_item["MapResult"])):
                     continue
 
                 newbom.components.add(newitem)
@@ -895,9 +894,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
         print("    -v                    be verbose")
         print("    --nocache             do not use component cache")
         print("    -m MODE, --mode MODE  mapping mode")
-        print("                          0 = default, write everything to resulting SBOM")
-        print("                          1 = resulting SBOM shows only components that were found")
-        print("                          2 = resulting SBOM shows only components that were not found")
+        print("                          all = default, write everything to resulting SBOM")
+        print("                          found = resulting SBOM shows only components that were found")
+        print("                          notfound = resulting SBOM shows only components that were not found")
         print("    --dbx                 relaxed Debian version handling: *completely* ignore Debian revision,")
         print("                          so SBOM version 3.1 will match SW360 version 3.1-3.debian")
 
@@ -1007,10 +1006,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         if args.outputfile:
             print_text("Writing updated SBOM to " + args.outputfile)
-            if self.mode == self.MAP_MODE_FOUND:
+            if self.mode == MapMode.FOUND:
                 print_yellow(
                     "   Resulting SBOM contains only components were a full natch was found")
-            if self.mode == self.MAP_MODE_NOT_FOUND:
+            if self.mode == MapMode.NOT_FOUND:
                 print_yellow(
                     "   Resulting SBOM contains only components were no match was found")
             new_bom = self.create_updated_bom(sbom, result)
@@ -1030,7 +1029,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         if overview["OverallResult"] != "COMPLETE":
             print_yellow("No unique mapping found - manual action needed!\n")
-            if self.mode == self.MAP_MODE_ALL:
+            if self.mode == MapMode.ALL:
                 sys.exit(ResultCode.RESULT_NO_UNIQUE_MAPPING)
             else:
                 sys.exit(ResultCode.RESULT_INCOMPLETE_MAPPING)

@@ -14,6 +14,7 @@ import tomli
 
 import capycli
 from capycli.bom.bom_convert import BomFormat
+from capycli.bom.map_bom import MapMode
 from capycli.main.argument_parser import ArgumentParser
 
 LOG = capycli.get_logger(__name__)
@@ -111,6 +112,11 @@ class CommandlineSupport():
         output_formats.append(BomFormat.CSV)
         output_formats.append(BomFormat.LEGACY)
         output_formats.append(BomFormat.HTML)
+
+        map_modes = []
+        map_modes.append(MapMode.ALL)
+        map_modes.append(MapMode.FOUND)
+        map_modes.append(MapMode.NOT_FOUND)
 
         self.parser.add_argument(
             "-i",
@@ -337,6 +343,7 @@ class CommandlineSupport():
         self.parser.add_argument(
             "-m",
             "--mode",
+            choices=map_modes,
             dest="mode",
             help="specific mode for some commands",
         )

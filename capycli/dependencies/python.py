@@ -283,6 +283,44 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         print()
 
+    def check_meta_data(self, sbom: Bom) -> bool:
+        """
+        Check whether all required meta-data is available.
+
+        Args:
+            sbom (Bom): the SBOM
+
+        Returns:
+            bool: True if all required meta-data is available; otherwise False.
+        """
+
+        if self.verbose:
+            print_text("\nChecking meta-data:")
+
+        result = True
+        for cxcomp in sbom.components:
+            if self.verbose:
+                print_text(f"  {cxcomp.name}, {cxcomp.version}")
+
+            if not cxcomp.purl:
+                result = False
+                if self.verbose:
+                    print_yellow("    package-url missing")
+
+            homepage = CycloneDxSupport.get_ext_ref_website(cxcomp)
+            if not homepage:
+                result = False
+                if self.verbose:
+                    print_yellow("    Homepage missing")
+
+            src_url = CycloneDxSupport.get_ext_ref_source_url(cxcomp)
+            if not src_url:
+                result = False
+                if self.verbose:
+                    print_yellow("    Source code URL missing")
+
+        return result
+
     def run(self, args):
         """Main method()"""
         if args.debug:
@@ -335,11 +373,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         print_text("Formatting package list...")
         sbom = self.convert_package_list(package_list, args.search_meta_data, args.package_source)
+        self.check_meta_data(sbom)
 
         if self.verbose:
             print()
 
         print_text("Writing new SBOM to " + args.outputfile)
         SbomWriter.write_to_json(sbom, args.outputfile, True)
+        print_text(" " + self.get_comp_count_text(sbom) + " items written to file.")
 
         print()

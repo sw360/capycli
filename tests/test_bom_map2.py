@@ -13,7 +13,7 @@ from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 
-from capycli.bom.map_bom import MapBom
+from capycli.bom.map_bom import MapBom, MapMode
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.json_support import load_json_file
 from capycli.common.map_result import MapResult
@@ -1371,7 +1371,7 @@ class CapycliTestBomMap(CapycliTestBase):
         args.nocache = True
         args.sw360_token = TestBase.MYTOKEN
         args.sw360_url = TestBase.MYURL
-        args.mode = MapBom.MAP_MODE_FOUND
+        args.mode = MapMode.FOUND
 
         # for login
         self.add_login_response()
@@ -1450,7 +1450,7 @@ class CapycliTestBomMap(CapycliTestBase):
         args.nocache = True
         args.sw360_token = TestBase.MYTOKEN
         args.sw360_url = TestBase.MYURL
-        args.mode = MapBom.MAP_MODE_NOT_FOUND
+        args.mode = MapMode.NOT_FOUND
 
         # for login
         self.add_login_response()
@@ -2626,4 +2626,4 @@ class CapycliTestBomMap(CapycliTestBase):
 if __name__ == "__main__":
     APP = CapycliTestBomMap()
     APP.setUp()
-    APP.test_is_better_match()
+    APP.test_mapping_no_releases_no_cache()

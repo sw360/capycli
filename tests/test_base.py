@@ -56,7 +56,7 @@ class AppArguments():
         self.xml = False
         self.help = False
         self.all = False
-        self.mode = "0"
+        self.mode = "all"
         self.format = ""
         self.force_exit = ""
         self.inputformat = ""

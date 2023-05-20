@@ -28,6 +28,10 @@
     * MATCH_BY_NAME: `5-candidate-match-by-name` instead of 5
     * SIMILAR_COMPONENT_FOUND: `6-candidate-match-similar-component` instead of 6
     * NO_MATCH: `9-no-match` instead of 100
+  * `bom map` now uses alphanumeric identifier for map modes (`-m`) instead of integer values:
+    * `all` instead of 0
+    * `found` instead of 1
+    * `notfound` instead of 2
   * dropped support for option `-stage`. The SW360 server instance can get specified via the `-url` parameter.
   * The hard coded address https://sw360.siemens.com has been removed.
     CaPyCLI reads the SW360 server address either from the environment variable `SW360ServerUrl` or
