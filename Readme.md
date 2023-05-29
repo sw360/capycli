@@ -5,7 +5,7 @@
 
 ![Header_Image](images/Github-social-capycli.png)
 
-# CaPyCli - Clearing Automation Python Command Line Tool
+# CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sw360/capycli/blob/main/License.md)
 [![PyPI](https://shields.io/pypi/v/capycli)](https://pypi.org/project/capycli/)
@@ -16,7 +16,8 @@
 [![SBOM](https://img.shields.io/badge/SBOM-CycloneDX-brightgreen)](https://github.com/tngraf/Tethys.Dgml/blob/master/SBOM/sbom.cyclonedx.xml)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
 
-Python 3 scripts to allow clearing automation.
+Python 3 scripts to allow license clearing automation using the
+[SW360](https://github.com/eclipse/sw360) software catalogue.
 
 ## Basic Syntax
 
