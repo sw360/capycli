@@ -76,14 +76,15 @@ class FilterBom(capycli.common.script_base.ScriptBase):
     def find_bom_item(self, bom: Bom, filterentry: dict) -> Optional[Component]:
         """Find an entry in list of bom items."""
         for component in bom.components:
-            if filterentry.get("RepositoryId", "x") == component.purl:
-                return component
+            if component.purl:
+                if filterentry.get("RepositoryId", "x") == component.purl:
+                    return component
 
-            if filterentry.get("purl", "x") == component.purl:
-                return component
+                if filterentry.get("purl", "x") == component.purl:
+                    return component
 
-            if filterentry.get("package-url", "x") == component.purl:
-                return component
+                if filterentry.get("package-url", "x") == component.purl:
+                    return component
 
             if filterentry.get("Name", "x") == component.name:
                 if filterentry.get("Version", "x") == component.version:
@@ -207,10 +208,11 @@ class FilterBom(capycli.common.script_base.ScriptBase):
                     if filterentry["component"]["RepositoryId"].endswith("*"):
                         prefix = filterentry["component"]["RepositoryId"][:-1]
 
-                    if prefix:
-                        match = component.purl.startswith(prefix)
-                    else:
-                        match = component.purl == filterentry["component"]["RepositoryId"]
+                    if component.purl:
+                        if prefix:
+                            match = component.purl.startswith(prefix)
+                        else:
+                            match = component.purl == filterentry["component"]["RepositoryId"]
 
                 if match:
                     if filterentry["Mode"] == "remove":
