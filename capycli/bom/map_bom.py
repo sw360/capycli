@@ -13,7 +13,7 @@ import pathlib
 import re
 import sys
 from enum import Enum
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType
 from cyclonedx.model.bom import Bom
@@ -121,7 +121,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def is_better_match(self, releases_found: list[dict], proposed_match_code) -> bool:
+    def is_better_match(self, releases_found: List[dict], proposed_match_code) -> bool:
         if not releases_found:
             return True
 
@@ -498,7 +498,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         return False
 
     def map_bom_to_releases(
-            self, sbom: Bom, check_similar: bool, result_required: bool, nocache: bool = False) -> list[MapResult]:
+            self, sbom: Bom, check_similar: bool, result_required: bool, nocache: bool = False) -> List[MapResult]:
         """Maps the bill of material items to the list of SW360 releases"""
 
         # Initialize external id service now, before ruin the stdout for mapping
@@ -537,7 +537,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         the specified binary file hash"""
         pass
 
-    def create_overview(self, result: list[MapResult]) -> Dict[str, Any]:
+    def create_overview(self, result: List[MapResult]) -> Dict[str, Any]:
         """Create JSON data with an mapping result overview"""
         data = {}
         dataitems = []
@@ -707,7 +707,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return component
 
-    def create_updated_bom(self, old_bom: Bom, result: list[MapResult]) -> Bom:
+    def create_updated_bom(self, old_bom: Bom, result: List[MapResult]) -> Bom:
         """Create an updated SBOM with the mapping results"""
         newbom = old_bom
 

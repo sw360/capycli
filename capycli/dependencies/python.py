@@ -12,7 +12,7 @@ import os
 import subprocess
 import sys
 from io import TextIOWrapper
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import chardet
 import requests
@@ -58,7 +58,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         package_list = json.loads(raw_data)
         return package_list
 
-    def requirements_to_package_list(self, input_file: str) -> list[Dict[str, str]]:
+    def requirements_to_package_list(self, input_file: str) -> List[Dict[str, str]]:
         """
         Converts the requirements file to a package list.
 
@@ -73,7 +73,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             package_list = self.read_requirements_bom(fin)
             return package_list
 
-    def read_requirements_bom(self, requirements_file: TextIOWrapper) -> list[Dict[str, str]]:
+    def read_requirements_bom(self, requirements_file: TextIOWrapper) -> List[Dict[str, str]]:
         """
         Read SBOM data from file handle.
 

@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import List
+
 from cyclonedx.model.component import Component
 
 from capycli import LOG
@@ -25,7 +27,7 @@ from capycli import LOG
 
 class CsvSupport():
     @classmethod
-    def csv_to_cdx_components(cls, inputfile: str) -> list[Component]:
+    def csv_to_cdx_components(cls, inputfile: str) -> List[Component]:
         """Convert a csv file of components to a list
         of CycloneDX components."""
         bom = []
@@ -54,7 +56,7 @@ class CsvSupport():
         return bom
 
     @classmethod
-    def write_cdx_components_as_csv(cls, bom: list[Component], outputfile: str) -> None:
+    def write_cdx_components_as_csv(cls, bom: List[Component], outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         with open(outputfile, "w", encoding="utf-8") as fout:
             for cx_comp in bom:

@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import List
+
 from cyclonedx.model.component import Component
 
 from capycli import LOG
@@ -26,7 +28,7 @@ from capycli.main.exceptions import CaPyCliException
 
 class PlainTextSupport():
     @classmethod
-    def flatlist_to_cdx_components(cls, inputfile: str) -> list[Component]:
+    def flatlist_to_cdx_components(cls, inputfile: str) -> List[Component]:
         """Convert a flat list of components to a list
         of CycloneDX components."""
         bom = []

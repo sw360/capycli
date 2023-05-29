@@ -13,7 +13,7 @@ import uuid
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, Iterable, List, Optional
 
 from cyclonedx.model import (
     AttachedText,
@@ -86,7 +86,7 @@ class SbomJsonParser(BaseParser):
         for component in self._components:
             bom.metadata.component.dependencies.add(component.bom_ref)
 
-    def get_tools(self) -> list[Tool]:
+    def get_tools(self) -> List[Tool]:
         """Get the list of tools read by the parser."""
         return self.metadata.tools
 
@@ -476,7 +476,7 @@ class SbomCreator():
         sbom.metadata.properties.add(prop)
 
     @staticmethod
-    def create(bom: list[Component], **kwargs: bool) -> Bom:
+    def create(bom: List[Component], **kwargs: bool) -> Bom:
         sbom = Bom()
 
         if not sbom.metadata.properties:
@@ -618,7 +618,7 @@ class CaPyCliBom():
         LOG.debug("done")
 
     @classmethod
-    def write_simple_sbom(cls, bom: list[Component], outputfile: str) -> None:
+    def write_simple_sbom(cls, bom: List[Component], outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         try:
             creator = SbomCreator()

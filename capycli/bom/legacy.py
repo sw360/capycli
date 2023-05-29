@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property
 from cyclonedx.model.component import Component
@@ -247,7 +247,7 @@ class LegacySupport():
         return cxcomp
 
     @classmethod
-    def legacy_to_cdx_components(cls, inputfile: str) -> list[Component]:
+    def legacy_to_cdx_components(cls, inputfile: str) -> List[Component]:
         """Convert a CaPyCLI legacy  list of components to a list
         of CycloneDX components."""
         LOG.debug(f"Reading from file {inputfile}")
@@ -299,7 +299,7 @@ class LegacySupport():
         return lcomp
 
     @classmethod
-    def write_cdx_components_as_legacy(cls, bom: list[Component], outputfile: str) -> None:
+    def write_cdx_components_as_legacy(cls, bom: List[Component], outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
 
         legacy_bom = []

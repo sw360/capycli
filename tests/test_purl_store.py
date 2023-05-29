@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import List
+
 import packageurl
 
 from capycli.common.purl_store import PurlStore
@@ -44,7 +46,7 @@ class TestPurlStore(TestBase):
         sut = PurlStore()
 
         purl: packageurl.PackageURL = packageurl.PackageURL.from_string("pkg:maven/test/test@1")
-        duplicates: list[tuple[str, str, str, str]] = [(purl.type, purl.namespace, purl.name, purl.version)]
+        duplicates: List[tuple[str, str, str, str]] = [(purl.type, purl.namespace, purl.name, purl.version)]
         sut.add(purl, {})
 
         sut.remove_duplicates(duplicates)
@@ -55,7 +57,7 @@ class TestPurlStore(TestBase):
 
         purl: packageurl.PackageURL = packageurl.PackageURL.from_string("pkg:maven/test/test@1")
         sut.add(purl, {"test": True})
-        duplicates: list[tuple[str, str, str, str]] = [
+        duplicates: List[tuple[str, str, str, str]] = [
             (purl.type, purl.namespace, purl.name, "unknown"),
             (purl.type, purl.namespace, "unknown", None),
             (purl.type, "unknown", None, None),

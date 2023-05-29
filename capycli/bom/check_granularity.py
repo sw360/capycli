@@ -9,6 +9,7 @@
 import importlib.resources
 import os
 import sys
+from typing import List
 
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
@@ -134,7 +135,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
 
         return component_new
 
-    def merge_duplicates(self, clist: list[Component]) -> list[Component]:
+    def merge_duplicates(self, clist: List[Component]) -> List[Component]:
         """Checks for each release if there are duplicates after granularity check."""
         new_list = []
         for release in clist:
