@@ -57,7 +57,7 @@ class PlainTextSupport():
         return bom
 
     @classmethod
-    def write_cdx_components_as_flatlist(cls, bom: list[Component], outputfile: str) -> None:
+    def write_cdx_components_as_flatlist(cls, bom: List[Component], outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         try:
             with open(outputfile, "w", encoding="utf-8") as fout:

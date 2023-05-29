@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+from typing import List
 
 import requests
 from cyclonedx.model import ExternalReference, ExternalReferenceType, Property
@@ -33,8 +34,8 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
     def add_urls(
             self, cx_comp: Component,
-            parsed_sources: list, parsed_binaries: list,
-            source_files: list[str], binary_files: list[str], files_directory: str):
+            parsed_sources: List, parsed_binaries: List,
+            source_files: List[str], binary_files: List[str], files_directory: str):
         """
         Adds URLs to corresponding bom item. This is done by checking if a dependency
         with the corresponding naming exists inside the list of parsed URLs and also
