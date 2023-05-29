@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any
+from typing import Any, Dict
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property
 from cyclonedx.model.component import Component
@@ -262,7 +262,7 @@ class LegacySupport():
         return bom
 
     @classmethod
-    def cdx_component_to_legacy(cls, cx_comp: Component) -> dict[str, Any]:
+    def cdx_component_to_legacy(cls, cx_comp: Component) -> Dict[str, Any]:
         lcomp = {}
         lcomp["Name"] = cx_comp.name
         lcomp["Version"] = cx_comp.version or ""

@@ -13,7 +13,7 @@ import pathlib
 import re
 import sys
 from enum import Enum
-from typing import Any
+from typing import Any, Dict
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType
 from cyclonedx.model.bom import Bom
@@ -537,7 +537,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         the specified binary file hash"""
         pass
 
-    def create_overview(self, result: list[MapResult]) -> dict[str, Any]:
+    def create_overview(self, result: list[MapResult]) -> Dict[str, Any]:
         """Create JSON data with an mapping result overview"""
         data = {}
         dataitems = []
