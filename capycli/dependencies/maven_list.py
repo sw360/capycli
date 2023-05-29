@@ -11,7 +11,7 @@ import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
-from typing import List
+from typing import List, Tuple
 
 import requests
 from cyclonedx.model import ExternalReference, ExternalReferenceType, Property
@@ -99,7 +99,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
             parts = re.findall(regex, line)
             if parts and len(parts) > 0:
                 url = parts[0]
-                if isinstance(url, tuple):
+                if isinstance(url, Tuple):
                     url = url[0]
                 if url not in parsed_urls:
                     parsed_urls.append(url)

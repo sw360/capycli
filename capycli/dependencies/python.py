@@ -12,7 +12,7 @@ import os
 import subprocess
 import sys
 from io import TextIOWrapper
-from typing import Any, Dict, List
+from typing import Dict, List
 
 import chardet
 import requests

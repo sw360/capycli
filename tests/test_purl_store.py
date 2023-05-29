@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import List
+from typing import List, Tuple
 
 import packageurl
 
@@ -46,7 +46,7 @@ class TestPurlStore(TestBase):
         sut = PurlStore()
 
         purl: packageurl.PackageURL = packageurl.PackageURL.from_string("pkg:maven/test/test@1")
-        duplicates: List[tuple[str, str, str, str]] = [(purl.type, purl.namespace, purl.name, purl.version)]
+        duplicates: List[Tuple[str, str, str, str]] = [(purl.type, purl.namespace, purl.name, purl.version)]
         sut.add(purl, {})
 
         sut.remove_duplicates(duplicates)
@@ -57,7 +57,7 @@ class TestPurlStore(TestBase):
 
         purl: packageurl.PackageURL = packageurl.PackageURL.from_string("pkg:maven/test/test@1")
         sut.add(purl, {"test": True})
-        duplicates: List[tuple[str, str, str, str]] = [
+        duplicates: List[Tuple[str, str, str, str]] = [
             (purl.type, purl.namespace, purl.name, "unknown"),
             (purl.type, purl.namespace, "unknown", None),
             (purl.type, "unknown", None, None),
