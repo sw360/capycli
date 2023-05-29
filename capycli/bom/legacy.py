@@ -49,7 +49,7 @@ from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 
 class LegacySupport():
     @staticmethod
-    def get_purl_from_name(item: dict[str, Any]) -> Any:
+    def get_purl_from_name(item: Dict[str, Any]) -> Any:
         """Builds/guesses a package-url from name, version
         and provided language information."""
         lang = "generic"
@@ -67,7 +67,7 @@ class LegacySupport():
         return purl
 
     @staticmethod
-    def get_purl_from_legacy(item: dict[str, Any]) -> Any:
+    def get_purl_from_legacy(item: Dict[str, Any]) -> Any:
         if "RepositoryType" in item:
             if (item["RepositoryType"] == "package-url") or (item["RepositoryType"] == "purl"):
                 id = item.get("RepositoryId", "")
@@ -77,7 +77,7 @@ class LegacySupport():
         return LegacySupport.get_purl_from_name(item)
 
     @staticmethod
-    def legacy_component_to_cdx(item: dict[str, Any]) -> Component:
+    def legacy_component_to_cdx(item: Dict[str, Any]) -> Component:
         """Convert a single CaPyCLI legacy component to a CycloneDX component."""
         purl = LegacySupport.get_purl_from_legacy(item)
         if purl:
