@@ -1,4 +1,4 @@
-component_name;replacement_name;comment;sourec_url
+component_name;replacement_name;comment;source_url
 
 @angular/animations/browser;Angular;;https://github.com/angular/angular
 @angular/animations/browser/testing;Angular;;https://github.com/angular/angular
@@ -36,6 +36,11 @@ component_name;replacement_name;comment;sourec_url
 @angular/upgrade;Angular;;https://github.com/angular/angular
 @angular/upgrade/static;Angular;;https://github.com/angular/angular
 @angular/upgrade/static/testing;Angular;;https://github.com/angular/angular
+@angular-devkit/schematics;Angular;;https://github.com/angular/angular
+@ngtools/webpack;Angular;;https://github.com/angular/angular
+@angular-devkit/build-angular;Angular;;https://github.com/angular/angular
+@schematics/angular;Angular;;https://github.com/angular/angular
+@angular-devkit/core;Angular;;https://github.com/angular/angular
 
 tomcat-dbcp;Apache Tomcat;;
 tomcat-embed-core;Apache Tomcat;;
@@ -63,51 +68,184 @@ tomcat-jni;Apache Tomcat;;
 tomcat-util;Apache Tomcat;;
 tomcat-websocket;Apache Tomcat;;
 
-@babel/core;babel;;https://github.com/babel/babel
-@babel/parser;babel;;https://github.com/babel/babel
-@babel/traverse;babel;;https://github.com/babel/babel
-@babel/generator;babel;;https://github.com/babel/babel
 @babel/cli;babel;;https://github.com/babel/babel
-@babel/types;babel;;https://github.com/babel/babel
-@babel/runtime;babel;;https://github.com/babel/babel
-@babel/register;babel;;https://github.com/babel/babel
-@babel/template;babel;;https://github.com/babel/babel
-@babel/helpers;babel;;https://github.com/babel/babel
 @babel/code-frame;babel;;https://github.com/babel/babel
-@babel/standalone;babel;;https://github.com/babel/babel
-@babel/preset-env;babel;;https://github.com/babel/babel
-@babel/preset-react;babel;;https://github.com/babel/babel
-@babel/preset-typescript;babel;;https://github.com/babel/babel
-@babel/helper-plugin-utils;babel;;https://github.com/babel/babel
-@babel/helper-module-imports;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-object-rest-spread;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-class-properties;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-optional-chaining;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-decorators;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-nullish-coalescing-operator;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-export-namespace-from;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-numeric-separator;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-json-strings;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-logical-assignment-operators;babel;;https://github.com/babel/babel
-@babel/plugin-proposal-private-methods;babel;;https://github.com/babel/babel
-@babel/plugin-transform-runtime;babel;;https://github.com/babel/babel
-@babel/plugin-transform-modules-commonjs;babel;;https://github.com/babel/babel
-@babel/plugin-transform-react-jsx;babel;;https://github.com/babel/babel
-@babel/plugin-transform-destructuring;babel;;https://github.com/babel/babel
-@babel/plugin-transform-classes;babel;;https://github.com/babel/babel
-@babel/plugin-transform-spread;babel;;https://github.com/babel/babel
-@babel/plugin-transform-template-literals;babel;;https://github.com/babel/babel
-@babel/plugin-transform-typescript;babel;;https://github.com/babel/babel
-@babel/plugin-syntax-jsx;babel;;https://github.com/babel/babel
+@babel/compat-data;babel;;https://github.com/babel/babel
+@babel/core;babel;;https://github.com/babel/babel
+@babel/generator;babel;;https://github.com/babel/babel
+@babel/helper-annotate-as-pure;babel;;https://github.com/babel/babel
+@babel/helper-builder-binary-assignment-operator-visitor;babel;;https://github.com/babel/babel
+@babel/helper-builder-react-jsx;babel;;https://github.com/babel/babel
+@babel/helper-compilation-targets;babel;;https://github.com/babel/babel
+@babel/helper-create-class-features-plugin;babel;;https://github.com/babel/babel
+@babel/helper-create-regexp-features-plugin;babel;;https://github.com/babel/babel
+@babel/helper-define-map;babel;;https://github.com/babel/babel
 @babel/helper-environment-visitor;babel;;https://github.com/babel/babel
+@babel/helper-explode-assignable-expression;babel;;https://github.com/babel/babel
+@babel/helper-fixtures;babel;;https://github.com/babel/babel
 @babel/helper-function-name;babel;;https://github.com/babel/babel
 @babel/helper-get-function-arity;babel;;https://github.com/babel/babel
 @babel/helper-hoist-variables;babel;;https://github.com/babel/babel
+@babel/helper-member-expression-to-functions;babel;;https://github.com/babel/babel
+@babel/helper-module-imports;babel;;https://github.com/babel/babel
 @babel/helper-module-transforms;babel;;https://github.com/babel/babel
+@babel/helper-optimise-call-expression;babel;;https://github.com/babel/babel
+@babel/helper-plugin-test-runner;babel;;https://github.com/babel/babel
+@babel/helper-plugin-utils;babel;;https://github.com/babel/babel
+@babel/helper-remap-async-to-generator;babel;;https://github.com/babel/babel
+@babel/helper-replace-supers;babel;;https://github.com/babel/babel
+@babel/helpers;babel;;https://github.com/babel/babel
 @babel/helper-simple-access;babel;;https://github.com/babel/babel
+@babel/helper-skip-transparent-expression-wrappers;babel;;https://github.com/babel/babel
 @babel/helper-split-export-declaration;babel;;https://github.com/babel/babel
+@babel/helper-transform-fixture-test-runner;babel;;https://github.com/babel/babel
 @babel/helper-validator-identifier;babel;;https://github.com/babel/babel
+@babel/helper-validator-option;babel;;https://github.com/babel/babel
+@babel/helper-wrap-function;babel;;https://github.com/babel/babel
 @babel/highlight;babel;;https://github.com/babel/babel
+@babel/node;babel;;https://github.com/babel/babel
+@babel/parser;babel;;https://github.com/babel/babel
+@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression;babel;;https://github.com/babel/babel
+@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining;babel;;https://github.com/babel/babel
+@babel/plugin-external-helpers;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-async-do-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-async-generator-functions;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-class-properties;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-class-static-block;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-decorators;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-do-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-dynamic-import;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-export-default-from;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-export-namespace-from;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-function-bind;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-function-sent;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-json-strings;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-logical-assignment-operators;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-nullish-coalescing-operator;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-numeric-separator;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-object-rest-spread;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-optional-catch-binding;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-optional-chaining;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-partial-application;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-pipeline-operator;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-private-methods;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-private-property-in-object;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-record-and-tuple;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-throw-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-unicode-property-regex;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-unicode-sets-regex;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-async-do-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-decimal;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-decorators;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-destructuring-private;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-do-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-export-default-from;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-flow;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-function-bind;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-function-sent;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-import-assertions;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-jsx;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-module-blocks;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-partial-application;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-pipeline-operator;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-record-and-tuple;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-throw-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-typescript;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-unicode-sets-regex;babel;;https://github.com/babel/babel
+@babel/plugin-transform-arrow-functions;babel;;https://github.com/babel/babel
+@babel/plugin-transform-async-to-generator;babel;;https://github.com/babel/babel
+@babel/plugin-transform-block-scoped-functions;babel;;https://github.com/babel/babel
+@babel/plugin-transform-block-scoping;babel;;https://github.com/babel/babel
+@babel/plugin-transform-classes;babel;;https://github.com/babel/babel
+@babel/plugin-transform-computed-properties;babel;;https://github.com/babel/babel
+@babel/plugin-transform-destructuring;babel;;https://github.com/babel/babel
+@babel/plugin-transform-dotall-regex;babel;;https://github.com/babel/babel
+@babel/plugin-transform-duplicate-keys;babel;;https://github.com/babel/babel
+@babel/plugin-transform-exponentiation-operator;babel;;https://github.com/babel/babel
+@babel/plugin-transform-flow-comments;babel;;https://github.com/babel/babel
+@babel/plugin-transform-flow-strip-types;babel;;https://github.com/babel/babel
+@babel/plugin-transform-for-of;babel;;https://github.com/babel/babel
+@babel/plugin-transform-function-name;babel;;https://github.com/babel/babel
+@babel/plugin-transform-instanceof;babel;;https://github.com/babel/babel
+@babel/plugin-transform-jscript;babel;;https://github.com/babel/babel
+@babel/plugin-transform-literals;babel;;https://github.com/babel/babel
+@babel/plugin-transform-member-expression-literals;babel;;https://github.com/babel/babel
+@babel/plugin-transform-modules-amd;babel;;https://github.com/babel/babel
+@babel/plugin-transform-modules-commonjs;babel;;https://github.com/babel/babel
+@babel/plugin-transform-modules-systemjs;babel;;https://github.com/babel/babel
+@babel/plugin-transform-modules-umd;babel;;https://github.com/babel/babel
+@babel/plugin-transform-named-capturing-groups-regex;babel;;https://github.com/babel/babel
+@babel/plugin-transform-new-target;babel;;https://github.com/babel/babel
+@babel/plugin-transform-object-assign;babel;;https://github.com/babel/babel
+@babel/plugin-transform-object-set-prototype-of-to-assign;babel;;https://github.com/babel/babel
+@babel/plugin-transform-object-super;babel;;https://github.com/babel/babel
+@babel/plugin-transform-parameters;babel;;https://github.com/babel/babel
+@babel/plugin-transform-property-literals;babel;;https://github.com/babel/babel
+@babel/plugin-transform-property-mutators;babel;;https://github.com/babel/babel
+@babel/plugin-transform-proto-to-assign;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-constant-elements;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-display-name;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-inline-elements;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-jsx;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-jsx-compat;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-jsx-development;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-jsx-self;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-jsx-source;babel;;https://github.com/babel/babel
+@babel/plugin-transform-react-pure-annotations;babel;;https://github.com/babel/babel
+@babel/plugin-transform-regenerator;babel;;https://github.com/babel/babel
+@babel/plugin-transform-reserved-words;babel;;https://github.com/babel/babel
+@babel/plugin-transform-runtime;babel;;https://github.com/babel/babel
+@babel/plugin-transform-shorthand-properties;babel;;https://github.com/babel/babel
+@babel/plugin-transform-spread;babel;;https://github.com/babel/babel
+@babel/plugin-transform-sticky-regex;babel;;https://github.com/babel/babel
+@babel/plugin-transform-strict-mode;babel;;https://github.com/babel/babel
+@babel/plugin-transform-template-literals;babel;;https://github.com/babel/babel
+@babel/plugin-transform-typeof-symbol;babel;;https://github.com/babel/babel
+@babel/plugin-transform-typescript;babel;;https://github.com/babel/babel
+@babel/plugin-transform-unicode-escapes;babel;;https://github.com/babel/babel
+@babel/plugin-transform-unicode-regex;babel;;https://github.com/babel/babel
+@babel/preset-env;babel;;https://github.com/babel/babel
+@babel/preset-flow;babel;;https://github.com/babel/babel
+@babel/preset-react;babel;;https://github.com/babel/babel
+@babel/preset-typescript;babel;;https://github.com/babel/babel
+@babel/register;babel;;https://github.com/babel/babel
+@babel/runtime;babel;;https://github.com/babel/babel
+@babel/runtime-corejs2;babel;;https://github.com/babel/babel
+@babel/runtime-corejs3;babel;;https://github.com/babel/babel
+@babel/standalone;babel;;https://github.com/babel/babel
+@babel/template;babel;;https://github.com/babel/babel
+@babel/traverse;babel;;https://github.com/babel/babel
+@babel/types;babel;;https://github.com/babel/babel
+@babel/plugin-transform-arrow-functions;babel;;https://github.com/babel/babel
+@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression;babel;;https://github.com/babel/babel
+@babel/plugin-transform-shorthand-properties;babel;;https://github.com/babel/babel
+@babel/plugin-transform-modules-umd;babel;;https://github.com/babel/babel
+@babel/plugin-transform-reserved-words;babel;;https://github.com/babel/babel
+@babel/plugin-transform-unicode-regex;babel;;https://github.com/babel/babel
+@babel/plugin-transform-object-super;babel;;https://github.com/babel/babel
+@babel/plugin-transform-sticky-regex;babel;;https://github.com/babel/babel
+@babel/plugin-transform-exponentiation-operator;babel;;https://github.com/babel/babel
+@babel/helper-annotate-as-pure;babel;;https://github.com/babel/babel
+@babel/plugin-transform-new-target;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-class-static-block;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-optional-catch-binding;babel;;https://github.com/babel/babel
+@babel/helper-optimise-call-expression;babel;;https://github.com/babel/babel
+@babel/plugin-transform-block-scoped-functions;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-unicode-property-regex;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-dynamic-import;babel;;https://github.com/babel/babel
+@babel/plugin-transform-member-expression-literals;babel;;https://github.com/babel/babel
+@babel/plugin-transform-dotall-regex;babel;;https://github.com/babel/babel
+@babel/helper-explode-assignable-expression;babel;;https://github.com/babel/babel
+@babel/plugin-transform-property-literals;babel;;https://github.com/babel/babel
+@babel/helper-create-class-features-plugin;babel;;https://github.com/babel/babel
+@babel/helper-wrap-function;babel;;https://github.com/babel/babel
+@babel/plugin-transform-regenerator;babel;;https://github.com/babel/babel
+@babel/plugin-transform-parameters;babel;;https://github.com/babel/babel
+@babel/plugin-transform-block-scoping;babel;;https://github.com/babel/babel
+@babel/plugin-proposal-private-property-in-object;babel;;https://github.com/babel/babel
+@babel/helper-create-regexp-features-plugin;babel;;https://github.com/babel/babel
+@babel/plugin-transform-named-capturing-groups-regex;babel;;https://github.com/babel/babel
+@babel/compat-data;babel;;https://github.com/babel/babel
 
 @angular/cdk;angular/components;;https://github.com/angular/components
 @angular/google-maps;angular/components;;https://github.com/angular/components
@@ -126,6 +264,12 @@ tomcat-websocket;Apache Tomcat;;
 @capacitor/device;capacitor;;
 @capacitor/electron;capacitor;;
 @capacitor/angular;capacitor;;
+@capacitor/app;capacitor-plugins;;
+@capacitor/filesystem;capacitor-plugins;;
+@capacitor/haptics;capacitor-plugins;;
+@capacitor/keyboard;capacitor-plugins;;
+@capacitor/network;capacitor-plugins;;
+@capacitor/splash-screen;capacitor-plugins;;
 
 hibernate-agroal;hibernate;;
 hibernate-c3p0;hibernate;;
@@ -831,19 +975,6 @@ Microsoft.EntityFrameworkCore.SqlServer;Microsoft.EntityFrameworkCore;;
 Microsoft.EntityFrameworkCore.SqlServer.Design;Microsoft.EntityFrameworkCore;;
 Microsoft.EntityFrameworkCore.Tools;Microsoft.EntityFrameworkCore;;
 
-quarkus-amazon-dynamodb;Quarkus;;
-quarkus-hibernate-validatorl;Quarkus;;
-quarkus-kafka-streamsl;Quarkus;;
-quarkus-micrometerl;Quarkus;;
-quarkus-oidc;Quarkus;;
-quarkus-rest-client-jackson;Quarkus;;
-quarkus-rest-client-mutiny;Quarkus;;
-quarkus-resteasy-jackson;Quarkus;;
-quarkus-resteasy-mutiny;Quarkus;;
-quarkus-smallrye-health;Quarkus;;
-quarkus-smallrye-openapi;Quarkus;;
-quarkus-smallrye-reactive-messaging-kafka;Quarkus;;
-
 @sentry/angular;sentry-javascript;;
 @sentry/browser;sentry-javascript;;
 @sentry/core;sentry-javascript;;
@@ -1062,10 +1193,10 @@ flexmark;flexmark-java;;https://github.com/vsch/flexmark-java
 flexmark-formatter;flexmark-java;;https://github.com/vsch/flexmark-java
 flexmark-ext-gfm-tables;flexmark-java;;https://github.com/vsch/flexmark-java
 flexmark-html-parser;flexmark-java;;https://github.com/vsch/flexmark-java
-spring-data-rest-core;Spring Data Rest
-spring-data-rest-webmvc;Spring Data Rest
-spring-data-rest-distribution;Spring Data Rest
-spring-data-rest-hal-explorer;Spring Data Rest
+spring-data-rest-core;Spring Data Rest;;
+spring-data-rest-webmvc;Spring Data Rest;;
+spring-data-rest-distribution;Spring Data Rest;;
+spring-data-rest-hal-explorer;Spring Data Rest;;
 
 @deck.gl/aggregation-layers;deck.gl;;https://github.com/visgl/deck.gl
 @deck.gl/carto;deck.gl;;https://github.com/visgl/deck.gl
@@ -1261,6 +1392,33 @@ flowable5-compatibility;Flowable;;https://github.com/flowable/flowable-engine
 flowable5-engine;Flowable;;https://github.com/flowable/flowable-engine
 flowable5-spring-compatibility;Flowable;;https://github.com/flowable/flowable-engine
 flowable5-spring;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-autoconfigure;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-app;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-cmmn;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-dmn;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-process;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-ui-admin;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-ui-idm;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-ui-modeler;Flowable;;https://github.com/flowable/flowable-engine
+flowable-spring-boot-starter-ui-task;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-admin-conf;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-admin-frontend;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-admin-logic;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-admin-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-common;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-idm-conf;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-idm-frontend;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-idm-logic;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-idm-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-modeler-conf;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-modeler-frontend;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-modeler-logic;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-modeler-rest;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-task-conf;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-task-frontend;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-task-logic;Flowable;;https://github.com/flowable/flowable-engine
+flowable-ui-task-rest;Flowable;;https://github.com/flowable/flowable-engine
 
 jetty-alpn;Eclipse Jetty;;https://github.com/eclipse/jetty.project
 jetty-annotations;Eclipse Jetty;;https://github.com/eclipse/jetty.project
@@ -1317,22 +1475,1215 @@ maven-scm-managers;Apache Maven SCM;;https://github.com/apache/maven-scm
 maven-scm-plugin;Apache Maven SCM;;https://github.com/apache/maven-scm
 maven-scm-providers;Apache Maven SCM;;https://github.com/apache/maven-scm
 
-netty-buffer;Netty Project;;https://github.com/netty/netty
-netty-codec;Netty Project;;https://github.com/netty/netty
-netty-common;Netty Project;;https://github.com/netty/netty
-netty-handler;Netty Project;;https://github.com/netty/netty
-netty-resolver;Netty Project;;https://github.com/netty/netty
-netty-transport;Netty Project;;https://github.com/netty/netty
-netty-transport-classes-epoll;Netty Project;;https://github.com/netty/netty
-netty-transport-native-epoll;Netty Project;;https://github.com/netty/netty
-netty-transport-native-unix-common;Netty Project;;https://github.com/netty/netty
-
 doxia-core;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-logging-api;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-apt;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-confluence;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-docbook-simple;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-fml;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-markdown;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-twiki;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-xdoc;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-xhtml;Apache Maven Doxia;;https://github.com/apache/maven-doxia
+doxia-module-xhtml5;Apache Maven Doxia;;https://github.com/apache/maven-doxia
 doxia-modules;Apache Maven Doxia;;https://github.com/apache/maven-doxia
 doxia-sink-api;Apache Maven Doxia;;https://github.com/apache/maven-doxia
 
-tomcat-embed-core;Apache Tomcat
-tomcat-embed-el;Apache Tomcat
-tomcat-embed-websocket;Apache Tomcat
+doxia-decoration-model;Apache Maven Doxia Sitetools;;https://github.com/apache/maven-doxia-sitetools/
+doxia-integration-tools;Apache Maven Doxia Sitetools;;https://github.com/apache/maven-doxia-sitetools/
+doxia-site-renderer;Apache Maven Doxia Sitetools;;https://github.com/apache/maven-doxia-sitetools/
+doxia-skin-model;Apache Maven Doxia Sitetools;;https://github.com/apache/maven-doxia-sitetools/
 
-@simpl;???
+tomcat-embed-core;Apache Tomcat;;
+tomcat-embed-el;Apache Tomcat;;
+tomcat-embed-websocket;Apache Tomcat;;
+
+ wildfly-elytron;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-asn1;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-audit;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-auth;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-auth-server;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-auth-server-deprecated;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-auth-server-http;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-auth-server-sasl;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-auth-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-base;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-client;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-credential;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-credential-source-deprecated;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-credential-source-impl;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-credential-store;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-digest;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-encryption;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-basic;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-bearer;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-cert;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-deprecated;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-digest;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-external;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-form;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-oidc;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-spnego;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-sso;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-http-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-jacc;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-jaspi;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-jose-jwk;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-jose-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-json-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-keystore;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-mechanism;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-mechanism-digest;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-mechanism-gssapi;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-mechanism-http;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-mechanism-oauth2;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-mechanism-scram;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-password-impl;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-permission;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-provider-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-realm;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-realm-jdbc;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-realm-ldap;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-realm-token;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-anonymous;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-auth-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-deprecated;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-digest;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-entity;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-external;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-gs2;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-gssapi;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-localuser;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-oauth2;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-otp;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-plain;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-sasl-scram;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-security-manager;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-security-manager-action;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-ssl;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-x500;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-x500-cert;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-x500-cert-acme;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-x500-cert-util;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-x500-deprecated;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+ wildfly-elytron-x500-principal;Wildfly-Elytron;;https://github.com/wildfly-security/wildfly-elytron
+
+ keycloak-admin-cli;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-admin-ui;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-authz-policy-common;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-client-registration-cli;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-common;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-js-adapter;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-kerberos-federation;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-ldap-federation;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-model-infinispan;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-model-jpa;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-quarkus-server;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-quarkus-server-app;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-quarkus-server-deployment;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-saml-core;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-saml-core-public;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-server-spi;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-server-spi-private;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-services;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-sssd-federation;KeyCloak;;https://github.com/keycloak/keycloak		
+ keycloak-themes;KeyCloak;;https://github.com/keycloak/keycloak
+
+apache-mime4j-core;Apache-mime4j;;https://github.com/apache/james-mime4j
+apache-mime4j-dom;Apache-mime4j;;https://github.com/apache/james-mime4j
+apache-mime4j-storage;Apache-mime4j;;https://github.com/apache/james-mime4j
+
+docker-java-api;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-transport;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-transport-httpclient5;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-transport-zerodep;Docker Java;;https://github.com/docker-java/docker-java
+
+ infinispan-cachestore-remote;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-client-hotrod;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-clustered-counter;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-commons;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-core;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-jb-marshalling;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-multimap;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-server-core;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-server-hotrod;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-tasks;Infinispan;;https://github.com/infinispan/infinispan
+ infinispan-tasks-api;Infinispan;;https://github.com/infinispan/infinispan
+
+ jansi-freebsd32;Jansi;;https://github.com/fusesource/jansi	
+ jansi-freebsd64;Jansi;;https://github.com/fusesource/jansi	
+ jansi-linux32;Jansi;;https://github.com/fusesource/jansi	
+ jansi-linux64;Jansi;;https://github.com/fusesource/jansi	
+ jansi-native;Jansi;;https://github.com/fusesource/jansi
+ jansi-osx;Jansi;;https://github.com/fusesource/jansi
+ jansi-windows32;Jansi;;https://github.com/fusesource/jansi
+ jansi-windows64;Jansi;;https://github.com/fusesource/jansi
+
+resteasy-client;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-client-api;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-core;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-core-spi;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-jackson2-provider;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-jaxb-provider;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-multipart-provider;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-reactive;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-reactive-common;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-reactive-common-processor;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-reactive-processor;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-cdi;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-client;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-client-api;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-client-microprofile;Resteasy;;https://github.com/resteasy/resteasy
+resteasy-client-microprofile-base;Resteasy;;https://github.com/resteasy/resteasy
+
+smallrye-common-annotation;Smallrye Common;;https://github.com/smallrye/smallrye-common		
+smallrye-common-classloader;Smallrye Common;;https://github.com/smallrye/smallrye-common		
+smallrye-common-constraint;Smallrye Common;;https://github.com/smallrye/smallrye-common	
+smallrye-common-cpu;Smallrye Common;;https://github.com/smallrye/smallrye-common			
+smallrye-common-expression;Smallrye Common;;https://github.com/smallrye/smallrye-common		
+smallrye-common-function;Smallrye Common;;https://github.com/smallrye/smallrye-common		
+smallrye-common-io;Smallrye Common;;https://github.com/smallrye/smallrye-common		
+smallrye-common-net;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-os;Smallrye Common;;https://github.com/smallrye/smallrye-common		
+smallrye-common-ref;Smallrye Common;;https://github.com/smallrye/smallrye-common	
+smallrye-common-version;Smallrye Common;;https://github.com/smallrye/smallrye-common					
+smallrye-common-vertx-context;Smallrye Common;;https://github.com/smallrye/smallrye-common	
+		
+smallrye-config-common;Smallrye Config;;https://github.com/smallrye/smallrye-config
+smallrye-config-core;Smallrye Config;;https://github.com/smallrye/smallrye-config
+smallrye-config-source-yaml;Smallrye Config;;https://github.com/smallrye/smallrye-config
+
+smallrye-context-propagation;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
+smallrye-context-propagation-api;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
+smallrye-context-propagation-jta;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
+smallrye-context-propagation-storage;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
+	
+smallrye-health;Smallrye Health;;https://github.com/smallrye/smallrye-health		
+smallrye-health-api;Smallrye Health;;https://github.com/smallrye/smallrye-health		
+smallrye-health-provided-checks;Smallrye Health;;https://github.com/smallrye/smallrye-health		
+smallrye-health-ui;Smallrye Health;;https://github.com/smallrye/smallrye-health		
+
+smallrye-mutiny-vertx-auth-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
+smallrye-mutiny-vertx-bridge-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
+smallrye-mutiny-vertx-core;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
+smallrye-mutiny-vertx-runtime;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
+smallrye-mutiny-vertx-web;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
+smallrye-mutiny-vertx-web-client;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
+smallrye-mutiny-vertx-web-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny			
+
+smallrye-reactive-converter-api;Smallrye Reactive Converters;;https://github.com/smallrye/smallrye-reactive-converters
+smallrye-reactive-converter-mutiny;Smallrye Reactive Converters;;https://github.com/smallrye/smallrye-reactive-converters
+
+vertx-web;Vertx Web;;https://github.com/vert-x3/vertx-web
+vertx-web-client;Vertx Web;;https://github.com/vert-x3/vertx-web
+vertx-web-common;Vertx Web;;https://github.com/vert-x3/vertx-web
+
+wagon-file;Apache Maven Wagon;;https://github.com/apache/maven-wagon
+wagon-http;Apache Maven Wagon;;https://github.com/apache/maven-wagon
+wagon-http-shared;Apache Maven Wagon;;https://github.com/apache/maven-wagon
+wagon-provider-api;Apache Maven Wagon;;https://github.com/apache/maven-wagon
+
+kubernetes-client;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-client-api;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-httpclient-okhttp;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-admissionregistration;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-apiextensions;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-apps;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-autoscaling;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-batch;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-certificates;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-common;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-coordination;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-core;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-discovery;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-events;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-extensions;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-flowcontrol;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-gatewayapi;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-metrics;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-networking;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-node;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-policy;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-rbac;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-scheduling;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+kubernetes-model-storageclass;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-client;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-clusterautoscaling;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-console;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-hive;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-installer;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-machine;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-machineconfig;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-miscellaneous;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-monitoring;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-operator;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-operatorhub;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-storageversionmigrator;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-tuned;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+openshift-model-whereabouts;Kubernetes Client;;https://github.com/fabric8io/kubernetes-client
+
+maven-artifact;Maven;;https://github.com/apache/maven
+maven-builder-support;Maven;;https://github.com/apache/maven
+maven-core;Maven;;https://github.com/apache/maven
+maven-embedder;Maven;;https://github.com/apache/maven
+maven-model;Maven;;https://github.com/apache/maven
+maven-model-builder;Maven;;https://github.com/apache/maven
+Maven-Plugin-API;Maven;;https://github.com/apache/maven
+maven-repository-metadata;Maven;;https://github.com/apache/maven
+maven-settings;Maven;;https://github.com/apache/maven
+maven-settings-builder;Maven;;https://github.com/apache/maven
+maven-resolver-provider;Maven;;https://github.com/apache/maven
+
+maven-resolver-api;Maven Resolver;;https://github.com/apache/maven-resolver
+maven-resolver-connector-basic;Maven Resolver;;https://github.com/apache/maven-resolver
+maven-resolver-impl;Maven Resolver;;https://github.com/apache/maven-resolver
+maven-resolver-spi;Maven Resolver;;https://github.com/apache/maven-resolver
+maven-resolver-transport-wagon;Maven Resolver;;https://github.com/apache/maven-resolver
+maven-resolver-util;Maven Resolver;;https://github.com/apache/maven-resolver
+
+sundr-adapter-api;Sundrio;;https://github.com/sundrio/sundrio
+sundr-adapter-apt;Sundrio;;https://github.com/sundrio/sundrio
+sundr-adapter-reflect;Sundrio;;https://github.com/sundrio/sundrio
+sundr-codegen-api;Sundrio;;https://github.com/sundrio/sundrio
+sundr-codegen-apt;Sundrio;;https://github.com/sundrio/sundrio
+sundr-core;Sundrio;;https://github.com/sundrio/sundrio
+sundr-model;Sundrio;;https://github.com/sundrio/sundrio
+sundr-model-base;Sundrio;;https://github.com/sundrio/sundrio
+sundr-model-repo;Sundrio;;https://github.com/sundrio/sundrio
+sundr-model-utils;Sundrio;;https://github.com/sundrio/sundrio
+;;;
+babel-jest;Jest;;https://github.com/facebook/jest
+babel-plugin-jest-hoist;Jest;;https://github.com/facebook/jest
+babel-preset-jest;Jest;;https://github.com/facebook/jest
+diff-sequences;Jest;;https://github.com/facebook/jest
+expect;Jest;;https://github.com/facebook/jest
+jest;Jest;;https://github.com/facebook/jest
+jest-changed-files;Jest;;https://github.com/facebook/jest
+jest-circus;Jest;;https://github.com/facebook/jest
+jest-cli;Jest;;https://github.com/facebook/jest
+jest-config;Jest;;https://github.com/facebook/jest
+@jest/console;Jest;;https://github.com/facebook/jest
+jest-core;Jest;;https://github.com/facebook/jest
+jest-create-cache-key-function;Jest;;https://github.com/facebook/jest
+jest-diff;Jest;;https://github.com/facebook/jest
+jest-docblock;Jest;;https://github.com/facebook/jest
+jest-each;Jest;;https://github.com/facebook/jest
+@jest/environment;Jest;;https://github.com/facebook/jest
+jest-environment-jsdom;Jest;;https://github.com/facebook/jest
+jest-environment-node;Jest;;https://github.com/facebook/jest
+@jest/fake-timers;Jest;;https://github.com/facebook/jest
+jest-get-type;Jest;;https://github.com/facebook/jest
+@jest/globals;Jest;;https://github.com/facebook/jest
+jest-haste-map;Jest;;https://github.com/facebook/jest
+jest-jasmine2;Jest;;https://github.com/facebook/jest
+jest-leak-detector;Jest;;https://github.com/facebook/jest
+jest-matcher-utils;Jest;;https://github.com/facebook/jest
+jest-message-util;Jest;;https://github.com/facebook/jest
+jest-mock;Jest;;https://github.com/facebook/jest
+jest-phabricator;Jest;;https://github.com/facebook/jest
+jest-regex-util;Jest;;https://github.com/facebook/jest
+jest-repl;Jest;;https://github.com/facebook/jest
+@jest/reporters;Jest;;https://github.com/facebook/jest
+jest-resolve;Jest;;https://github.com/facebook/jest
+jest-resolve-dependencies;Jest;;https://github.com/facebook/jest
+jest-runner;Jest;;https://github.com/facebook/jest
+jest-runtime;Jest;;https://github.com/facebook/jest
+jest-serializer;Jest;;https://github.com/facebook/jest
+jest-snapshot;Jest;;https://github.com/facebook/jest
+@jest/source-map;Jest;;https://github.com/facebook/jest
+@jest/test-result;Jest;;https://github.com/facebook/jest
+@jest/test-sequencer;Jest;;https://github.com/facebook/jest
+@jest/transform;Jest;;https://github.com/facebook/jest
+@jest/types;Jest;;https://github.com/facebook/jest
+jest-util;Jest;;https://github.com/facebook/jest
+jest-validate;Jest;;https://github.com/facebook/jest
+jest-watcher;Jest;;https://github.com/facebook/jest
+jest-worker;Jest;;https://github.com/facebook/jest
+pretty-format;Jest;;https://github.com/facebook/jest
+test-utils;Jest;;https://github.com/facebook/jest
+
+Lucene Core;Lucene;;https://github.com/apache/lucene
+lucene-analysis-common;Lucene;;https://github.com/apache/lucene
+lucene-analysis-icu;Lucene;;https://github.com/apache/lucene
+lucene-analyzers-common;Lucene;;https://github.com/apache/lucene
+lucene-backward-codecs;Lucene;;https://github.com/apache/lucene
+lucene-codecs;Lucene;;https://github.com/apache/lucene
+lucene-expressions;Lucene;;https://github.com/apache/lucene
+lucene-grouping;Lucene;;https://github.com/apache/lucene
+lucene-highlighter;Lucene;;https://github.com/apache/lucene
+lucene-join;Lucene;;https://github.com/apache/lucene
+lucene-memory;Lucene;;https://github.com/apache/lucene
+lucene-misc;Lucene;;https://github.com/apache/lucene
+lucene-queryparser;Lucene;;https://github.com/apache/lucene
+lucene-queries;Lucene;;https://github.com/apache/lucene
+lucene-sandbox;Lucene;;https://github.com/apache/lucene
+lucene-spatial3d;Lucene;;https://github.com/apache/lucene
+lucene-spatial-extras;Lucene;;https://github.com/apache/lucene
+lucene-suggest;Lucene;;https://github.com/apache/lucene
+
+agroal-api;Agroal;;https://github.com/agroal/agroal
+agroal-hikari;Agroal;;https://github.com/agroal/agroal
+agroal-narayana;Agroal;;https://github.com/agroal/agroal
+agroal-pool;Agroal;;https://github.com/agroal/agroal
+agroal-spring-boot-starter;Agroal;;https://github.com/agroal/agroal
+agroal-test;Agroal;;https://github.com/agroal/agroal
+
+jdbc;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+postgresql;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+testcontainers;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+database-commons;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+mssqlserver;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+mysql;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+MariaDB;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+oracle-xe;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+Vault;Testcontainers Java;;https://github.com/testcontainers/testcontainers-java
+
+infinispan-remote-query-client;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-server-rest;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-query-dsl;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-server-router;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-jboss-marshalling;Infinispan;;https://github.com/infinispan/infinispan
+
+keycloak-model-map;Keycloak;;https://github.com/keycloak/keycloak
+keycloak-model-legacy-services;Keycloak;;https://github.com/keycloak/keycloak
+keycloak-crypto-default;Keycloak;;https://github.com/keycloak/keycloak
+keycloak-model-map-jpa;Keycloak;;https://github.com/keycloak/keycloak
+keycloak-model-map-hot-rod;Keycloak;;https://github.com/keycloak/keycloak
+keycloak-model-legacy-private;Keycloak;;https://github.com/keycloak/keycloak
+keycloak-config-api;Keycloak;;https://github.com/keycloak/keycloak
+keycloak-model-legacy;Keycloak;;https://github.com/keycloak/keycloak
+
+jboss-marshalling-river;Jboss-marshalling;;https://github.com/jboss-remoting/jboss-marshalling
+jboss-marshalling-osgi;Jboss-marshalling;;https://github.com/jboss-remoting/jboss-marshalling
+jboss-marshalling-serial;Jboss-marshalling;;https://github.com/jboss-remoting/jboss-marshalling
+
+txoj;Narayana;;https://github.com/jbosstm/narayana
+arjuna;Narayana;;https://github.com/jbosstm/narayana
+jdbc;Narayana;;https://github.com/jbosstm/narayana
+narayana-jta;Narayana;;https://github.com/jbosstm/narayana
+COMMON;Narayana;;https://github.com/jbosstm/narayana
+jta;Narayana;;https://github.com/jbosstm/narayana
+cdi;Narayana;;https://github.com/jbosstm/narayana
+narayana-jts-integration;Narayana;;https://github.com/jbosstm/narayana
+jms;Narayana;;https://github.com/jbosstm/narayana
+
+ quarkus-logging-gelf-deployment ;Quarkus;;https://github.com/quarkusio/quarkus
+ quarkus-security;Quarkus;;https://github.com/quarkusio/quarkus
+ quarkus-vault;Quarkus;;https://github.com/quarkusio/quarkus
+ quarkus-vault-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+ quarkus-vault-model;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-agroal;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-agroal-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-agroal-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-amazon-dynamodb;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-apache-httpclient;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-arc;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-arc-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-bootstrap-app-model;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-bootstrap-core;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-bootstrap-gradle-resolver;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-bootstrap-maven-resolver;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-bootstrap-runner;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-builder;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-caffeine;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-caffeine-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-class-change-agent;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-container-image;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-container-image-jib;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-container-image-openshift;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-core;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-core-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-credentials;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-credentials-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-datasource;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-datasource-common;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-datasource-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-datasource-deployment-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-development-mode-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devservices-common;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devservices-h2;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devservices-mariadb;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devservices-mssql;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devservices-mysql;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devservices-oracle;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devservices-postgresql;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-devtools-utilities;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-fts-util;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-hibernate-orm;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-hibernate-orm-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-hibernate-validatorl;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-hibernate-validator-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-http-core;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-http-http-core;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-http-servlet;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jackson;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jackson-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jackson-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jaxrs-spi-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-h2;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-h2-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-mariadb;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-mariadb-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-mssql;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-mssql-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-mysql;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-mysql-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-oracle;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-oracle-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-postgresql;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jdbc-postgresql-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jsonp;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-jsonp-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-junit4-mock;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-kafka-streamsl;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-kubernetes;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-kubernetes-client;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-kubernetes-client-internal;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-kubernetes-service-binding-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-kubernetes-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-local-cache;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-logging-gelf;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-logging-json;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-logging-json-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-micrometerl;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-minikube;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-mutiny;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-mutiny-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-narayana-jta;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-narayana-jta-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-netty;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-netty-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-oidc;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-openshift;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-openshift-client;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-panache-common;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-panache-common-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-panache-hibernate-common;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-panache-hibernate-common-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-reactive-routes;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-reactive-routes-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-rest-client;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-rest-client-config;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-rest-client-jackson;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-rest-client-mutiny;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-common;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-common-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-common-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-jackson;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-jackson-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-mutiny;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-reactive-server-spi-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-reactive-spi-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-server-common;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-server-common-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-resteasy-server-common-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-security-runtime-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-security-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-api-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-context-propagation;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-context-propagation-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-health;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-health-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-health-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-metri;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-metrics;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-metrics-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-metrics-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-metri-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-metri-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-openapi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-openapi-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-smallrye-reactive-messaging-kafka;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-undertow-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vertx;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vertx-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vertx-http;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vertx-http-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vertx-http-deployment-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vertx-http-dev-console-runtime-spi;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vertx-http-dev-console-spi;Quarkus;;https://github.com/quarkusio/quarkus
+
+Netty Project;Netty;;https://github.com/netty/netty
+netty-all;Netty;;https://github.com/netty/netty
+netty-buffer;Netty;;https://github.com/netty/netty
+netty-codec;Netty;;https://github.com/netty/netty
+netty-codec-dns;Netty;;https://github.com/netty/netty
+netty-codec-haproxy;Netty;;https://github.com/netty/netty
+netty-codec-http;Netty;;https://github.com/netty/netty
+netty-codec-http2;Netty;;https://github.com/netty/netty
+netty-codec-memcache;Netty;;https://github.com/netty/netty
+netty-codec-mqtt;Netty;;https://github.com/netty/netty
+netty-codec-redis;Netty;;https://github.com/netty/netty
+netty-codec-smtp;Netty;;https://github.com/netty/netty
+netty-codec-stomp;Netty;;https://github.com/netty/netty
+netty-codec-socks;Netty;;https://github.com/netty/netty
+netty-codec-xml;Netty;;https://github.com/netty/netty
+netty-common;Netty;;https://github.com/netty/netty
+netty-handler;Netty;;https://github.com/netty/netty
+netty-handler-proxy;Netty;;https://github.com/netty/netty
+netty-resolver;Netty;;https://github.com/netty/netty
+netty-transport;Netty;;https://github.com/netty/netty
+netty-transport-classes-epoll;Netty;;https://github.com/netty/netty
+netty-transport-classes-kqueue;Netty;;https://github.com/netty/netty
+netty-transport-native-epoll;Netty;;https://github.com/netty/netty
+netty-transport-native-unix-common;Netty;;https://github.com/netty/netty
+netty-transport-rxtx;Netty;;https://github.com/netty/netty
+netty-transport-sctp;Netty;;https://github.com/netty/netty
+netty-transport-udt;Netty;;https://github.com/netty/netty
+
+libgssapi-krb5-2;krb5;;http://deb.debian.org/debian/pool/main/k/krb5/
+libk5crypto3;krb5;;http://deb.debian.org/debian/pool/main/k/krb5/
+krb5-locales;krb5;;http://deb.debian.org/debian/pool/main/k/krb5/
+libkrb5support0;krb5;;http://deb.debian.org/debian/pool/main/k/krb5/
+libkrb5-3;krb5;;http://deb.debian.org/debian/pool/main/k/krb5/
+
+libgcc-s1;gcc-12-base;;http://deb.debian.org/debian/pool/main/g/gcc-12/
+libstdc++6;gcc-12-base;;http://deb.debian.org/debian/pool/main/g/gcc-12/
+gcc-12-base;gcc-12-base;;http://deb.debian.org/debian/pool/main/g/gcc-12/
+
+libnode108;nodejs;;http://deb.debian.org/debian/pool/main/n/nodejs/
+nodejs;nodejs;;http://deb.debian.org/debian/pool/main/n/nodejs/
+nodejs-doc;nodejs;;http://deb.debian.org/debian/pool/main/n/nodejs/
+
+libsasl2-modules-db;cyrus-sasl-2;;http://deb.debian.org/debian/pool/main/c/cyrus-sasl2/
+libsasl2-modules;cyrus-sasl-2;;http://deb.debian.org/debian/pool/main/c/cyrus-sasl2/
+libsasl2-2;cyrus-sasl-2;;http://deb.debian.org/debian/pool/main/c/cyrus-sasl2/
+
+gpgv;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gpgconf;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gpg-agent;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gpg-wks-server;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gnupg-l10n;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gpg;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gpgsm;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+dirmngr;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gnupg-utils;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gnupg;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+gpg-wks-client;gnupg;;http://deb.debian.org/debian/pool/main/g/gnupg2/
+
+util-linux;util-linux;;https://deb.debian.org/debian/pool/main/u/util-linux
+libuuid1;util-linux;;https://deb.debian.org/debian/pool/main/u/util-linux
+util-linux-extra;util-linux;;https://deb.debian.org/debian/pool/main/u/util-linux
+mount;util-linux;;https://deb.debian.org/debian/pool/main/u/util-linux
+
+libctf-nobfd0;Binutils;;http://deb.debian.org/debian/pool/main/b/binutils/
+libctf-nobfd0;Binutils;;http://deb.debian.org/debian/pool/main/b/binutils/
+binutils-x86-64-linux-gnu;Binutils;;http://deb.debian.org/debian/pool/main/b/binutils/
+binutils-common;Binutils;;http://deb.debian.org/debian/pool/main/b/binutils/
+libctf0;Binutils;;http://deb.debian.org/debian/pool/main/b/binutils/
+libbinutils;Binutils;;http://deb.debian.org/debian/pool/main/b/binutils/
+libgprofng0;Binutils;;http://deb.debian.org/debian/pool/main/b/binutils/
+
+libpython3-stdlib;Python3;;http://deb.debian.org/debian/pool/main/p/python3-defaults/
+python3;Python3;;http://deb.debian.org/debian/pool/main/p/python3-defaults/
+python3-minimal;Python3;;http://deb.debian.org/debian/pool/main/p/python3-defaults/
+
+libncursesw6;ncurses;;http://deb.debian.org/debian/pool/main/n/ncurses/
+ncurses-bin;ncurses;;http://deb.debian.org/debian/pool/main/n/ncurses/
+ncurses-base;ncurses;;http://deb.debian.org/debian/pool/main/n/ncurses/
+libtinfo6;ncurses;;http://deb.debian.org/debian/pool/main/n/ncurses/
+
+jline-style;Jline;;https://github.com/jline/jline3
+jline-reader;Jline;;https://github.com/jline/jline3
+jline-terminal;Jline;;https://github.com/jline/jline3
+jline-terminal-jna;Jline;;https://github.com/jline/jline3
+
+opensaml-messaging-api;opensaml;;
+opensaml-core;opensaml;;
+opensaml-soap-api;opensaml;;
+opensaml-messaging-impl;opensaml;;
+opensaml-soap-impl;opensaml;;
+opensaml-storage-api;opensaml;;
+opensaml-storage-impl;opensaml;;
+opensaml-profile-api;opensaml;;
+opensaml-xmlsec-impl;opensaml;;
+opensaml-saml-impl;opensaml;;
+opensaml-security-impl;opensaml;;
+opensaml-profile-impl;opensaml;;
+opensaml-security-api;opensaml;;
+opensaml-saml-api;opensaml;;
+
+aggregations;Elasticsearch;;https://github.com/elastic/elasticsearch
+aggs-matrix-stats;Elasticsearch;;https://github.com/elastic/elasticsearch
+aggs-matrix-stats-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+analysis-common;Elasticsearch;;https://github.com/elastic/elasticsearch
+data-streams;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-cli;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-core;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-geo;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-grok;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-h3;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-java;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-logging;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-lz4;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-nio;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-plugin-analysis-api;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-plugin-api;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-plugin-classloader;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-rest-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-rest-client-sniffer;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-rest-high-level-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-scripting-painless-spi;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-secure-sm;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-ssl-config;Elasticsearch;;https://github.com/elastic/elasticsearch
+elasticsearch-x-content;Elasticsearch;;https://github.com/elastic/elasticsearch
+ingest-attachment;Elasticsearch;;https://github.com/elastic/elasticsearch
+ingest-common;Elasticsearch;;https://github.com/elastic/elasticsearch
+ingest-geoip;Elasticsearch;;https://github.com/elastic/elasticsearch
+ingest-user-agent;Elasticsearch;;https://github.com/elastic/elasticsearch
+java-version-checker;Elasticsearch;;https://github.com/elastic/elasticsearch
+keystore-cli;Elasticsearch;;https://github.com/elastic/elasticsearch
+kibana;Elasticsearch;;https://github.com/elastic/elasticsearch
+lang-expression;Elasticsearch;;https://github.com/elastic/elasticsearch
+lang-mustache;Elasticsearch;;https://github.com/elastic/elasticsearch
+lang-mustache-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+lang-painless;Elasticsearch;;https://github.com/elastic/elasticsearch
+mapper-extras;Elasticsearch;;https://github.com/elastic/elasticsearch
+mapper-extras-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+parent-join;Elasticsearch;;https://github.com/elastic/elasticsearch
+parent-join-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+percolator;Elasticsearch;;https://github.com/elastic/elasticsearch
+percolator-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+rank-eval;Elasticsearch;;https://github.com/elastic/elasticsearch
+rank-eval-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+reindex;Elasticsearch;;https://github.com/elastic/elasticsearch
+reindex-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+repository-azure;Elasticsearch;;https://github.com/elastic/elasticsearch
+repository-gcs;Elasticsearch;;https://github.com/elastic/elasticsearch
+repository-s3;Elasticsearch;;https://github.com/elastic/elasticsearch
+repository-url;Elasticsearch;;https://github.com/elastic/elasticsearch
+transform;Elasticsearch;;https://github.com/elastic/elasticsearch
+transport-netty4;Elasticsearch;;https://github.com/elastic/elasticsearch
+transport-netty4-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+transport-nio-client;Elasticsearch;;https://github.com/elastic/elasticsearch
+vector-tile;Elasticsearch;;https://github.com/elastic/elasticsearch
+x-pack-core;Elasticsearch;;https://github.com/elastic/elasticsearch
+x-pack-security;Elasticsearch;;https://github.com/elastic/elasticsearch
+
+
+surefire-testng;Surefire;;https://github.com/apache/maven-surefire/
+common-java5;Surefire;;https://github.com/apache/maven-surefire/
+surefire-testng-utils;Surefire;;https://github.com/apache/maven-surefire/
+surefire-logger-api;Surefire;;https://github.com/apache/maven-surefire/
+maven-surefire-report-plugin;Surefire;;https://github.com/apache/maven-surefire/
+surefire-api;Surefire;;https://github.com/apache/maven-surefire/
+surefire-grouper;Surefire;;https://github.com/apache/maven-surefire/
+surefire-report-parser;Surefire;;https://github.com/apache/maven-surefire/
+
+cloudevents-api;CloudEvents;;https://github.com/cloudevents/sdk-java/
+cloudevents-json-jackson;CloudEvents;;https://github.com/cloudevents/sdk-java/
+cloudevents-core;CloudEvents;;https://github.com/cloudevents/sdk-java/
+cloudevents-kafka;CloudEvents;;https://github.com/cloudevents/sdk-java/
+
+flink-cep-scala_2.12;Flink;;https://github.com/apache/flink
+flink-azure-fs-hadoop;Flink;;https://github.com/apache/flink
+flink-cep_2.12;Flink;;https://github.com/apache/flink
+flink-csv;Flink;;https://github.com/apache/flink
+flink-external-resource-gpu;Flink;;https://github.com/apache/flink
+flink-gelly_2.12;Flink;;https://github.com/apache/flink
+flink-gelly-examples_2.12;Flink;;https://github.com/apache/flink
+flink-gelly-scala_2.12;Flink;;https://github.com/apache/flink
+flink-json;Flink;;https://github.com/apache/flink
+flink-metrics-datadog;Flink;;https://github.com/apache/flink
+flink-metrics-graphite;Flink;;https://github.com/apache/flink
+flink-metrics-influxdb;Flink;;https://github.com/apache/flink
+flink-metrics-jmx;Flink;;https://github.com/apache/flink
+flink-metrics-prometheus;Flink;;https://github.com/apache/flink
+flink-metrics-slf4j;Flink;;https://github.com/apache/flink
+flink-metrics-statsd;Flink;;https://github.com/apache/flink
+flink-oss-fs-hadoop;Flink;;https://github.com/apache/flink
+flink-python_2.12;Flink;;https://github.com/apache/flink
+flink-queryable-state-runtime;Flink;;https://github.com/apache/flink
+flink-s3-fs-hadoop;Flink;;https://github.com/apache/flink
+flink-s3-fs-presto;Flink;;https://github.com/apache/flink
+flink-sql-client_2.12;Flink;;https://github.com/apache/flink
+flink-state-processor-api_2.12;Flink;;https://github.com/apache/flink
+flink-table_2.12;Flink;;https://github.com/apache/flink
+
+gremlin-annotations;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-archetype;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-console;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-core;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-dotnet;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-driver;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-go;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-groovy;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-javascript;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-language;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-python;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-server;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-shaded;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlin-tools;Tinkerpop;;https://github.com/apache/tinkerpop
+gremlint;Tinkerpop;;https://github.com/apache/tinkerpop
+hadoop-gremlin;Tinkerpop;;https://github.com/apache/tinkerpop
+neo4j-gremlin;Tinkerpop;;https://github.com/apache/tinkerpop
+spark-gremlin;Tinkerpop;;https://github.com/apache/tinkerpop
+sparql-gremlin;Tinkerpop;;https://github.com/apache/tinkerpop
+tinkergraph-gremlin;Tinkerpop;;https://github.com/apache/tinkerpop
+
+spring-cloud-sleuth-api;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+spring-cloud-sleuth-autoconfigure;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+spring-cloud-sleuth-brave;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+spring-cloud-sleuth-dependencies;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+spring-cloud-sleuth-instrumentation;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+spring-cloud-sleuth-samples;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+spring-cloud-sleuth-zipkin;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+spring-cloud-starter-sleuth;Spring-cloud-sleuth;;https://github.com/spring-cloud/spring-cloud-sleuth
+
+brave-instrumentation-http;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-httpclient;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-mongodb;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-spring-rabbit;Brave;;https://github.com/openzipkin/brave
+brave-context-slf4j;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-messaging;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-httpasyncclient;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-jms;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-kafka-clients;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-rpc;Brave;;https://github.com/openzipkin/brave
+brave-instrumentation-kafka-streams;Brave;;https://github.com/openzipkin/brave
+
+esbuild-android-arm64;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-arm;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-ppc64le;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-64;esbuild;;https://github.com/evanw/esbuild
+esbuild-openbsd-64;esbuild;;https://github.com/evanw/esbuild
+esbuild-wasm;esbuild;;https://github.com/evanw/esbuild
+esbuild-windows-arm64;esbuild;;https://github.com/evanw/esbuild
+esbuild-darwin-64;esbuild;;https://github.com/evanw/esbuild
+esbuild-darwin-arm64;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-s390x;esbuild;;https://github.com/evanw/esbuild
+esbuild-netbsd-64;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-mips64le;esbuild;;https://github.com/evanw/esbuild
+esbuild-freebsd-64;esbuild;;https://github.com/evanw/esbuild
+esbuild-windows-64;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-32;esbuild;;https://github.com/evanw/esbuild
+esbuild-sunos-64;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-riscv64;esbuild;;https://github.com/evanw/esbuild
+esbuild-freebsd-arm64;esbuild;;https://github.com/evanw/esbuild
+esbuild-linux-arm64;esbuild;;https://github.com/evanw/esbuild
+esbuild-windows-32;esbuild;;https://github.com/evanw/esbuild
+
+@webassemblyjs/ast;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/helper-api-error;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/wasm-parser;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/floating-point-hex-parser;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/wast-printer;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/leb128;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/helper-wasm-section;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/wasm-edit;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/utf8;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/ieee754;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/helper-wasm-bytecode;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/helper-buffer;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/helper-numbers;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/wasm-opt;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+@webassemblyjs/wasm-gen;webassemblyjs;;https://github.com/xtuc/webassemblyjs
+
+opentelemetry-api;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-api-logs;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-context;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-extension-aws;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-extension-trace-propagators;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-sdk;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-sdk-common;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-sdk-extension-autoconfigure-spi;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-sdk-logs;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-sdk-metrics;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-sdk-trace;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-semconv;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+
+opentelemetry-instrumentation-api;opentelemetry-java-instrumentation;;https://github.com/open-telemetry/opentelemetry-java-instrumentation
+opentelemetry-instrumentation-api-semconv;opentelemetry-java-instrumentation;;https://github.com/open-telemetry/opentelemetry-java-instrumentation
+opentelemetry-logback-mdc-1.0;opentelemetry-java-instrumentation;;https://github.com/open-telemetry/opentelemetry-java-instrumentation
+
+@material/animation;material-components-web;;https://github.com/material-components/material-components-web
+@material/auto-init;material-components-web;;https://github.com/material-components/material-components-web
+@material/banner;material-components-web;;https://github.com/material-components/material-components-web
+@material/base;material-components-web;;https://github.com/material-components/material-components-web
+@material/button;material-components-web;;https://github.com/material-components/material-components-web
+@material/card;material-components-web;;https://github.com/material-components/material-components-web
+@material/checkbox;material-components-web;;https://github.com/material-components/material-components-web
+@material/chips;material-components-web;;https://github.com/material-components/material-components-web
+@material/circular-progress;material-components-web;;https://github.com/material-components/material-components-web
+@material/data-table;material-components-web;;https://github.com/material-components/material-components-web
+@material/density;material-components-web;;https://github.com/material-components/material-components-web
+@material/dialog;material-components-web;;https://github.com/material-components/material-components-web
+@material/dom;material-components-web;;https://github.com/material-components/material-components-web
+@material/drawer;material-components-web;;https://github.com/material-components/material-components-web
+@material/elevation;material-components-web;;https://github.com/material-components/material-components-web
+@material/fab;material-components-web;;https://github.com/material-components/material-components-web
+@material/feature-targeting;material-components-web;;https://github.com/material-components/material-components-web
+@material/floating-label;material-components-web;;https://github.com/material-components/material-components-web
+@material/focus-ring;material-components-web;;https://github.com/material-components/material-components-web
+@material/form-field;material-components-web;;https://github.com/material-components/material-components-web
+@material/icon-button;material-components-web;;https://github.com/material-components/material-components-web
+@material/image-list;material-components-web;;https://github.com/material-components/material-components-web
+@material/layout-grid;material-components-web;;https://github.com/material-components/material-components-web
+@material/line-ripple;material-components-web;;https://github.com/material-components/material-components-web
+@material/linear-progress;material-components-web;;https://github.com/material-components/material-components-web
+@material/list;material-components-web;;https://github.com/material-components/material-components-web
+@material/menu;material-components-web;;https://github.com/material-components/material-components-web
+@material/menu-surface;material-components-web;;https://github.com/material-components/material-components-web
+@material/notched-outline;material-components-web;;https://github.com/material-components/material-components-web
+@material/progress-indicator;material-components-web;;https://github.com/material-components/material-components-web
+@material/radio;material-components-web;;https://github.com/material-components/material-components-web
+@material/ripple;material-components-web;;https://github.com/material-components/material-components-web
+@material/rtl;material-components-web;;https://github.com/material-components/material-components-web
+@material/segmented-button;material-components-web;;https://github.com/material-components/material-components-web
+@material/select;material-components-web;;https://github.com/material-components/material-components-web
+@material/shape;material-components-web;;https://github.com/material-components/material-components-web
+@material/slider;material-components-web;;https://github.com/material-components/material-components-web
+@material/snackbar;material-components-web;;https://github.com/material-components/material-components-web
+@material/switch;material-components-web;;https://github.com/material-components/material-components-web
+@material/tab;material-components-web;;https://github.com/material-components/material-components-web
+@material/tab-bar;material-components-web;;https://github.com/material-components/material-components-web
+@material/tab-indicator;material-components-web;;https://github.com/material-components/material-components-web
+@material/tab-scroller;material-components-web;;https://github.com/material-components/material-components-web
+@material/textfield;material-components-web;;https://github.com/material-components/material-components-web
+@material/theme;material-components-web;;https://github.com/material-components/material-components-web
+@material/tokens;material-components-web;;https://github.com/material-components/material-components-web
+@material/tooltip;material-components-web;;https://github.com/material-components/material-components-web
+@material/top-app-bar;material-components-web;;https://github.com/material-components/material-components-web
+@material/touch-target;material-components-web;;https://github.com/material-components/material-components-web
+@material/typography;material-components-web;;https://github.com/material-components/material-components-web
+
+
+aws-java-sdk-core;aws-java-sdk;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-s3;aws-java-sdk;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sts;aws-java-sdk;;https://github.com/aws/aws-sdk-java
+jmespath-java;aws-java-sdk;;https://github.com/aws/aws-sdk-java
+
+google-http-client-appengine;google-http-client;;https://github.com/googleapis/google-http-java-client
+google-http-client-gson;google-http-client;;https://github.com/googleapis/google-http-java-client
+google-http-client-jackson2;google-http-client;;https://github.com/googleapis/google-http-java-client
+
+tika-core;Tika;;https://github.com/apache/tika
+tika-langdetect-tika;Tika;;https://github.com/apache/tika
+tika-parser-apple-module;Tika;;https://github.com/apache/tika
+tika-parser-html-module;Tika;;https://github.com/apache/tika
+tika-parser-microsoft-module;Tika;;https://github.com/apache/tika
+tika-parser-miscoffice-module;Tika;;https://github.com/apache/tika
+tika-parser-pdf-module;Tika;;https://github.com/apache/tika
+tika-parser-text-module;Tika;;https://github.com/apache/tika
+tika-parser-xml-module;Tika;;https://github.com/apache/tika
+tika-parser-xmp-commons;Tika;;https://github.com/apache/tika
+tika-parser-zip-commons;Tika;;https://github.com/apache/tika
+
+apm-agent;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-agent-cached-lookup-key;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-agent-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-agent-core;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-agent-plugin-sdk;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-apache-httpclient-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-api-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-asynchttpclient-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-awslambda-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-aws-sdk-1-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-aws-sdk-2-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-aws-sdk-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-cassandra3-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-cassandra4-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-cassandra-core-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-dubbo-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-ecs-logging-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-es-restclient-plugin-5_6;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-es-restclient-plugin-6_4;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-es-restclient-plugin-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-grails-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-grpc-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-hibernate-search-plugin-5_x;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-hibernate-search-plugin-6_x;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-hibernate-search-plugin-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-httpclient-core;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-httpserver-core;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jakarta-websocket-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-java-concurrent-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-javalin-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jaxws-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jboss-logging-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jdbc-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jdk-httpclient-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jdk-httpserver-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jedis-4-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jedis-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jms-plugin-base;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jmx-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jsf-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-jul-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-kafka-base-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-kafka-headers-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-lettuce-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-log4j1-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-log4j2-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-logback-plugin-impl;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-logging-plugin-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-log-shipper-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-micrometer-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-mongoclient-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-okhttp-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-opentelemetry-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-opentracing-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-process-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-profiling-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-quartz-1-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-quartz-2-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-rabbitmq-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-rabbitmq-spring;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-reactor-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-redis-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-redisson-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-scala-concurrent-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-scheduled-annotation-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-servlet-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-slf4j-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-sparkjava-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-spring-resttemplate-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-spring-webclient-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-spring-webflux-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-spring-webmvc-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-struts-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-urlconnection-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-vertx3-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-vertx4-plugin;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+apm-vertx-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+elastic-apm-agent;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+quartz-common;elastic-apm-agent;;https://github.com/elastic/apm-agent-java
+
+@kbn/core-custom-branding-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-elasticsearch-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-logging-common-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-io-ts-utils;Kibana;;https://github.com/elastic/kibana
+x-pack;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-io-ts-list-types;Kibana;;https://github.com/elastic/kibana
+@kbn/health-gateway-server;Kibana;;https://github.com/elastic/kibana
+@kbn/core-saved-objects-utils-server;Kibana;;https://github.com/elastic/kibana
+@kbn/core-saved-objects-server;Kibana;;https://github.com/elastic/kibana
+@kbn/interpreter;Kibana;;https://github.com/elastic/kibana
+@kbn/datemath;Kibana;;https://github.com/elastic/kibana
+@kbn/logging;Kibana;;https://github.com/elastic/kibana
+@kbn/io-ts-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/core-base-common;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-list-constants;Kibana;;https://github.com/elastic/kibana
+@kbn/apm-config-loader;Kibana;;https://github.com/elastic/kibana
+@kbn/cases-components;Kibana;;https://github.com/elastic/kibana
+@kbn/core-status-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/ecs;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-ecs;Kibana;;https://github.com/elastic/kibana
+@kbn/core-saved-objects-import-export-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/core-plugins-server;Kibana;;https://github.com/elastic/kibana
+@kbn/shared-ux-utility;Kibana;;https://github.com/elastic/kibana
+@kbn/ebt-tools;Kibana;;https://github.com/elastic/kibana
+@kbn/core-capabilities-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/rison;Kibana;;https://github.com/elastic/kibana
+@kbn/config;Kibana;;https://github.com/elastic/kibana
+@kbn/config-schema;Kibana;;https://github.com/elastic/kibana
+@kbn/ml-is-populated-object;Kibana;;https://github.com/elastic/kibana
+@kbn/ml-is-defined;Kibana;;https://github.com/elastic/kibana
+Elasticsearch;Kibana;;https://github.com/elastic/kibana
+@kbn/utils;Kibana;;https://github.com/elastic/kibana
+@kbn/core-metrics-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-io-ts-alerting-types;Kibana;;https://github.com/elastic/kibana
+@kbn/core-http-context-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/apm-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/core-doc-links-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-elasticsearch-client-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/field-types;Kibana;;https://github.com/elastic/kibana
+@kbn/ml-string-hash;Kibana;;https://github.com/elastic/kibana
+@kbn/core-analytics-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-http-resources-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-usage-data-base-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/analytics-shippers-elastic-v3-common;Kibana;;https://github.com/elastic/kibana
+@kbn/std;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-list-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/core-config-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-usage-data-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-http-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-rules;Kibana;;https://github.com/elastic/kibana
+@kbn/core-http-server;Kibana;;https://github.com/elastic/kibana
+@kbn/safer-lodash-set;Kibana;;https://github.com/elastic/kibana
+@kbn/server-http-tools;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-es-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/core-http-request-handler-context-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/analytics-client;Kibana;;https://github.com/elastic/kibana
+@kbn/core-plugins-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-list-api;Kibana;;https://github.com/elastic/kibana
+@kbn/crypto-browser;Kibana;;https://github.com/elastic/kibana
+@kbn/aiops-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/core-node-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-execution-context-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/timelion-grammar;Kibana;;https://github.com/elastic/kibana
+@kbn/doc-links;Kibana;;https://github.com/elastic/kibana
+@kbn/server-route-repository;Kibana;;https://github.com/elastic/kibana
+@kbn/core-http-router-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/es-query;Kibana;;https://github.com/elastic/kibana
+@kbn/core-root-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-environment-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/analytics-shippers-elastic-v3-server;Kibana;;https://github.com/elastic/kibana
+@kbn/coloring;Kibana;;https://github.com/elastic/kibana
+@kbn/core-saved-objects-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-preboot-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/plugin-discovery;Kibana;;https://github.com/elastic/kibana
+@kbn/i18n-react;Kibana;;https://github.com/elastic/kibana
+@kbn/rule-data-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/i18n;Kibana;;https://github.com/elastic/kibana
+@kbn/core-base-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-logging-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/ui-theme;Kibana;;https://github.com/elastic/kibana
+@kbn/core-saved-objects-base-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/ui-framework;Kibana;;https://github.com/elastic/kibana
+@kbn/core-rendering-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-application-common;Kibana;;https://github.com/elastic/kibana
+@kbn/crypto;Kibana;;https://github.com/elastic/kibana
+@kbn/ml-query-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/repo-info;Kibana;;https://github.com/elastic/kibana
+@kbn/core-ui-settings-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/securitysolution-io-ts-types;Kibana;;https://github.com/elastic/kibana
+@kbn/ui-shared-deps-npm;Kibana;;https://github.com/elastic/kibana
+@kbn/repo-packages;Kibana;;https://github.com/elastic/kibana
+@kbn/core-i18n-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/tinymath;Kibana;;https://github.com/elastic/kibana
+@kbn/analytics;Kibana;;https://github.com/elastic/kibana
+@kbn/osquery-io-ts-types;Kibana;;https://github.com/elastic/kibana
+@kbn/ui-shared-deps-src;Kibana;;https://github.com/elastic/kibana
+@kbn/monaco;Kibana;;https://github.com/elastic/kibana
+@kbn/user-profile-components;Kibana;;https://github.com/elastic/kibana
+@kbn/core-status-common;Kibana;;https://github.com/elastic/kibana
+@kbn/core-apps-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/slo-schema;Kibana;;https://github.com/elastic/kibana
+@kbn/core-deprecations-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-metrics-collectors-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-saved-objects-migration-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/core-saved-objects-api-server-internal;Kibana;;https://github.com/elastic/kibana
+@kbn/ml-agg-utils;Kibana;;https://github.com/elastic/kibana
+@kbn/es-errors;Kibana;;https://github.com/elastic/kibana
+
+groovy-console;Apache Groovy;;https://archive.apache.org/dist/groovy/
+groovy-templates;Apache Groovy;;https://archive.apache.org/dist/groovy/
+groovy-groovysh;Apache Groovy;;https://archive.apache.org/dist/groovy/
+groovy-jsr223;Apache Groovy;;https://archive.apache.org/dist/groovy/
+groovy-json;Apache Groovy;;https://archive.apache.org/dist/groovy/
+groovy-xml;Apache Groovy;;https://archive.apache.org/dist/groovy/
+groovy-swing;Apache Groovy;;https://archive.apache.org/dist/groovy/
+groovy-cli-picocli;Apache Groovy;;https://archive.apache.org/dist/groovy/
+
+
+
+@turf/along;Turf;;https://github.com/Turfjs/turf
+@turf/angle;Turf;;https://github.com/Turfjs/turf
+@turf/area;Turf;;https://github.com/Turfjs/turf
+@turf/bbox;Turf;;https://github.com/Turfjs/turf
+@turf/bbox-clip;Turf;;https://github.com/Turfjs/turf
+@turf/bbox-polygon;Turf;;https://github.com/Turfjs/turf
+@turf/bearing;Turf;;https://github.com/Turfjs/turf
+@turf/bezier-spline;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-clockwise;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-concave;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-contains;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-crosses;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-disjoint;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-equal;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-intersects;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-overlap;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-parallel;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-point-in-polygon;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-point-on-line;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-touches;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-valid;Turf;;https://github.com/Turfjs/turf
+@turf/boolean-within;Turf;;https://github.com/Turfjs/turf
+@turf/buffer;Turf;;https://github.com/Turfjs/turf
+@turf/center;Turf;;https://github.com/Turfjs/turf
+@turf/center-mean;Turf;;https://github.com/Turfjs/turf
+@turf/center-median;Turf;;https://github.com/Turfjs/turf
+@turf/center-of-mass;Turf;;https://github.com/Turfjs/turf
+@turf/centroid;Turf;;https://github.com/Turfjs/turf
+@turf/circle;Turf;;https://github.com/Turfjs/turf
+@turf/clean-coords;Turf;;https://github.com/Turfjs/turf
+@turf/clone;Turf;;https://github.com/Turfjs/turf
+@turf/clusters;Turf;;https://github.com/Turfjs/turf
+@turf/clusters-dbscan;Turf;;https://github.com/Turfjs/turf
+@turf/clusters-kmeans;Turf;;https://github.com/Turfjs/turf
+@turf/collect;Turf;;https://github.com/Turfjs/turf
+@turf/combine;Turf;;https://github.com/Turfjs/turf
+@turf/concave;Turf;;https://github.com/Turfjs/turf
+@turf/convex;Turf;;https://github.com/Turfjs/turf
+@turf/destination;Turf;;https://github.com/Turfjs/turf
+@turf/difference;Turf;;https://github.com/Turfjs/turf
+@turf/directional-mean;Turf;;https://github.com/Turfjs/turf
+@turf/dissolve;Turf;;https://github.com/Turfjs/turf
+@turf/distance;Turf;;https://github.com/Turfjs/turf
+@turf/distance-weight;Turf;;https://github.com/Turfjs/turf
+@turf/ellipse;Turf;;https://github.com/Turfjs/turf
+@turf/envelope;Turf;;https://github.com/Turfjs/turf
+@turf/explode;Turf;;https://github.com/Turfjs/turf
+@turf/flatten;Turf;;https://github.com/Turfjs/turf
+@turf/flip;Turf;;https://github.com/Turfjs/turf
+@turf/great-circle;Turf;;https://github.com/Turfjs/turf
+@turf/helpers;Turf;;https://github.com/Turfjs/turf
+@turf/hex-grid;Turf;;https://github.com/Turfjs/turf
+@turf/interpolate;Turf;;https://github.com/Turfjs/turf
+@turf/intersect;Turf;;https://github.com/Turfjs/turf
+@turf/invariant;Turf;;https://github.com/Turfjs/turf
+@turf/isobands;Turf;;https://github.com/Turfjs/turf
+@turf/isolines;Turf;;https://github.com/Turfjs/turf
+@turf/kinks;Turf;;https://github.com/Turfjs/turf
+@turf/length;Turf;;https://github.com/Turfjs/turf
+@turf/line-arc;Turf;;https://github.com/Turfjs/turf
+@turf/line-chunk;Turf;;https://github.com/Turfjs/turf
+@turf/line-intersect;Turf;;https://github.com/Turfjs/turf
+@turf/line-offset;Turf;;https://github.com/Turfjs/turf
+@turf/line-overlap;Turf;;https://github.com/Turfjs/turf
+@turf/line-segment;Turf;;https://github.com/Turfjs/turf
+@turf/line-slice;Turf;;https://github.com/Turfjs/turf
+@turf/line-slice-along;Turf;;https://github.com/Turfjs/turf
+@turf/line-split;Turf;;https://github.com/Turfjs/turf
+@turf/line-to-polygon;Turf;;https://github.com/Turfjs/turf
+@turf/mask;Turf;;https://github.com/Turfjs/turf
+@turf/meta;Turf;;https://github.com/Turfjs/turf
+@turf/midpoint;Turf;;https://github.com/Turfjs/turf
+@turf/moran-index;Turf;;https://github.com/Turfjs/turf
+@turf/nearest-neighbor-analysis;Turf;;https://github.com/Turfjs/turf
+@turf/nearest-point;Turf;;https://github.com/Turfjs/turf
+@turf/nearest-point-on-line;Turf;;https://github.com/Turfjs/turf
+@turf/nearest-point-to-line;Turf;;https://github.com/Turfjs/turf
+@turf/planepoint;Turf;;https://github.com/Turfjs/turf
+@turf/point-grid;Turf;;https://github.com/Turfjs/turf
+@turf/point-on-feature;Turf;;https://github.com/Turfjs/turf
+@turf/points-within-polygon;Turf;;https://github.com/Turfjs/turf
+@turf/point-to-line-distance;Turf;;https://github.com/Turfjs/turf
+@turf/polygonize;Turf;;https://github.com/Turfjs/turf
+@turf/polygon-smooth;Turf;;https://github.com/Turfjs/turf
+@turf/polygon-tangents;Turf;;https://github.com/Turfjs/turf
+@turf/polygon-to-line;Turf;;https://github.com/Turfjs/turf
+@turf/projection;Turf;;https://github.com/Turfjs/turf
+@turf/quadrat-analysis;Turf;;https://github.com/Turfjs/turf
+@turf/random;Turf;;https://github.com/Turfjs/turf
+@turf/rectangle-grid;Turf;;https://github.com/Turfjs/turf
+@turf/rewind;Turf;;https://github.com/Turfjs/turf
+@turf/rhumb-bearing;Turf;;https://github.com/Turfjs/turf
+@turf/rhumb-destination;Turf;;https://github.com/Turfjs/turf
+@turf/rhumb-distance;Turf;;https://github.com/Turfjs/turf
+@turf/sample;Turf;;https://github.com/Turfjs/turf
+@turf/sector;Turf;;https://github.com/Turfjs/turf
+@turf/shortest-path;Turf;;https://github.com/Turfjs/turf
+@turf/simplify;Turf;;https://github.com/Turfjs/turf
+@turf/square;Turf;;https://github.com/Turfjs/turf
+@turf/square-grid;Turf;;https://github.com/Turfjs/turf
+@turf/standard-deviational-ellipse;Turf;;https://github.com/Turfjs/turf
+@turf/tag;Turf;;https://github.com/Turfjs/turf
+@turf/tesselate;Turf;;https://github.com/Turfjs/turf
+@turf/tin;Turf;;https://github.com/Turfjs/turf
+@turf/transform-rotate;Turf;;https://github.com/Turfjs/turf
+@turf/transform-scale;Turf;;https://github.com/Turfjs/turf
+@turf/transform-translate;Turf;;https://github.com/Turfjs/turf
+@turf/triangle-grid;Turf;;https://github.com/Turfjs/turf
+@turf/truncate;Turf;;https://github.com/Turfjs/turf
+@turf/union;Turf;;https://github.com/Turfjs/turf
+@turf/unkink-polygon;Turf;;https://github.com/Turfjs/turf
+@turf/voronoi;Turf;;https://github.com/Turfjs/turf
