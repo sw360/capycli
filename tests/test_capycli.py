@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import List
 
 from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component
@@ -20,7 +21,7 @@ class TestCaPyCli(TestBase):
     INPUTFILE2 = "capycli_extra.json"
     OUTPUTFILE = "sbom.json"
 
-    def assert_default_test_bom(self, cx_components: list[Component]) -> None:
+    def assert_default_test_bom(self, cx_components: List[Component]) -> None:
         self.assertEqual(4, len(cx_components))
 
         self.assertEqual("colorama", cx_components[0].name)
@@ -35,7 +36,7 @@ class TestCaPyCli(TestBase):
         self.assertEqual("wheel", cx_components[3].name)
         self.assertEqual("0.34.2", cx_components[3].version)
 
-    def assert_components(self, cx_components: list[Component]) -> None:
+    def assert_components(self, cx_components: List[Component]) -> None:
         self.assertEqual(4, len(cx_components))
 
         self.assertEqual("colorama", cx_components[0].name)

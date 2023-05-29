@@ -9,6 +9,7 @@
 import logging
 import os
 import sys
+from typing import Any, Dict, Optional
 
 import requests
 import sw360.sw360_api
@@ -37,7 +38,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def _find_by_id(self, component: Component) -> dict | None:
+    def _find_by_id(self, component: Component) -> Optional[Dict[str, Any]]:
         sw360id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
         try:
             release_details = self.client.get_release(sw360id)
@@ -60,7 +61,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
 
         return None
 
-    def _find_by_name(self, component: Component) -> dict | None:
+    def _find_by_name(self, component: Component) -> Optional[Dict[str, Any]]:
         try:
             releases = self.client.get_releases_by_name(component.name)
             if not releases:

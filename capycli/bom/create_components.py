@@ -11,7 +11,7 @@ import os
 import re
 import sys
 import tempfile
-from typing import Any
+from typing import Any, Dict
 from urllib.parse import urlparse
 
 import packageurl
@@ -260,7 +260,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_CREATING_COMPONENT)
         return release_new
 
-    def update_release(self, cx_comp: Component, release_data: dict[str, Any]):
+    def update_release(self, cx_comp: Component, release_data: Dict[str, Any]):
         """Update an existing release on SW360
 
         :param item: a single bill of materials item - a release

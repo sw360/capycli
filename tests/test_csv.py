@@ -8,6 +8,7 @@
 
 import io
 import os
+from typing import List
 
 from cyclonedx.model.component import Component
 
@@ -19,7 +20,7 @@ class TestCsv(TestBase):
     INPUTFILE1 = "components.csv"
     OUTPUTFILE = "test_temp.csv"
 
-    def assert_default_test_bom(self, cx_components: list[Component]) -> None:
+    def assert_default_test_bom(self, cx_components: List[Component]) -> None:
         self.assertEqual(4, len(cx_components))
 
         self.assertEqual("colorama", cx_components[0].name)

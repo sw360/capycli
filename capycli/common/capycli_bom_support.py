@@ -13,7 +13,7 @@ import uuid
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Iterable, Optional
+from typing import Any, Dict, Iterable, List, Optional
 
 from cyclonedx.model import (
     AttachedText,
@@ -54,7 +54,7 @@ class ParserMode(Enum):
 
 class SbomJsonParser(BaseParser):
     """Parser to read a CycloneDX SBOM from a JSON file."""
-    def __init__(self, json_content: dict[str, Any], mode: ParserMode = ParserMode.SBOM):
+    def __init__(self, json_content: Dict[str, Any], mode: ParserMode = ParserMode.SBOM):
         super().__init__()
         LOG.debug("Processing CycloneDX data...")
         self.parser_mode = mode
@@ -86,7 +86,7 @@ class SbomJsonParser(BaseParser):
         for component in self._components:
             bom.metadata.component.dependencies.add(component.bom_ref)
 
-    def get_tools(self) -> list[Tool]:
+    def get_tools(self) -> List[Tool]:
         """Get the list of tools read by the parser."""
         return self.metadata.tools
 
@@ -104,7 +104,7 @@ class SbomJsonParser(BaseParser):
 
         return not (serial_number is None or "urn:uuid:None" == serial_number)
 
-    def read_tools(self, param: Iterable[dict[str, Any]]) -> Optional[Iterable[Tool]]:
+    def read_tools(self, param: Iterable[Dict[str, Any]]) -> Optional[Iterable[Tool]]:
         if not param:
             return None
 
@@ -136,7 +136,7 @@ class SbomJsonParser(BaseParser):
 
         return XsUri(uri=param)
 
-    def read_license(self, param: dict[str, Any]) -> Optional[License]:
+    def read_license(self, param: Dict[str, Any]) -> Optional[License]:
         if not param:
             return None
 
@@ -149,7 +149,7 @@ class SbomJsonParser(BaseParser):
             license_url=self.read_url(param.get("url", None)),
         )
 
-    def read_licenses(self, param: Iterable[dict[str, Any]]) -> Optional[Iterable[LicenseChoice]]:
+    def read_licenses(self, param: Iterable[Dict[str, Any]]) -> Optional[Iterable[LicenseChoice]]:
         if not param:
             return None
 
@@ -185,7 +185,7 @@ class SbomJsonParser(BaseParser):
     def read_hash_algorithm(self, param: Any) -> HashAlgorithm:
         return HashAlgorithm(param)
 
-    def read_hashes(self, hashes: Iterable[dict[str, Any]]) -> Optional[Iterable[HashType]]:
+    def read_hashes(self, hashes: Iterable[Dict[str, Any]]) -> Optional[Iterable[HashType]]:
         if not hashes:
             return None
 
@@ -197,7 +197,7 @@ class SbomJsonParser(BaseParser):
                     hash_value=entry["content"]))
         return hash_types
 
-    def read_properties(self, values: Iterable[dict[str, Any]]) -> Optional[Iterable[Property]]:
+    def read_properties(self, values: Iterable[Dict[str, Any]]) -> Optional[Iterable[Property]]:
         if not values:
             return None
 
@@ -215,7 +215,7 @@ class SbomJsonParser(BaseParser):
     def read_external_reference_type(self, value: Any) -> ExternalReferenceType:
         return ExternalReferenceType(value)
 
-    def read_external_references(self, values: Iterable[dict[str, Any]]) -> Optional[Iterable[ExternalReference]]:
+    def read_external_references(self, values: Iterable[Dict[str, Any]]) -> Optional[Iterable[ExternalReference]]:
         if not values:
             return None
 
@@ -230,7 +230,7 @@ class SbomJsonParser(BaseParser):
                 ))
         return ex_refs
 
-    def read_component(self, entry: dict[str, Any]) -> Optional[Component]:
+    def read_component(self, entry: Dict[str, Any]) -> Optional[Component]:
         if not entry:
             return None
 
@@ -476,7 +476,7 @@ class SbomCreator():
         sbom.metadata.properties.add(prop)
 
     @staticmethod
-    def create(bom: list[Component], **kwargs: bool) -> Bom:
+    def create(bom: List[Component], **kwargs: bool) -> Bom:
         sbom = Bom()
 
         if not sbom.metadata.properties:
@@ -618,7 +618,7 @@ class CaPyCliBom():
         LOG.debug("done")
 
     @classmethod
-    def write_simple_sbom(cls, bom: list[Component], outputfile: str) -> None:
+    def write_simple_sbom(cls, bom: List[Component], outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         try:
             creator = SbomCreator()

@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import List
+
 from cyclonedx.model.component import Component
 
 from capycli import LOG
@@ -26,7 +28,7 @@ from capycli.main.exceptions import CaPyCliException
 
 class PlainTextSupport():
     @classmethod
-    def flatlist_to_cdx_components(cls, inputfile: str) -> list[Component]:
+    def flatlist_to_cdx_components(cls, inputfile: str) -> List[Component]:
         """Convert a flat list of components to a list
         of CycloneDX components."""
         bom = []
@@ -55,7 +57,7 @@ class PlainTextSupport():
         return bom
 
     @classmethod
-    def write_cdx_components_as_flatlist(cls, bom: list[Component], outputfile: str) -> None:
+    def write_cdx_components_as_flatlist(cls, bom: List[Component], outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         try:
             with open(outputfile, "w", encoding="utf-8") as fout:
