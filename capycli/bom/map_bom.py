@@ -42,6 +42,7 @@ class MapMode(str, Enum):
     # resulting SBOM shows only components that were not found
     NOT_FOUND = "notfound"
 
+
 class MapBom(capycli.common.script_base.ScriptBase):
     """
     Map a given SBOM to data on SW360
