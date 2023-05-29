@@ -19,6 +19,36 @@
 Python 3 scripts to allow license clearing automation using the
 [SW360](https://github.com/eclipse/sw360) software catalogue.
 
+## What is SW360?
+
+[SW360](https://github.com/eclipse/sw360) is a software component catalogue application designed to
+provide a central place for sharing information about software components used by an organization.
+It is designed to neatly integrate into existing infrastructures related to the management of
+software artifacts and projects by providing separate backend services for distinct tasks and a set
+of portlets to access these services. A complete deployment unit exists (vagrant box or docker
+container) that contains a complete configuration of all services and portlets.
+
+Companies like Cariad, Siemens or Toshiba use SW360 to track their use of third party software components.
+
+## Why CaPyCli?
+
+SW360 is for software developers and software developers love to automate tasks. The SW360 user
+interface is nice if you want to check a project or search for a single component. But if you have
+a project with a JavaScript frontend and hundreds of components, you do not want to add all of them
+manually. You want to be able to determine your software bill of materials (SBOM) and you want to
+map this SBOM to the information that is already available of SW360.
+
+CaPyCli allows you to
+
+* determine your list of dependencies, your software bill of materials (SBOM)
+* determine meta-data for the SBOM items and download source files
+* map an SBOM to the data available on SW360
+* create all missing components and releases
+* create a project that contains all releases of your SBOM
+* track the progress on license compliance checks
+* show information about the project and its releases
+* show information about export control information and security vulnerabilities (if tracked via SW360)
+
 ## Basic Syntax
 
 ```code
@@ -139,7 +169,7 @@ If you are using pipenv, you can create the `requirements.txt` file via
 pipenv lock -r > requirements.txt
 ```
 
-If your dependencies are defined in `setup,py` you may take a look at
+If your dependencies are defined in `setup.py` you may take a look at
 https://dephell.readthedocs.io/cmd-deps-convert.html or
 https://github.com/jazzband/pip-tools#example-usage-for-pip-compile to generate
 a `requirements.txt` file.
