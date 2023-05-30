@@ -169,7 +169,7 @@ parameter `mode`.
   * sw360id = f2d5e8de3f216ab5ef88896f69017441
 
 => One release has been found, for the other releases there was only a match by name  
-=> The output SBOM of `bom map` contains exactly **one** entries.  
+=> The output SBOM of `bom map` contains exactly **one** entry.  
 => The resulting SBOM can be used to create/update a project with only the components
 that have been found on SW360.
 
@@ -194,7 +194,7 @@ that have been found on SW360.
   * sw360id = 95a05a6fff469a1aebe03c0233002fb0
 
 => The output SBOM of `bom map` contains exactly **six** entries.  
-   These are the component that culd not get matched and potential candiates.  
+   These are the component that could not get matched and potential candiates.  
    **Manual intervention is needed: the user needs to decide whether to use one of the existing  
    releases of Tethys.Logging or to force CaPyCLI to create release 1.4.3 which does not
    yet exist.**  

@@ -8,6 +8,7 @@
 
 import json
 import os
+from typing import List
 
 import responses
 import responses.matchers
@@ -43,7 +44,7 @@ def min_json_matcher(check: dict):
     return match
 
 
-def update_release_matcher(releases: list[str]):
+def update_release_matcher(releases: List[str]):
     """
     Matches the updated releases.
 

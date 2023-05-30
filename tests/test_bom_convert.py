@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import List
 
 from capycli.bom.bom_convert import BomConvert
 from capycli.main.result_codes import ResultCode
@@ -131,7 +132,7 @@ class TestBomConvert(TestBase):
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
     @staticmethod
-    def compare_text_files(filename1: str, filename2: str, show_result: bool = False) -> list[str]:
+    def compare_text_files(filename1: str, filename2: str, show_result: bool = False) -> List[str]:
         differences = []
 
         # reading files

@@ -12,6 +12,7 @@ import os
 import pathlib
 import re
 import sys
+from typing import Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
@@ -45,7 +46,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             return None
         return fname[0].rstrip('"').lstrip('"')
 
-    def download_source_file(self, url: str, source_folder: str) -> tuple or None:
+    def download_source_file(self, url: str, source_folder: str) -> Optional[Tuple]:
         """Download a file from a URL.
 
         @params:

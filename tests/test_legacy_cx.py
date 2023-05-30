@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import List
 
 from cyclonedx.model import XsUri
 from cyclonedx.model.bom_ref import BomRef
@@ -21,7 +22,7 @@ class TestLegacyCx(TestBase):
     INPUTFILE1 = "legacy-cx.json"
     OUTPUTFILE = "sbom.json"
 
-    def assert_components(self, cx_components: list[Component]) -> None:
+    def assert_components(self, cx_components: List[Component]) -> None:
         self.assertEqual(4, len(cx_components))
 
         self.assertEqual("colorama", cx_components[0].name)

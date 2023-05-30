@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any
+from typing import Any, Dict, List
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property
 from cyclonedx.model.component import Component
@@ -49,7 +49,7 @@ from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 
 class LegacySupport():
     @staticmethod
-    def get_purl_from_name(item: dict[str, Any]) -> Any:
+    def get_purl_from_name(item: Dict[str, Any]) -> Any:
         """Builds/guesses a package-url from name, version
         and provided language information."""
         lang = "generic"
@@ -67,7 +67,7 @@ class LegacySupport():
         return purl
 
     @staticmethod
-    def get_purl_from_legacy(item: dict[str, Any]) -> Any:
+    def get_purl_from_legacy(item: Dict[str, Any]) -> Any:
         if "RepositoryType" in item:
             if (item["RepositoryType"] == "package-url") or (item["RepositoryType"] == "purl"):
                 id = item.get("RepositoryId", "")
@@ -77,7 +77,7 @@ class LegacySupport():
         return LegacySupport.get_purl_from_name(item)
 
     @staticmethod
-    def legacy_component_to_cdx(item: dict[str, Any]) -> Component:
+    def legacy_component_to_cdx(item: Dict[str, Any]) -> Component:
         """Convert a single CaPyCLI legacy component to a CycloneDX component."""
         purl = LegacySupport.get_purl_from_legacy(item)
         if purl:
@@ -247,7 +247,7 @@ class LegacySupport():
         return cxcomp
 
     @classmethod
-    def legacy_to_cdx_components(cls, inputfile: str) -> list[Component]:
+    def legacy_to_cdx_components(cls, inputfile: str) -> List[Component]:
         """Convert a CaPyCLI legacy  list of components to a list
         of CycloneDX components."""
         LOG.debug(f"Reading from file {inputfile}")
@@ -262,7 +262,7 @@ class LegacySupport():
         return bom
 
     @classmethod
-    def cdx_component_to_legacy(cls, cx_comp: Component) -> dict[str, Any]:
+    def cdx_component_to_legacy(cls, cx_comp: Component) -> Dict[str, Any]:
         lcomp = {}
         lcomp["Name"] = cx_comp.name
         lcomp["Version"] = cx_comp.version or ""
@@ -299,7 +299,7 @@ class LegacySupport():
         return lcomp
 
     @classmethod
-    def write_cdx_components_as_legacy(cls, bom: list[Component], outputfile: str) -> None:
+    def write_cdx_components_as_legacy(cls, bom: List[Component], outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
 
         legacy_bom = []

@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import List
 
 from cyclonedx.model.component import Component
 
@@ -20,7 +21,7 @@ class TestLegacy(TestBase):
     INPUTFILE2 = "legacy_extra.json"
     OUTPUTFILE = "test_temp.json"
 
-    def assert_default_test_bom(self, cx_components: list[Component]) -> None:
+    def assert_default_test_bom(self, cx_components: List[Component]) -> None:
         self.assertEqual(4, len(cx_components))
 
         self.assertEqual("colorama", cx_components[0].name)

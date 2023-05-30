@@ -5,18 +5,49 @@
 
 ![Header_Image](images/Github-social-capycli.png)
 
-# CaPyCli - Clearing Automation Python Command Line Tool
+# CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sw360/capycli/blob/main/License.md)
 [![PyPI](https://shields.io/pypi/v/capycli)](https://pypi.org/project/capycli/)
-[![Python Version](https://img.shields.io/badge/python-3.8%2C3.7%2C3.9%2C3.10-yellow?logo=python)](https://www.python.org/doc/versions/)
+[![Python Version](https://img.shields.io/badge/python-3.8%2C3.9%2C3.10%2C3.11-yellow?logo=python)](https://www.python.org/doc/versions/)
 [![Static Checks](https://github.com/sw360/capycli/actions/workflows/static-checks.yml/badge.svg)](https://github.com/sw360/capycli/actions/workflows/static-checks.yml)
 [![Unit Tests](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/tngraf/c8f15831ecdcf6e86ab2b69cbb2d4f89/raw/df1a91c074c5ee34dc1f0dcf82bc0e76e39b5b4e/capycli-cobertura-coverage.json&color=green)](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml)
 [![SBOM](https://img.shields.io/badge/SBOM-CycloneDX-brightgreen)](https://github.com/tngraf/Tethys.Dgml/blob/master/SBOM/sbom.cyclonedx.xml)
 [![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
 
-Python 3 scripts to allow clearing automation.
+Python 3 scripts to allow license clearing automation using the
+[SW360](https://github.com/eclipse/sw360) software catalogue.
+
+## What is SW360?
+
+[SW360](https://github.com/eclipse/sw360) is a software component catalogue application designed to
+provide a central place for sharing information about software components used by an organization.
+It is designed to neatly integrate into existing infrastructures related to the management of
+software artifacts and projects by providing separate backend services for distinct tasks and a set
+of portlets to access these services. A complete deployment unit exists (vagrant box or docker
+container) that contains a complete configuration of all services and portlets.
+
+Companies like Cariad, Siemens or Toshiba use SW360 to track their use of third party software components.
+
+## Why CaPyCli?
+
+SW360 is for software developers and software developers love to automate tasks. The SW360 user
+interface is nice if you want to check a project or search for a single component. But if you have
+a project with a JavaScript frontend and hundreds of components, you do not want to add all of them
+manually. You want to be able to determine your software bill of materials (SBOM) and you want to
+map this SBOM to the information that is already available of SW360.
+
+CaPyCli allows you to
+
+* determine your list of dependencies, your software bill of materials (SBOM)
+* determine meta-data for the SBOM items and download source files
+* map an SBOM to the data available on SW360
+* create all missing components and releases
+* create a project that contains all releases of your SBOM
+* track the progress on license compliance checks
+* show information about the project and its releases
+* show information about export control information and security vulnerabilities (if tracked via SW360)
 
 ## Basic Syntax
 
@@ -138,7 +169,7 @@ If you are using pipenv, you can create the `requirements.txt` file via
 pipenv lock -r > requirements.txt
 ```
 
-If your dependencies are defined in `setup,py` you may take a look at
+If your dependencies are defined in `setup.py` you may take a look at
 https://dephell.readthedocs.io/cmd-deps-convert.html or
 https://github.com/jazzband/pip-tools#example-usage-for-pip-compile to generate
 a `requirements.txt` file.

@@ -9,6 +9,7 @@
 import os
 import sys
 from enum import Enum
+from typing import Tuple
 
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -60,7 +61,7 @@ class DiffBom(capycli.common.script_base.ScriptBase):
 
         return None
 
-    def compare_boms(self, bom_old: Bom, bom_new: Bom) -> tuple[Bom, Bom]:
+    def compare_boms(self, bom_old: Bom, bom_new: Bom) -> Tuple[Bom, Bom]:
         equal_bom = SbomCreator.create([])
         diff_bom = SbomCreator.create([])
         for comp_old in bom_old.components:

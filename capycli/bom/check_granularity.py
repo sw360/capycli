@@ -6,9 +6,14 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-import importlib.resources
+try:
+    import importlib.resources as pkg_resources
+except ImportError:
+    # Try backported to PY<37 `importlib_resources`.
+    import importlib_resources as pkg_resources
 import os
 import sys
+from typing import List
 
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
@@ -47,8 +52,13 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
         self.granularity_list = []
 
         # read CSV from data resource
-        resources = importlib.resources.files("capycli.data")
-        text_list = (resources / "granularity_list.csv").read_text()
+        # depending on the Python version we need different ways for this
+        if sys.version_info >= (3, 9):
+            resources = pkg_resources.files("capycli.data")
+            text_list = (resources / "granularity_list.csv").read_text()
+        else:
+            text_list = pkg_resources.read_text("capycli.data", "granularity_list.csv")
+
         for line in text_list.splitlines():
             # ignore header (first) line
             if line.startswith("component_name;replacement_name"):
@@ -134,7 +144,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
 
         return component_new
 
-    def merge_duplicates(self, clist: list[Component]) -> list[Component]:
+    def merge_duplicates(self, clist: List[Component]) -> List[Component]:
         """Checks for each release if there are duplicates after granularity check."""
         new_list = []
         for release in clist:

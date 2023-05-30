@@ -9,6 +9,7 @@
 import logging
 import os
 import sys
+from typing import List
 
 import requests
 import sw360
@@ -31,7 +32,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
     def __init__(self, onlyUpdateProject=False):
         self.onlyUpdateProject = onlyUpdateProject
 
-    def bom_to_release_list(self, sbom: Bom) -> list[str]:
+    def bom_to_release_list(self, sbom: Bom) -> List[str]:
         """Creates a list with linked releases"""
         linkedReleases = []
 

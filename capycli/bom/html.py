@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Optional
+from typing import List, Optional
 
 from cyclonedx.model.component import Component
 
@@ -19,7 +19,7 @@ class HtmlConversionSupport():
     @classmethod
     def write_cdx_components_as_html(
             cls,
-            bom: list[Component],
+            bom: List[Component],
             outputfile: str,
             project: Optional[Component]) -> None:
         myhtml = HtmlSupport()

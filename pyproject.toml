@@ -36,7 +36,7 @@ capycli = "capycli.main.cli:main"
 [tool.poetry.dependencies]
 python = "^3.8" # drop support for 3.6 and 3.7 because of wheel and cli-support
 colorama = "^0.4.3"
-requests = "^2.22.0"
+requests = "^2.31.0" # fix CVE-2023-32681 
 packageurl-python = ">0.8, <1.0"
 pyjwt = "^1.7.1"
 openpyxl = "^3.0.3"
@@ -50,6 +50,7 @@ cyclonedx-bom = "^3.11.0"
 tomli = "^2.0.1"
 dateparser = "^1.1.8"
 urllib3 = "1.26.15"
+importlib-resources = "^5.12.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = ">=3.7.8"
