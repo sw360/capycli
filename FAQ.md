@@ -42,3 +42,9 @@ source code. `Granularity` is about have the appropriate data on SW360. At Sieme
 to the the source code granularity, i.e. we have components like `Angular` or `spring-boot`
 and not separate components for `@angular/animations/browser`, `@angular/compiler` or
 `spring-boot-actuator-autoconfigure` and `spring-boot-starter-aop`.
+
+## My Write Token does not work
+
+Depending in your SW360 configuration, your write token might be an **OAuth2 token.**  
+In this case you also have to use the `-oa` switch to tell CaPyCLI that this is
+an OAuth2 token.
