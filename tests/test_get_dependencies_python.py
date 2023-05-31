@@ -11,13 +11,13 @@ import os
 import responses
 
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
-from capycli.dependencies.python import GetPythonDependencies
+from capycli.dependencies.python import GetPythonDependencies, InputFileType
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
 
 
 class TestGetDependenciesPython(TestBase):
-    INPUTFILE = "requirements.txt"
+    INPUTFILE = "poetry.lock"
     INPUTFILE2 = "sbom_with_sw360.json"
     OUTPUTFILE1 = "test_requirements.txt"
     OUTPUTFILE2 = "output.json"
@@ -369,4 +369,48 @@ class TestGetDependenciesPython(TestBase):
         # self.assertTrue("django is not pinned to a specific version. Using: 1.5" in out)
 
         self.delete_file(self.OUTPUTFILE1)
+        self.delete_file(self.OUTPUTFILE2)
+
+    def test_determine_file_type(self):
+        sut = GetPythonDependencies()
+
+        actual = sut.determine_file_type("requirements.txt")
+        self.assertEqual(InputFileType.REQUIREMENTS, actual)
+
+        actual = sut.determine_file_type("poetry.lock")
+        self.assertEqual(InputFileType.POETRY_LOCK, actual)
+
+        # test fallback
+        actual = sut.determine_file_type(".gitignore")
+        self.assertEqual(InputFileType.REQUIREMENTS, actual)
+
+    def test_process_poetry_lock_v2(self):
+        self.delete_file(self.OUTPUTFILE2)
+
+        sut = GetPythonDependencies()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("getdependencies")
+        args.command.append("python")
+        args.inputfile = self.INPUTFILE
+        args.outputfile = self.OUTPUTFILE2
+        args.verbose = True
+        args.debug = True
+        args.search_meta_data = False
+
+        out = self.capture_stdout(sut.run, args)
+        # self.dump_textfile(out, "DUMP.TXT")
+        self.assertTrue("Checking meta-data:" in out)
+        self.assertTrue("cli-support" in out)
+        self.assertTrue(self.OUTPUTFILE2 in out)
+        self.assertTrue("34 components items written to file." in out)
+
+        # ensure that dev dependencies are NOT listed
+        self.assertTrue("flake8" not in out)
+        self.assertTrue("responses" not in out)
+
+        self.assertTrue(os.path.isfile(self.OUTPUTFILE2))
+
         self.delete_file(self.OUTPUTFILE2)
