@@ -12,6 +12,7 @@
 * A list of frequently asked questions has been added.
 * `getdependencies python` now also accepts a Poetry lock file (must be `poetry.lock`) as input.
   Development dependencies are automatically excluded.
+* [Code of conduct](CODE_OF_CONDUCT.md) added.
 
 ## 2.0.0.dev (2023-05-19)
 
