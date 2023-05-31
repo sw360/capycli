@@ -11,13 +11,15 @@ import logging
 import os
 import subprocess
 import sys
+from enum import Enum
 from io import TextIOWrapper
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import chardet
 import requests
 import requirements
-from cyclonedx.model import ExternalReference, ExternalReferenceType, License, LicenseChoice, Property
+import tomli
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, License, LicenseChoice, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -30,6 +32,13 @@ from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
 LOG = get_logger(__name__)
+
+
+class InputFileType(str, Enum):
+    # Python requirements file ("reqquirements.txt"), default
+    REQUIREMENTS = "requirements"
+    # Poetry lock file ("poetry.lock")
+    POETRY_LOCK = "poetry.lock"
 
 
 class GetPythonDependencies(capycli.common.script_base.ScriptBase):
@@ -179,7 +188,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             if homepage:
                 ext_ref = ExternalReference(
                     reference_type=ExternalReferenceType.WEBSITE,
-                    url=homepage)
+                    url=XsUri(homepage))
                 LOG.debug("  got website/homepage")
                 cxcomp.external_references.add(ext_ref)
 
@@ -200,7 +209,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 ext_ref = ExternalReference(
                     reference_type=ExternalReferenceType.DISTRIBUTION,
                     comment="PyPi URL",
-                    url=data)
+                    url=XsUri(data))
                 cxcomp.external_references.add(ext_ref)
                 LOG.debug("  got package url")
 
@@ -212,14 +221,14 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             ext_ref = ExternalReference(
                                 reference_type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                                url=item["filename"])
+                                url=XsUri(item["filename"]))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got binary file")
 
                             ext_ref = ExternalReference(
                                 reference_type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.BINARY_URL_COMMENT,
-                                url=item["url"])
+                                url=XsUri(item["url"]))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got binary file url")
 
@@ -227,14 +236,14 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             ext_ref = ExternalReference(
                                 reference_type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-                                url=item["filename"])
+                                url=XsUri(item["filename"]))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file")
 
                             ext_ref = ExternalReference(
                                 reference_type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
-                                url=item["url"])
+                                url=XsUri(item["url"]))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file url")
 
@@ -283,6 +292,111 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             print_text("  " + package["name"] + ", " + package["version"])
 
         print()
+
+    def determine_file_type(self, filename: str) -> InputFileType:
+        """
+        Try to guess the input file type from the filename.
+
+        Args:
+            filename (str): name of the input file
+
+        Returns:
+            An InputFileType value.
+        """
+        filename = os.path.basename(filename).lower()
+        if filename == "requirements.txt":
+            LOG.debug("Guessing requirements file")
+            return InputFileType.REQUIREMENTS
+
+        if filename == "poetry.lock":
+            data = self.read_poetry_lock_file(filename)
+            if data:
+                LOG.debug("Guessing poetry.lock file")
+                return InputFileType.POETRY_LOCK
+
+        # default
+        LOG.debug("Use default type: requirements file")
+        return InputFileType.REQUIREMENTS
+
+    def read_poetry_lock_file(self, filename: str) -> Dict[str, Any]:
+        """
+        Ready a poetry.lock file, a TOML file.
+
+        Args:
+            filename (str): the filename
+
+        Returns:
+            dict[str, Any]: dictionary
+        """
+        try:
+            with open(filename, "rb") as f:
+                poetry_lock = tomli.load(f)
+
+            return poetry_lock
+        except Exception as ex:
+            LOG.debug("Does not look like a poetry.lock file: " + repr(ex))
+
+        return {}
+
+    def sbom_from_poetry_lock_file(self, filename: str, search_meta_data: bool, package_source: str = "") -> Bom:
+        poetry_lock = self.read_poetry_lock_file(filename)
+        poetry_lock_metadata = poetry_lock['metadata']
+        try:
+            poetry_lock_version = tuple(int(p) for p in str(poetry_lock_metadata["lock-version"]).split("."))
+        except Exception:
+            poetry_lock_version = (0,)
+        LOG.debug(f"poetry_lock_version: {poetry_lock_version}")
+
+        creator = SbomCreator()
+        sbom = creator.create(None, addlicense=True, addprofile=True, addtools=True)
+        for package in poetry_lock["package"]:
+            name = package.get("name", "").strip()
+            version = package.get("version", "").strip()
+            LOG.debug(f"  Processing package: {name}, {version}")
+
+            cat = package.get("category")
+            if cat == "dev":
+                LOG.debug("  Ignoring development dependency")
+                continue
+
+            purl = PackageURL(type="pypi", name=name, version=version).to_string()
+            cxcomp = Component(
+                name=name,
+                version=version,
+                purl=purl,
+                bom_ref=purl,
+                description=package.get("description", "").strip())
+
+            prop = Property(
+                name=CycloneDxSupport.CDX_PROP_LANGUAGE,
+                value="Python")
+            cxcomp.properties.add(prop)
+
+            if search_meta_data:
+                self.add_meta_data_to_bomitem(cxcomp, package_source)
+            else:
+                package_files = package['files'] \
+                    if poetry_lock_version >= (2,) \
+                    else poetry_lock_metadata['files'][package['name']]
+                LOG.debug("  Processing package_files")
+                for file_metadata in package_files:
+                    LOG.debug(f"    Processing file_metadata: {file_metadata}")
+                    try:
+                        cxcomp.external_references.add(ExternalReference(
+                            reference_type=ExternalReferenceType.DISTRIBUTION,
+                            url=XsUri(cxcomp.get_pypi_url()),
+                            # comment=f'Distribution file: {file_metadata["file"]}',
+                            comment=CaPyCliBom.BINARY_URL_COMMENT,
+                            hashes=[HashType.from_composite_str(file_metadata['hash'])]
+                        ))
+                    except Exception as ex:
+                        # IGNORE
+                        LOG.debug("      Ignored error: " + repr(ex))
+                        pass
+
+            sbom.components.add(cxcomp)
+
+        return sbom
 
     def check_meta_data(self, sbom: Bom) -> bool:
         """
@@ -366,14 +480,19 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         self.verbose = args.verbose
 
-        print_text("Reading input file " + args.inputfile)
-        package_list = self.requirements_to_package_list(args.inputfile)
+        datatype = self.determine_file_type(args.inputfile)
+        if datatype == InputFileType.POETRY_LOCK:
+            sbom = self.sbom_from_poetry_lock_file(args.inputfile, args.search_meta_data, args.package_source)
+        else:
+            print_text("Reading input file " + args.inputfile)
+            package_list = self.requirements_to_package_list(args.inputfile)
 
-        if self.verbose:
-            self.print_package_list(package_list)
+            if self.verbose:
+                self.print_package_list(package_list)
 
-        print_text("Formatting package list...")
-        sbom = self.convert_package_list(package_list, args.search_meta_data, args.package_source)
+            print_text("Formatting package list...")
+            sbom = self.convert_package_list(package_list, args.search_meta_data, args.package_source)
+
         self.check_meta_data(sbom)
 
         if self.verbose:

@@ -10,6 +10,8 @@
 * Have an updated granularity list.
 * Re-enable support for Python 3.8 and 3.9.
 * A list of frequently asked questions has been added.
+* `getdependencies python` now also accepts a Poetry lock file (must be `poetry.lock`) as input.
+  Development dependencies are automatically excluded.
 
 ## 2.0.0.dev (2023-05-19)
 
