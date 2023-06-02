@@ -6,6 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import os
 import responses
 from sw360.sw360error import SW360Error
 
@@ -74,6 +75,10 @@ class TestScriptBase(TestBase):
 
     @responses.activate
     def test_login_fails_no_url(self):
+        if os.environ.get("SW360ServerUrl", None):
+            # SW360ServerUrl has a value that would mess up the test
+            return
+
         sut = ScriptBase()
 
         responses.add(
