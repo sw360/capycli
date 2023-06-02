@@ -33,15 +33,11 @@ cli/
 xxsw360/
 xxcli/
 Releases/
-Local_Test/
-
-# unit test output
-tests/cxbom_npm_out1.json
-tests/cxbom_npm_out2.json
-tests/cxbom_npm_out2.xml
 
 # internal stuff
 __internal__/
+_internal_tests_/
+Local_Test/
 
 !SBOM/*.json
 !tests/fixtures/*
