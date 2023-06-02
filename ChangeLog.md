@@ -13,6 +13,7 @@
 * `getdependencies python` now also accepts a Poetry lock file (must be `poetry.lock`) as input.
   Development dependencies are automatically excluded.
 * [Code of conduct](CODE_OF_CONDUCT.md) added.
+* Warnings about multiple purls entries when running `bom map` are now only shown if `-v` has been specified.
 
 ## 2.0.0.dev (2023-05-19)
 

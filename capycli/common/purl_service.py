@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------------------
 # Copyright (c) 2022-2023 Siemens
 # All Rights Reserved.
-# Author: rayk.bajohr@siemens.com
+# Author: rayk.bajohr@siemens.com, thomas.graf@siemens.com
 #
 # SPDX-License-Identifier: MIT
 # ----------

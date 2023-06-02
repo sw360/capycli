@@ -510,7 +510,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         for component in sbom.components:
             if component.purl and len(component.purl) > 8 and component.purl.startswith("pkg:"):
                 purl_types.add(component.purl[4:7])
-        self.external_id_svc.build_purl_cache(purl_types, False)
+        self.external_id_svc.build_purl_cache(purl_types, self.verbosity <= 1)
 
         mapresult: list[MapResult] = []
         for component in sbom.components:
