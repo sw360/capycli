@@ -85,13 +85,40 @@ The input SBOM contains two releases:
 * Tethys.Logging, 1.4.3
   * package-url = pkg:nuget/Tethys.Logging@1.4.2
 
-Run `bom map` command
+### Run `bom map` command
+
+```shell
+capycli bom map -i bom.json --nocache -o bom_mapped.json
+```
 
 Console output
 
 ```shell
-    Found component f2d5e8de3f216ab5ef88896f69016852 via purl for release 0.1.0
-    Found component eaba2f0416e000e8ca5b2ccb4400633e via purl
+Mapping result:
+  Full match by name and version, AbrarJahin.DiffMatchPatch, 0.1.0 => AbrarJahin.DiffMatchPatch, 0.1.0
+  No match, Tethys.Logging, 1.4.3
+
+Total releases    = 2
+  Full matches    = 0
+  Name matches    = 1
+  Similar matches = 0
+  No match        = 1
+
+No unique mapping found - manual action needed!
+```
+
+The contents of the resulting SBOM depends on the optional
+parameters `mode` and `-all`.
+
+### Run `bom map` command, `-all` specified
+
+```shell
+capycli bom map -i bom.json --nocache -o bom_mapped.json -all
+```
+
+Console output
+
+```shell
 
 Mapping result:
   Full match by id, AbrarJahin.DiffMatchPatch, 0.1.0 => AbrarJahin.DiffMatchPatch, 0.1.0, 
@@ -106,10 +133,27 @@ Total releases    = 2
 No unique mapping found - manual action needed!
 ```
 
-The contents of the resulting SBOM dependes on the optional
-parameter `mode`.
+### Contents of the resulting SBOM (`mode` not set, `-all` not set)
 
-### Contents of the resulting SBOM (`mode` not set)
+* AbrarJahin.DiffMatchPatch, 0.1.0
+  * result = 1 (FULL_MATCH_BY_ID, i.e. match by package-url)
+  * sw360id = f2d5e8de3f216ab5ef88896f69017441
+* Tethys.Logging, 1.4.3
+  * result = 100 (NO_MATCH)
+
+=> One release has been found, for the other releases there was no match.
+=> The output SBOM of `bom map` contains exactly **two** entries.  
+
+   This SBOM can get fed into `bom CreateComponents` or `bom CreateReleases` to create
+   the missing release 1.4.3.
+   The updated SBOM of the release creation can then  get used to to create a project
+   on SW360.
+
+ => Done
+
+### Contents of the resulting SBOM (`mode` not set, `-all` set)
+
+CaPyCLI will also report matches per name, but not per version:
 
 * AbrarJahin.DiffMatchPatch, 0.1.0
   * result = 1 (FULL_MATCH_BY_ID, i.e. match by package-url)
@@ -162,7 +206,7 @@ parameter `mode`.
 
  => Done
 
-### Contents of the resulting SBOM (`mode` = 1)
+### Contents of the resulting SBOM (`mode` = "found")
 
 * AbrarJahin.DiffMatchPatch, 0.1.0
   * result = 1 (FULL_MATCH_BY_ID, i.e. match by package-url)
@@ -173,7 +217,15 @@ parameter `mode`.
 => The resulting SBOM can be used to create/update a project with only the components
 that have been found on SW360.
 
-### Contents of the resulting SBOM (`mode` = 2)
+### Contents of the resulting SBOM (`mode` = notfound, `-all` not set)
+
+* Tethys.Logging, 1.4.3
+  * result = 100 (NO_MATCH)
+
+=> The output SBOM of `bom map` contains exactly **one** entry.  
+   This is the single component that could not get matched.  
+
+### Contents of the resulting SBOM (`mode` = notfound, `-all` set)
 
 * Tethys.Logging, 1.4.3
   * result = 100 (NO_MATCH)
