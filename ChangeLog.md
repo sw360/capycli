@@ -14,6 +14,12 @@
   Development dependencies are automatically excluded.
 * [Code of conduct](CODE_OF_CONDUCT.md) added.
 * Warnings about multiple purls entries when running `bom map` are now only shown if `-v` has been specified.
+* breaking change
+  * `bom map` will report matches by name, but different version **only** if `-all` has been specified.
+    The original idea of CaPyCLI was to report as many potential matches as possible and to let the user
+    decide which match to take by editing the SBOM. But it seems that many users did not read the documentation
+    and the expectations were different. Therefore the default behavior has been changed.  
+    The original behavior of versions prior to 2.x can be enabled via the `-all` switch.
 
 ## 2.0.0.dev (2023-05-19)
 

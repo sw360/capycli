@@ -70,6 +70,13 @@ class CapycliTestBomMap(CapycliTestBase):
             purl="pkg:deb/debian/sed@1.1?type=source")
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.NO_MATCH
+        assert res.component_id == "a035"
+        assert len(res.releases) == 0
+
+        # enable name matching
+        self.app.no_match_by_name_only = False
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.MATCH_BY_NAME
         assert res.component_id == "a035"
         assert res.releases[0]["ComponentId"] == "a035"
@@ -212,6 +219,13 @@ class CapycliTestBomMap(CapycliTestBase):
             name="sed",
             version="1.1",
             purl="pkg:deb/debian/sed@1.1?type=source")
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.NO_MATCH
+        assert res.component_id == "a035"
+        assert len(res.releases) == 0
+
+        # enable name matching
+        self.app.no_match_by_name_only = False
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.MATCH_BY_NAME
         assert res.component_id == "a035"
@@ -1372,6 +1386,7 @@ class CapycliTestBomMap(CapycliTestBase):
         args.sw360_token = TestBase.MYTOKEN
         args.sw360_url = TestBase.MYURL
         args.mode = MapMode.FOUND
+        args.all = True
 
         # for login
         self.add_login_response()
@@ -1451,6 +1466,7 @@ class CapycliTestBomMap(CapycliTestBase):
         args.sw360_token = TestBase.MYTOKEN
         args.sw360_url = TestBase.MYURL
         args.mode = MapMode.NOT_FOUND
+        args.all = True
 
         # for login
         self.add_login_response()
@@ -2626,4 +2642,4 @@ class CapycliTestBomMap(CapycliTestBase):
 if __name__ == "__main__":
     APP = CapycliTestBomMap()
     APP.setUp()
-    APP.test_mapping_no_releases_no_cache()
+    APP.test_map_bom_item_nocache_purl_component()

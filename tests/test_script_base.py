@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+
 import responses
 from sw360.sw360error import SW360Error
 

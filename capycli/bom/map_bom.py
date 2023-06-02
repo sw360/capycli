@@ -54,6 +54,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         self.relaxed_debian_parsing = False
         self.mode = MapMode.ALL
         self.purl_service: PurlService = None
+        self.no_match_by_name_only = True
 
     def is_id_match(self, release, component: Component) -> bool:
         """Determines whether this release is a match via identifier for the specified SBOM item"""
@@ -284,9 +285,13 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
             # fifth check: name and ANY version
             if name_match:
-                if self.is_better_match(
-                    result.releases, MapResult.MATCH_BY_NAME
-                ):
+                if self.is_better_match(result.releases, MapResult.MATCH_BY_NAME):
+                    if self.no_match_by_name_only:
+                        nn = release.get("Name", "")
+                        vv = release.get("Version", "")
+                        print_yellow(f"Match by name only found for {nn}, {component.version} => {vv}, but ignored")
+                        continue
+
                     result.releases.clear()
 
                     if self.verbosity > 1:
@@ -464,6 +469,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
                 # fifth check: name and ANY version
                 if self.is_better_match(result.releases, MapResult.MATCH_BY_NAME):
+                    if self.no_match_by_name_only:
+                        nn = release.get("Name", "")
+                        vv = release.get("Version", "")
+                        print_yellow(f"Match by name only found for {nn}, {component.version} => {vv}, but ignored")
+                        continue
+
                     result.releases.clear()
 
                     if self.verbosity > 1:
@@ -900,6 +911,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         print("                          notfound = resulting SBOM shows only components that were not found")
         print("    --dbx                 relaxed Debian version handling: *completely* ignore Debian revision,")
         print("                          so SBOM version 3.1 will match SW360 version 3.1-3.debian")
+        print("    -all                  also report matches for name, but different version")
 
     def run(self, args):
         """Main method()"""
@@ -937,6 +949,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         if args.mode:
             self.mode = args.mode
+
+        if args.all:
+            self.no_match_by_name_only = False
 
         print_text("Loading SBOM file", args.inputfile)
         try:
