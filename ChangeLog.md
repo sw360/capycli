@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: MIT
 -->
 
-# Software Clearing Automation
+# CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.0.0 (2023-06-02)
 
 * Have an updated granularity list.
 * Re-enable support for Python 3.8 and 3.9.
