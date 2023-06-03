@@ -5,6 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* Be more resilient about missing metadata in CycloneDX SBOMs.
+
 ## 2.0.0 (2023-06-02)
 
 * Have an updated granularity list.

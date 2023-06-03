@@ -74,28 +74,43 @@ class SbomJsonParser(BaseParser):
 
         LOG.debug("...done.")
 
-    def get_project(self) -> Component:
+    def get_project(self) -> Optional[Component]:
         """BasesParser not not (always) return a value for
         self.metadata.component. Therefore we have an extra function."""
+        if not self.metadata:
+            return None
+
         return self.metadata.component  # type: ignore
 
     def link_dependencies_to_project(self, bom: Bom) -> None:
+        if not self.metadata:
+            return
+
         if not self.metadata.component:
             return
 
         for component in self._components:
             bom.metadata.component.dependencies.add(component.bom_ref)
 
-    def get_tools(self) -> List[Tool]:
+    def get_tools(self) -> Optional[List[Tool]]:
         """Get the list of tools read by the parser."""
+        if not self.metadata:
+            return
+
         return self.metadata.tools
 
-    def get_metadata_licenses(self) -> SortedSet:
+    def get_metadata_licenses(self) -> Optional[SortedSet]:
         """Get the metadata licenses read by the parser."""
+        if not self.metadata:
+            return
+
         return self.metadata.licenses
 
-    def get_metadata_properties(self) -> SortedSet:
+    def get_metadata_properties(self) -> Optional[SortedSet]:
         """Get the list of metadata properties read by the parser."""
+        if not self.metadata:
+            return
+
         return self.metadata.properties
 
     def is_valid_serial_number(self, serial_number: str) -> bool:
@@ -539,6 +554,9 @@ class SbomWriter():
         file is invalid.
         Mitigation: remove all empty properties.
         """
+        if not sbom.metadata:
+            return
+
         if sbom.metadata.component:
             cls.remove_empty_properties(sbom.metadata.component)
 
