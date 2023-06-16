@@ -38,6 +38,7 @@ Releases/
 __internal__/
 _internal_tests_/
 Local_Test/
+_SoftwareClearing/
 
 !SBOM/*.json
 !tests/fixtures/*

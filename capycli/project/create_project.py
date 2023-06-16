@@ -73,11 +73,12 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             project = self.client.get_project(project_id)
 
             if len(data):
-                print_text(
-                    "  " + str(len(project["_embedded"]["sw360:releases"])) +
-                    " releases in project after update")
-                if len(project["_embedded"]["sw360:releases"]) != len(data):
-                    print_yellow("  You might want to call `project prerequisites` to check difference")
+                if project and "_embedded" in project and "sw360:releases" in project["_embedded"]:
+                    print_text(
+                        "  " + str(len(project["_embedded"]["sw360:releases"])) +
+                        " releases in project after update")
+                    if len(project["_embedded"]["sw360:releases"]) != len(data):
+                        print_yellow("  You might want to call `project prerequisites` to check difference")
 
             if project_info:
                 result = self.client.update_project(project_info, project_id, add_subprojects=self.onlyUpdateProject)
