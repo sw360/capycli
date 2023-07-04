@@ -451,7 +451,7 @@ class SbomCreator():
 
         extref = ExternalReference(
             reference_type=ExternalReferenceType.WEBSITE,
-            url=XsUri("https://code.siemens.com/scpautomation/standard-bom"))
+            url=XsUri("https://code.siemens.com/sbom/standard-bom"))
         tool.external_references.add(extref)
 
         return tool
