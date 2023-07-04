@@ -128,7 +128,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             rid = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
             if not rid:
                 print_red(
-                    + "No SW360 id given for " + cx_comp.name
+                    "No SW360 id given for " + cx_comp.name
                     + ", " + cx_comp.version)
                 continue
 
