@@ -41,6 +41,12 @@ class ShowBom(capycli.common.script_base.ScriptBase):
                 if sw360id:
                     print_text("    SW360 id:" + sw360id)
 
+                download_url = CycloneDxSupport.get_ext_ref_source_file(bomitem)
+                if not download_url:
+                    download_url = CycloneDxSupport.get_ext_ref_source_url(bomitem)
+                if not download_url:
+                    print_yellow("    No download URL given!")
+
         print_text("\n" + str(len(bom.components)) + " items in bill of material\n")
 
     def run(self, args):
