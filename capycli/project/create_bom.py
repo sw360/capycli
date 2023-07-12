@@ -93,10 +93,13 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                 rel_item["Language"] = self.list_to_string(release_details.get("languages", ""))
                 rel_item["SourceCodeDownloadUrl"] = release_details.get("sourceCodeDownloadurl", "")
                 rel_item["BinaryDownloadUrl"] = release_details.get("binaryDownloadurl", "")
-                rel_item["Purl"] = self.get_external_id("purl", release_details)
-                if not rel_item["Purl"]:
+
+                rel_item["RepositoryId"] = self.get_external_id("package-url", release_details)
+                if not rel_item["RepositoryId"]:
                     # try another id name
-                    rel_item["Purl"] = self.get_external_id("package-url", release_details)
+                    rel_item["RepositoryId"] = self.get_external_id("purl", release_details)
+                if rel_item["RepositoryId"]:
+                    rel_item["RepositoryType"] = "package-url"
 
                 if "repository" in release_details:
                     rel_item["Repository"] = release_details["repository"].get("url", "")

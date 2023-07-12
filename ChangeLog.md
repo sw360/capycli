@@ -8,6 +8,7 @@
 ## NEXT
 
 * Be more resilient about missing metadata in CycloneDX SBOMs.
+* `project createbom` uses purl from SW360 if available instead of building it
 
 ## 2.0.0 (2023-06-02)
 

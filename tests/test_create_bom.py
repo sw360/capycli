@@ -126,6 +126,50 @@ class TestCreateBom(TestBase):
             self.assertEqual(ResultCode.RESULT_ERROR_ACCESSING_SW360, ex.code)
 
     @responses.activate
+    def test_project_by_id(self):
+        sut = CreateBom()
+
+        self.add_login_response()
+        sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
+
+        # the project
+        project = self.get_project_for_test()
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/projects/p001",
+            json=project,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # the first release
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/r001",
+            json=self.get_release_wheel_for_test(),
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # the second release
+        release = self.get_release_cli_for_test()
+        # use a specific purl
+        release["externalIds"]["package-url"] = "pkg:deb/debian/cli-support@1.3-1"
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/r002",
+            json=release,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        cdx_bom = sut.create_project_cdx_bom("p001")
+        self.assertEqual(cdx_bom[0].purl, release["externalIds"]["package-url"])
+
+    @responses.activate
     def test_project_show_by_name(self):
         sut = CreateBom()
 
