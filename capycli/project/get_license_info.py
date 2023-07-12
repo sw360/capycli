@@ -161,10 +161,10 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
   -t SW360_TOKEN                 use this token for access to SW360
   -oa,                           this is an oauth2 token
   -url SW360_URL                 use this URL for access to SW360
-  -name                          name of the project, component or release
-  -version                       version of the project, component or release
+  -name                          name of the project
+  -version                       version of the project
   -i INPUTFILE,                  existing configuration file to read from (optional)")
-  -o OUTPUTFILE                  output file to write to
+  -o OUTPUTFILE                  write config file for "project CreateReadme"
   -dest DESTINATION              destination folder
   -ncli, --no-overwrite-cli      do not overwrite existing CLI files
   -nconf, --no-overwrite-config  do not overwrite an existing configuration file
