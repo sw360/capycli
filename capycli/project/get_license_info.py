@@ -206,10 +206,6 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             print_red("No destination folder specified!")
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
-        if not args.outputfile:
-            print_red("No project file specified!")
-            sys.exit(ResultCode.RESULT_COMMAND_ERROR)
-
         if args.inputfile:
             if not os.path.isfile(args.inputfile):
                 print_red("Input file not found!")
@@ -240,7 +236,8 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
 
         print("")
 
-        print_text("  Writing Readme_OSS config file " + args.outputfile)
-        self.write_result(rdm_info, args.outputfile, args.nconf)
+        if args.outputfile:
+            print_text("  Writing Readme_OSS config file " + args.outputfile)
+            self.write_result(rdm_info, args.outputfile, args.nconf)
 
         print_text("\ndone.")
