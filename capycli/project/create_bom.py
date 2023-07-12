@@ -121,6 +121,16 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return bom
 
+    def create_project_cdx_bom(self, project_id) -> list:
+        bom = self.create_project_bom(project_id)
+
+        cdx_components = []
+        for item in bom:
+            cx_comp = LegacySupport.legacy_component_to_cdx(item)
+            cdx_components.append(cx_comp)
+
+        return cdx_components
+
     def show_command_help(self):
         print("\nusage: CaPyCli project createbom [options]")
         print("Options:")
@@ -178,13 +188,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
         if pid:
-            bom = self.create_project_bom(pid)
-
-            cdx_components = []
-            for item in bom:
-                cx_comp = LegacySupport.legacy_component_to_cdx(item)
-                cdx_components.append(cx_comp)
-
-            CaPyCliBom.write_simple_sbom(cdx_components, args.outputfile)
+            bom = self.create_project_cdx_bom(pid)
+            CaPyCliBom.write_simple_sbom(bom, args.outputfile)
         else:
             print_yellow("  No matching project found")
