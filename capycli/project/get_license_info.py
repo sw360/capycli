@@ -163,7 +163,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
   -url SW360_URL                 use this URL for access to SW360
   -name                          name of the project
   -version                       version of the project
-  -i INPUTFILE,                  existing configuration file to read from (optional)")
+  -i INPUTFILE                   existing configuration file to read from (optional)
   -o OUTPUTFILE                  write config file for "project CreateReadme"
   -dest DESTINATION              destination folder
   -ncli, --no-overwrite-cli      do not overwrite existing CLI files
