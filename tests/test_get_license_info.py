@@ -53,22 +53,6 @@ class TestGetLicenseInfo(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_no_output_file(self) -> None:
-        try:
-            sut = GetLicenseInfo()
-
-            # create argparse command line argument object
-            args = AppArguments()
-            args.command = []
-            args.command.append("project")
-            args.command.append("getlicenseinfo")
-            args.destination = ".//cli_files"
-
-            sut.run(args)
-            self.assertTrue(False, "Failed to report missing file")
-        except SystemExit as ex:
-            self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
-
     # @responses.activate
     def test_no_login(self) -> None:
         sut = GetLicenseInfo()

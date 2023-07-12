@@ -161,10 +161,10 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
   -t SW360_TOKEN                 use this token for access to SW360
   -oa,                           this is an oauth2 token
   -url SW360_URL                 use this URL for access to SW360
-  -name                          name of the project, component or release
-  -version                       version of the project, component or release
-  -i INPUTFILE,                  existing configuration file to read from (optional)")
-  -o OUTPUTFILE                  output file to write to
+  -name                          name of the project
+  -version                       version of the project
+  -i INPUTFILE                   existing configuration file to read from (optional)
+  -o OUTPUTFILE                  write config file for "project CreateReadme"
   -dest DESTINATION              destination folder
   -ncli, --no-overwrite-cli      do not overwrite existing CLI files
   -nconf, --no-overwrite-config  do not overwrite an existing configuration file
@@ -206,10 +206,6 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             print_red("No destination folder specified!")
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
-        if not args.outputfile:
-            print_red("No project file specified!")
-            sys.exit(ResultCode.RESULT_COMMAND_ERROR)
-
         if args.inputfile:
             if not os.path.isfile(args.inputfile):
                 print_red("Input file not found!")
@@ -240,7 +236,8 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
 
         print("")
 
-        print_text("  Writing Readme_OSS config file " + args.outputfile)
-        self.write_result(rdm_info, args.outputfile, args.nconf)
+        if args.outputfile:
+            print_text("  Writing Readme_OSS config file " + args.outputfile)
+            self.write_result(rdm_info, args.outputfile, args.nconf)
 
         print_text("\ndone.")
