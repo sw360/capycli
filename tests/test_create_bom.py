@@ -167,7 +167,11 @@ class TestCreateBom(TestBase):
         )
 
         cdx_bom = sut.create_project_cdx_bom("p001")
-        self.assertEqual(cdx_bom[0].purl, release["externalIds"]["package-url"])
+
+        self.assertEqual(cdx_bom.components[0].purl, release["externalIds"]["package-url"])
+        self.assertEqual(cdx_bom.metadata.component.name, project["name"])
+        self.assertEqual(cdx_bom.metadata.component.version, project["version"])
+        self.assertEqual(cdx_bom.metadata.component.description, project["description"])
 
     @responses.activate
     def test_project_show_by_name(self):
