@@ -516,8 +516,18 @@ class SbomCreator():
         if "addtools" in kwargs and kwargs["addtools"]:
             SbomCreator.add_tools(sbom.metadata.tools)
 
+        if "name" in kwargs or "version" in kwargs or "description" in kwargs:
+            sbom.metadata.component = Component(
+                name=kwargs.get("name"),
+                version=kwargs.get("version"),
+                description=kwargs.get("description")
+            )
+
         if bom:
             sbom.components = bom
+            if kwargs.get("addprojectdependencies") and sbom.metadata.component:
+                for component in sbom.components:
+                    sbom.metadata.component.dependencies.add(component.bom_ref)
 
         return sbom
 
