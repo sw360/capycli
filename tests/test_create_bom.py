@@ -170,9 +170,19 @@ class TestCreateBom(TestBase):
         cdx_bom = sut.create_project_cdx_bom("p001")
         cx_comp = cdx_bom.components[0]
         self.assertEqual(cx_comp.purl, release["externalIds"]["package-url"])
-        self.assertEqual(cx_comp.external_references[0].url, release["sourceCodeDownloadurl"])
-        self.assertEqual(cx_comp.external_references[0].type, ExternalReferenceType.DISTRIBUTION)
-        self.assertEqual(cx_comp.external_references[0].comment, CaPyCliBom.SOURCE_URL_COMMENT)
+
+        ext_refs_src_url = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_URL_COMMENT]
+        self.assertEqual(len(ext_refs_src_url), 1)
+        self.assertEqual(ext_refs_src_url[0].url, release["sourceCodeDownloadurl"])
+        self.assertEqual(ext_refs_src_url[0].type, ExternalReferenceType.DISTRIBUTION)
+
+        ext_refs_src_file = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_FILE_COMMENT]
+        self.assertEqual(len(ext_refs_src_file), 1)
+        self.assertEqual(ext_refs_src_file[0].url, release["_embedded"]["sw360:attachments"][0]["filename"])
+        self.assertEqual(ext_refs_src_file[0].type, ExternalReferenceType.DISTRIBUTION)
+        self.assertEqual(ext_refs_src_file[0].hashes[0].alg, "SHA-1")
+        self.assertEqual(ext_refs_src_file[0].hashes[0].content, release["_embedded"]["sw360:attachments"][0]["sha1"])
+
         self.assertEqual(cdx_bom.metadata.component.name, project["name"])
         self.assertEqual(cdx_bom.metadata.component.version, project["version"])
         self.assertEqual(cdx_bom.metadata.component.description, project["description"])

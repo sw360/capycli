@@ -99,13 +99,13 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
                 source_attachment = self.get_attachment("SOURCE", release_details)
                 if source_attachment:
-                    rel_item["SourceCodeFile"] = source_attachment.get("filename", "")
-                    rel_item["SourceCodeFileSha1"] = source_attachment.get("sha1", "")
+                    rel_item["SourceFile"] = source_attachment.get("filename", "")
+                    rel_item["SourceFileHash"] = source_attachment.get("sha1", "")
 
                 binary_attachment = self.get_attachment("BINARY", release_details)
                 if binary_attachment:
                     rel_item["BinaryFile"] = binary_attachment.get("filename", "")
-                    rel_item["BinarySha1"] = binary_attachment.get("sha1", "")
+                    rel_item["BinaryFileHash"] = binary_attachment.get("sha1", "")
 
             except sw360.SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))
