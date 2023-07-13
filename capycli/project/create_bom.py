@@ -14,9 +14,10 @@ import sw360
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.bom.legacy import LegacySupport
-from capycli.common.capycli_bom_support import CaPyCliBom
+from capycli.common.capycli_bom_support import CaPyCliBom, SbomCreator
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from cyclonedx.model.bom import Bom
 
 LOG = get_logger(__name__)
 
@@ -55,15 +56,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return None
 
-    def create_project_bom(self, project_id) -> list:
-        try:
-            project = self.client.get_project(project_id)
-        except sw360.sw360_api.SW360Error as swex:
-            print_red("  ERROR: unable to access project:" + repr(swex))
-            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
-
-        print_text("  Project name: " + project["name"] + ", " + project["version"])
-
+    def create_project_bom(self, project) -> list:
         bom = []
 
         releases = project["_embedded"].get("sw360:releases", [])
@@ -124,15 +117,26 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return bom
 
-    def create_project_cdx_bom(self, project_id) -> list:
-        bom = self.create_project_bom(project_id)
+    def create_project_cdx_bom(self, project_id) -> Bom:
+        try:
+            project = self.client.get_project(project_id)
+        except sw360.sw360_api.SW360Error as swex:
+            print_red("  ERROR: unable to access project:" + repr(swex))
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+        print_text("  Project name: " + project["name"] + ", " + project["version"])
+
+        bom = self.create_project_bom(project)
 
         cdx_components = []
         for item in bom:
             cx_comp = LegacySupport.legacy_component_to_cdx(item)
             cdx_components.append(cx_comp)
 
-        return cdx_components
+        creator = SbomCreator()
+        sbom = creator.create(cdx_components, addlicense=True, addprofile=True, addtools=True)
+
+        return sbom
 
     def show_command_help(self):
         print("\nusage: CaPyCli project createbom [options]")
@@ -192,6 +196,6 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         if pid:
             bom = self.create_project_cdx_bom(pid)
-            CaPyCliBom.write_simple_sbom(bom, args.outputfile)
+            CaPyCliBom.write_sbom(bom, args.outputfile)
         else:
             print_yellow("  No matching project found")
