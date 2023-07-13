@@ -13,6 +13,7 @@ import responses
 from capycli.common.capycli_bom_support import CaPyCliBom
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_bom import CreateBom
+from cyclonedx.model import ExternalReferenceType
 from tests.test_base import AppArguments, TestBase
 
 
@@ -167,8 +168,11 @@ class TestCreateBom(TestBase):
         )
 
         cdx_bom = sut.create_project_cdx_bom("p001")
-
-        self.assertEqual(cdx_bom.components[0].purl, release["externalIds"]["package-url"])
+        cx_comp = cdx_bom.components[0]
+        self.assertEqual(cx_comp.purl, release["externalIds"]["package-url"])
+        self.assertEqual(cx_comp.external_references[0].url, release["sourceCodeDownloadurl"])
+        self.assertEqual(cx_comp.external_references[0].type, ExternalReferenceType.DISTRIBUTION)
+        self.assertEqual(cx_comp.external_references[0].comment, CaPyCliBom.SOURCE_URL_COMMENT)
         self.assertEqual(cdx_bom.metadata.component.name, project["name"])
         self.assertEqual(cdx_bom.metadata.component.version, project["version"])
         self.assertEqual(cdx_bom.metadata.component.description, project["description"])
