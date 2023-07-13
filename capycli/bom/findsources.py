@@ -31,6 +31,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
     def __init__(self):
         self.verbose = False
         self.version_regex = re.compile(r"[\d+\.|_]+[\d+]")
+        self.github_project_name_regex = re.compile(r"^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$")
         self.github_name = None
         self.github_token = None
 
@@ -105,8 +106,12 @@ class FindSources(capycli.common.script_base.ScriptBase):
         """Find a source file URL from repository URL and version information."""
         github_url = github_url.lower()
         if "github.com" not in github_url:
-            print_red("      This is no GitHub URL!")
-            return ""
+            # check if non GitHub URL matches github project name format
+            if self.github_project_name_regex.match(github_url):
+                github_url = "github.com/" + github_url
+            else:
+                print_red("      This is no GitHub URL!")
+                return ""
 
         repo_name = self.get_repo_name(github_url)
 
@@ -173,17 +178,24 @@ class FindSources(capycli.common.script_base.ScriptBase):
             source_url = None
             repository_url = CycloneDxSupport.get_ext_ref_repository(component)
             website = CycloneDxSupport.get_ext_ref_website(component)
+            source_code_url = CycloneDxSupport.get_ext_ref_source_code_url(component)
             if repository_url:
                 if self.verbose:
                     print_text("    Repository URL available:", repository_url)
                 source_url = self.get_github_source_url(
                     repository_url,
                     component.version)
-            elif website:
+            if website and not source_url:
                 if self.verbose:
                     print_text("    Project site URL available:", website)
                 source_url = self.get_github_source_url(
                     website,
+                    component.version)
+            if source_code_url and not source_url:
+                if self.verbose:
+                    print_text("    Repository URL available:", source_code_url)
+                source_url = self.get_github_source_url(
+                    source_code_url,
                     component.version)
 
             if source_url:

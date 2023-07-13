@@ -379,6 +379,15 @@ class CycloneDxSupport():
         return ""
 
     @staticmethod
+    def get_ext_ref_source_code_url(comp: Component) -> Any:
+        for ext_ref in comp.external_references:
+            if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
+                    and (ext_ref.comment is None):
+                return ext_ref.url
+
+        return ""
+
+    @staticmethod
     def get_ext_ref_source_url(comp: Component) -> Any:
         for ext_ref in comp.external_references:
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \

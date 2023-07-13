@@ -98,34 +98,54 @@ class TestFindSources(TestBase):
         self.assertTrue(self.INPUTFILE in out)
         self.assertTrue(self.OUTPUTFILE in out)
         self.assertTrue("Using anonymous GitHub access" in out)
-        self.assertTrue("5 components read from SBOM" in out)
+        self.assertTrue("8 components read from SBOM" in out)
+        self.assertTrue("1 source files were already available" in out)
+        self.assertTrue("5 source file URLs were found" in out)
 
         sbom = CaPyCliBom.read_sbom(args.outputfile)
         self.assertIsNotNone(sbom)
-        self.assertEqual(5, len(sbom.components))
+        self.assertEqual(8, len(sbom.components))
         self.assertEqual("colorama", sbom.components[0].name)
         self.assertEqual("0.4.6", sbom.components[0].version)
         self.assertEqual(
             "https://github.com/tartley/colorama/archive/refs/tags/0.4.6.zip",
             CycloneDxSupport.get_ext_ref_source_url(sbom.components[0]))
 
-        self.assertEqual("python", sbom.components[1].name)
-        self.assertEqual("3.8", sbom.components[1].version)
+        self.assertEqual("into-stream", sbom.components[1].name)
+        self.assertEqual("6.0.0", sbom.components[1].version)
+        self.assertEqual(
+            "https://github.com/sindresorhus/into-stream/archive/refs/tags/v6.0.0.zip",
+            CycloneDxSupport.get_ext_ref_source_url(sbom.components[1]))
 
-        self.assertEqual("something", sbom.components[2].name)
-        self.assertEqual("0.38.4", sbom.components[2].version)
+        self.assertEqual("python", sbom.components[2].name)
+        self.assertEqual("3.8", sbom.components[2].version)
 
-        self.assertEqual("tomli", sbom.components[3].name)
-        self.assertEqual("2.0.1", sbom.components[3].version)
+        self.assertEqual("something", sbom.components[3].name)
+        self.assertEqual("0.38.4", sbom.components[3].version)
+
+        self.assertEqual("tiny-lru", sbom.components[4].name)
+        self.assertEqual("11.0.1", sbom.components[4].version)
+        self.assertEqual(
+            "https://github.com/avoidwork/tiny-lru/archive/refs/tags/11.0.1.zip",
+            CycloneDxSupport.get_ext_ref_source_url(sbom.components[4]))
+
+        self.assertEqual("tomli", sbom.components[5].name)
+        self.assertEqual("2.0.1", sbom.components[5].version)
         self.assertEqual(
             "https://github.com/hukkin/tomli/archive/refs/tags/2.0.1.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[3]))
+            CycloneDxSupport.get_ext_ref_source_url(sbom.components[5]))
 
-        self.assertEqual("wheel", sbom.components[4].name)
-        self.assertEqual("0.38.4", sbom.components[4].version)
+        self.assertEqual("wheel", sbom.components[6].name)
+        self.assertEqual("0.38.4", sbom.components[6].version)
         self.assertEqual(
             "https://github.com/pypa/wheel/archive/refs/tags/0.38.4.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[4]))
+            CycloneDxSupport.get_ext_ref_source_url(sbom.components[6]))
+
+        self.assertEqual("yamljs", sbom.components[7].name)
+        self.assertEqual("0.3.0", sbom.components[7].version)
+        self.assertEqual(
+            "https://github.com/jeremyfa/yaml.js/archive/refs/tags/v0.3.0.zip",
+            CycloneDxSupport.get_ext_ref_source_url(sbom.components[7]))
 
         self.delete_file(args.outputfile)
 
@@ -144,6 +164,18 @@ class TestFindSources(TestBase):
 
         # trailing #readme
         repo = "https://github.com/restsharp/RestSharp#readme"
+        actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
+
+        self.assertEqual("restsharp/RestSharp", actual)
+
+        # prefix git
+        repo = "git://github.com/restsharp/RestSharp#readme"
+        actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
+
+        self.assertEqual("restsharp/RestSharp", actual)
+
+        # prefix git+https
+        repo = "git+https://github.com/restsharp/RestSharp#readme"
         actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
 
         self.assertEqual("restsharp/RestSharp", actual)
