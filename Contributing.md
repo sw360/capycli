@@ -92,8 +92,8 @@ To display console output for ordinary usage of a command line script or program
 use `print()` or our own variants `print_red()` for errors, `print_yellow()` for
 warnings and `print_green()` for (highlighted) positive mesages.
 
-Eents that occur during normal operation of a program (e.g. for status monitoring
-or fault investigation) canuse `logging.info()`. Problems in nested classes shall
+Events that occur during normal operation of a program (e.g. for status monitoring
+or fault investigation) can use `logging.info()`. Problems in nested classes shall
 be reported via `logging.warning()` or `logging.error()`
 
 ## Documentation
