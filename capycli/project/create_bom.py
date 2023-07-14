@@ -10,6 +10,7 @@ import logging
 import sys
 
 import sw360
+from cyclonedx.model.bom import Bom
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -17,7 +18,6 @@ from capycli.bom.legacy import LegacySupport
 from capycli.common.capycli_bom_support import CaPyCliBom, SbomCreator
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
-from cyclonedx.model.bom import Bom
 
 LOG = get_logger(__name__)
 

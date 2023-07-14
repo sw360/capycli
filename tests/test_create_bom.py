@@ -9,11 +9,11 @@
 import os
 
 import responses
+from cyclonedx.model import ExternalReferenceType
 
 from capycli.common.capycli_bom_support import CaPyCliBom
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_bom import CreateBom
-from cyclonedx.model import ExternalReferenceType
 from tests.test_base import AppArguments, TestBase
 
 
