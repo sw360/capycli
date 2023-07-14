@@ -5,7 +5,7 @@
 
 # Contributing to CaPyCLI
 
-We welcome contributions in several forms, e.g.
+We **welcome** contributions in several forms, e.g.
 
 * Improve user documenting
 
@@ -74,6 +74,8 @@ If Flake8 fails, the build fails ... and we probably will not merge your code...
 ```shell
 poetry run pytest
 ```
+
+We should always have unit test that reflect new features or other changes.
 
 ### Building Python package (locally)
 
