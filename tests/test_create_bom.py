@@ -13,6 +13,7 @@ import responses
 from capycli.common.capycli_bom_support import CaPyCliBom
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_bom import CreateBom
+from cyclonedx.model import ExternalReferenceType
 from tests.test_base import AppArguments, TestBase
 
 
@@ -124,6 +125,57 @@ class TestCreateBom(TestBase):
             self.assertTrue(False, "Failed to report login failure")
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_ERROR_ACCESSING_SW360, ex.code)
+
+    @responses.activate
+    def test_project_by_id(self):
+        sut = CreateBom()
+
+        self.add_login_response()
+        sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
+
+        # the project
+        project = self.get_project_for_test()
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/projects/p001",
+            json=project,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # the first release
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/r001",
+            json=self.get_release_wheel_for_test(),
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # the second release
+        release = self.get_release_cli_for_test()
+        # use a specific purl
+        release["externalIds"]["package-url"] = "pkg:deb/debian/cli-support@1.3-1"
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/r002",
+            json=release,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        cdx_bom = sut.create_project_cdx_bom("p001")
+        cx_comp = cdx_bom.components[0]
+        self.assertEqual(cx_comp.purl, release["externalIds"]["package-url"])
+        self.assertEqual(cx_comp.external_references[0].url, release["sourceCodeDownloadurl"])
+        self.assertEqual(cx_comp.external_references[0].type, ExternalReferenceType.DISTRIBUTION)
+        self.assertEqual(cx_comp.external_references[0].comment, CaPyCliBom.SOURCE_URL_COMMENT)
+        self.assertEqual(cdx_bom.metadata.component.name, project["name"])
+        self.assertEqual(cdx_bom.metadata.component.version, project["version"])
+        self.assertEqual(cdx_bom.metadata.component.description, project["description"])
 
     @responses.activate
     def test_project_show_by_name(self):

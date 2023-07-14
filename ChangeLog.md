@@ -8,6 +8,8 @@
 ## NEXT
 
 * Be more resilient about missing metadata in CycloneDX SBOMs.
+* `project createbom` uses source url and purl from SW360 if available
+* `project createbom` adds SW360 project name, version and description to SBOM.
 
 ## 2.0.0 (2023-06-02)
 
