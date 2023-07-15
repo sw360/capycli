@@ -10,12 +10,14 @@ import logging
 import sys
 
 import sw360
+from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
+from cyclonedx.model.component import Component
 
 import capycli.common.script_base
 from capycli import get_logger
-from capycli.bom.legacy import LegacySupport
-from capycli.common.capycli_bom_support import CaPyCliBom, SbomCreator
+from capycli.common.capycli_bom_support import CaPyCliBom, SbomCreator, CycloneDxSupport
+
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -66,46 +68,57 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             href = release["_links"]["self"]["href"]
             state = self.get_clearing_state(project, href)
 
-            rel_item = {}
-            rel_item["Name"] = release["name"]
-            rel_item["Version"] = release["version"]
-            rel_item["ProjectClearingState"] = state
-            rel_item["Id"] = self.client.get_id_from_href(href)
-            rel_item["Sw360Id"] = rel_item["Id"]
-            rel_item["Url"] = (
+            rel_item = Component(name=release["name"], version=release["version"])
+            if state:
+                CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_PROJ_STATE, state)
+
+            sw360_id = self.client.get_id_from_href(href)
+            CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_SW360ID, sw360_id)
+
+            CycloneDxSupport.set_property(
+                rel_item,
+                CycloneDxSupport.CDX_PROP_SW360_URL,
                 self.sw360_url
                 + "group/guest/components/-/component/release/detailRelease/"
-                + self.client.get_id_from_href(href))
+                + sw360_id)
 
             try:
                 release_details = self.client.get_release_by_url(href)
-                # capycli.common.json_support.print_json(release_details)
-                rel_item["ClearingState"] = release_details["clearingState"]
-                rel_item["ReleaseMainlineState"] = release_details.get("mainlineState", "")
 
-                rel_item["Language"] = self.list_to_string(release_details.get("languages", ""))
-                rel_item["SourceFileUrl"] = release_details.get("sourceCodeDownloadurl", "")
-                rel_item["BinaryFileUrl"] = release_details.get("binaryDownloadurl", "")
-
-                rel_item["RepositoryId"] = self.get_external_id("package-url", release_details)
-                if not rel_item["RepositoryId"]:
+                purl = self.get_external_id("package-url", release_details)
+                if not purl:
                     # try another id name
-                    rel_item["RepositoryId"] = self.get_external_id("purl", release_details)
-                if rel_item["RepositoryId"]:
-                    rel_item["RepositoryType"] = "package-url"
+                    purl = self.get_external_id("purl", release_details)
+                if purl:
+                    rel_item.purl = purl
 
-                if "repository" in release_details:
-                    rel_item["RepositoryUrl"] = release_details["repository"].get("url", "")
+                for key, property in (("clearingState", CycloneDxSupport.CDX_PROP_CLEARING_STATE),
+                                      ("mainlineState", CycloneDxSupport.CDX_PROP_REL_STATE)):
+                    if key in release_details and release_details[key]:
+                        CycloneDxSupport.set_property(rel_item, property, release_details[key])
 
-                source_attachment = self.get_attachment("SOURCE", release_details)
-                if source_attachment:
-                    rel_item["SourceFile"] = source_attachment.get("filename", "")
-                    rel_item["SourceFileHash"] = source_attachment.get("sha1", "")
+                if "languages" in release_details and release_details["languages"]:
+                    languages = self.list_to_string(release_details["languages"])
+                    CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_LANGUAGE, languages)
 
-                binary_attachment = self.get_attachment("BINARY", release_details)
-                if binary_attachment:
-                    rel_item["BinaryFile"] = binary_attachment.get("filename", "")
-                    rel_item["BinaryFileHash"] = binary_attachment.get("sha1", "")
+                for key, comment in (("sourceCodeDownloadurl", CaPyCliBom.SOURCE_URL_COMMENT),
+                                     ("binaryDownloadurl", CaPyCliBom.BINARY_URL_COMMENT)):
+                    if key in release_details and release_details[key]:
+                        # add hash from attachment (see below) also here if same filename?
+                        CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
+                                                     comment, release_details[key])
+
+                if "repository" in release_details and "url" in release_details["repository"]:
+                    CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment=None,
+                                                 value=release_details["repository"]["url"])
+
+                for at_type, comment in (("SOURCE", CaPyCliBom.SOURCE_FILE_COMMENT),
+                                         ("BINARY", CaPyCliBom.BINARY_FILE_COMMENT)):
+                    attachment = self.get_attachment(at_type, release_details)
+                    if attachment:
+                        CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
+                                                     comment, attachment["filename"],
+                                                     HashAlgorithm.SHA_1, attachment.get("sha1"))
 
             except sw360.SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))
@@ -126,12 +139,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         print_text("  Project name: " + project["name"] + ", " + project["version"])
 
-        bom = self.create_project_bom(project)
-
-        cdx_components = []
-        for item in bom:
-            cx_comp = LegacySupport.legacy_component_to_cdx(item)
-            cdx_components.append(cx_comp)
+        cdx_components = self.create_project_bom(project)
 
         creator = SbomCreator()
         sbom = creator.create(cdx_components, addlicense=True, addprofile=True, addtools=True,

@@ -299,6 +299,11 @@ class CycloneDxSupport():
         return None
 
     @staticmethod
+    def set_property(comp: Component, name: str, value: str) -> None:
+        """Sets the property with the given name."""
+        comp.properties.add(Property(name=name, value=value))
+
+    @staticmethod
     def update_or_set_property(comp: Component, name: str, value: str) -> None:
         """Returns the property with the given name."""
         prop = None
@@ -310,7 +315,7 @@ class CycloneDxSupport():
         if prop:
             prop.value = value
         else:
-            comp.properties.add(Property(name=name, value=value))
+            CycloneDxSupport.set_property(comp, name, value)
 
     @staticmethod
     def remove_property(comp: Component, name: str) -> None:
@@ -338,6 +343,21 @@ class CycloneDxSupport():
         return None
 
     @staticmethod
+    def set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str,
+                    hash_algo: str = None, hash: str = None) -> None:
+        ext_ref = ExternalReference(
+            reference_type=type,
+            url=value,
+            comment=comment)
+
+        if hash_algo and hash:
+            ext_ref.hashes.add(HashType(
+                algorithm=HashAlgorithm.SHA_1,
+                hash_value=hash))
+
+        comp.external_references.add(ext_ref)
+
+    @staticmethod
     def update_or_set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str) -> None:
         ext_ref = None
         for er in comp.external_references:
@@ -348,11 +368,7 @@ class CycloneDxSupport():
         if ext_ref:
             ext_ref.url = value
         else:
-            ext_ref = ExternalReference(
-                reference_type=type,
-                url=value,
-                comment=comment)
-            comp.external_references.add(ext_ref)
+            CycloneDxSupport.set_ext_ref(comp, type, comment, value)
 
     @staticmethod
     def get_ext_ref_by_comment(comp: Component, comment: str) -> Any:
