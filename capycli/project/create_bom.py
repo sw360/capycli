@@ -66,21 +66,6 @@ class CreateBom(capycli.common.script_base.ScriptBase):
         for release in releases:
             print_text("   ", release["name"], release["version"])
             href = release["_links"]["self"]["href"]
-            state = self.get_clearing_state(project, href)
-
-            rel_item = Component(name=release["name"], version=release["version"])
-            if state:
-                CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_PROJ_STATE, state)
-
-            sw360_id = self.client.get_id_from_href(href)
-            CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_SW360ID, sw360_id)
-
-            CycloneDxSupport.set_property(
-                rel_item,
-                CycloneDxSupport.CDX_PROP_SW360_URL,
-                self.sw360_url
-                + "group/guest/components/-/component/release/detailRelease/"
-                + sw360_id)
 
             try:
                 release_details = self.client.get_release_by_url(href)
@@ -89,8 +74,11 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                 if not purl:
                     # try another id name
                     purl = self.get_external_id("purl", release_details)
+
                 if purl:
-                    rel_item.purl = purl
+                    rel_item = Component(name=release["name"], version=release["version"], purl=purl, bom_ref=purl)
+                else:
+                    rel_item = Component(name=release["name"], version=release["version"])
 
                 for key, property in (("clearingState", CycloneDxSupport.CDX_PROP_CLEARING_STATE),
                                       ("mainlineState", CycloneDxSupport.CDX_PROP_REL_STATE)):
@@ -123,6 +111,20 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             except sw360.SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+            state = self.get_clearing_state(project, href)
+            if state:
+                CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_PROJ_STATE, state)
+
+            sw360_id = self.client.get_id_from_href(href)
+            CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_SW360ID, sw360_id)
+
+            CycloneDxSupport.set_property(
+                rel_item,
+                CycloneDxSupport.CDX_PROP_SW360_URL,
+                self.sw360_url
+                + "group/guest/components/-/component/release/detailRelease/"
+                + sw360_id)
 
             bom.append(rel_item)
 
