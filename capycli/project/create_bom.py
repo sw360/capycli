@@ -95,7 +95,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                     rel_item["RepositoryType"] = "package-url"
 
                 if "repository" in release_details:
-                    rel_item["Repository"] = release_details["repository"].get("url", "")
+                    rel_item["RepositoryUrl"] = release_details["repository"].get("url", "")
 
                 source_attachment = self.get_attachment("SOURCE", release_details)
                 if source_attachment:

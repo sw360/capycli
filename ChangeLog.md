@@ -10,7 +10,7 @@
 * Be more resilient about missing metadata in CycloneDX SBOMs.
 * The `-o` parameter of the command `project GetLicenseInfo` is now optional.
   But you still need this output when you want to create a Readme.
-* `project createbom` uses source url and purl from SW360 if available
+* `project createbom` add purl, source and repository url from SW360 if available
 * `project createbom` adds first SW360 source attachment of each releases as external reference to SBOM.
 * `project createbom` adds SW360 project name, version and description to SBOM.
 

@@ -183,6 +183,10 @@ class TestCreateBom(TestBase):
         self.assertEqual(ext_refs_src_file[0].hashes[0].alg, "SHA-1")
         self.assertEqual(ext_refs_src_file[0].hashes[0].content, release["_embedded"]["sw360:attachments"][0]["sha1"])
 
+        ext_refs_vcs = [e for e in cx_comp.external_references if e.type == ExternalReferenceType.VCS]
+        self.assertEqual(len(ext_refs_vcs), 1)
+        self.assertEqual(ext_refs_vcs[0].url, release["repository"]["url"])
+
         self.assertEqual(cdx_bom.metadata.component.name, project["name"])
         self.assertEqual(cdx_bom.metadata.component.version, project["version"])
         self.assertEqual(cdx_bom.metadata.component.description, project["description"])
