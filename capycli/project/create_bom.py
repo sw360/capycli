@@ -9,6 +9,8 @@
 import logging
 import sys
 
+from typing import List, Tuple
+
 import sw360
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
@@ -34,20 +36,21 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return release_details["externalIds"].get(name, "")
 
-    def get_attachment(self, att_type: str, release_details: dict) -> dict:
-        """Returns the first attachment with the given type or None."""
+    def get_attachments(self, att_types: Tuple[str], release_details: dict) -> List[dict]:
+        """Returns the attachments with the given types or empty list."""
         if "_embedded" not in release_details:
             return None
 
         if "sw360:attachments" not in release_details["_embedded"]:
             return None
 
+        found = []
         attachments = release_details["_embedded"]["sw360:attachments"]
         for attachment in attachments:
-            if attachment["attachmentType"] == att_type:
-                return attachment
+            if attachment["attachmentType"] in att_types:
+                found.append(attachment)
 
-        return None
+        return found
 
     def get_clearing_state(self, proj, href) -> str:
         """Returns the clearing state of the given component/release"""
@@ -102,8 +105,8 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
                 for at_type, comment in (("SOURCE", CaPyCliBom.SOURCE_FILE_COMMENT),
                                          ("BINARY", CaPyCliBom.BINARY_FILE_COMMENT)):
-                    attachment = self.get_attachment(at_type, release_details)
-                    if attachment:
+                    attachments = self.get_attachments((at_type, at_type + "_SELF"), release_details)
+                    for attachment in attachments:
                         CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
                                                      comment, attachment["filename"],
                                                      HashAlgorithm.SHA_1, attachment.get("sha1"))
