@@ -10,6 +10,7 @@
 * fix: urls coming from granularity file are repository urls and not source code
   download urls.
 * fix wrong variable to correct `bom findsources`.
+* `project createbom` adds CLI and report information to SBOM
 
 ## 2.5.0 (2024-07-19)
 
