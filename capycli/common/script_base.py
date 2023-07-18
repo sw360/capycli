@@ -136,6 +136,11 @@ class ScriptBase:
         return (self.sw360_url + "group/guest/components/-/component/release/detailRelease/"
                 + release_id)
 
+    def attachment_api_url(self, release_id, attachment_id) -> str:
+        """Returns the REST API URL for an attachment."""
+        return (self.sw360_url + "resource/api/releases/" + release_id
+                + "/attachments/" + attachment_id)
+
     def find_project(self, name: str, version: str, show_results: bool = False) -> str:
         """Find the project with the matching name and version on SW360"""
         if not self.client:
