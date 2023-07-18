@@ -27,6 +27,15 @@ LOG = get_logger(__name__)
 class CreateBom(capycli.common.script_base.ScriptBase):
     """Create a SBOM for a project on SW360."""
 
+    comments = {
+        "SOURCE": CaPyCliBom.SOURCE_FILE_COMMENT,
+        "SOURCE_SELF": CaPyCliBom.SOURCE_FILE_COMMENT,
+        "BINARY": CaPyCliBom.BINARY_FILE_COMMENT,
+        "BINARY_SELF": CaPyCliBom.BINARY_FILE_COMMENT,
+        "COMPONENT_LICENSE_INFO_XML": CaPyCliBom.CLI_FILE_COMMENT,
+        "CLEARING_REPORT": CaPyCliBom.CRT_FILE_COMMENT
+    }
+
     def get_external_id(self, name: str, release_details: dict):
         """Returns the external id with the given name or None."""
         if "externalIds" not in release_details:
@@ -51,6 +60,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
         for release in releases:
             print_text("   ", release["name"], release["version"])
             href = release["_links"]["self"]["href"]
+            sw360_id = self.client.get_id_from_href(href)
 
             try:
                 release_details = self.client.get_release_by_url(href)
@@ -91,13 +101,21 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                     CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment=None,
                                                  value=release_details["repository"]["url"])
 
-                for at_type, comment in (("SOURCE", CaPyCliBom.SOURCE_FILE_COMMENT),
-                                         ("BINARY", CaPyCliBom.BINARY_FILE_COMMENT)):
-                    attachments = self.get_release_attachments(release_details, (at_type, at_type + "_SELF"))
-                    for attachment in attachments:
-                        CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
-                                                     comment, attachment["filename"],
-                                                     HashAlgorithm.SHA_1, attachment.get("sha1"))
+                attachments = self.get_release_attachments(release_details)
+                for attachment in attachments:
+                    at_type = attachment["attachmentType"]
+                    if at_type not in self.comments:
+                        continue
+                    comment = self.comments[at_type]
+                    if at_type in ("SOURCE", "SOURCE_SELF", "BINARY", "BINARY_SELF"):
+                        ext_ref_type = ExternalReferenceType.DISTRIBUTION
+                    else:
+                        ext_ref_type = ExternalReferenceType.OTHER
+                        comment += (", sw360Id: "
+                                    + self.client.get_id_from_href(attachment["_links"]["self"]["href"]))
+                    CycloneDxSupport.set_ext_ref(rel_item, ext_ref_type,
+                                                 comment, attachment["filename"],
+                                                 HashAlgorithm.SHA_1, attachment.get("sha1"))
 
             except sw360.SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))
@@ -107,7 +125,6 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             if state:
                 CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_PROJ_STATE, state)
 
-            sw360_id = self.client.get_id_from_href(href)
             CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_SW360ID, sw360_id)
 
             CycloneDxSupport.set_property(
