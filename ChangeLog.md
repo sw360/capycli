@@ -7,6 +7,8 @@
 
 ## NEXT
 
+* `project createbom` adds CLI and report information to SBOM
+* new command `bom downloadattachments` to download CLI and report attachments
 * `bom map`: The options `--dbx` and `-all` were replaced by `--matchmode`.
 * `bom map`: new `--matchmode` options `full-search` (report all best matches) and
   `qualifier-match` (consider PackageURL qualifiers). See `Readme_Mapping.md`.
