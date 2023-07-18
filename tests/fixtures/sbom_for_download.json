@@ -88,12 +88,38 @@
         {
           "url": "https://github.com/certifi/python-certifi",
           "type": "website"
+        },
+	{
+          "url": "CLIXML_certifi-2022.12.7.xml",
+          "comment": "component license information (local copy), sw360Id: 794446",
+          "type": "other",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "542e87fa0acb8d9c4659145a3e1bfcd66c979f33"
+            }
+          ]
+        },
+        {
+          "url": "certifi-2022.12.7_clearing_report.docx",
+          "comment": "clearing report (local copy), sw360Id: 63b368",
+          "type": "other",
+          "hashes": [
+            {
+              "alg": "SHA-1",
+              "content": "3cd24769fa3da4af74d0118433619a130da091b0"
+            }
+          ]
         }
       ],
       "properties": [
         {
           "name": "siemens:primaryLanguage",
           "value": "Python"
+        },
+        {
+          "name": "siemens:sw360Id",
+          "value": "ae8c7ed"
         }
       ]
     }

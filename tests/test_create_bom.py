@@ -201,6 +201,17 @@ class TestCreateBom(TestBasePytest):
                 }
             }
         })
+        release["_embedded"]["sw360:attachments"].append({
+            "filename": "clipython-1.3.0.docx",
+            "sha1": "f0d8f2ddd017bdeaecbaec72ff76a6c0a045ec66",
+            "attachmentType": "CLEARING_REPORT",
+            "_links": {
+                "self": {
+                    "href": "https://my.server.com/resource/api/attachments/r002a003"
+                }
+            }
+        })
+
         responses.add(
             responses.GET,
             url=self.MYURL + "resource/api/releases/r002",
@@ -214,21 +225,39 @@ class TestCreateBom(TestBasePytest):
         cx_comp = cdx_bom.components[0]
         assert cx_comp.purl.to_string() == release["externalIds"]["package-url"]
 
-        ext_refs_src_url = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_URL_COMMENT]
-        assert len(ext_refs_src_url) == 1
-        assert str(ext_refs_src_url[0].url) == release["sourceCodeDownloadurl"]
-        assert ext_refs_src_url[0].type == ExternalReferenceType.DISTRIBUTION
+        ext_refs = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_URL_COMMENT]
+        assert len(ext_refs) == 1
+        assert str(ext_refs[0].url) == release["sourceCodeDownloadurl"]
+        assert ext_refs[0].type == ExternalReferenceType.DISTRIBUTION
 
-        ext_refs_src_file = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_FILE_COMMENT]
-        assert len(ext_refs_src_file) == 2
-        assert str(ext_refs_src_file[0].url) == release["_embedded"]["sw360:attachments"][0]["filename"]
-        assert ext_refs_src_file[0].type == ExternalReferenceType.DISTRIBUTION
-        assert ext_refs_src_file[0].hashes[0].alg == "SHA-1"
-        assert ext_refs_src_file[0].hashes[0].content == release["_embedded"]["sw360:attachments"][0]["sha1"]
+        ext_refs = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_FILE_COMMENT]
+        assert len(ext_refs) == 2
+        assert str(ext_refs[0].url) == release["_embedded"]["sw360:attachments"][0]["filename"]
+        assert ext_refs[0].type == ExternalReferenceType.DISTRIBUTION
+        assert ext_refs[0].hashes[0].alg == "SHA-1"
+        assert ext_refs[0].hashes[0].content == release["_embedded"]["sw360:attachments"][0]["sha1"]
 
-        ext_refs_vcs = [e for e in cx_comp.external_references if e.type == ExternalReferenceType.VCS]
-        assert len(ext_refs_vcs) == 1
-        assert str(ext_refs_vcs[0].url) == release["repository"]["url"]
+        ext_refs = [e for e in cx_comp.external_references
+                    if e.comment and e.comment.startswith(CaPyCliBom.CLI_FILE_COMMENT)]
+        assert len(ext_refs) == 1
+        assert str(ext_refs[0].url) == release["_embedded"]["sw360:attachments"][1]["filename"]
+        assert ext_refs[0].type == ExternalReferenceType.OTHER
+        assert ext_refs[0].comment, CaPyCliBom.CLI_FILE_COMMENT + " == sw360Id: r002a002"
+        assert ext_refs[0].hashes[0].alg == "SHA-1"
+        assert ext_refs[0].hashes[0].content == release["_embedded"]["sw360:attachments"][1]["sha1"]
+
+        ext_refs = [e for e in cx_comp.external_references
+                    if e.comment and e.comment.startswith(CaPyCliBom.CRT_FILE_COMMENT)]
+        assert len(ext_refs) == 1
+        assert str(ext_refs[0].url) == release["_embedded"]["sw360:attachments"][3]["filename"]
+        assert ext_refs[0].comment, CaPyCliBom.CRT_FILE_COMMENT + " == sw360Id: r002a003"
+        assert ext_refs[0].type == ExternalReferenceType.OTHER
+        assert ext_refs[0].hashes[0].alg == "SHA-1"
+        assert ext_refs[0].hashes[0].content == release["_embedded"]["sw360:attachments"][3]["sha1"]
+
+        ext_refs = [e for e in cx_comp.external_references if e.type == ExternalReferenceType.VCS]
+        assert len(ext_refs) == 1
+        assert str(ext_refs[0].url) == release["repository"]["url"]
 
         prj_ml_state = CycloneDxSupport.get_property(cx_comp, CycloneDxSupport.CDX_PROP_PROJ_STATE)
         assert prj_ml_state.value == "MAINLINE"
