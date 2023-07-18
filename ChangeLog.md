@@ -12,7 +12,8 @@
   But you still need this output when you want to create a Readme.
 * `project createbom` add purls, source and repository url from SW360 if available.
   If multiple purls are found, a warning is printed asking user to manually edit SBOM.
-* `project createbom` add SW360 source and binary attachments as external reference to SBOM.
+* `project createbom` add SW360 attachment info as external references to SBOM
+  (currently supported: source, binary, CLI, report).
 * `project createbom` adds SW360 project name, version and description to SBOM.
 
 ## 2.0.0 (2023-06-02)
