@@ -10,6 +10,8 @@
 Base class for python scripts.
 """
 
+from typing import List, Tuple
+
 import json
 import os
 import sys
@@ -110,6 +112,32 @@ class ScriptBase:
                 text = "Error=" + jcontent["error"] + "(" +\
                     str(jcontent["status"]) + "): " + jcontent["message"]
                 return text
+
+    @staticmethod
+    def get_release_attachments(release_details: dict, att_types: Tuple[str] = None) -> List[dict]:
+        """Returns the attachments with the given types from a release. Use empty att_types
+        to get all attachments."""
+        if "_embedded" not in release_details:
+            return None
+
+        if "sw360:attachments" not in release_details["_embedded"]:
+            return None
+
+        found = []
+        attachments = release_details["_embedded"]["sw360:attachments"]
+        if not att_types:
+            return attachments
+
+        for attachment in attachments:
+            if attachment["attachmentType"] in att_types:
+                found.append(attachment)
+
+        return found
+
+    def release_web_url(self, release_id) -> str:
+        """Returns the HTML URL for a given release_id."""
+        return (self.sw360_url + "group/guest/components/-/component/release/detailRelease/"
+                + release_id)
 
     def find_project(self, name: str, version: str, show_results: bool = False) -> str:
         """Find the project with the matching name and version on SW360"""
