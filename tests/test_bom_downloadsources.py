@@ -16,7 +16,7 @@ from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
 
 
-class TestShowBom(TestBase):
+class TestBomDownloadsources(TestBase):
     INPUTFILE = "sbom_for_download.json"
     INPUTERROR = "plaintext.txt"
     OUTPUTFILE = "output.json"
@@ -74,7 +74,7 @@ class TestShowBom(TestBase):
             args.command = []
             args.command.append("bom")
             args.command.append("downloadsources")
-            args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestShowBom.INPUTERROR)
+            args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTERROR)
 
             sut.run(args)
             self.assertTrue(False, "Failed to report invalid file")
@@ -90,7 +90,7 @@ class TestShowBom(TestBase):
             args.command = []
             args.command.append("bom")
             args.command.append("downloadsources")
-            args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestShowBom.INPUTFILE)
+            args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE)
             args.source = "XXX"
 
             sut.run(args)
@@ -107,8 +107,8 @@ class TestShowBom(TestBase):
         args.command = []
         args.command.append("bom")
         args.command.append("downloadsources")
-        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestShowBom.INPUTFILE)
-        args.outputfile = TestShowBom.OUTPUTFILE
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE)
+        args.outputfile = TestBomDownloadsources.OUTPUTFILE
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             args.source = tmpdirname
@@ -152,8 +152,8 @@ class TestShowBom(TestBase):
         args.command = []
         args.command.append("bom")
         args.command.append("downloadsources")
-        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestShowBom.INPUTFILE)
-        args.outputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestShowBom.OUTPUTFILE)
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE)
+        args.outputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.OUTPUTFILE)
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             args.source = tmpdirname
