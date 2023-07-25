@@ -2687,3 +2687,13 @@ groovy-cli-picocli;Apache Groovy;;https://archive.apache.org/dist/groovy/
 @turf/union;Turf;;https://github.com/Turfjs/turf
 @turf/unkink-polygon;Turf;;https://github.com/Turfjs/turf
 @turf/voronoi;Turf;;https://github.com/Turfjs/turf
+
+@nestjs/common;Nest;;https://github.com/nestjs/nest
+@nestjs/core;Nest;;https://github.com/nestjs/nest
+@nestjs/microservices;Nest;;https://github.com/nestjs/nest
+@nestjs/platform-express;Nest;;https://github.com/nestjs/nest
+@nestjs/platform-fastify;Nest;;https://github.com/nestjs/nest
+@nestjs/platform-socket.io;Nest;;https://github.com/nestjs/nest
+@nestjs/platform-ws;Nest;;https://github.com/nestjs/nest
+@nestjs/testing;Nest;;https://github.com/nestjs/nest
+@nestjs/websockets;Nest;;https://github.com/nestjs/nest
