@@ -2698,6 +2698,11 @@ groovy-cli-picocli;Apache Groovy;;https://archive.apache.org/dist/groovy/
 @nestjs/testing;Nest;;https://github.com/nestjs/nest
 @nestjs/websockets;Nest;;https://github.com/nestjs/nest
 
+@aws-sdk/eventstream-codec;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
+@aws-sdk/util-config-provider;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
+@aws-sdk/util-defaults-mode-browser;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
+@aws-sdk/util-defaults-mode-node;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
+@aws-sdk/util-middleware;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
 @aws-sdk/abort-controller;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
 @aws-sdk/chunked-blob-reader;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
 @aws-sdk/chunked-blob-reader-native;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
