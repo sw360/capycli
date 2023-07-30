@@ -158,6 +158,17 @@ class TestCreateBom(TestBase):
         release = self.get_release_cli_for_test()
         # use a specific purl
         release["externalIds"]["package-url"] = "pkg:deb/debian/cli-support@1.3-1"
+        # add a SOURCE_SELF attachment
+        release["_embedded"]["sw360:attachments"].append({
+            "filename": "clipython-repacked-for-fun.zip",
+            "sha1": "face4b90d134e2a2bcf9464c50ea086f849a9b82",
+            "attachmentType": "SOURCE_SELF",
+            "_links": {
+                "self": {
+                    "href": "https://my.server.com/resource/api/attachments/r002a002"
+                }
+            }
+        })
         responses.add(
             responses.GET,
             url=self.MYURL + "resource/api/releases/r002",
@@ -177,7 +188,7 @@ class TestCreateBom(TestBase):
         self.assertEqual(ext_refs_src_url[0].type, ExternalReferenceType.DISTRIBUTION)
 
         ext_refs_src_file = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_FILE_COMMENT]
-        self.assertEqual(len(ext_refs_src_file), 1)
+        self.assertEqual(len(ext_refs_src_file), 2)
         self.assertEqual(ext_refs_src_file[0].url, release["_embedded"]["sw360:attachments"][0]["filename"])
         self.assertEqual(ext_refs_src_file[0].type, ExternalReferenceType.DISTRIBUTION)
         self.assertEqual(ext_refs_src_file[0].hashes[0].alg, "SHA-1")
