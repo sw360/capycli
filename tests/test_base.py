@@ -365,6 +365,10 @@ class TestBase(unittest.TestCase):
                 "package-url": "pkg:pypi/cli-support@1.3"
             },
             "createdOn": "2023-03-14",
+            "repository": {
+                "url": "https://github.com/sw360/clipython.git",
+                "repositorytype": "GIT"
+            },
             "mainlineState": "SPECIFIC",
             "clearingState": "APPROVED",
             "createdBy": "thomas.graf@siemens.com",
