@@ -84,16 +84,13 @@ class TestBase(unittest.TestCase):
             outfile.write(text)
 
     @staticmethod
-    def capture_stderr(func: Any, args: Any = None) -> str:
+    def capture_stderr(func: Any, *args, **kwargs) -> str:
         """Capture stderr for the given function and return result as string"""
         # setup the environment
         old_stderr = sys.stderr
         sys.stderr = TextIOWrapper(BytesIO(), sys.stderr.encoding)
 
-        if args:
-            func(args)
-        else:
-            func()
+        func(*args, **kwargs)
 
         # get output
         sys.stderr.seek(0)       # jump to the start
@@ -106,33 +103,13 @@ class TestBase(unittest.TestCase):
         return out
 
     @staticmethod
-    def capture_stdout(func: Any, args: Any = None) -> str:
+    def capture_stdout(func: Any, *args, **kwargs) -> str:
         """Capture stdout for the given function and return result as string"""
         # setup the environment
         old_stdout = sys.stdout
         sys.stdout = TextIOWrapper(BytesIO(), sys.stdout.encoding)
 
-        func(args)
-
-        # get output
-        sys.stdout.seek(0)       # jump to the start
-        out = sys.stdout.read()  # read output
-
-        # restore stdout
-        sys.stdout.close()
-        sys.stdout = old_stdout
-
-        return out
-
-    @staticmethod
-    def capture_stdout_no_args(func: Any) -> str:
-        """Capture stdout for the given function and return result as string"""
-        # setup the environment
-        old_stdout = sys.stdout
-        sys.stdout = TextIOWrapper(BytesIO(), sys.stdout.encoding)
-
-        func()
-
+        func(*args, **kwargs)
         # get output
         sys.stdout.seek(0)       # jump to the start
         out = sys.stdout.read()  # read output

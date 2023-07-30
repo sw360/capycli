@@ -35,7 +35,7 @@ class TestLogging(TestBase):
         self.assertFalse(self.DEBUG_MSG in out)
 
     def test_info_debug(self) -> None:
-        out = self.capture_stdout_no_args(self.create_output)
+        out = self.capture_stdout(self.create_output)
         # self.dump_textfile(out, "dump.txt")
         self.assertFalse(self.CRITICAL_MSG in out)
         self.assertFalse(self.ERROR_MSG in out)
