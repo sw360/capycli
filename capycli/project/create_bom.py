@@ -8,7 +8,6 @@
 
 import logging
 import sys
-
 from typing import List, Tuple
 
 import sw360
@@ -18,8 +17,7 @@ from cyclonedx.model.component import Component
 
 import capycli.common.script_base
 from capycli import get_logger
-from capycli.common.capycli_bom_support import CaPyCliBom, SbomCreator, CycloneDxSupport
-
+from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
