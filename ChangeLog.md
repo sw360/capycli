@@ -11,6 +11,7 @@
   download urls.
 * fix wrong variable to correct `bom findsources`.
 * `project createbom` adds CLI and report information to SBOM
+* new command `bom downloadattachments` to download CLI and report attachments
 
 ## 2.5.0 (2024-07-19)
 
