@@ -11,6 +11,7 @@
 * `project createbom` now stores multiple purls in the property "purl_list" instead of
   trying to encode them in a strange way in the "purl" field.
 * `project createbom` adds CLI and report information to SBOM
+* new command `bom downloadattachments` to download CLI and report attachments
 
 ## 2.5.1 (2024-10-16)
 
