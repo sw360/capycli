@@ -8,6 +8,7 @@
 ## UNRELEASED
 
 * `project createbom` adds CLI and report information to SBOM
+* new command `bom downloadattachments` to download CLI and report attachments
 
 ## 2.7.0
 
