@@ -15,6 +15,7 @@
 * `project createbom` add SW360 attachment info as external references to SBOM
   (currently supported: source, binary, CLI, report).
 * `project createbom` adds SW360 project name, version and description to SBOM.
+* new command `bom downloadattachments` to download CLI and report attachments
 
 ## 2.0.0 (2023-06-02)
 

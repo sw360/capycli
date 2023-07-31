@@ -638,6 +638,15 @@ class CaPyCliBom():
     # human-readable description of licensing situation and obligations
     CRT_FILE_COMMENT = "clearing report (local copy)"
 
+    FILE_COMMENTS = {
+        "SOURCE": SOURCE_FILE_COMMENT,
+        "SOURCE_SELF": SOURCE_FILE_COMMENT,
+        "BINARY": BINARY_FILE_COMMENT,
+        "BINARY_SELF": BINARY_FILE_COMMENT,
+        "COMPONENT_LICENSE_INFO_XML": CLI_FILE_COMMENT,
+        "CLEARING_REPORT": CRT_FILE_COMMENT
+    }
+
     @classmethod
     def read_sbom(cls, inputfile: str) -> Bom:
         LOG.debug(f"Reading from file {inputfile}")

@@ -27,15 +27,6 @@ LOG = get_logger(__name__)
 class CreateBom(capycli.common.script_base.ScriptBase):
     """Create a SBOM for a project on SW360."""
 
-    comments = {
-        "SOURCE": CaPyCliBom.SOURCE_FILE_COMMENT,
-        "SOURCE_SELF": CaPyCliBom.SOURCE_FILE_COMMENT,
-        "BINARY": CaPyCliBom.BINARY_FILE_COMMENT,
-        "BINARY_SELF": CaPyCliBom.BINARY_FILE_COMMENT,
-        "COMPONENT_LICENSE_INFO_XML": CaPyCliBom.CLI_FILE_COMMENT,
-        "CLEARING_REPORT": CaPyCliBom.CRT_FILE_COMMENT
-    }
-
     def get_external_id(self, name: str, release_details: dict):
         """Returns the external id with the given name or None."""
         if "externalIds" not in release_details:
@@ -104,9 +95,9 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                 attachments = self.get_release_attachments(release_details)
                 for attachment in attachments:
                     at_type = attachment["attachmentType"]
-                    if at_type not in self.comments:
+                    if at_type not in CaPyCliBom.FILE_COMMENTS:
                         continue
-                    comment = self.comments[at_type]
+                    comment = CaPyCliBom.FILE_COMMENTS[at_type]
                     if at_type in ("SOURCE", "SOURCE_SELF", "BINARY", "BINARY_SELF"):
                         ext_ref_type = ExternalReferenceType.DISTRIBUTION
                     else:
