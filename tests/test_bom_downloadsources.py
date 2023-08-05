@@ -11,6 +11,9 @@ import tempfile
 
 import responses
 
+from cyclonedx.model import ExternalReferenceType
+
+from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.bom.download_sources import BomDownloadSources
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
@@ -126,20 +129,68 @@ class TestBomDownloadsources(TestBase):
 
             try:
                 out = self.capture_stdout(sut.run, args)
+                out_bom = CaPyCliBom.read_sbom(args.outputfile)
                 # capycli.common.json_support.write_json_to_file(out, "STDOUT.TXT")
                 self.assertTrue("Loading SBOM file" in out)
                 self.assertTrue("sbom_for_download.json" in out)  # path may vary
+                self.assertIn("SBOM file is not relative to", out)
                 self.assertTrue("Downloading source files to folder" in out)
                 self.assertTrue("Downloading file certifi-2022.12.7.tar.gz" in out)
 
                 resultfile = os.path.join(tmpdirname, "certifi-2022.12.7.tar.gz")
                 self.assertTrue(os.path.isfile(resultfile))
 
+                ext_ref = CycloneDxSupport.get_ext_ref(
+                    out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
+                self.assertEqual(ext_ref.url, resultfile)
+
                 self.delete_file(args.outputfile)
                 return
-            except:  # noqa
+            except Exception as e:  # noqa
                 # catch all exception to let Python cleanup the temp folder
-                pass
+                print(e)
+
+        self.assertTrue(False, "Error: we must never arrive here")
+
+    @responses.activate
+    def test_simple_bom_relative_path(self) -> None:
+        sut = BomDownloadSources()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("bom")
+        args.command.append("downloadsources")
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE)
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            args.source = tmpdirname
+            args.outputfile = os.path.join(tmpdirname, TestBomDownloadsources.OUTPUTFILE)
+
+            # fake file content
+            responses.add(
+                responses.GET,
+                url="https://files.pythonhosted.org/packages/37/f7/2b1b/certifi-2022.12.7.tar.gz",
+                body="""
+                SOME DUMMY DATA
+                """,
+                status=200,
+                content_type="application/json",
+            )
+
+            try:
+                sut.run(args)
+                out_bom = CaPyCliBom.read_sbom(args.outputfile)
+
+                ext_ref = CycloneDxSupport.get_ext_ref(
+                    out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
+                self.assertEqual(ext_ref.url, "file://certifi-2022.12.7.tar.gz")
+
+                self.delete_file(args.outputfile)
+                return
+            except Exception as e:  # noqa
+                # catch all exception to let Python cleanup the temp folder
+                print(e)
 
         self.assertTrue(False, "Error: we must never arrive here")
 
