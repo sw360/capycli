@@ -9,6 +9,7 @@
 import json
 import os
 import tempfile
+import pathlib
 import uuid
 from datetime import datetime
 from enum import Enum
@@ -369,6 +370,14 @@ class CycloneDxSupport():
             ext_ref.url = value
         else:
             CycloneDxSupport.set_ext_ref(comp, type, comment, value)
+
+    @staticmethod
+    def have_relative_ext_ref_path(ext_ref: ExternalReference, rel_to: str):
+        bip = pathlib.PurePath(ext_ref.url)
+        file = bip.as_posix()
+        if os.path.isfile(file):
+            ext_ref.url = "file://" + bip.relative_to(rel_to).as_posix()
+        return bip.name
 
     @staticmethod
     def get_ext_ref_by_comment(comp: Component, comment: str) -> Any:
