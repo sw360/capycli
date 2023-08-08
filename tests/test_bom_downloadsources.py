@@ -10,11 +10,10 @@ import os
 import tempfile
 
 import responses
-
 from cyclonedx.model import ExternalReferenceType
 
-from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.bom.download_sources import BomDownloadSources
+from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
 

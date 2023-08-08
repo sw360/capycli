@@ -10,12 +10,11 @@
 Base class for python scripts.
 """
 
-from typing import List, Tuple
-
 import json
 import os
 import sys
 from datetime import datetime
+from typing import List, Tuple
 
 import jwt
 import requests
