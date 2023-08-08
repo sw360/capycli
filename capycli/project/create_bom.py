@@ -8,7 +8,6 @@
 
 import logging
 import sys
-from typing import List, Tuple
 
 import sw360
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
@@ -33,22 +32,6 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             return None
 
         return release_details["externalIds"].get(name, "")
-
-    def get_attachments(self, att_types: Tuple[str], release_details: dict) -> List[dict]:
-        """Returns the attachments with the given types or empty list."""
-        if "_embedded" not in release_details:
-            return None
-
-        if "sw360:attachments" not in release_details["_embedded"]:
-            return None
-
-        found = []
-        attachments = release_details["_embedded"]["sw360:attachments"]
-        for attachment in attachments:
-            if attachment["attachmentType"] in att_types:
-                found.append(attachment)
-
-        return found
 
     def get_clearing_state(self, proj, href) -> str:
         """Returns the clearing state of the given component/release"""
@@ -103,7 +86,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
                 for at_type, comment in (("SOURCE", CaPyCliBom.SOURCE_FILE_COMMENT),
                                          ("BINARY", CaPyCliBom.BINARY_FILE_COMMENT)):
-                    attachments = self.get_attachments((at_type, at_type + "_SELF"), release_details)
+                    attachments = self.get_release_attachments(release_details, (at_type, at_type + "_SELF"))
                     for attachment in attachments:
                         CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
                                                      comment, attachment["filename"],
@@ -123,9 +106,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             CycloneDxSupport.set_property(
                 rel_item,
                 CycloneDxSupport.CDX_PROP_SW360_URL,
-                self.sw360_url
-                + "group/guest/components/-/component/release/detailRelease/"
-                + sw360_id)
+                self.release_web_url(sw360_id))
 
             bom.append(rel_item)
 

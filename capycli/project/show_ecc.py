@@ -114,10 +114,8 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
                 rel_item["Id"] = self.client.get_id_from_href(href)
                 rel_item["S360Id"] = rel_item["Id"]
                 rel_item["Href"] = href
-                rel_item["Url"] = (
-                    self.sw360_url
-                    + "group/guest/components/-/component/release/detailRelease/"
-                    + self.client.get_id_from_href(href))
+                rel_item["Url"] = self.release_web_url(
+                    self.client.get_id_from_href(href))
 
                 try:
                     release_details = self.client.get_release_by_url(href)

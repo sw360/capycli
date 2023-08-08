@@ -18,7 +18,6 @@ from urllib.parse import urlparse
 import requests
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType
 from cyclonedx.model.bom import Bom
-from cyclonedx.model.component import Component
 
 import capycli.common.json_support
 import capycli.common.script_base
@@ -122,35 +121,20 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                 if new:
                     component.external_references.add(ext_ref)
 
-    def have_relative_source_file_path(self, component: Component, bompath: str):
-        ext_ref = CycloneDxSupport.get_ext_ref(
-            component, ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
-        if not ext_ref:
-            return
-
-        bip = pathlib.PurePath(ext_ref.url)
-        try:
-            CycloneDxSupport.update_or_set_property(
-                component,
-                CycloneDxSupport.CDX_PROP_FILENAME,
-                bip.name)
-            file = bip.as_posix()
-            if os.path.isfile(file):
-                CycloneDxSupport.update_or_set_ext_ref(
-                    component,
-                    ExternalReferenceType.DISTRIBUTION,
-                    CaPyCliBom.SOURCE_FILE_COMMENT,
-                    "file://" + bip.relative_to(bompath).as_posix())
-        except ValueError:
-            print_yellow(
-                "  SBOM file is not relative to source file " + ext_ref.url)
-        # .relative_to
-        pass
-
     def update_local_path(self, sbom: Bom, bomfile: str):
         bompath = pathlib.Path(bomfile).parent
         for component in sbom.components:
-            self.have_relative_source_file_path(component, bompath)
+            ext_ref = CycloneDxSupport.get_ext_ref(
+                component, ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
+            if ext_ref:
+                try:
+                    name = CycloneDxSupport.have_relative_ext_ref_path(ext_ref, bompath)
+                    CycloneDxSupport.update_or_set_property(
+                        component,
+                        CycloneDxSupport.CDX_PROP_FILENAME,
+                        name)
+                except ValueError:
+                    print_yellow("  SBOM file is not relative to source file " + ext_ref.url)
 
     def run(self, args):
         """Main method
