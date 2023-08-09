@@ -11,15 +11,16 @@ import tempfile
 
 import responses
 
-from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
+from capycli.common.capycli_bom_support import CaPyCliBom
+from capycli.common.json_support import load_json_file
 from capycli.bom.download_attachments import BomDownloadAttachments
 from capycli.main.result_codes import ResultCode
-from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from tests.test_base import AppArguments, TestBase
 
 
 class TestBomDownloadAttachments(TestBase):
     INPUTFILE = "sbom_for_download.json"
+    CONTROLFILE = "sbom_for_download-control.json"
     INPUTERROR = "plaintext.txt"
     OUTPUTFILE = "output.json"
 
@@ -69,6 +70,8 @@ class TestBomDownloadAttachments(TestBase):
             args.command.append("bom")
             args.command.append("downloadattachments")
             args.inputfile = "DOESNOTEXIST"
+            args.controlfile = os.path.join(os.path.dirname(__file__),
+                                            "fixtures", TestBomDownloadAttachments.CONTROLFILE)
 
             sut.run(args)
             self.assertTrue(False, "Failed to report missing file")
@@ -85,6 +88,8 @@ class TestBomDownloadAttachments(TestBase):
             args.command.append("bom")
             args.command.append("downloadattachments")
             args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.INPUTERROR)
+            args.controlfile = os.path.join(os.path.dirname(__file__),
+                                            "fixtures", TestBomDownloadAttachments.CONTROLFILE)
 
             sut.run(args)
             self.assertTrue(False, "Failed to report invalid file")
@@ -103,6 +108,8 @@ class TestBomDownloadAttachments(TestBase):
             args.command.append("downloadattachments")
 
             args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.INPUTFILE)
+            args.controlfile = os.path.join(os.path.dirname(__file__),
+                                            "fixtures", TestBomDownloadAttachments.CONTROLFILE)
             args.source = "XXX"
 
             sut.run(args)
@@ -113,32 +120,10 @@ class TestBomDownloadAttachments(TestBase):
     @responses.activate
     def test_simple_bom(self) -> None:
         bom = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.INPUTFILE)
-        bom = CaPyCliBom.read_sbom(bom)
+        controlfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.CONTROLFILE)
 
-        # attachment info - CLI
-        responses.add(
-            method=responses.GET,
-            url=self.MYURL + "resource/api/attachments/794446",
-            body="""
-                {
-                    "filename": "CLIXML_certifi-2022.12.7.xml",
-                    "sha1": "3cd24769fa3da4af74d0118433619a130da091b0",
-                    "attachmentType": "COMPONENT_LICENSE_INFO_XML",
-                    "createdBy": "thomas.graf@siemens.com",
-                    "createdTeam": "AA",
-                    "createdComment": "comment1",
-                    "createdOn": "2020-10-08",
-                    "checkStatus": "NOTCHECKED",
-                    "_links": {
-                        "self": {
-                            "href": "https://my.server.com/resource/api/attachments/794446"
-                        }
-                    }
-                }""",
-            status=200,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
+        bom = CaPyCliBom.read_sbom(bom)
+        controlfile = load_json_file(controlfile)
 
         # get attachment - CLI
         cli_file = self.get_cli_file_mit()
@@ -150,35 +135,6 @@ class TestBomDownloadAttachments(TestBase):
             content_type="application/text",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
-
-        # attachment info - report
-        responses.add(
-            method=responses.GET,
-            url=self.MYURL + "resource/api/attachments/63b368",
-            body="""
-                {
-                    "filename": "certifi-2022.12.7_clearing_report.docx",
-                    "sha1": "3cd24769fa3da4af74d0118433619a130da091b0",
-                    "attachmentType": "CLEARING_REPORT",
-                    "createdBy": "gernot.hillier@siemens.com",
-                    "createdTeam": "BB",
-                    "createdComment": "comment3",
-                    "createdOn": "2020-10-08",
-                    "checkedBy": "thomas.graf@siemens.com",
-                    "checkedOn" : "2021-01-18",
-                    "checkedComment": "comment4",
-                    "checkStatus": "ACCEPTED",
-                    "_links": {
-                        "self": {
-                            "href": "https://my.server.com/resource/api/attachments/63b368"
-                        }
-                    }
-                }""",
-            status=200,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
-
         # get attachment - report
         responses.add(
             method=responses.GET,
@@ -191,13 +147,13 @@ class TestBomDownloadAttachments(TestBase):
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             try:
-                bom = self.app.download_attachments(bom, tmpdirname)
+                bom = self.app.download_attachments(bom, controlfile["Components"], tmpdirname)
                 resultfile = os.path.join(tmpdirname, "CLIXML_certifi-2022.12.7.xml")
-                self.assertEqual(bom.components[0].external_references[5].url, resultfile)
+                self.assertEqual(str(bom.components[0].external_references[5].url), resultfile)
                 self.assertTrue(os.path.isfile(resultfile), "CLI file missing")
 
                 resultfile = os.path.join(tmpdirname, "certifi-2022.12.7_clearing_report.docx")
-                self.assertEqual(bom.components[0].external_references[6].url, resultfile)
+                self.assertEqual(str(bom.components[0].external_references[6].url), resultfile)
                 self.assertTrue(os.path.isfile(resultfile), "report file missing")
                 return
             except Exception as e:  # noqa
@@ -211,25 +167,8 @@ class TestBomDownloadAttachments(TestBase):
         bom = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.INPUTFILE)
         bom = CaPyCliBom.read_sbom(bom)
 
-        # attachment info - CLI
-        responses.add(
-            method=responses.GET,
-            url=self.MYURL + "resource/api/attachments/794446",
-            body="""
-                {
-                    "filename": "CLIXML_certifi-2022.12.7.xml",
-                    "sha1": "3cd24769fa3da4af74d0118433619a130da091b0",
-                    "attachmentType": "COMPONENT_LICENSE_INFO_XML",
-                    "_links": {
-                        "self": {
-                            "href": "https://my.server.com/resource/api/attachments/794446"
-                        }
-                    }
-                }""",
-            status=200,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
+        controlfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.CONTROLFILE)
+        controlfile = load_json_file(controlfile)
 
         # get attachment - CLI
         cli_file = self.get_cli_file_mit()
@@ -244,9 +183,10 @@ class TestBomDownloadAttachments(TestBase):
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             try:
-                bom = self.app.download_attachments(bom, tmpdirname, tmpdirname, ("COMPONENT_LICENSE_INFO_XML",))
+                bom = self.app.download_attachments(bom, controlfile["Components"],
+                                                    tmpdirname, tmpdirname, ("COMPONENT_LICENSE_INFO_XML",))
                 resultfile = os.path.join(tmpdirname, "CLIXML_certifi-2022.12.7.xml")
-                self.assertEqual(bom.components[0].external_references[5].url,
+                self.assertEqual(str(bom.components[0].external_references[5].url),
                                  "file://CLIXML_certifi-2022.12.7.xml")
                 self.assertTrue(os.path.isfile(resultfile), "CLI file missing")
 
@@ -263,59 +203,29 @@ class TestBomDownloadAttachments(TestBase):
         bom = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.INPUTFILE)
         bom = CaPyCliBom.read_sbom(bom)
 
-        # attachment info - CLI, ok
-        responses.add(
-            method=responses.GET,
-            url=self.MYURL + "resource/api/attachments/794446",
-            body="""
-                {
-                    "filename": "CLIXML_certifi-2022.12.7.xml",
-                    "sha1": "3cd24769fa3da4af74d0118433619a130da091b0",
-                    "attachmentType": "COMPONENT_LICENSE_INFO_XML",
-                    "_links": {
-                        "self": {
-                            "href": "https://my.server.com/resource/api/attachments/794446"
-                        }
-                    }
-                }""",
-            status=200,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
+        controlfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.CONTROLFILE)
+        controlfile = load_json_file(controlfile)
 
         # get attachment - CLI, error
         responses.add(
             method=responses.GET,
             url=self.MYURL + "resource/api/releases/ae8c7ed/attachments/794446",
-            body="cli_file",
             status=500,
             content_type="application/text",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
-
-        # attachment info - report, error
+        # get attachment - CLI, error
         responses.add(
             method=responses.GET,
-            url=self.MYURL + "resource/api/attachments/63b368",
-            body="""
-                {
-                    "filename": "certifi-2022.12.7_clearing_report.docx",
-                    "sha1": "3cd24769fa3da4af74d0118433619a130da091b0",
-                    "attachmentType": "CLEARING_REPORT",
-                    "_links": {
-                        "self": {
-                            "href": "https://my.server.com/resource/api/attachments/63b368"
-                        }
-                    }
-                }""",
-            status=404,
-            content_type="application/json",
+            url=self.MYURL + "resource/api/releases/ae8c7ed/attachments/63b368",
+            status=403,
+            content_type="application/text",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             try:
-                bom = self.app.download_attachments(bom, tmpdirname)
+                bom = self.app.download_attachments(bom, controlfile["Components"], tmpdirname)
                 resultfile = os.path.join(tmpdirname, "CLIXML_certifi-2022.12.7.xml")
                 self.assertFalse(os.path.isfile(resultfile), "CLI created despite HTTP 500")
 
@@ -335,8 +245,8 @@ class TestBomDownloadAttachments(TestBase):
         bom.components[0].properties = []
         with tempfile.TemporaryDirectory() as tmpdirname:
             try:
-                err = self.capture_stdout(self.app.download_attachments, bom, tmpdirname)
-                assert "No sw360Id for release" in err
+                err = self.capture_stdout(self.app.download_attachments, bom, [], tmpdirname)
+                self.assertIn("No sw360Id for release", err)
 
                 return
             except Exception as e:  # noqa
@@ -346,18 +256,14 @@ class TestBomDownloadAttachments(TestBase):
         self.assertTrue(False, "Error: we must never arrive here")
 
     @responses.activate
-    def test_simple_bom_no_attachment_id(self) -> None:
+    def test_simple_bom_no_ctrl_file_entry(self) -> None:
         bom = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadAttachments.INPUTFILE)
         bom = CaPyCliBom.read_sbom(bom)
-        bom.components[0].external_references = []
-        CycloneDxSupport.set_ext_ref(bom.components[0], ExternalReferenceType.OTHER,
-                                     CaPyCliBom.CLI_FILE_COMMENT, "CLIXML_foo.xml",
-                                     HashAlgorithm.SHA_1, "123")
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             try:
-                err = self.capture_stdout(self.app.download_attachments, bom, tmpdirname)
-                assert "No sw360Id for attachment" in err
+                err = self.capture_stdout(self.app.download_attachments, bom, [], tmpdirname)
+                assert "Found 0 entries for attachment CLIXML_certifi-2022.12.7.xml" in err
 
                 return
             except Exception as e:  # noqa
