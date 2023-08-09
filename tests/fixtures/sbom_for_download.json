@@ -91,7 +91,7 @@
         },
 	{
           "url": "CLIXML_certifi-2022.12.7.xml",
-          "comment": "component license information (local copy), sw360Id: 794446",
+          "comment": "component license information (local copy)",
           "type": "other",
           "hashes": [
             {
@@ -102,7 +102,7 @@
         },
         {
           "url": "certifi-2022.12.7_clearing_report.docx",
-          "comment": "clearing report (local copy), sw360Id: 63b368",
+          "comment": "clearing report (local copy)",
           "type": "other",
           "hashes": [
             {
