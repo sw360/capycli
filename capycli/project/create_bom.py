@@ -8,6 +8,8 @@
 
 import logging
 import sys
+import json
+from typing import Tuple, Dict
 
 import sw360
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
@@ -18,6 +20,7 @@ import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator
 from capycli.common.purl_utils import PurlUtils
+from capycli.common.script_support import ScriptSupport
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -43,8 +46,9 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return None
 
-    def create_project_bom(self, project) -> list:
+    def create_project_bom(self, project, create_controlfile) -> Tuple[list, list]:
         bom = []
+        details = []
 
         releases = project["_embedded"].get("sw360:releases", [])
         releases.sort(key=lambda s: s["name"].lower())
@@ -91,7 +95,6 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                 if "repository" in release_details and "url" in release_details["repository"]:
                     CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment=None,
                                                  value=release_details["repository"]["url"])
-
                 attachments = self.get_release_attachments(release_details)
                 for attachment in attachments:
                     at_type = attachment["attachmentType"]
@@ -102,8 +105,23 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                         ext_ref_type = ExternalReferenceType.DISTRIBUTION
                     else:
                         ext_ref_type = ExternalReferenceType.OTHER
-                        comment += (", sw360Id: "
-                                    + self.client.get_id_from_href(attachment["_links"]["self"]["href"]))
+                        if create_controlfile:
+                            at_data = self.client.get_attachment_by_url(attachment["_links"]["self"]["href"])
+
+                            at_details = {
+                                "ComponentName": " ".join((release["name"], release["version"])),
+                                "Sw360Id": sw360_id,
+                                "Sw360AttachmentId": self.client.get_id_from_href(attachment["_links"]["self"]["href"])}
+                            for key in ("createdBy", "createdTeam", "createdOn", "createdComment", "checkStatus",
+                                        "checkedBy", "checkedTeam", "checkedOn", "checkedComment"):
+                                if key in at_data and at_data[key]:
+                                    at_details[key[0].upper() + key[1:]] = at_data[key]
+
+                            if at_type == "COMPONENT_LICENSE_INFO_XML":
+                                at_details["CliFile"] = attachment["filename"]
+                            elif at_type == "CLEARING_REPORT":
+                                at_details["ReportFile"] = attachment["filename"]
+                            details.append(at_details)
                     CycloneDxSupport.set_ext_ref(rel_item, ext_ref_type,
                                                  comment, attachment["filename"],
                                                  HashAlgorithm.SHA_1, attachment.get("sha1"))
@@ -127,9 +145,9 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         # sub-projects are not handled at the moment
 
-        return bom
+        return bom, details
 
-    def create_project_cdx_bom(self, project_id) -> Bom:
+    def create_project_cdx_bom(self, project_id, create_controlfile) -> Tuple[Bom, Dict]:
         try:
             project = self.client.get_project(project_id)
         except sw360.sw360_api.SW360Error as swex:
@@ -138,14 +156,19 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         print_text("  Project name: " + project["name"] + ", " + project["version"])
 
-        cdx_components = self.create_project_bom(project)
+        cdx_components, control_components = self.create_project_bom(project, create_controlfile)
 
         creator = SbomCreator()
         sbom = creator.create(cdx_components, addlicense=True, addprofile=True, addtools=True,
                               name=project.get("name"), version=project.get("version"),
                               description=project.get("description"), addprojectdependencies=True)
 
-        return sbom
+        controlfile = {
+            "ProjectName": ScriptSupport.get_full_name_from_dict(project, "name", "version"),
+            "Components": control_components
+        }
+
+        return sbom, controlfile
 
     def show_command_help(self):
         print("\nusage: CaPyCli project createbom [options]")
@@ -158,6 +181,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
   -name            name of the project, component or release
   -version         version of the project, component or release
   -o OUTPUTFILE    output file to write to
+  -ct CONTROLFILE  write control file for "bom DownloadAttachments" and "project CreateReadme"
         """)
 
         print()
@@ -204,7 +228,11 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
         if pid:
-            bom = self.create_project_cdx_bom(pid)
+            bom, controlfile = self.create_project_cdx_bom(pid, args.controlfile)
             CaPyCliBom.write_sbom(bom, args.outputfile)
+
+            if args.controlfile:
+                with open(args.controlfile, "w") as outfile:
+                    json.dump(controlfile, outfile, indent=2)
         else:
             print_yellow("  No matching project found")
