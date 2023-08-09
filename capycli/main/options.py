@@ -222,6 +222,13 @@ class CommandlineSupport():
         )
 
         self.parser.add_argument(
+            "-ct",
+            "--controlfile",
+            dest="controlfile",
+            help="control file for \"bom DownloadAttachments\" and \"project CreateReadme\"",
+        )
+
+        self.parser.add_argument(
             "-mr",
             "--mapresult",
             dest="write_mapresult",
