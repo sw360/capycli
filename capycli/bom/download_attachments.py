@@ -19,6 +19,7 @@ import capycli.common.script_base
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.common.script_support import ScriptSupport
+from capycli.common.json_support import load_json_file
 from capycli.main.result_codes import ResultCode
 
 LOG = capycli.get_logger(__name__)
@@ -29,7 +30,7 @@ class BomDownloadAttachments(capycli.common.script_base.ScriptBase):
     Download SW360 attachments as specified in the SBOM.
     """
 
-    def download_attachments(self, sbom: Bom, source_folder: str, bompath: str = None,
+    def download_attachments(self, sbom: Bom, control_components: list, source_folder: str, bompath: str = None,
                              attachment_types: Tuple[str] = ("COMPONENT_LICENSE_INFO_XML", "CLEARING_REPORT")) -> Bom:
 
         for component in sbom.components:
@@ -46,27 +47,24 @@ class BomDownloadAttachments(capycli.common.script_base.ScriptBase):
                 if not found:
                     continue
 
-                attachment_id = ext_ref.comment.split(", sw360Id: ")
-                if len(attachment_id) != 2:
-                    print_red("    No sw360Id for attachment!")
-                    continue
-                attachment_id = attachment_id[1]
-
                 release_id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
                 if not release_id:
                     print_red("    No sw360Id for release!")
                     continue
-                print("   ", ext_ref.url, release_id, attachment_id)
                 filename = os.path.join(source_folder, ext_ref.url)
+
+                details = [e for e in control_components
+                           if e["Sw360Id"] == release_id and (
+                               e.get("CliFile", "") == ext_ref.url
+                               or e.get("ReportFile", "") == ext_ref.url)]
+                if len(details) != 1:
+                    print_red("    ERROR: Found", len(details), "entries for attachment",
+                              ext_ref.url, "of", item_name, "in control file!")
+                    continue
+                attachment_id = details[0]["Sw360AttachmentId"]
 
                 print_text("    Downloading file " + filename)
                 try:
-                    at_info = self.client.get_attachment(attachment_id)
-                    at_info = {k: v for k, v in at_info.items()
-                               if k.startswith("check")
-                               or k.startswith("created")}
-                    print(at_info)
-
                     self.client.download_release_attachment(filename, release_id, attachment_id)
                     ext_ref.url = filename
                     try:
@@ -104,6 +102,7 @@ class BomDownloadAttachments(capycli.common.script_base.ScriptBase):
             print("optional arguments:")
             print("    -h, --help            show this help message and exit")
             print("    -i INPUTFILE,         input SBOM to read from, e.g. created by \"project CreateBom\"")
+            print("    -ct CONTROLFILE,      control file to read from as created by \"project CreateBom\"")
             print("    -source SOURCE        source folder or additional source file")
             print("    -o OUTPUTFILE         output file to write to")
             print("    -v                    be verbose")
@@ -111,6 +110,10 @@ class BomDownloadAttachments(capycli.common.script_base.ScriptBase):
 
         if not args.inputfile:
             print_red("No input file specified!")
+            sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+
+        if not args.controlfile:
+            print_red("No control file specified!")
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
         if not os.path.isfile(args.inputfile):
@@ -126,6 +129,16 @@ class BomDownloadAttachments(capycli.common.script_base.ScriptBase):
 
         if args.verbose:
             print_text(" " + str(len(bom.components)) + "components read from SBOM file")
+
+        print_text("Loading control file " + args.controlfile)
+        try:
+            control = load_json_file(args.controlfile)
+        except Exception as ex:
+            print_red("JSON error reading control file: " + repr(ex))
+            sys.exit(ResultCode.RESULT_ERROR_READING_BOM)
+        if "Components" not in control:
+            print_red("missing Components in control file")
+            sys.exit(ResultCode.RESULT_ERROR_READING_BOM)
 
         source_folder = "./"
         if args.source:
@@ -144,7 +157,7 @@ class BomDownloadAttachments(capycli.common.script_base.ScriptBase):
 
         print_text("Downloading source files to folder " + source_folder + " ...")
 
-        self.download_attachments(bom, source_folder, os.path.dirname(args.outputfile))
+        self.download_attachments(bom, control["Components"], source_folder, os.path.dirname(args.outputfile))
 
         if args.outputfile:
             print_text("Updating path information")
