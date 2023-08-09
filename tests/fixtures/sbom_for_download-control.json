@@ -1,0 +1,24 @@
+{
+  "ProjectName": "CaPyCLI, 2.0.0-dev1",
+  "Components": [
+    {
+      "ComponentName": "certifi 2022.12.7",
+      "Sw360Id": "ae8c7ed",
+      "Sw360AttachmentId": "794446",
+      "CreatedBy": "user1@siemens.com",
+      "CreatedTeam": "AA",
+      "CreatedOn": "2020-10-23",
+      "CheckStatus": "ACCEPTED",
+      "CheckedBy": "user2@siemens.com",
+      "CheckedTeam": "BB",
+      "CheckedOn": "2020-10-30",
+      "CliFile": "CLIXML_certifi-2022.12.7.xml"
+    },
+    {
+      "ComponentName": "certifi 2022.12.7",
+      "Sw360Id": "ae8c7ed",
+      "Sw360AttachmentId": "63b368",
+      "ReportFile": "certifi-2022.12.7_clearing_report.docx"
+    }
+  ]
+}
