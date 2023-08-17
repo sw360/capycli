@@ -9,11 +9,9 @@
 import json
 import os
 import pathlib
-import tempfile
 import uuid
 from datetime import datetime
 from enum import Enum
-from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
 from cyclonedx.model import (
@@ -618,14 +616,8 @@ class SbomWriter():
         cls.remove_empty_properties_in_sbom(sbom)
 
         if pretty_print:
-            f = tempfile.NamedTemporaryFile(delete=False)
-            output_file = Path(f.name)
-            output_file.parent.mkdir(exist_ok=True, parents=True)
-            writer.output_to_file(filename=f.name, allow_overwrite=True)
-            jsondata = json_support.load_json_file(f.name)
-            json_support.write_json_to_file(jsondata, outputfile)
-            f.close()
-            os.remove(f.name)
+            jsondata = writer.output_as_string().encode('utf-8')
+            json_support.write_json_to_file(json.loads(jsondata), outputfile)
         else:
             writer.output_to_file(filename=outputfile, allow_overwrite=True)
 
