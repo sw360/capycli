@@ -10,7 +10,8 @@
 * Be more resilient about missing metadata in CycloneDX SBOMs.
 * The `-o` parameter of the command `project GetLicenseInfo` is now optional.
   But you still need this output when you want to create a Readme.
-* `project createbom` add purl, source and repository url from SW360 if available
+* `project createbom` add purls, source and repository url from SW360 if available.
+  If multiple purls are found, a warning is printed asking user to manually edit SBOM.
 * `project createbom` add SW360 source and binary attachments as external reference to SBOM.
 * `project createbom` adds SW360 project name, version and description to SBOM.
 
@@ -27,7 +28,7 @@
   * `bom map` will report matches by name, but different version **only** if `-all` has been specified.
     The original idea of CaPyCLI was to report as many potential matches as possible and to let the user
     decide which match to take by editing the SBOM. But it seems that many users did not read the documentation
-    and the expectations were different. Therefore the default behavior has been changed.  
+    and the expectations were different. Therefore the default behavior has been changed.
     The original behavior of versions prior to 2.x can be enabled via the `-all` switch.
 
 ## 2.0.0.dev (2023-05-19)

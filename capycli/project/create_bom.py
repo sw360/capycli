@@ -17,6 +17,7 @@ from cyclonedx.model.component import Component
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator
+from capycli.common.purl_utils import PurlUtils
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -58,6 +59,12 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                 if not purl:
                     # try another id name
                     purl = self.get_external_id("purl", release_details)
+
+                purl = PurlUtils.parse_purls_from_external_id(purl)
+                if len(purl) > 1:
+                    print_yellow("      Multiple purls added for", release["name"], release["version"])
+                    print_yellow("      You must remove all but one in your SBOM!")
+                purl = " ".join(purl)
 
                 if purl:
                     rel_item = Component(name=release["name"], version=release["version"], purl=purl, bom_ref=purl)
