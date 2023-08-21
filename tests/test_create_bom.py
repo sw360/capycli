@@ -8,16 +8,17 @@
 
 import os
 
+import pytest
 import responses
 from cyclonedx.model import ExternalReferenceType
 
 from capycli.common.capycli_bom_support import CaPyCliBom
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_bom import CreateBom
-from tests.test_base import AppArguments, TestBase
+from tests.test_base import AppArguments, TestBasePytest
 
 
-class TestCreateBom(TestBase):
+class TestCreateBom(TestBasePytest):
     OUTPUTFILE = "output.json"
 
     def test_show_help(self) -> None:
@@ -31,7 +32,7 @@ class TestCreateBom(TestBase):
         args.help = True
 
         out = self.capture_stdout(sut.run, args)
-        self.assertTrue("usage: CaPyCli project createbom" in out)
+        assert "usage: CaPyCli project createbom" in out
 
     @responses.activate
     def test_no_login(self) -> None:
@@ -45,11 +46,9 @@ class TestCreateBom(TestBase):
         args.debug = True
         args.verbose = True
 
-        try:
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
-            self.assertTrue(False, "Failed to report login failure")
-        except SystemExit as ex:
-            self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)
+        assert ResultCode.RESULT_AUTH_ERROR == ex.value.code
 
     @responses.activate
     def test_no_output_file(self) -> None:
@@ -59,18 +58,16 @@ class TestCreateBom(TestBase):
         args.command = []
         args.command.append("project")
         args.command.append("createbom")
-        args.sw360_token = TestBase.MYTOKEN
-        args.sw360_url = TestBase.MYURL
+        args.sw360_token = TestBasePytest.MYTOKEN
+        args.sw360_url = TestBasePytest.MYURL
         args.debug = True
         args.verbose = True
 
         self.add_login_response()
 
-        try:
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
-            self.assertTrue(False, "Failed to report login failure")
-        except SystemExit as ex:
-            self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
+        assert ResultCode.RESULT_COMMAND_ERROR == ex.value.code
 
     @responses.activate
     def test_no_project_identification(self) -> None:
@@ -82,16 +79,14 @@ class TestCreateBom(TestBase):
         args.command.append("createbom")
         args.debug = True
         args.verbose = True
-        args.sw360_token = TestBase.MYTOKEN
-        args.sw360_url = TestBase.MYURL
+        args.sw360_token = TestBasePytest.MYTOKEN
+        args.sw360_url = TestBasePytest.MYURL
 
         self.add_login_response()
 
-        try:
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
-            self.assertTrue(False, "Failed to report login failure")
-        except SystemExit as ex:
-            self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
+        assert ResultCode.RESULT_COMMAND_ERROR == ex.value.code
 
     @responses.activate
     def test_project_not_found(self) -> None:
@@ -101,8 +96,8 @@ class TestCreateBom(TestBase):
         args.command = []
         args.command.append("project")
         args.command.append("createbom")
-        args.sw360_token = TestBase.MYTOKEN
-        args.sw360_url = TestBase.MYURL
+        args.sw360_token = TestBasePytest.MYTOKEN
+        args.sw360_url = TestBasePytest.MYURL
         args.debug = True
         args.verbose = True
         args.id = "34ef5c5452014c52aa9ce4bc180624d8"
@@ -120,18 +115,16 @@ class TestCreateBom(TestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-        try:
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
-            self.assertTrue(False, "Failed to report login failure")
-        except SystemExit as ex:
-            self.assertEqual(ResultCode.RESULT_ERROR_ACCESSING_SW360, ex.code)
+        assert ResultCode.RESULT_ERROR_ACCESSING_SW360 == ex.value.code
 
     @responses.activate
-    def test_create_bom_multiple_purls(self):
+    def test_create_bom_multiple_purls(self, capsys):
         sut = CreateBom()
 
         self.add_login_response()
-        sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
+        sut.login(token=TestBasePytest.MYTOKEN, url=TestBasePytest.MYURL)
 
         # the first release
         responses.add(
@@ -156,20 +149,18 @@ class TestCreateBom(TestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-        out = self.capture_stdout(sut.create_project_bom, self.get_project_for_test())
-        self.assertIn("Multiple purls added", out)
-
-        # TODO self.capture_stdout doesn't allow us to get return value,
-        # so re-run test. See also https://github.com/sw360/capycli/issues/39
         cdx_components = sut.create_project_bom(self.get_project_for_test())
-        self.assertEqual(cdx_components[0].purl, "pkg:deb/debian/cli-support@1.3-1 pkg:pypi/cli-support@1.3")
+        captured = capsys.readouterr()
+
+        assert "Multiple purls added" in captured.out
+        assert cdx_components[0].purl == "pkg:deb/debian/cli-support@1.3-1 pkg:pypi/cli-support@1.3"
 
     @responses.activate
     def test_project_by_id(self):
         sut = CreateBom()
 
         self.add_login_response()
-        sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
+        sut.login(token=TestBasePytest.MYTOKEN, url=TestBasePytest.MYURL)
 
         # the project
         project = self.get_project_for_test()
@@ -218,27 +209,27 @@ class TestCreateBom(TestBase):
 
         cdx_bom = sut.create_project_cdx_bom("p001")
         cx_comp = cdx_bom.components[0]
-        self.assertEqual(cx_comp.purl, release["externalIds"]["package-url"])
+        assert cx_comp.purl == release["externalIds"]["package-url"]
 
         ext_refs_src_url = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_URL_COMMENT]
-        self.assertEqual(len(ext_refs_src_url), 1)
-        self.assertEqual(ext_refs_src_url[0].url, release["sourceCodeDownloadurl"])
-        self.assertEqual(ext_refs_src_url[0].type, ExternalReferenceType.DISTRIBUTION)
+        assert len(ext_refs_src_url) == 1
+        assert ext_refs_src_url[0].url == release["sourceCodeDownloadurl"]
+        assert ext_refs_src_url[0].type == ExternalReferenceType.DISTRIBUTION
 
         ext_refs_src_file = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_FILE_COMMENT]
-        self.assertEqual(len(ext_refs_src_file), 2)
-        self.assertEqual(ext_refs_src_file[0].url, release["_embedded"]["sw360:attachments"][0]["filename"])
-        self.assertEqual(ext_refs_src_file[0].type, ExternalReferenceType.DISTRIBUTION)
-        self.assertEqual(ext_refs_src_file[0].hashes[0].alg, "SHA-1")
-        self.assertEqual(ext_refs_src_file[0].hashes[0].content, release["_embedded"]["sw360:attachments"][0]["sha1"])
+        assert len(ext_refs_src_file) == 2
+        assert ext_refs_src_file[0].url == release["_embedded"]["sw360:attachments"][0]["filename"]
+        assert ext_refs_src_file[0].type == ExternalReferenceType.DISTRIBUTION
+        assert ext_refs_src_file[0].hashes[0].alg == "SHA-1"
+        assert ext_refs_src_file[0].hashes[0].content == release["_embedded"]["sw360:attachments"][0]["sha1"]
 
         ext_refs_vcs = [e for e in cx_comp.external_references if e.type == ExternalReferenceType.VCS]
-        self.assertEqual(len(ext_refs_vcs), 1)
-        self.assertEqual(ext_refs_vcs[0].url, release["repository"]["url"])
+        assert len(ext_refs_vcs) == 1
+        assert ext_refs_vcs[0].url == release["repository"]["url"]
 
-        self.assertEqual(cdx_bom.metadata.component.name, project["name"])
-        self.assertEqual(cdx_bom.metadata.component.version, project["version"])
-        self.assertEqual(cdx_bom.metadata.component.description, project["description"])
+        assert cdx_bom.metadata.component.name == project["name"]
+        assert cdx_bom.metadata.component.version == project["version"]
+        assert cdx_bom.metadata.component.description == project["description"]
 
     @responses.activate
     def test_project_show_by_name(self):
@@ -248,8 +239,8 @@ class TestCreateBom(TestBase):
         args.command = []
         args.command.append("project")
         args.command.append("createbom")
-        args.sw360_token = TestBase.MYTOKEN
-        args.sw360_url = TestBase.MYURL
+        args.sw360_token = TestBasePytest.MYTOKEN
+        args.sw360_url = TestBasePytest.MYURL
         args.debug = True
         args.verbose = True
         args.name = "CaPyCLI"
@@ -326,15 +317,15 @@ class TestCreateBom(TestBase):
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
 
-        self.assertTrue("Searching for project..." in out)
-        self.assertTrue("Project name: CaPyCLI, 1.9.0" in out)
-        self.assertTrue("cli-support 1.3" in out)
-        self.assertTrue("wheel 0.38.4" in out)
+        assert "Searching for project..." in out
+        assert "Project name: CaPyCLI, 1.9.0" in out
+        assert "cli-support 1.3" in out
+        assert "wheel 0.38.4" in out
 
-        self.assertTrue(os.path.isfile(self.OUTPUTFILE))
+        assert os.path.isfile(self.OUTPUTFILE)
         sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE)
-        self.assertIsNotNone(sbom)
-        self.assertEqual(2, len(sbom.components))
+        assert sbom is not None
+        assert 2 == len(sbom.components)
 
         self.delete_file(self.OUTPUTFILE)
 
