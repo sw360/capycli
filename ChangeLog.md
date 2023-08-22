@@ -7,6 +7,7 @@
 
 ## NEXT
 
+* `project createbom` will not add rejected attachments to SBOM
 * `project createbom` adds CLI and report information to SBOM
 * new command `bom downloadattachments` to download CLI and report attachments
 * `bom map`: The options `--dbx` and `-all` were replaced by `--matchmode`.

@@ -107,13 +107,16 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                     if at_type not in CaPyCliBom.FILE_COMMENTS:
                         continue
                     comment = CaPyCliBom.FILE_COMMENTS[at_type]
+                    at_data = self.client.get_attachment_by_url(attachment["_links"]["self"]["href"])
+                    if at_data.get("checkStatus") == "REJECTED":
+                        print_yellow("      WARNING: ignoring REJECTED attachment",
+                                     attachment["filename"])
+                        continue
                     if at_type in ("SOURCE", "SOURCE_SELF", "BINARY", "BINARY_SELF"):
                         ext_ref_type = ExternalReferenceType.DISTRIBUTION
                     else:
                         ext_ref_type = ExternalReferenceType.OTHER
                         if create_controlfile:
-                            at_data = self.client.get_attachment_by_url(attachment["_links"]["self"]["href"])
-
                             at_details = {
                                 "ComponentName": " ".join((release["name"], release["version"])),
                                 "Sw360Id": sw360_id,
