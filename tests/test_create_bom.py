@@ -149,7 +149,7 @@ class TestCreateBom(TestBasePytest):
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
-
+        self.add_project_attachment_responses()
         cdx_components, _ = sut.create_project_bom(self.get_project_for_test(),
                                                    create_controlfile=False)
         captured = capsys.readouterr()
@@ -214,6 +214,86 @@ class TestCreateBom(TestBasePytest):
         )
         return release
 
+    def add_project_attachment_responses(self):
+        responses.add(
+            method=responses.GET,
+            url=self.MYURL + "resource/api/attachments/r001a002",
+            body="""
+                {
+                    "filename": "wheel-0.38.4.zip",
+                    "attachmentType": "SOURCE"
+                }""",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+        responses.add(
+            method=responses.GET,
+            url=self.MYURL + "resource/api/attachments/r001a001",
+            body="""
+                {
+                    "filename": "CLIXML_wheel-0.38.4.xml",
+                    "sha1": "ccd9f1ed2f59c46ff3f0139c05bfd76f83fd9851",
+                    "attachmentType": "COMPONENT_LICENSE_INFO_XML"
+                }""",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        responses.add(
+            method=responses.GET,
+            url=self.MYURL + "resource/api/attachments/r002a001",
+            body="""
+                {
+                    "filename": "clipython-1.3.0.zip",
+                    "attachmentType": "SOURCE"
+                }""",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+        responses.add(
+            method=responses.GET,
+            url=self.MYURL + "resource/api/attachments/r002a002",
+            body="""
+                {
+                    "filename": "CLIXML_clipython-1.3.0.xml",
+                    "sha1": "dd4c38387c6811dba67d837af7742d84e61e20de",
+                    "attachmentType": "COMPONENT_LICENSE_INFO_XML",
+                    "checkedBy": "user2@siemens.com",
+                    "checkStatus": "ACCEPTED",
+                    "createdBy": "user1@siemens.com"
+                }""",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+        responses.add(
+            method=responses.GET,
+            url=self.MYURL + "resource/api/attachments/r002a003",
+            body="""
+                {
+                    "filename": "clipython-repacked-for-fun.zip",
+                    "attachmentType": "SOURCE_SELF"
+                }""",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+        responses.add(
+            method=responses.GET,
+            url=self.MYURL + "resource/api/attachments/r002a004",
+            body="""
+                {
+                    "filename": "clipython-1.3.0.docx",
+                    "attachmentType": "CLEARING_REPORT"
+                }""",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
     @responses.activate
     def test_project_by_id(self):
         sut = CreateBom()
@@ -222,6 +302,7 @@ class TestCreateBom(TestBasePytest):
         sut.login(token=TestBasePytest.MYTOKEN, url=TestBasePytest.MYURL)
 
         release = self.add_project_releases_responses()
+        self.add_project_attachment_responses()
         project = self.get_project_for_test()
 
         cdx_bom, _ = sut.create_project_cdx_bom("p001", create_controlfile=False)
@@ -273,37 +354,8 @@ class TestCreateBom(TestBasePytest):
         sut.login(token=TestBasePytest.MYTOKEN, url=TestBasePytest.MYURL)
 
         self.add_project_releases_responses()
+        self.add_project_attachment_responses()
 
-        # attachment info
-        responses.add(
-            method=responses.GET,
-            url=self.MYURL + "resource/api/attachments/r001a001",
-            body="""
-                {
-                    "filename": "CLIXML_wheel-0.38.4.xml",
-                    "sha1": "ccd9f1ed2f59c46ff3f0139c05bfd76f83fd9851",
-                    "attachmentType": "COMPONENT_LICENSE_INFO_XML"
-                }""",
-            status=200,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
-        responses.add(
-            method=responses.GET,
-            url=self.MYURL + "resource/api/attachments/r002a002",
-            body="""
-                {
-                    "filename": "CLIXML_clipython-1.3.0.xml",
-                    "sha1": "dd4c38387c6811dba67d837af7742d84e61e20de",
-                    "attachmentType": "COMPONENT_LICENSE_INFO_XML",
-                    "checkedBy": "user2@siemens.com",
-                    "checkStatus": "ACCEPTED",
-                    "createdBy": "user1@siemens.com"
-                }""",
-            status=200,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
         responses.add(
             method=responses.GET,
             url=self.MYURL + "resource/api/attachments/r002a004",
@@ -413,6 +465,7 @@ class TestCreateBom(TestBasePytest):
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
+        self.add_project_attachment_responses()
 
         self.delete_file(self.OUTPUTFILE)
         out = self.capture_stdout(sut.run, args)
@@ -452,6 +505,7 @@ class TestCreateBom(TestBasePytest):
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
+        self.add_project_attachment_responses()
         with pytest.raises(SystemExit):
             bom, _ = sut.create_project_bom(self.get_project_for_test(), create_controlfile=False)
 
@@ -474,6 +528,18 @@ class TestCreateBom(TestBasePytest):
             responses.GET,
             url=self.MYURL + "resource/api/releases/r002",
             json=self.get_release_cli_for_test(),
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+        responses.add(
+            method=responses.GET,
+            url=self.MYURL + "resource/api/attachments/r002a001",
+            body="""
+                {
+                    "filename": "clipython-1.3.0.zip",
+                    "attachmentType": "COMPONENT_LICENSE_INFO_XML"
+                }""",
             status=200,
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
