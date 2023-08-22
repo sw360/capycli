@@ -14,6 +14,7 @@
   If multiple purls are found, a warning is printed asking user to manually edit SBOM.
 * `project createbom` add SW360 attachment info as external references to SBOM
   (currently supported: source, binary, CLI, report).
+* `project createbom` will not add rejected attachments to SBOM
 * `project createbom` adds SW360 project name, version and description to SBOM.
 * new command `bom downloadattachments` to download CLI and report attachments
 
