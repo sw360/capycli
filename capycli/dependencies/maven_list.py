@@ -264,7 +264,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
     def create_bom_item(self, x) -> Component:
         """
-        Crrate a CycloneDX BOM item.
+        Create a CycloneDX BOM item.
         """
         dependency = x[1]
         # print("dependency", dependency)
