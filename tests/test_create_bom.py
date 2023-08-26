@@ -127,6 +127,44 @@ class TestCreateBom(TestBase):
             self.assertEqual(ResultCode.RESULT_ERROR_ACCESSING_SW360, ex.code)
 
     @responses.activate
+    def test_create_bom_multiple_purls(self):
+        sut = CreateBom()
+
+        self.add_login_response()
+        sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
+
+        # the first release
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/r001",
+            json=self.get_release_wheel_for_test(),
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # the second release
+        release = self.get_release_cli_for_test()
+        # use a specific purl
+        release["externalIds"]["package-url"] = "[\"pkg:deb/debian/cli-support@1.3-1\",\"pkg:pypi/cli-support@1.3\"]"
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/r002",
+            json=release,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        out = self.capture_stdout(sut.create_project_bom, self.get_project_for_test())
+        self.assertIn("Multiple purls added", out)
+
+        # TODO self.capture_stdout doesn't allow us to get return value,
+        # so re-run test. See also https://github.com/sw360/capycli/issues/39
+        cdx_components = sut.create_project_bom(self.get_project_for_test())
+        self.assertEqual(cdx_components[0].purl, "pkg:deb/debian/cli-support@1.3-1 pkg:pypi/cli-support@1.3")
+
+    @responses.activate
     def test_project_by_id(self):
         sut = CreateBom()
 
