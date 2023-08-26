@@ -63,7 +63,7 @@ class AppArguments():
         self.outputformat = ""
 
 
-class TestBase(unittest.TestCase):
+class TestBasePytest:
     MYTOKEN = "MYTOKEN"
     MYURL = "https://my.server.com/"
     ERROR_MSG_NO_LOGIN = "Unable to login"
@@ -474,3 +474,7 @@ class TestBase(unittest.TestCase):
   <ExternalIds />
 </ComponentLicenseInformation>
             """
+
+
+class TestBase(unittest.TestCase, TestBasePytest):
+    pass
