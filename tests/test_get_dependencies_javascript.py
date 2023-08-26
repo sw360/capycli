@@ -137,7 +137,7 @@ class TestGetDependenciesJavascript(TestBase):
         self.assertEqual("zone.js", enhanced.components[0].name)
         self.assertEqual("Zones for JavaScript", enhanced.components[0].description)
         val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])
-        self.assertEqual("https://github.com/angular/angular.git", val)
+        self.assertEqual("", val)
 
         self.delete_file("test_package_lock_1.json")
 
@@ -152,6 +152,36 @@ class TestGetDependenciesJavascript(TestBase):
             bom,
             "https://registry.npmjs.org/")
         self.assertEqual(1, len(enhanced.components))
+
+    def test_get_metadata_source_archive_url(self) -> None:
+        sut = capycli.dependencies.javascript.GetJavascriptDependencies()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("getdependencies")
+        args.command.append("javascript")
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
+        args.outputfile = self.OUTPUTFILE1
+        args.debug = True
+        args.search_meta_data = True
+
+        out = self.capture_stdout(sut.run, args)
+        self.assertTrue(self.INPUTFILE1 in out)
+        self.assertTrue("Writing new SBOM to output.json" in out)
+        self.assertTrue("6 components written to file output.json" in out)
+
+        sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE1)
+        self.assertIsNotNone(sbom)
+        self.assertEqual(6, len(sbom.components))
+
+        self.assertEqual("tslib", sbom.components[4].name)
+        self.assertEqual("2.3.1", sbom.components[4].version)
+        val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[4])
+        print(val)
+        self.assertEqual("https://github.com/Microsoft/tslib/archive/refs/tags/2.3.1.zip", val)
+
+        self.delete_file(self.OUTPUTFILE1)
 
     def test_real_package_lock(self) -> None:
         sut = capycli.dependencies.javascript.GetJavascriptDependencies()

@@ -172,16 +172,12 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
         if "github.com" in url:
             if not str(url).startswith("http"):
                 url = "https://" + url
+            url = self.find_source_file(url, bomitem.name, bomitem.version)
             CycloneDxSupport.update_or_set_ext_ref(
                 bomitem,
                 ExternalReferenceType.DISTRIBUTION,
                 CaPyCliBom.SOURCE_URL_COMMENT,
                 url)
-            source_file_url = self.find_source_file(url, bomitem.name, bomitem.version)
-            ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
-                comment=CaPyCliBom.SOURCE_URL_COMMENT,
-                url=source_file_url)
         bomitem.description = info.get("description", "")
         if not CycloneDxSupport.get_binary_file_hash(bomitem):
             ext_ref = CycloneDxSupport.get_ext_ref(
