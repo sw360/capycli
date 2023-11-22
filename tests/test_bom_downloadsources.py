@@ -265,6 +265,7 @@ class TestBomDownloadsources(TestBase):
                     bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
                 self.assertEqual(ext_ref.url, resultfile)
 
+                self.assertEqual(len(bom.components[1].external_references), 0)
                 return
             except Exception as e:  # noqa
                 # catch all exception to let Python cleanup the temp folder

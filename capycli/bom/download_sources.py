@@ -97,6 +97,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             if source_url:
                 result = self.download_source_file(source_url, source_folder)
             else:
+                result = None
                 print_red("    No URL specified!")
 
             if result is not None:
