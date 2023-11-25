@@ -11,6 +11,7 @@ import tempfile
 
 import responses
 from cyclonedx.model import ExternalReferenceType
+from cyclonedx.model.component import Component
 
 from capycli.bom.download_sources import BomDownloadSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -234,5 +235,40 @@ class TestBomDownloadsources(TestBase):
             except:  # noqa
                 # catch all exception to let Python cleanup the temp folder
                 pass
+
+        self.assertTrue(False, "Error: we must never arrive here")
+
+
+    @responses.activate
+    def test_simple_bom_no_url(self) -> None:
+        sut = BomDownloadSources()
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            responses.add(
+                responses.GET,
+                url="https://files.pythonhosted.org/packages/37/f7/2b1b/certifi-2022.12.7.tar.gz",
+                body="""
+                SOME DUMMY DATA
+                """,
+                status=200,
+                content_type="application/json",
+            )
+
+            try:
+                bom = CaPyCliBom.read_sbom(os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE))
+                bom.components.add(Component(name="foo", version="1.2.3"))
+                sut.download_sources(bom, tmpdirname)
+                resultfile = os.path.join(tmpdirname, "certifi-2022.12.7.tar.gz")
+                self.assertTrue(os.path.isfile(resultfile))
+
+                ext_ref = CycloneDxSupport.get_ext_ref(
+                    bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
+                self.assertEqual(ext_ref.url, resultfile)
+
+                self.assertEqual(len(bom.components[1].external_references), 0)
+                return
+            except Exception as e:  # noqa
+                # catch all exception to let Python cleanup the temp folder
+                print(e)
 
         self.assertTrue(False, "Error: we must never arrive here")

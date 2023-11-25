@@ -97,6 +97,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             if source_url:
                 result = self.download_source_file(source_url, source_folder)
             else:
+                result = None
                 print_red("    No URL specified!")
 
             if result is not None:
@@ -112,9 +113,11 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                 if not ext_ref:
                     ext_ref = ExternalReference(
                         reference_type=ExternalReferenceType.DISTRIBUTION,
-                        comment=CaPyCliBom.SOURCE_FILE_COMMENT)
+                        comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                        url=path)
                     new = True
-                ext_ref.url = path
+                else:
+                    ext_ref.url = path
                 ext_ref.hashes.add(HashType(
                     algorithm=HashAlgorithm.SHA_1,
                     hash_value=sha1))
