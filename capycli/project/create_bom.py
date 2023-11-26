@@ -17,8 +17,8 @@ from cyclonedx.model.component import Component
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator
-from capycli.common.purl_utils import PurlUtils
 from capycli.common.print import print_red, print_text, print_yellow
+from capycli.common.purl_utils import PurlUtils
 from capycli.main.result_codes import ResultCode
 
 LOG = get_logger(__name__)
