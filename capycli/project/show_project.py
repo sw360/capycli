@@ -136,7 +136,7 @@ class ShowProject(capycli.common.script_base.ScriptBase):
                         if "sw360:attachments" in release_details["_embedded"]:
                             att = release_details["_embedded"]["sw360:attachments"]
                             for key in att:
-                                if key["attachmentType"] == "SOURCE":
+                                if key.get("attachmentType", "") == "SOURCE":
                                     rel_item["SourceAvailable"] = "True"
                 except sw360.SW360Error as swex:
                     print_red("  ERROR: unable to access project:" + repr(swex))
