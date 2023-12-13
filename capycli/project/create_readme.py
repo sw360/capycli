@@ -146,7 +146,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         """Write the title."""
         htmlfile.write("<h1>" + title + "</h1>" + self.lineend)
 
-    def write_preamble(self, config: dict, htmlfile: TextIOWrapper) -> None:
+    def write_preamble(self, config: Dict[str, Any], htmlfile: TextIOWrapper) -> None:
         """Writes the legal preamble."""
         company = config.get("CompanyName", "YOUR COMPANY")
         htmlfile.write("<h2>Open Source Software</h2>" + self.lineend)
@@ -238,7 +238,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
             + self.lineend)
         htmlfile.write("<br />" + self.lineend)
 
-    def write_release_overview(self, htmlfile, cli_files) -> None:
+    def write_release_overview(self, htmlfile, cli_files: List[CliFile]) -> None:
         """Writes the release overview."""
         htmlfile.write('<h2 id="releaseHeader">Releases</h2>' + self.lineend)
         htmlfile.write('<ul id="releaseOverview">' + self.lineend)
@@ -274,14 +274,14 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         result = name.replace(" ", "_")
         return result
 
-    def write_sub_project_info(self, htmlfile: TextIOWrapper, cli_files) -> None:
+    def write_sub_project_info(self, htmlfile: TextIOWrapper, cli_files: List[CliFile]) -> None:
         """Writes the sub project information."""
 
         # NOT YET IMPLEMENTED
 
         pass
 
-    def write_release_info(self, htmlfile: TextIOWrapper, cli_files) -> None:
+    def write_release_info(self, htmlfile: TextIOWrapper, cli_files: List[CliFile]) -> None:
         """Writes the release information."""
         htmlfile.write("<p>" + self.lineend)
         htmlfile.write("<strong>" + self.lineend)
@@ -310,7 +310,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         pass
 
-    def write_single_release_info(self, htmlfile: TextIOWrapper, clifile) -> None:
+    def write_single_release_info(self, htmlfile: TextIOWrapper, clifile: CliFile) -> None:
         """Writes the single release information."""
         htmlfile.write(
             '<li id="'
@@ -364,7 +364,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         return text
 
-    def write_copyrights(self, htmlfile: TextIOWrapper, clifile) -> None:
+    def write_copyrights(self, htmlfile: TextIOWrapper, clifile: CliFile) -> None:
         """Writes the copyrights."""
         if len(clifile.copyrights) < 1:
             return
@@ -378,7 +378,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         htmlfile.write("</pre>" + self.lineend)
         htmlfile.write(self.lineend)
 
-    def release_has_acknowledgements(self, clifile) -> bool:
+    def release_has_acknowledgements(self, clifile: CliFile) -> bool:
         """Determines whether the given release has acknowledgements."""
         for lic in clifile.licenses:
             if len(lic.acknowledgements) > 0:
@@ -386,7 +386,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def write_acknowledgements(self, htmlfile: TextIOWrapper, clifile) -> None:
+    def write_acknowledgements(self, htmlfile: TextIOWrapper, clifile: CliFile) -> None:
         """Writes the acknowledgements."""
         if not self.release_has_acknowledgements(clifile):
             return
@@ -404,7 +404,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         htmlfile.write("</pre>" + self.lineend)
         htmlfile.write("\n" + self.lineend)
 
-    def write_licenses(self, htmlfile: TextIOWrapper, clifile) -> None:
+    def write_licenses(self, htmlfile: TextIOWrapper, clifile: CliFile) -> None:
         """Writes the licenses."""
         htmlfile.write(self.lineend)
         htmlfile.write("<b>Licenses:<br /></b>" + self.lineend)
@@ -449,9 +449,9 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
             config = json.loads(text)
         return config
 
-    def read_cli_files(self, config: Dict[str, Any]) -> List[str]:
+    def read_cli_files(self, config: Dict[str, Any]) -> List[CliFile]:
         """Reads all CLI files"""
-        cli_files = []
+        cli_files: List[CliFile] = []
         unique_components = []
         for file in config["Components"]:
             component_name = file["ComponentName"]
@@ -480,7 +480,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         return cli_files
 
-    def create_readme(self, cli_files: list, output_filename: str, config: dict) -> None:
+    def create_readme(self, cli_files: List[CliFile], output_filename: str, config: Dict[str, Any]) -> None:
         """Generates the readme."""
         htmlfile = open(output_filename, "w", encoding="utf-8")
         self.write_start(htmlfile)

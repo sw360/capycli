@@ -9,7 +9,7 @@
 import logging
 import os
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import requests
 from cyclonedx.model.bom import Bom
@@ -48,8 +48,12 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
         return linkedReleases
 
-    def update_project(self, project_id: str, project: dict, sbom: Bom, project_info: dict) -> None:
+    def update_project(self, project_id: str, project: Optional[Dict[str, Any]],
+                       sbom: Bom, project_info: Dict[str, Any]) -> None:
         """Update an existing project with the given SBOM"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         data = self.bom_to_release_list(sbom)
 
@@ -81,8 +85,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                         print_yellow("  You might want to call `project prerequisites` to check difference")
 
             if project_info:
-                result = self.client.update_project(project_info, project_id, add_subprojects=self.onlyUpdateProject)
-                if not result:
+                result2 = self.client.update_project(project_info, project_id, add_subprojects=self.onlyUpdateProject)
+                if not result2:
                     print_red("  Error updating project!")
 
         except sw360.sw360_api.SW360Error as swex:
@@ -96,8 +100,11 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 print_red("  You are not authorized - do you have a valid write token?")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-    def update_project_version(self, project_id: str, project: dict, new_version: str) -> None:
+    def update_project_version(self, project_id: str, project: Dict[str, Any], new_version: str) -> None:
         """Update an existing project with the given SBOM and version"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         """Update project metadata based on existing metadata. This will only change the version"""
         data: Dict[str, Any] = {}
@@ -123,7 +130,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
         self.client.update_project(data, project_id)
 
-    def bom_to_release_list_new(self, sbom: Bom) -> dict:
+    def bom_to_release_list_new(self, sbom: Bom) -> Dict[str, Any]:
         """Creates a list with linked releases for a NEW project"""
         linkedReleases: Dict[str, Any] = {}
 
@@ -147,6 +154,9 @@ class CreateProject(capycli.common.script_base.ScriptBase):
     def upload_attachments(self, attachments):
         """Upload attachments to project"""
         print("  Upload attachments to project")
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         project_attachments = self.client.get_attachment_infos_for_project(self.project_id)
 
@@ -177,8 +187,11 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 self.client.upload_project_attachment(self.project_id, attachment['file'], "OTHER")
                 print_text("  Uploaded attachment " + attachment['file'])
 
-    def create_project(self, name: str, version: str, sbom: Bom, project_info: dict) -> None:
+    def create_project(self, name: str, version: str, sbom: Bom, project_info: Dict[str, Any]) -> None:
         """Create a new project with the given SBOM"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         data = project_info
         data["name"] = name
@@ -225,7 +238,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print_red("  General error creating project " + repr(ex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
@@ -287,6 +300,10 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         print_text("Loading SBOM file", args.inputfile)
         try:
             sbom = CaPyCliBom.read_sbom(args.inputfile)
@@ -297,7 +314,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         if args.verbose:
             print_text(" ", self.get_comp_count_text(sbom), "read from SBOM")
 
-        info = None
+        info: Dict[str, Any] = {}
         if args.source:
             print("Reading project information", args.source)
             try:

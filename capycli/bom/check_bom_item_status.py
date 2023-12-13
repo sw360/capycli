@@ -39,6 +39,10 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
         return False
 
     def _find_by_id(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         sw360id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
         version = component.version or ""
         try:
@@ -64,6 +68,10 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
         return None
 
     def _find_by_name(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         version = component.version or ""
         try:
             releases = self.client.get_releases_by_name(component.name)
@@ -94,6 +102,10 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
             return None
 
     def show_bom_item_status(self, bom: Bom, all: bool = False) -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         for component in bom.components:
             release = None
             id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
@@ -122,6 +134,9 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                         release["_links"]["sw360:component"]["href"]
                     )
                 )
+                if not comp_sw360:
+                    print_red("Error accessing component")
+                    continue
 
                 rel_list = comp_sw360["_embedded"]["sw360:releases"]
                 print("  " + component.name + ", " + component.version + " => ", end="", flush=True)
@@ -129,6 +144,9 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                 for orel in rel_list:
                     href = orel["_links"]["self"]["href"]
                     rel = self.client.get_release_by_url(href)
+                    if not rel:
+                        print_red("Error accessing release " + href)
+                        continue
                     cs = rel.get("clearingState", "(unkown clearing state)")
                     if cs == "APPROVED":
                         print(Fore.LIGHTGREEN_EX, end="", flush=True)
@@ -146,7 +164,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                     " => --- no id ---")
                 continue
 
-    def run(self, args) -> None:
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

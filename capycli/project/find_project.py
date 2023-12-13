@@ -9,7 +9,7 @@
 import logging
 import sys
 import traceback
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import requests
 
@@ -25,6 +25,10 @@ class FindProject(capycli.common.script_base.ScriptBase):
     """Find projects by name on SW360"""
 
     def list_projects(self, name: str, version: str) -> Any:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             print_text("  Searching for projects by name")
             projects = self.client.get_projects_by_name(name)
@@ -42,9 +46,17 @@ class FindProject(capycli.common.script_base.ScriptBase):
                 repr(ex) + "\n" +
                 str(traceback.format_exc()))
 
-    def display_project(self, project: Dict[str, Any], pid: int = -1) -> None:
+    def display_project(self, project: Optional[Dict[str, Any]], pid: str = "") -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         if not project:
             project = self.client.get_project(pid)
+
+        if not project:
+            print_red("Cannot read project!")
+            return
 
         href = project["_links"]["self"]["href"]
         if "version" not in project:
@@ -57,6 +69,10 @@ class FindProject(capycli.common.script_base.ScriptBase):
                 " => ID = " + self.client.get_id_from_href(href))
 
     def check_project_id(self, project_id: str) -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             project = self.client.get_project(project_id)
             if not project:
@@ -67,7 +83,9 @@ class FindProject(capycli.common.script_base.ScriptBase):
                 "Project found, name = " + project["name"] +
                 ", version = " + project["version"])
         except sw360.SW360Error as swex:
-            if swex.response.status_code == requests.codes['not_found']:
+            if swex.response is None:
+                print_red("Unknown error: " + swex.message)
+            elif swex.response.status_code == requests.codes['not_found']:
                 print_yellow(f"Project with id {project_id} not found!")
             else:
                 print_red("Error retrieving project data.")
@@ -106,8 +124,8 @@ class FindProject(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        name = args.name
-        version = None
+        name: str = args.name
+        version: str = ""
         if args.version:
             version = args.version
 

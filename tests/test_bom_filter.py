@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any, Dict, List
 
 import capycli.bom.filter_bom
 import capycli.common.json_support
@@ -51,7 +52,7 @@ class TestBomFilter(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_input_file_not_found(self):
+    def test_app_bom_input_file_not_found(self) -> None:
         db = capycli.bom.filter_bom.FilterBom()
 
         # create argparse command line argument object
@@ -66,7 +67,7 @@ class TestBomFilter(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, sysex.code)
 
-    def test_app_bom_no_filter_file_specified(self):
+    def test_app_bom_no_filter_file_specified(self) -> None:
         db = capycli.bom.filter_bom.FilterBom()
 
         # create argparse command line argument object
@@ -82,7 +83,7 @@ class TestBomFilter(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_no_filter_not_found(self):
+    def test_app_bom_no_filter_not_found(self) -> None:
         db = capycli.bom.filter_bom.FilterBom()
 
         # create argparse command line argument object
@@ -99,7 +100,7 @@ class TestBomFilter(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, sysex.code)
 
-    def test_app_bom_no_output_file_specified(self):
+    def test_app_bom_no_output_file_specified(self) -> None:
         db = capycli.bom.filter_bom.FilterBom()
 
         # create argparse command line argument object
@@ -116,7 +117,7 @@ class TestBomFilter(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_input_file_invalid(self):
+    def test_app_bom_input_file_invalid(self) -> None:
         db = capycli.bom.filter_bom.FilterBom()
 
         # create argparse command line argument object
@@ -134,7 +135,7 @@ class TestBomFilter(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_ERROR_READING_BOM, sysex.code)
 
-    def test_add_single_item(self):
+    def test_add_single_item(self) -> None:
         sut = capycli.bom.filter_bom.FilterBom()
 
         inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE_EMPTY)
@@ -146,10 +147,10 @@ class TestBomFilter(TestBase):
         self.delete_file(filterfile)
 
         # create filter file that adds a single component
-        filter = {}
-        filter_entries = []
-        filter_entry = {}
-        component = {}
+        filter: Dict[str, Any] = {}
+        filter_entries: List[Dict[str, Any]] = []
+        filter_entry: Dict[str, Any] = {}
+        component: Dict[str, Any] = {}
         component["Name"] = "newdummy"
         component["Version"] = "99.99"
         filter_entry["component"] = component
@@ -180,7 +181,7 @@ class TestBomFilter(TestBase):
         self.delete_file(outputfile)
         self.delete_file(filterfile)
 
-    def test_add_single_item_to_existing_bom(self):
+    def test_add_single_item_to_existing_bom(self) -> None:
         sut = capycli.bom.filter_bom.FilterBom()
 
         inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
@@ -194,10 +195,10 @@ class TestBomFilter(TestBase):
         self.assertTrue(os.path.exists(inputfile), "Filter input file not found!")
 
         # create filter file that adds a single component
-        filter = {}
-        filter_entries = []
-        filter_entry = {}
-        component = {}
+        filter: Dict[str, Any] = {}
+        filter_entries: List[Dict[str, Any]] = []
+        filter_entry: Dict[str, Any] = {}
+        component: Dict[str, Any] = {}
         component["Name"] = "newdummy"
         component["Version"] = "99.99"
         filter_entry["component"] = component
@@ -230,7 +231,7 @@ class TestBomFilter(TestBase):
         self.delete_file(outputfile)
         self.delete_file(filterfile)
 
-    def test_add_item_with_include(self):
+    def test_add_item_with_include(self) -> None:
         sut = capycli.bom.filter_bom.FilterBom()
 
         inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
@@ -246,10 +247,10 @@ class TestBomFilter(TestBase):
         self.assertTrue(os.path.exists(inputfile), "Filter input file not found!")
 
         # create filter file to be included
-        filter = {}
-        filter_entries = []
-        filter_entry = {}
-        component = {}
+        filter: Dict[str, Any] = {}
+        filter_entries: List[Dict[str, Any]] = []
+        filter_entry: Dict[str, Any] = {}
+        component: Dict[str, Any] = {}
         component["Name"] = "xxx"
         component["Version"] = "99.99"
         filter_entry["component"] = component
@@ -308,7 +309,7 @@ class TestBomFilter(TestBase):
         self.delete_file(filterfile)
         self.delete_file(filterfile_include)
 
-    def test_remove_single_item_by_purl(self):
+    def test_remove_single_item_by_purl(self) -> None:
         sut = capycli.bom.filter_bom.FilterBom()
 
         inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
@@ -322,10 +323,10 @@ class TestBomFilter(TestBase):
         self.assertTrue(os.path.exists(inputfile), "Filter input file not found!")
 
         # create filter file that adds a single component
-        filter = {}
-        filter_entries = []
-        filter_entry = {}
-        component = {}
+        filter: Dict[str, Any] = {}
+        filter_entries: List[Dict[str, Any]] = []
+        filter_entry: Dict[str, Any] = {}
+        component: Dict[str, Any] = {}
         component["RepositoryId"] = "pkg:pypi/tomli@2.0.1"
         filter_entry["component"] = component
         filter_entry["Mode"] = "remove"
@@ -354,7 +355,7 @@ class TestBomFilter(TestBase):
         self.delete_file(outputfile)
         self.delete_file(filterfile)
 
-    def test_update_single_item(self):
+    def test_update_single_item(self) -> None:
         sut = capycli.bom.filter_bom.FilterBom()
 
         inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
@@ -368,10 +369,10 @@ class TestBomFilter(TestBase):
         self.assertTrue(os.path.exists(inputfile), "Filter input file not found!")
 
         # create filter file that adds a single component
-        filter = {}
-        filter_entries = []
-        filter_entry = {}
-        component = {}
+        filter: Dict[str, Any] = {}
+        filter_entries: List[Dict[str, Any]] = []
+        filter_entry: Dict[str, Any] = {}
+        component: Dict[str, Any] = {}
         component["Name"] = "tomli"
         component["Version"] = "2.0.1"
         component["Language"] = "Go"

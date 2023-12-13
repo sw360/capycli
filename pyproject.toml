@@ -87,6 +87,12 @@ warn_unused_configs         = "True"
 disallow_subclassing_any    = "True"
 
 # disallow_any_generics       = "True"
-# disallow_untyped_calls      = "True"
-# disallow_untyped_defs       = "True"
-# disallow_incomplete_defs    = "True"
+# disallow_untyped_calls      = "True"  # ~100
+# disallow_untyped_defs       = "True"  # ~300
+# disallow_incomplete_defs    = "True"  # ~65
+# check_untyped_defs          = "True"  # ~170
+# disallow_untyped_decorators = "True"  # @responses.activate ~80
+no_implicit_optional        = "True"
+warn_redundant_casts        = "True"
+# warn_unused_ignores         = "True"  # ~5
+no_implicit_reexport        = "True"  # Module "sw360.sw360_api" does not explicitly export attribute "SW360Error"

@@ -191,7 +191,7 @@ class ScriptBase:
             return f"{count} components"
 
     @staticmethod
-    def list_to_string(list: list) -> str:
+    def list_to_string(list: List[str]) -> str:
         """Convert a list of values to a comma separated string"""
         result = ", ".join(str(x) for x in list)
         return result

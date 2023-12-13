@@ -6,10 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-import json
 import logging
 import os
-import subprocess
 import sys
 from enum import Enum
 from io import TextIOWrapper
@@ -48,24 +46,6 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
     def __init__(self):
         self.verbose = False
-
-    # NOT USED AT THE MOMENT
-    def create_local_package_list(self) -> dict:
-        """
-        Create a list of all packages in the local environment.
-
-        :return a list of the local Python packages
-        :rtype list of package item dictionaries, as returned by pip
-        """
-        args = ["pip3", "list", "--format", "json"]
-        proc = subprocess.Popen(
-            args,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            shell=False)
-        raw_data = proc.communicate()[0]
-        package_list = json.loads(raw_data)
-        return package_list
 
     def requirements_to_package_list(self, input_file: str) -> List[Dict[str, str]]:
         """
@@ -250,7 +230,8 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file url")
 
-    def convert_package_list(self, package_list: list, search_meta_data: bool, package_source: str = "") -> Bom:
+    def convert_package_list(self, package_list: List[Dict[str, Any]], search_meta_data: bool,
+                             package_source: str = "") -> Bom:
         """
         Convert package list to SBOM.
 
@@ -282,7 +263,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         return sbom
 
-    def print_package_list(self, package_list: list) -> None:
+    def print_package_list(self, package_list: List[Dict[str, Any]]) -> None:
         """
         Print the package list.
 

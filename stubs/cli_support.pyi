@@ -1,8 +1,11 @@
 import xml.etree.ElementTree as ET
 from typing import List
 
+
 class CliFileItemBase:
     def __init__(self) -> None:
+        self.files: List[str] = []
+        self.hashes: List[str] = []
         ...
 
     def read_files_from_element(self, element: ET.Element) -> None:
@@ -11,6 +14,7 @@ class CliFileItemBase:
 
 class CliCopyright(CliFileItemBase):
     def __init__(self) -> None:
+        self.text: str = ""
         ...
 
     def read_from_element(self, element: ET.Element) -> None:
@@ -19,6 +23,7 @@ class CliCopyright(CliFileItemBase):
 
 class CliExportRestriction(CliFileItemBase):
     def __init__(self) -> None:
+        self.text: str = ""
         ...
 
     def read_from_element(self, element: ET.Element) -> None:
@@ -27,6 +32,12 @@ class CliExportRestriction(CliFileItemBase):
 
 class CliLicense(CliFileItemBase):
     def __init__(self) -> None:
+        self.license_text: str = ""
+        self.type: str = ""
+        self.name: str = ""
+        self.spdx_identifier: str = ""
+        self.acknowledgements: List[str] = []
+        self.tags: List[str] = []
         ...
 
     def read_from_element(self, element: ET.Element) -> None:

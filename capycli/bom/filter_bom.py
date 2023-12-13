@@ -9,7 +9,7 @@
 import json
 import os
 import sys
-from typing import Optional
+from typing import Any, Dict, List, Optional
 
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
@@ -56,24 +56,24 @@ class FilterBom(capycli.common.script_base.ScriptBase):
     def __init__(self):
         self.verbose = False
 
-    def load_filter_file(self, filter_file: str) -> dict:
+    def load_filter_file(self, filter_file: str) -> Dict[str, Any]:
         """Load a single filter file - without any further processing"""
         f = open(filter_file, "r")
         filter = json.load(f)
         return filter
 
-    def append_components(self, clist: list, to_add_list: list):
+    def append_components(self, clist: List[Dict[str, Any]], to_add_list: List[Dict[str, Any]]):
         for to_add in to_add_list:
             clist.append(to_add)
 
-    def show_filter(self, filter: dict) -> None:
+    def show_filter(self, filter: Dict[str, Any]) -> None:
         for entry in filter["Components"]:
             comp = entry["component"]
             print_text(
                 "  ", comp.get("Name", ""), comp.get("Version", ""),
                 comp.get("RepositoryId", ""), entry["Mode"])
 
-    def find_bom_item(self, bom: Bom, filterentry: dict) -> Optional[Component]:
+    def find_bom_item(self, bom: Bom, filterentry: Dict[str, Any]) -> Optional[Component]:
         """Find an entry in list of bom items."""
         for component in bom.components:
             if component.purl:
@@ -92,11 +92,11 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
         return None
 
-    def create_bom_item_from_filter_entry(self, filterentry: dict) -> Component:
+    def create_bom_item_from_filter_entry(self, filterentry: Dict[str, Any]) -> Component:
         comp = LegacySupport.legacy_component_to_cdx(filterentry)
         return comp
 
-    def update_bom_item_from_filter_entry(self, component: Component, filterentry: dict):
+    def update_bom_item_from_filter_entry(self, component: Component, filterentry: Dict[str, Any]):
         if filterentry["Name"]:
             component.name = filterentry["Name"]
 

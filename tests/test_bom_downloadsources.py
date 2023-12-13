@@ -275,7 +275,7 @@ class TestBomDownloadsources(TestBase):
                     bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
                 self.assertIsNotNone(ext_ref)
                 if ext_ref:  # only for mypy
-                    self.assertEqual(ext_ref.url, resultfile)
+                    self.assertEqual(str(ext_ref.url), resultfile)
 
                 self.assertEqual(len(bom.components[1].external_references), 0)
                 return
@@ -288,4 +288,4 @@ class TestBomDownloadsources(TestBase):
 
 if __name__ == "__main__":
     lib = TestBomDownloadsources()
-    lib.test_simple_bom_relative_path()
+    lib.test_simple_bom_no_url()

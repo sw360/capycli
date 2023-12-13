@@ -8,7 +8,7 @@
 
 import json
 import os
-from typing import List
+from typing import Any, Dict, List
 
 import responses
 import responses.matchers  # type: ignore
@@ -18,7 +18,7 @@ from capycli.project.create_project import CreateProject
 from tests.test_base import AppArguments, TestBase
 
 
-def min_json_matcher(check: dict):
+def min_json_matcher(check: Dict[str, Any]):
     # responses.matcher.multipart_matcher didn't work for me
     def match(request):
         result = True

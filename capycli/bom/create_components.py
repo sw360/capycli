@@ -11,7 +11,7 @@ import os
 import re
 import sys
 import tempfile
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 import packageurl
@@ -152,7 +152,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if tmpfolder:
             tmpfolder.cleanup()
 
-    def prepare_release_data(self, cx_comp: Component) -> dict:
+    def prepare_release_data(self, cx_comp: Component) -> Dict[str, Any]:
         """Create release data structure as expected by SW360 REST API
 
         :param item: a single bill of materials item - a release
@@ -197,7 +197,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
         return data
 
-    def prepare_component_data(self, cx_comp: Component) -> dict:
+    def prepare_component_data(self, cx_comp: Component) -> Dict[str, Any]:
         """Create component data structure as expected by SW360 REST API
 
         :param item: single bill of materials item - a release
@@ -238,7 +238,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             data["externalIds"] = {"package-url": purl}
         return data
 
-    def create_release(self, cx_comp: Component, component_id) -> dict:
+    def create_release(self, cx_comp: Component, component_id) -> Optional[Dict[str, Any]]:
         """Create a new release on SW360
 
         :param item: a single bill of materials item - a release
@@ -248,12 +248,16 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :return: the release
         :rtype: release (dictionary)
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         data = self.prepare_release_data(cx_comp)
         # ensure that the release mainline state is properly set
         data["mainlineState"] = "OPEN"
         try:
             release_new = self.client.create_new_release(
-                cx_comp.name, cx_comp.version,
+                cx_comp.name, cx_comp.version or "",
                 component_id, release_details=data)
         except sw360.sw360_api.SW360Error as swex:
             errortext = "    Error creating component: " + self.get_error_message(swex)
@@ -269,6 +273,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :param release_data: SW360 release data
         :type release_data: release (dictionary)
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         release_id = self.get_sw360_id(release_data)
         data = self.prepare_release_data(cx_comp)
 
@@ -328,8 +336,11 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         self.upload_file(cx_comp, release_data, release_id, filetype, file_comment)
 
     def upload_file(
-            self, cx_comp: Component, release_data: dict,
+            self, cx_comp: Component, release_data: Dict[str, Any],
             release_id: str, filetype: str, comment: str):
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         url = None
         filename = None
@@ -366,7 +377,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         for attachment in release_data.get("_embedded", {}).get("sw360:attachments", []):
             if attachment["attachmentType"].startswith(filetype_pattern):
                 at_info = self.client.get_attachment_by_url(attachment['_links']['self']['href'])
-                if at_info.get("checkStatus", "") == "REJECTED":
+                if at_info and at_info.get("checkStatus", "") == "REJECTED":
                     continue
                 source_attachment_exists = True
                 attached_filenames.append(attachment["filename"])
@@ -401,6 +412,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if "sw360:releases" not in component["_embedded"]:
             return None
 
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         for comprel in component["_embedded"]["sw360:releases"]:
             if comprel.get("version", None) == cx_comp.version:
                 return self.client.get_release_by_url(comprel["_links"]["self"]["href"])
@@ -433,6 +448,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :param item: BOM item
         :return: id or None
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         component = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_COMPONENT_ID)
         if not component:
             if self.onlyCreateReleases:
@@ -441,17 +460,22 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                 return ""
 
             components = self.client.get_component_by_name(cx_comp.name)
-            if not component and components["_embedded"]["sw360:components"]:
-                for compref in components["_embedded"]["sw360:components"]:
-                    if compref["name"].lower() != cx_comp.name.lower():
-                        continue
-                    else:
-                        component = self.get_sw360_id(compref)
-                        break
+            if components:
+                if not component and components["_embedded"]["sw360:components"]:
+                    for compref in components["_embedded"]["sw360:components"]:
+                        if compref["name"].lower() != cx_comp.name.lower():
+                            continue
+                        else:
+                            component = self.get_sw360_id(compref)
+                            break
 
         return component
 
-    def create_component(self, cx_comp: Component) -> dict:
+    def create_component(self, cx_comp: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         data = self.prepare_component_data(cx_comp)
         try:
             component_new = self.client.create_new_component(
@@ -478,6 +502,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :param component_data: SW360 component data
         :type component_data: component (dictionary)
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         purl = ""
         if cx_comp.purl:
             purl = PurlUtils.component_purl_from_release_purl(cx_comp.purl)
@@ -501,15 +529,22 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                         component_data["externalIds"]["package-url"],
                         "differs from BOM id", purl)
 
-    def get_sw360_id(self, sw360_object: dict):
+    def get_sw360_id(self, sw360_object: Dict[str, Any]) -> str:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         return self.client.get_id_from_href(sw360_object["_links"]["self"]["href"])
 
-    def create_component_and_release(self, cx_comp: Component):
+    def create_component_and_release(self, cx_comp: Component) -> None:
         """Create new releases and if necessary also new components
 
         :param item: a single bill of materials item - a release
         :type item: dictionary
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         release = None
 
@@ -529,6 +564,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
             # create component
             component = self.create_component(cx_comp)
+            if not component:
+                print_red("Component creation failed!")
+                return
+
             component_id = self.get_sw360_id(component)
 
         try:
@@ -536,6 +575,9 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                 item_name = ScriptSupport.get_full_name_from_component(cx_comp)
                 print_red("      " + item_name + " already exists")
             else:
+                if not component:
+                    return
+
                 release = self.create_release(
                     cx_comp, self.get_sw360_id(component))
                 print_text("    Release created")
@@ -557,6 +599,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :param bom: the bill of materials
         :type bom: list of components
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         ok = True
 
         for cx_comp in sbom.components:
@@ -564,7 +610,9 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             id = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
             if id:
                 print_text("  " + item_name + " already exists")
-                self.update_release(cx_comp, self.client.get_release(id))
+                rel = self.client.get_release(id)
+                if rel:
+                    self.update_release(cx_comp, rel)
             else:
                 print_text("  " + item_name)
                 self.create_component_and_release(cx_comp)

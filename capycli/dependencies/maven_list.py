@@ -34,7 +34,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
     def add_urls(
             self, cx_comp: Component,
-            parsed_sources: List, parsed_binaries: List,
+            parsed_sources: List[str], parsed_binaries: List[str],
             source_files: List[str], binary_files: List[str], files_directory: str):
         """
         Adds URLs to corresponding bom item. This is done by checking if a dependency
@@ -89,13 +89,13 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
                 url=XsUri(bin_url))
             cx_comp.external_references.add(ext_ref)
 
-    def extract_urls(self, download_output_file: str, regex: str) -> list:
+    def extract_urls(self, download_output_file: str, regex: str) -> List[str]:
         """
         Parses the output of mvn command using provided regex
         :param download_output_file: the mvn command output to be parsed
         :param regex: the regex string that will be used for parsing
         """
-        parsed_urls = []
+        parsed_urls: List[str] = []
 
         lines = open(download_output_file).read().split("\n")
         for line in lines:
@@ -110,7 +110,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         return parsed_urls
 
-    def find_package_info(self, binary_file_url):
+    def find_package_info(self, binary_file_url: str):
         """
         Downloads a pom file and returns the parsed content
         :param  binary_file_url: a binary file url

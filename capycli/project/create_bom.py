@@ -8,6 +8,7 @@
 
 import logging
 import sys
+from typing import Any, Dict, List
 
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
@@ -28,14 +29,14 @@ LOG = get_logger(__name__)
 class CreateBom(capycli.common.script_base.ScriptBase):
     """Create a SBOM for a project on SW360."""
 
-    def get_external_id(self, name: str, release_details: dict) -> str:
+    def get_external_id(self, name: str, release_details: Dict[str, Any]) -> str:
         """Returns the external id with the given name or None."""
         if "externalIds" not in release_details:
             return ""
 
         return release_details["externalIds"].get(name, "")
 
-    def get_clearing_state(self, proj, href) -> str:
+    def get_clearing_state(self, proj: Dict[str, Any], href: str) -> str:
         """Returns the clearing state of the given component/release"""
         rel = proj["linkedReleases"]
         for key in rel:
@@ -44,10 +45,13 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return ""
 
-    def create_project_bom(self, project) -> list:
-        bom = []
+    def create_project_bom(self, project: Dict[str, Any]) -> List[Component]:
+        bom: List[Component] = []
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-        releases = project["_embedded"].get("sw360:releases", [])
+        releases: List[Dict[str, Any]] = project["_embedded"].get("sw360:releases", [])
         releases.sort(key=lambda s: s["name"].lower())
         for release in releases:
             print_text("   ", release["name"], release["version"])
@@ -55,6 +59,9 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
             try:
                 release_details = self.client.get_release_by_url(href)
+                if not release_details:
+                    print_red("    ERROR: unable to access release:" + href)
+                    sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
                 purl = self.get_external_id("package-url", release_details)
                 if not purl:
@@ -125,10 +132,17 @@ class CreateBom(capycli.common.script_base.ScriptBase):
         return bom
 
     def create_project_cdx_bom(self, project_id) -> Bom:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             project = self.client.get_project(project_id)
         except sw360.sw360_api.SW360Error as swex:
             print_red("  ERROR: unable to access project:" + repr(swex))
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+        if not project:
+            print_red("  ERROR: unable to access project")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         print_text("  Project name: " + project["name"] + ", " + project["version"])
@@ -137,8 +151,8 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         creator = SbomCreator()
         sbom = creator.create(cdx_components, addlicense=True, addprofile=True, addtools=True,
-                              name=project.get("name"), version=project.get("version"),
-                              description=project.get("description"), addprojectdependencies=True)
+                              name=project.get("name", ""), version=project.get("version", ""),
+                              description=project.get("description", ""), addprojectdependencies=True)
 
         return sbom
 
@@ -157,7 +171,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         print()
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
@@ -180,8 +194,8 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        name = args.name
-        version = None
+        name: str = args.name
+        version: str = ""
         if args.version:
             version = args.version
 

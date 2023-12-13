@@ -37,10 +37,16 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
         if "sw360:attachments" not in release["_embedded"]:
             return files
 
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         attachment_infos = release["_embedded"]["sw360:attachments"]
         for key in attachment_infos:
             att_href = key["_links"]["self"]["href"]
             attachment = self.client.get_attachment_by_url(att_href)
+            if not attachment:
+                continue
             if not attachment["attachmentType"] == "COMPONENT_LICENSE_INFO_XML":
                 continue
 
@@ -75,11 +81,19 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
         Readme_OSS generation"""
         rdm_info: Dict[str, Any] = {}
 
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             self.project = self.client.get_project(project_id)
         except sw360.sw360_api.SW360Error as swex:
             print_red("  ERROR: unable to access project: " + repr(swex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+        if not self.project:
+            print_red("  ERROR: unable to access project")
+            return {}
 
         rdm_info["ProjectName"] = ScriptSupport.get_full_name_from_dict(
             self.project, "name", "version")
@@ -114,6 +128,9 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             for key in releases:
                 href = key["_links"]["self"]["href"]
                 release = self.client.get_release_by_url(href)
+                if not release:
+                    print_red("  ERROR: unable to access release")
+                    continue
 
                 component_name = release["name"]
                 if "version" in release:

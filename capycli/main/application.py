@@ -10,7 +10,7 @@
 
 import sys
 import time
-from typing import Any, Optional
+from typing import Any, Optional, List
 
 import capycli
 from capycli.bom import handle_bom
@@ -59,7 +59,7 @@ class Application(object):
 
         return False
 
-    def check_for_global_help(self, argv) -> bool:
+    def check_for_global_help(self, argv: Any) -> bool:
         """Check for -h option without any command"""
         global_help = False
         if len(argv) > 1:
@@ -72,8 +72,7 @@ class Application(object):
 
         return global_help
 
-    def exit(self):
-        # type: () -> None
+    def exit(self) -> None:
         """Handle finalization and exiting the program."""
         pass
 
@@ -110,7 +109,7 @@ class Application(object):
                 print("Exit code = 1")
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)
 
-    def _run(self, argv: list) -> None:
+    def _run(self, argv: List[str]) -> None:
         self.initialize(argv)
 
         cmdline = options.CommandlineSupport()
@@ -149,7 +148,7 @@ class Application(object):
             print_red("Unknown command: " + command)
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
-    def run(self, argv: list) -> None:
+    def run(self, argv: List[str]) -> None:
         """Run our application.
         This method will also handle KeyboardInterrupt exceptions for the
         entirety of the CaPyCli application.

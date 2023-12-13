@@ -17,7 +17,7 @@ from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 
 import capycli.common.script_base
-import sw360.sw360_api
+from sw360 import SW360Error
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
@@ -41,13 +41,17 @@ class CheckBom(capycli.common.script_base.ScriptBase):
         return False
 
     def _find_by_id(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         sw360id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
         version = component.version or ""
         for step in range(3):
             try:
                 release_details = self.client.get_release(sw360id)
                 return release_details
-            except sw360.sw360_api.SW360Error as swex:
+            except SW360Error as swex:
                 if swex.response is None:
                     print_red("  Unknown error: " + swex.message)
                 elif swex.response.status_code == requests.codes['not_found']:
@@ -71,6 +75,10 @@ class CheckBom(capycli.common.script_base.ScriptBase):
         return None
 
     def _find_by_name(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         version = component.version or ""
         for step in range(3):
             try:
@@ -83,7 +91,7 @@ class CheckBom(capycli.common.script_base.ScriptBase):
                         return r
 
                 return None
-            except sw360.sw360_api.SW360Error as swex:
+            except SW360Error as swex:
                 if swex.response is None:
                     print_red("  Unknown error: " + swex.message)
                 elif swex.response.status_code == requests.codes['not_found']:
@@ -108,6 +116,10 @@ class CheckBom(capycli.common.script_base.ScriptBase):
     def check_releases(self, bom: Bom) -> int:
         """Checks for each release in the list whether it can be found on the specified
         SW360 instance."""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         found_count = 0
         for component in bom.components:
             release_details = None

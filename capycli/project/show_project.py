@@ -133,6 +133,10 @@ class ShowProject(capycli.common.script_base.ScriptBase):
 
                 try:
                     release_details = self.client.get_release_by_url(href)
+                    if not release_details:
+                        print_red("  ERROR: unable to access project:")
+                        sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
                     # capycli.common.json_support.print_json(release_details)
                     rel_item["ClearingState"] = release_details["clearingState"]
                     rel_item["ReleaseMainlineState"] = release_details.get("mainlineState", "")
@@ -198,9 +202,9 @@ class ShowProject(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        name = args.name
-        version = None
-        pid = None
+        name: str = args.name
+        version: str = ""
+        pid: str = ""
         if args.version:
             version = args.version
 

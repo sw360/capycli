@@ -45,7 +45,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             return None
         return fname[0].rstrip('"').lstrip('"')
 
-    def download_source_file(self, url: str, source_folder: str) -> Optional[Tuple]:
+    def download_source_file(self, url: str, source_folder: str) -> Optional[Tuple[str, str]]:
         """Download a file from a URL.
 
         @params:
@@ -117,7 +117,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                         url=XsUri(path))
                     new = True
                 else:
-                    ext_ref.url = path
+                    ext_ref.url = XsUri(path)
                 ext_ref.hashes.add(HashType(
                     algorithm=HashAlgorithm.SHA_1,
                     hash_value=sha1))

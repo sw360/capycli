@@ -13,7 +13,7 @@ import sys
 import traceback
 from typing import Any, Dict, List
 
-import cli_support
+from cli_support import CliFile
 from colorama import Fore, Style
 
 import capycli.common.script_base
@@ -84,6 +84,8 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
         for key in attachment_infos:
             att_href = key["_links"]["self"]["href"]
             attachment = self.client.get_attachment_by_url(att_href)
+            if not attachment:
+                continue
             if attachment.get("attachmentType", "") != "COMPONENT_LICENSE_INFO_XML":
                 continue
 
@@ -102,7 +104,7 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
             print_yellow("    No CLI file found!")
             return
 
-        clifile = cli_support.CLI.CliFile()
+        clifile = CliFile()
 
         try:
             clifile.read_from_file(cli_filename)
@@ -135,6 +137,10 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
                 str(traceback.format_exc()))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
+        if not project:
+            print_red("Unable to read project!")
+            return
+
         print_text("  Project name: " + project["name"] + ", " + project["version"])
         print_text("  Project owner: " + project["projectOwner"])
         print_text("  Clearing state: " + project["clearingState"])
@@ -150,11 +156,13 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
                 href = key["_links"]["self"]["href"]
                 print_text("\n  " + key["name"] + ", " + key["version"])
                 release = self.client.get_release_by_url(href)
-
-                try:
-                    self.process_release(release, tempfolder)
-                except Exception as ex:
-                    print_red("Error processing release: \n" + repr(ex))
+                if not release:
+                    print_red("Error processing release")
+                else:
+                    try:
+                        self.process_release(release, tempfolder)
+                    except Exception as ex:
+                        print_red("Error processing release: \n" + repr(ex))
 
             print_text("\nLicense summary:")
             self.print_license_list(self.global_license_list)
@@ -201,8 +209,8 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        name = args.name
-        version = None
+        name: str = args.name
+        version: str = ""
         if args.version:
             version = args.version
 

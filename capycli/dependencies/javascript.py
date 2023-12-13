@@ -32,7 +32,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
     """
     Determine Javascript components/dependencies for a given project.
     """
-    def get_dependency(self, data: dict, sbom: Bom) -> Bom:
+    def get_dependency(self, data: Dict[str, Any], sbom: Bom) -> Bom:
         dependencies = data.get("dependencies", {})
         for key in dependencies:
             dep = dependencies[key]

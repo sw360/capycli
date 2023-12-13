@@ -123,7 +123,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def is_better_match(self, releases_found: List[dict], proposed_match_code) -> bool:
+    def is_better_match(self, releases_found: List[Dict[str, Any]], proposed_match_code: str) -> bool:
         if not releases_found:
             return True
 
@@ -345,6 +345,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
     def map_bom_item_no_cache(self, component: Component):
         """Maps a single SBOM item to SW360 via online checks (no cache!)"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         result, release_url, component_url = self.map_bom_commons(component)
         components = []
@@ -353,12 +356,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         # if there's no purl match, search for component names
         if len(components) == 0:
-            components = self.client.get_component_by_name(component.name)
-            if not components:
+            components2 = self.client.get_component_by_name(component.name)
+            if not components2:
                 return result
             components = [
                 compref["_links"]["self"]["href"]
-                for compref in components.get("_embedded", {}).get("sw360:components", [])  # type: ignore
+                for compref in components2.get("_embedded", {}).get("sw360:components", [])
                 if compref["name"].lower() == component.name.lower()
             ]
 
@@ -367,6 +370,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 rel_list = [{"_links": {"self": {"href": release_url}}}]
             else:
                 comp = self.client.get_component_by_url(compref)
+                if not comp:
+                    continue
                 rel_list = comp["_embedded"].get("sw360:releases", [])
 
             # Sorted alternatives in descending version order
@@ -377,6 +382,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
             for relref in rel_list:
                 href = relref["_links"]["self"]["href"]
                 real_release = self.client.get_release_by_url(href)
+                if not real_release:
+                    print_red("Error accessign release " + href)
+                    continue
 
                 # generate proper release for result
                 release = {}
@@ -581,12 +589,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return data
 
-    def write_overview(self, overview: dict, filename: str) -> None:
+    def write_overview(self, overview: Dict[str, Any], filename: str) -> None:
         """Writes a JSON file with an mapping result overview"""
         with open(filename, "w") as outfile:
             json.dump(overview, outfile, indent=2)
 
-    def get_purl_from_match(self, match: dict) -> str:
+    def get_purl_from_match(self, match: Dict[str, Any]) -> str:
         """
         Return the package-url for the given SW360 entry.
         """
@@ -602,7 +610,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return purl
 
-    def update_bom_item(self, component: Optional[Component], match: dict) -> Component:
+    def update_bom_item(self, component: Optional[Component], match: Dict[str, Any]) -> Component:
         """Update the (current) SBOM item with values from the match"""
 
         # print(match.get("Name", "???"), match.get("Version", "???"), "purl =", match.get("RepositoryId", "XXX"))
@@ -784,12 +792,15 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return newbom
 
-    def write_mapping_result(self, result: dict, filename: str) -> None:
+    def write_mapping_result(self, result: List[MapResult], filename: str) -> None:
         """Create a JSON file with the mapping details"""
         data = []
 
         for item in result:
             single_result: Dict[str, Any] = {}
+            if not item.component:
+                continue
+
             for prop in item.component.properties:
                 if prop.name == CycloneDxSupport.CDX_PROP_MAPRESULT:
                     item.component.properties.remove(prop)
@@ -829,6 +840,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
         :param bomitem: SBOM component
         :return: MapResult instance, (Optional) release url, (Optional) component url
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         if self.relaxed_debian_parsing and component.version:
             component.version = self.cut_off_debian_extras(component.version)
 
@@ -852,6 +867,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
         Lazy external id service getter
         :return: Purl service
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         if not self.purl_service:
             # Initialize external id service
             self.purl_service = PurlService(self.client)

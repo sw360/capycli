@@ -10,7 +10,7 @@ import os
 import sys
 import unittest
 from io import BytesIO, TextIOWrapper
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import responses
 
@@ -20,47 +20,46 @@ class AppArguments():
     # command=['bom', 'diff', '.\\Tests\\bom_diff_1.json', '.\\tests\\bom_diff_1.json']
 
     def __init__(self) -> None:
-        self.cachefile = None
-        self.command = None
-        self.create_overview = None
-        self.cyclonedx = False
-        self.dbx = False
-        self.debug = False
-        self.destination = None
-        self.download = False
-        self.ex = False
-        self.filterfile = None
-        self.help = False
-        self.id = None
-        self.inputfile = None
-        self.name = None
-        self.ncli = False
-        self.nconf = False
-        self.nocache = False
-        self.oauth2 = False
-        self.old_version = None
-        self.outputfile = None
-        self.package_source = None
-        self.raw_input = None
-        self.refresh_cache = False
-        self.result_required = False
-        self.search_meta_data = False
-        self.similar = False
-        self.source = None
-        self.sw360_token = None
-        self.sw360_url = None
-        self.verbose = False
-        self.verbose2 = False
-        self.version = None
-        self.write_mapresult = None
-        self.xml = False
-        self.help = False
-        self.all = False
-        self.mode = "all"
-        self.format = ""
-        self.force_exit = ""
-        self.inputformat = ""
-        self.outputformat = ""
+        self.cachefile: str = ""
+        self.command: List[str] = []
+        self.create_overview: str = ""
+        self.cyclonedx: bool = False
+        self.dbx: bool = False
+        self.debug: bool = False
+        self.destination: str = ""
+        self.download: bool = False
+        self.ex: bool = False
+        self.filterfile: str = ""
+        self.help: bool = False
+        self.id: str = ""
+        self.inputfile: str = ""
+        self.name: str = ""
+        self.ncli: bool = False
+        self.nconf: bool = False
+        self.nocache: bool = False
+        self.oauth2: bool = False
+        self.old_version: str = ""
+        self.outputfile: str = ""
+        self.package_source: str = ""
+        self.raw_input: str = ""
+        self.refresh_cache: bool = False
+        self.result_required: bool = False
+        self.search_meta_data: bool = False
+        self.similar: bool = False
+        self.source: str = ""
+        self.sw360_token: str = ""
+        self.sw360_url: str = ""
+        self.verbose: bool = False
+        self.verbose2: bool = False
+        self.version: str = ""
+        self.write_mapresult: str = ""
+        self.xml: bool = False
+        self.all: bool = False
+        self.mode: str = "all"
+        self.format: str = ""
+        self.force_exit: str = ""
+        self.inputformat: str = ""
+        self.outputformat: str = ""
 
 
 class TestBasePytest:
