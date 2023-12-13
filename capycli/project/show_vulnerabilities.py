@@ -8,6 +8,7 @@
 
 import logging
 import sys
+from typing import Any, Dict, Optional
 
 import requests
 import sw360
@@ -24,12 +25,16 @@ LOG = capycli.get_logger(__name__)
 class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
     """Show security vulnerabilities of a project."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize."""
-        self.verbose = False
-        self.format = "text"
+        self.verbose: bool = False
+        self.format: str = "text"
 
-    def list_projects(self, name, version):
+    def list_projects(self, name: str, version: str) -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             print_text("  Searching for projects by name (and version)")
             projects = self.client.get_projects_by_name(name)
@@ -49,10 +54,14 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
         except Exception as ex:
             print_red("Error searching for project: \n" + repr(ex))
 
-    def show_project_by_id(self, project_id) -> dict:
+    def show_project_by_id(self, project_id: str) -> Dict[str, Any]:
         """
         Show information about a single project by project id.
         """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             project = self.client.get_project(project_id)
             if not project:
@@ -61,6 +70,9 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
 
             return self.display_project(project)
         except sw360.sw360_api.SW360Error as swex:
+            if swex.response is None:
+                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
             if swex.response.status_code == requests.codes['not_found']:
                 print_yellow("Project not found!")
                 sys.exit(ResultCode.RESULT_PROJECT_NOT_FOUND)
@@ -71,17 +83,26 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
                     print_red("    Message: " + swex.message)
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-    def display_project(self, project, pid=-1) -> dict:
+    def display_project(self, project: Optional[Dict[str, Any]], pid: str = "") -> Dict[str, Any]:
         """
         Show information about a single project.
         """
-        report = {}
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+        report: Dict[str, Any] = {}
         href = None
-        if pid > -1:
+        if pid:
             project = self.client.get_project(pid)
         else:
-            href = project["_links"]["self"]["href"]
-            project = self.client.get_project_by_url(href)
+            if project:
+                href = project["_links"]["self"]["href"]
+                project = self.client.get_project_by_url(href)
+
+        if not project:
+            print_red("  No client!")
+            return {}
 
         if not href:
             href = project["_links"]["self"]["href"]
@@ -99,6 +120,10 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
             print_text("  Id:", self.client.get_id_from_href(href))
 
         vuls = self.client.get_project_vulnerabilities(self.client.get_id_from_href(href))
+        if not vuls:
+            print_red("Got no vulnerabilities!")
+            return {}
+
         # capycli.common.json_support.write_json_to_file(vuls, "vuls.json")
         if "_embedded" not in vuls:
             return report
@@ -133,7 +158,7 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
 
         return report
 
-    def check_report_for_critical_findings(self, report: dict, prio_text: str) -> bool:
+    def check_report_for_critical_findings(self, report: Dict[str, Any], prio_text: str) -> bool:
         """
         Checks the report data for critical findings, i.e. a vulnerability
         with priority less than or equal to prio and greater than 0.
@@ -171,7 +196,7 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def show_command_help(self):
+    def show_command_help(self) -> None:
         print("\nusage: CaPyCli project vulnerabilities [options]")
         print("Options:")
         print("""
@@ -188,7 +213,7 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
 
         print()
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

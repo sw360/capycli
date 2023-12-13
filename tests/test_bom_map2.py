@@ -12,6 +12,7 @@ import responses
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
 
 from capycli.bom.map_bom import MapBom, MapMode
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -56,7 +57,7 @@ class CapycliTestBomMap(CapycliTestBase):
         bomitem = Component(
             name="sed",
             version="1.0",
-            purl="pkg:deb/debian/sed@1.0?type=source")
+            purl=PackageURL.from_string("pkg:deb/debian/sed@1.0?type=source"))
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
@@ -67,7 +68,7 @@ class CapycliTestBomMap(CapycliTestBase):
         bomitem = Component(
             name="sed",
             version="1.1",
-            purl="pkg:deb/debian/sed@1.1?type=source")
+            purl=PackageURL.from_string("pkg:deb/debian/sed@1.1?type=source"))
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.NO_MATCH
@@ -97,7 +98,7 @@ class CapycliTestBomMap(CapycliTestBase):
         bomitem = Component(
             name="sed",
             version="1.0~1",
-            purl="pkg:deb/debian/sed@1.0%7E1?type=source")
+            purl=PackageURL.from_string("pkg:deb/debian/sed@1.0%7E1?type=source"))
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.FULL_MATCH_BY_ID
@@ -194,7 +195,7 @@ class CapycliTestBomMap(CapycliTestBase):
         bomitem = Component(
             name="sed",
             version="1.0",
-            purl="pkg:deb/debian/sed@1.0?type=source")
+            purl=PackageURL.from_string("pkg:deb/debian/sed@1.0?type=source"))
         component_data = {"_embedded": {"sw360:releases": [{
             "_links": {"self": {"href": SW360_BASE_URL + 'releases/1234'}}}]}}
         release_data = {"name": "Unix Stream EDitor",
@@ -218,7 +219,7 @@ class CapycliTestBomMap(CapycliTestBase):
         bomitem = Component(
             name="sed",
             version="1.1",
-            purl="pkg:deb/debian/sed@1.1?type=source")
+            purl=PackageURL.from_string("pkg:deb/debian/sed@1.1?type=source"))
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.NO_MATCH
         assert res.component_id == "a035"
@@ -240,7 +241,7 @@ class CapycliTestBomMap(CapycliTestBase):
         bomitem = Component(
             name="awk",
             version="1.0",
-            purl="pkg:deb/debian/awk@1.0?type=source")
+            purl=PackageURL.from_string("pkg:deb/debian/awk@1.0?type=source"))
 
         component_matches = {"_embedded": {"sw360:components": [{
             "name": "Awk",
@@ -277,7 +278,7 @@ class CapycliTestBomMap(CapycliTestBase):
         bomitem = Component(
             name="sed",
             version="1.0+1",
-            purl="pkg:deb/debian/sed@1.0%7E1?type=source")
+            purl=PackageURL.from_string("pkg:deb/debian/sed@1.0%7E1?type=source"))
 
         release_data = {"name": "Unix Stream EDitor",
                         "version": "1.0", "_links": {
@@ -2483,10 +2484,10 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("b", updated.name)
         self.assertEqual("2", updated.version)
         self.assertEqual("C#", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
-        self.assertEqual("http://123", CycloneDxSupport.get_ext_ref_source_url(updated))
-        self.assertEqual("123.zip", CycloneDxSupport.get_ext_ref_source_file(updated))
-        self.assertEqual("123.dll", CycloneDxSupport.get_ext_ref_binary_file(updated))
-        self.assertEqual("http://somewhere", CycloneDxSupport.get_ext_ref_website(updated))
+        self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
+        self.assertEqual("123.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
+        self.assertEqual("123.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("http://somewhere", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("007", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
 
         # update all - all existing => no updates
@@ -2506,10 +2507,10 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("b", updated.name)
         self.assertEqual("2", updated.version)
         self.assertEqual("Java", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
-        self.assertEqual("http://456", CycloneDxSupport.get_ext_ref_source_url(comp))
-        self.assertEqual("456.zip", CycloneDxSupport.get_ext_ref_source_file(updated))
-        self.assertEqual("456.dll", CycloneDxSupport.get_ext_ref_binary_file(updated))
-        self.assertEqual("http://somewhereelse", CycloneDxSupport.get_ext_ref_website(updated))
+        self.assertEqual("http://456", str(CycloneDxSupport.get_ext_ref_source_url(comp)))
+        self.assertEqual("456.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
+        self.assertEqual("456.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("http://somewhereelse", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("888", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
 
         # update all - all existing, but empty => updates
@@ -2530,10 +2531,10 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("b", updated.name)
         self.assertEqual("2", updated.version)
         self.assertEqual("C#", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
-        self.assertEqual("http://123", CycloneDxSupport.get_ext_ref_source_url(updated))
-        self.assertEqual("123.zip", CycloneDxSupport.get_ext_ref_source_file(updated))
-        self.assertEqual("123.dll", CycloneDxSupport.get_ext_ref_binary_file(updated))
-        self.assertEqual("http://somewhere", CycloneDxSupport.get_ext_ref_website(updated))
+        self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
+        self.assertEqual("123.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
+        self.assertEqual("123.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("http://somewhere", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("007", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
         self.assertEqual("0815", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_COMPONENT_ID))
 
@@ -2546,7 +2547,7 @@ class CapycliTestBomMap(CapycliTestBase):
         updated = sut.update_bom_item(comp, match)
         self.assertEqual("b", updated.name)
         self.assertEqual("2.0", updated.version)
-        self.assertEqual("pkg:pypi/a@2.0", updated.purl)
+        self.assertEqual("pkg:pypi/a@2.0", updated.purl.to_string())
 
         # extra: update package-url
         comp = Component(name="a", version="1.0", purl="pkg:pypi/a@1.0")
@@ -2557,7 +2558,7 @@ class CapycliTestBomMap(CapycliTestBase):
         updated = sut.update_bom_item(comp, match)
         self.assertEqual("b", updated.name)
         self.assertEqual("2.0", updated.version)
-        self.assertEqual("pkg:pypi/a@2.0", updated.purl)
+        self.assertEqual("pkg:pypi/a@2.0", updated.purl.to_string())
 
     def test_is_better_match(self):
         sut = MapBom()
@@ -2642,4 +2643,4 @@ class CapycliTestBomMap(CapycliTestBase):
 if __name__ == "__main__":
     APP = CapycliTestBomMap()
     APP.setUp()
-    APP.test_map_bom_item_nocache_purl_component()
+    APP.test_update_bom_item()

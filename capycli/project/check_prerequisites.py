@@ -52,7 +52,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
     def get_component_management_id(self, release: dict) -> dict:
         """Retries the first component management id"""
         if "externalIds" not in release:
-            return None
+            return {}
 
         id_dict = dict(release.get("externalIds", {}))
 

@@ -210,9 +210,9 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
                     if component.purl:
                         if prefix:
-                            match = component.purl.startswith(prefix)
+                            match = component.purl.to_string().startswith(prefix)
                         else:
-                            match = component.purl == filterentry["component"]["RepositoryId"]
+                            match = component.purl.to_string() == filterentry["component"]["RepositoryId"]
 
                 if match:
                     if filterentry["Mode"] == "remove":
@@ -231,7 +231,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
                 if existing_entry:
                     self.update_bom_item_from_filter_entry(existing_entry, filterentry["component"])
                     if self.verbose:
-                        print_text("  Updated " + existing_entry.name + ", " + existing_entry.version)
+                        print_text("  Updated " + existing_entry.name + ", " + (existing_entry.version or ""))
                 else:
                     if filterentry["component"].get("Name") is None:
                         print_red("To be added dependency missing Name attribute in Filter file.")
@@ -240,7 +240,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
                     bomitem = self.create_bom_item_from_filter_entry(filterentry["component"])
                     list_temp.append(bomitem)
                     if self.verbose:
-                        print_text("  Added " + bomitem.name + ", " + bomitem.version)
+                        print_text("  Added " + bomitem.name + ", " + (bomitem.version or ""))
 
                 filterentry["Processed"] = True
 

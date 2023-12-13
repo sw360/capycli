@@ -9,6 +9,7 @@
 import logging
 import sys
 import traceback
+from typing import Any, Dict
 
 import requests
 import sw360
@@ -23,7 +24,7 @@ LOG = capycli.get_logger(__name__)
 class FindProject(capycli.common.script_base.ScriptBase):
     """Find projects by name on SW360"""
 
-    def list_projects(self, name, version):
+    def list_projects(self, name: str, version: str) -> Any:
         try:
             print_text("  Searching for projects by name")
             projects = self.client.get_projects_by_name(name)
@@ -41,7 +42,7 @@ class FindProject(capycli.common.script_base.ScriptBase):
                 repr(ex) + "\n" +
                 str(traceback.format_exc()))
 
-    def display_project(self, project, pid=-1):
+    def display_project(self, project: Dict[str, Any], pid: int = -1) -> None:
         if not project:
             project = self.client.get_project(pid)
 
@@ -55,7 +56,7 @@ class FindProject(capycli.common.script_base.ScriptBase):
                 "    " + project["name"] + ", " + project["version"] +
                 " => ID = " + self.client.get_id_from_href(href))
 
-    def check_project_id(self, project_id):
+    def check_project_id(self, project_id: str) -> None:
         try:
             project = self.client.get_project(project_id)
             if not project:
@@ -76,7 +77,7 @@ class FindProject(capycli.common.script_base.ScriptBase):
         except Exception as ex:
             print_yellow("Error searching for project: " + repr(ex))
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

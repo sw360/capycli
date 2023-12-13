@@ -13,7 +13,7 @@ import subprocess
 import sys
 from enum import Enum
 from io import TextIOWrapper
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import chardet
 import requests
@@ -91,7 +91,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         :return a list of the local Python packages.
         :rtype list of package item dictionaries, as retuned by pip.
         """
-        package_list = []
+        package_list: List[Dict[str, str]] = []
         for req in requirements.parse(requirements_file):
             name = req.name
             if req.local_file:
@@ -120,7 +120,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         return package_list
 
-    def get_package_meta_info(self, name: str, version: str, package_source: str = "") -> dict or None:
+    def get_package_meta_info(self, name: str, version: str, package_source: str = "") -> Optional[Dict[str, Any]]:
         """
         Retrieves meta data of the given package from PyPi.
 
@@ -178,7 +178,10 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         :param bomitem: a single bill of material item (a single component)
         :type bomitem: dictionary
         """
-        meta = self.get_package_meta_info(cxcomp.name, cxcomp.version, package_source)
+        version = ""
+        if cxcomp.version:
+            version = cxcomp.version
+        meta = self.get_package_meta_info(cxcomp.name, version, package_source)
         if not meta:
             LOG.debug(f"No meta data found for {cxcomp.name}, {cxcomp.version}")
             return
@@ -257,13 +260,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         :rtype list of bom item dictionaries
         """
         creator = SbomCreator()
-        sbom = creator.create(None, addlicense=True, addprofile=True, addtools=True)
+        sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         for package in package_list:
             purl = self.generate_purl(package["name"], package["version"])
             cxcomp = Component(
                 name=package.get("name", "").strip(),
                 version=package.get("version", "").strip(),
-                purl=purl,
+                purl=PackageURL.from_string(purl),
                 bom_ref=purl,
                 description=package.get("Description", "").strip())
 
@@ -348,7 +351,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         LOG.debug(f"poetry_lock_version: {poetry_lock_version}")
 
         creator = SbomCreator()
-        sbom = creator.create(None, addlicense=True, addprofile=True, addtools=True)
+        sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         for package in poetry_lock["package"]:
             name = package.get("name", "").strip()
             version = package.get("version", "").strip()
@@ -359,12 +362,12 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 LOG.debug("  Ignoring development dependency")
                 continue
 
-            purl = PackageURL(type="pypi", name=name, version=version).to_string()
+            purl = PackageURL(type="pypi", name=name, version=version)
             cxcomp = Component(
                 name=name,
                 version=version,
                 purl=purl,
-                bom_ref=purl,
+                bom_ref=purl.to_string(),
                 description=package.get("description", "").strip())
 
             prop = Property(

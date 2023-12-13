@@ -70,3 +70,23 @@ filterwarnings = [
     # note the use of single quote below to denote "raw" strings in TOML
     'ignore:pkg_resources is deprecated as an API',
 ]
+
+[tool.mypy]
+mypy_path = "stubs"
+exclude = [
+    '/tests',
+]
+show_error_codes = "True"
+pretty = "True"
+
+# warn_unreachable = "True"
+allow_redefinition = "False"
+
+### Strict mode ###
+warn_unused_configs         = "True"
+disallow_subclassing_any    = "True"
+
+# disallow_any_generics       = "True"
+# disallow_untyped_calls      = "True"
+# disallow_untyped_defs       = "True"
+# disallow_incomplete_defs    = "True"

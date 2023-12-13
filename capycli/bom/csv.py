@@ -9,6 +9,7 @@
 from typing import List
 
 from cyclonedx.model.component import Component
+from sortedcontainers import SortedSet
 
 from capycli import LOG
 
@@ -56,7 +57,7 @@ class CsvSupport():
         return bom
 
     @classmethod
-    def write_cdx_components_as_csv(cls, bom: List[Component], outputfile: str) -> None:
+    def write_cdx_components_as_csv(cls, bom: SortedSet, outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         with open(outputfile, "w", encoding="utf-8") as fout:
             for cx_comp in bom:

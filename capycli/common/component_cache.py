@@ -9,6 +9,7 @@
 import json
 import os
 import sys
+from typing import Any, Dict, List, Optional
 
 import sw360
 
@@ -26,15 +27,18 @@ class ComponentCacheManagement():
     CACHE_FILENAME = "ComponentCache.json"
     CACHE_ALL_RELEASES = "AllReleases.json"
 
-    def __init__(self, token=None, oauth2=False, url=None) -> None:
-        self.token = token
-        self.oauth2 = oauth2
-        self.releases = None
+    def __init__(self, token: Optional[str] = None, oauth2: bool = False, url: Optional[str] = None) -> None:
+        if token:
+            self.token: str = token
+        self.oauth2: bool = oauth2
+        self.releases: List[Dict[str, Any]] = []
         self.old_releases = None
-        self.sw360_url = None
+
+        if url:
+            self.sw360_url: str = url
 
     @classmethod
-    def read_component_cache(cls, cachefile: str) -> dict:
+    def read_component_cache(cls, cachefile: str) -> List[Dict[str, Any]]:
         """Read the cached list of SW360 releases"""
 
         """
@@ -70,7 +74,7 @@ class ComponentCacheManagement():
         return release_cache
 
     @classmethod
-    def get_attachment(cls, release: dict, att_type: str):
+    def get_attachment(cls, release: Dict[str, Any], att_type: str) -> Optional[Dict[str, Any]]:
         """Return the first attachment that matches the specified type"""
         if "_embedded" not in release:
             return None
@@ -96,7 +100,7 @@ class ComponentCacheManagement():
         return None
 
     @staticmethod
-    def get_value_or_default(release, key):
+    def get_value_or_default(release: Dict[str, Any], key: str) -> str:
         """Return a dictionary value if it exists, otherwise an empty string"""
         if key not in release:
             return ""
@@ -116,10 +120,11 @@ class ComponentCacheManagement():
         else:
             return 0
 
-    def get_rest_client(self, token: str = None, oauth2: bool = False, url: str = None):
+    def get_rest_client(self, token: Optional[str] = None, oauth2: bool = False,
+                        url: Optional[str] = None) -> sw360.SW360:
         """Get an instance of the REST API client"""
-        self.sw360_url = os.environ.get("SW360ServerUrl", None)
-        sw360_api_token = os.environ.get("SW360ProductionToken", None)
+        self.sw360_url = os.environ.get("SW360ServerUrl", "")
+        sw360_api_token = os.environ.get("SW360ProductionToken", "")
 
         if token:
             sw360_api_token = token
@@ -138,7 +143,7 @@ class ComponentCacheManagement():
             print_red("  No SW360 API token specified!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        client = sw360.sw360_api.SW360(self.sw360_url, sw360_api_token, oauth2)
+        client = sw360.SW360(self.sw360_url, sw360_api_token, oauth2)
         if not client.login_api(sw360_api_token):
             print_red("ERROR: login failed")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
@@ -146,15 +151,15 @@ class ComponentCacheManagement():
         return client
 
     @classmethod
-    def convert_release_details(cls, client, details) -> dict:
+    def convert_release_details(cls, client: sw360.SW360, details: Dict[str, Any]) -> Dict[str, Any]:
         """
         Convert the SW360 release data into our own data.
         """
         if not details:
-            return
+            return {}
 
         try:
-            release = {}
+            release: Dict[str, Any] = {}
             release["Id"] = client.get_id_from_href(
                 details["_links"]["self"]["href"]
             )
@@ -209,9 +214,11 @@ class ComponentCacheManagement():
                 "  Error getting details on " + details["_links"]["self"]["href"] + " " +
                 repr(ex))
 
+            return {}
+
     def refresh_component_cache(
-            self, cachefile: str, fast: bool, token: str = None,
-            oauth2: bool = False, url: str = None):
+            self, cachefile: str, fast: bool, token: Optional[str] = None,
+            oauth2: bool = False, url: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Read all releases from SW360. May take 90 minutes!
         The new multi-threaded approach takes about one hour for 25.000
@@ -224,6 +231,9 @@ class ComponentCacheManagement():
 
         # reset global list
         self.releases = []
+
+        if not allnew:
+            return []
 
         for newdata in allnew:
             internal = self.convert_release_details(client, newdata)

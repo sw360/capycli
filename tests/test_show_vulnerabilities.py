@@ -357,4 +357,4 @@ class TestShowSecurityVulnerability(TestBase):
 
 if __name__ == "__main__":
     APP = TestShowSecurityVulnerability()
-    APP.test_check_report()
+    APP.test_project_not_found()

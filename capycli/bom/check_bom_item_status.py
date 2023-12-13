@@ -40,19 +40,21 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
 
     def _find_by_id(self, component: Component) -> Optional[Dict[str, Any]]:
         sw360id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
+        version = component.version or ""
         try:
             release_details = self.client.get_release(sw360id)
             return release_details
         except sw360.sw360_api.SW360Error as swex:
-            if swex.response.status_code == requests.codes['not_found']:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+            elif swex.response.status_code == requests.codes['not_found']:
                 print(
                     Fore.LIGHTYELLOW_EX + "  Not found " + component.name +
-                    ", " + component.version + ", " +
-                    sw360id + Style.RESET_ALL)
+                    ", " + version + ", " + sw360id + Style.RESET_ALL)
             else:
                 print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
                 print(
-                    "  " + str(component.name) + ", " + str(component.version) +
+                    "  " + component.name + ", " + version +
                     ", " + sw360id)
                 print("  Status Code: " + str(swex.response.status_code))
                 if swex.message:
@@ -62,25 +64,28 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
         return None
 
     def _find_by_name(self, component: Component) -> Optional[Dict[str, Any]]:
+        version = component.version or ""
         try:
             releases = self.client.get_releases_by_name(component.name)
             if not releases:
                 return None
 
             for r in releases:
-                if r.get("version", "") == component.version:
+                if r.get("version", "") == version:
                     return self.client.get_release_by_url(r["_links"]["self"]["href"])
 
             return None
         except sw360.sw360_api.SW360Error as swex:
-            if swex.response.status_code == requests.codes['not_found']:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+            elif swex.response.status_code == requests.codes['not_found']:
                 print(
                     Fore.LIGHTYELLOW_EX + "  Not found " + component.name +
-                    ", " + component.version + ", " +
+                    ", " + version + ", " +
                     Style.RESET_ALL)
             else:
                 print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
-                print("  " + str(component.name) + ", " + str(component.version))
+                print("  " + str(component.name) + ", " + str(version))
                 print("  Status Code: " + str(swex.response.status_code))
                 if swex.message:
                     print("    Message: " + swex.message)

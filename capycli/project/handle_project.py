@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import sys
+from typing import Any
 
 import capycli.project.check_prerequisites
 import capycli.project.create_bom
@@ -22,7 +23,7 @@ from capycli.common.print import print_red
 from capycli.main.result_codes import ResultCode
 
 
-def run_project_command(args):
+def run_project_command(args: Any) -> None:
     command = args.command[0].lower()
     if command != "project":
         return

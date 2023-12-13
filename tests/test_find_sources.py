@@ -109,13 +109,13 @@ class TestFindSources(TestBase):
         self.assertEqual("0.4.6", sbom.components[0].version)
         self.assertEqual(
             "https://github.com/tartley/colorama/archive/refs/tags/0.4.6.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[0]))
+            str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])))
 
         self.assertEqual("into-stream", sbom.components[1].name)
         self.assertEqual("6.0.0", sbom.components[1].version)
         self.assertEqual(
             "https://github.com/sindresorhus/into-stream/archive/refs/tags/v6.0.0.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[1]))
+            str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[1])))
 
         self.assertEqual("python", sbom.components[2].name)
         self.assertEqual("3.8", sbom.components[2].version)
@@ -127,25 +127,25 @@ class TestFindSources(TestBase):
         self.assertEqual("11.0.1", sbom.components[4].version)
         self.assertEqual(
             "https://github.com/avoidwork/tiny-lru/archive/refs/tags/11.0.1.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[4]))
+            str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[4])))
 
         self.assertEqual("tomli", sbom.components[5].name)
         self.assertEqual("2.0.1", sbom.components[5].version)
         self.assertEqual(
             "https://github.com/hukkin/tomli/archive/refs/tags/2.0.1.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[5]))
+            str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[5])))
 
         self.assertEqual("wheel", sbom.components[6].name)
         self.assertEqual("0.38.4", sbom.components[6].version)
         self.assertEqual(
             "https://github.com/pypa/wheel/archive/refs/tags/0.38.4.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[6]))
+            str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[6])))
 
         self.assertEqual("yamljs", sbom.components[7].name)
         self.assertEqual("0.3.0", sbom.components[7].version)
         self.assertEqual(
             "https://github.com/jeremyfa/yaml.js/archive/refs/tags/v0.3.0.zip",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[7]))
+            str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[7])))
 
         self.delete_file(args.outputfile)
 

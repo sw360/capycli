@@ -125,8 +125,3 @@ class TestCreateReadmeOss(TestBase):
 
         self.assertTrue(os.path.isfile(self.OUTPUTFILE))
         # self.delete_file(self.OUTPUTFILE)
-
-
-if __name__ == "__main__":
-    APP = TestCreateReadmeOss()
-    APP.test_project_show_by_name()

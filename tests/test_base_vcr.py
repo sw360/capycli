@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import unittest
+from typing import Any
 
 import pytest
 import vcr
@@ -15,13 +16,13 @@ SW360_BASE_URL = "https://my.server.com/resource/api/"
 
 
 class CapycliTestBase(unittest.TestCase):
-    @pytest.fixture(autouse=True)
-    def capsys(self, capsys):
+    @pytest.fixture(autouse=True)  # type: ignore
+    def capsys(self, capsys: Any) -> None:
         """internal helper to access stdout/stderr captured by pytest
         """
         self.capsys = capsys
 
-    def vcr(self, name, record_mode="none"):
+    def vcr(self, name: str, record_mode: str = "none") -> Any:
         """use vcr to mockup requests for integration tests
 
         This provides a context manager for later integration tests using Python vcr.
@@ -44,7 +45,7 @@ class CapycliTestBase(unittest.TestCase):
         :return: vcr context manager
         :rtype: context manager
         """
-        return vcr.use_cassette("tests/fixtures/" + name,
+        return vcr.use_cassette("tests/fixtures/" + name,   # type : ignore
                                 filter_headers=["Authorization", "User-Agent"],
                                 match_on=["method", "uri", "headers", "raw_body"],
                                 record_mode=record_mode)

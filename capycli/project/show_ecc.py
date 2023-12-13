@@ -8,6 +8,7 @@
 
 import logging
 import sys
+from typing import Any, Dict
 
 import sw360
 
@@ -22,7 +23,7 @@ LOG = capycli.get_logger(__name__)
 class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
     """Show project export control details."""
 
-    def show_project_status(self, result: dict):
+    def show_project_status(self, result: Dict[str, Any]) -> None:
         if not result:
             return
 
@@ -70,7 +71,7 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
         else:
             print_text("    No linked releases")
 
-    def get_project_status(self, project_id: str):
+    def get_project_status(self, project_id: str) -> Dict[str, Any]:
         """Get the project status for the project with the specified id"""
         print_text("Retrieving project details...")
         result = {}
@@ -143,7 +144,7 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
 
         return result
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

@@ -4,7 +4,9 @@
 # Author: rayk.bajohr@siemens.com, thomas.graf@siemens.com
 #
 # SPDX-License-Identifier: MIT
-# ----------
+# -------------------------------------------------------------------------------
+
+from typing import Any, Dict, Optional
 
 import packageurl
 from sw360 import SW360
@@ -15,9 +17,9 @@ from capycli.common.purl_utils import PurlUtils
 
 
 class PurlService:
-    def __init__(self, client: SW360, cache: dict = None) -> None:
-        self.client = client
-        self.purl_cache = PurlStore(cache)
+    def __init__(self, client: SW360, cache: Optional[Dict] = None) -> None:
+        self.client: SW360 = client
+        self.purl_cache: PurlStore = PurlStore(cache)
 
     def build_purl_cache(self, purl_types=tuple(), no_warnings: bool = True) -> None:
         """
@@ -43,10 +45,12 @@ class PurlService:
 
         print_text("Retrieving package-url ids, filter:", purl_types)
         all_ids = self.client.get_components_by_external_id("package-url")
-        if len(all_ids) == 0:
+        if all_ids and len(all_ids) == 0:
             all_ids = self.client.get_releases_by_external_id("package-url")
         else:
-            all_ids = all_ids + self.client.get_releases_by_external_id("package-url")
+            all_rids = self.client.get_releases_by_external_id("package-url")
+            if all_rids:
+                all_ids = all_ids + all_rids
         print_text(" Found", len(all_ids), "total purls")
 
         duplicates = []
@@ -77,7 +81,7 @@ class PurlService:
 
         self.purl_cache.remove_duplicates(duplicates)
 
-    def search_release_by_external_id(self, ext_id_name: str, ext_id_value: str):
+    def search_release_by_external_id(self, ext_id_name: str, ext_id_value: str) -> Any:
         """Get SW360 release by external id
 
         For now, this only supports searching for package urls.
@@ -135,6 +139,9 @@ class PurlService:
                 component_candidates = {}
                 for version, purl_entry in purl_entries.items():
                     release = self.client.get_release_by_url(purl_entry)
+                    if not release:
+                        continue
+
                     c1 = release["_links"].get("sw360:component", None)
                     if not c1:
                         continue

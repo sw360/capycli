@@ -112,7 +112,7 @@ class TestBomConvert(TestBase):
         args.outputfile = self.OUTPUTFILE
 
         out = self.capture_stdout(sut.run, args)
-        out = self.assertTrue("No output format specified, defaulting to sbom" in out)
+        self.assertTrue("No output format specified, defaulting to sbom" in out)
 
     def test_invalid_input_file(self) -> None:
         sut = BomConvert()

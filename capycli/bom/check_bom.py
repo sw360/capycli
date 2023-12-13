@@ -9,6 +9,7 @@
 import logging
 import os
 import sys
+from typing import Any, Dict, Optional
 
 import requests
 import sw360.sw360_api
@@ -39,33 +40,38 @@ class CheckBom(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def _find_by_id(self, component: Component) -> dict:
+    def _find_by_id(self, component: Component) -> Optional[Dict[str, Any]]:
         sw360id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
+        version = component.version or ""
         for step in range(3):
             try:
                 release_details = self.client.get_release(sw360id)
                 return release_details
             except sw360.sw360_api.SW360Error as swex:
-                if swex.response.status_code == requests.codes['not_found']:
+                if swex.response is None:
+                    print_red("  Unknown error: " + swex.message)
+                elif swex.response.status_code == requests.codes['not_found']:
                     print_yellow(
                         "  Not found " + component.name +
-                        ", " + component.version + ", " + sw360id)
+                        ", " + version + ", " + sw360id)
                     break
 
                 # only report other errors if this is the third attempt
                 if step >= 2:
                     print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
                     print(
-                        "  " + component.name + ", " + component.version +
+                        "  " + component.name + ", " + version +
                         ", " + sw360id)
-                    print("  Status Code: " + str(swex.response.status_code))
+                    if swex.response:
+                        print("  Status Code: " + str(swex.response.status_code))
                     if swex.message:
                         print("    Message: " + swex.message)
                     print(Style.RESET_ALL)
 
         return None
 
-    def _find_by_name(self, component: Component) -> dict:
+    def _find_by_name(self, component: Component) -> Optional[Dict[str, Any]]:
+        version = component.version or ""
         for step in range(3):
             try:
                 releases = self.client.get_releases_by_name(component.name)
@@ -73,23 +79,26 @@ class CheckBom(capycli.common.script_base.ScriptBase):
                     return None
 
                 for r in releases:
-                    if r.get("version", "") == component.version:
+                    if r.get("version", "") == version:
                         return r
 
                 return None
             except sw360.sw360_api.SW360Error as swex:
-                if swex.response.status_code == requests.codes['not_found']:
+                if swex.response is None:
+                    print_red("  Unknown error: " + swex.message)
+                elif swex.response.status_code == requests.codes['not_found']:
                     print_yellow(
                         "  Not found " + component.name +
-                        ", " + component.version)
+                        ", " + version)
                     break
 
                 # only report other errors if this is the third attempt
                 if step >= 2:
                     print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
                     print(
-                        "  " + component.name + ", " + component.version)
-                    print("  Status Code: " + str(swex.response.status_code))
+                        "  " + component.name + ", " + version)
+                    if swex.response:
+                        print("  Status Code: " + str(swex.response.status_code))
                     if swex.message:
                         print("    Message: " + swex.message)
                     print(Style.RESET_ALL)
@@ -116,7 +125,7 @@ class CheckBom(capycli.common.script_base.ScriptBase):
                 found_count += 1
                 continue
 
-            if not id:
+            if not sw360id:
                 print_yellow(
                     "  " + component.name +
                     ", " + component.version +

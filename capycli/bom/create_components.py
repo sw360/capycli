@@ -11,7 +11,7 @@ import os
 import re
 import sys
 import tempfile
-from typing import Any, Dict
+from typing import Any, Dict, List
 from urllib.parse import urlparse
 
 import packageurl
@@ -160,16 +160,16 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :return: the release
         :rtype: release (dictionary)
         """
-        data = {}
+        data: Dict[str, Any] = {}
         data["name"] = cx_comp.name
-        data["version"] = cx_comp.version
+        data["version"] = cx_comp.version or ""
 
         # mandatory properties
-        src_url = CycloneDxSupport.get_ext_ref_source_url(cx_comp)
+        src_url = str(CycloneDxSupport.get_ext_ref_source_url(cx_comp))
         if src_url:
             data["sourceCodeDownloadurl"] = src_url
 
-        bin_url = CycloneDxSupport.get_ext_ref_binary_url(cx_comp)
+        bin_url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
         if bin_url:
             data["binaryDownloadurl"] = bin_url
 
@@ -177,7 +177,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if cx_comp.purl:
             data["externalIds"] = {}
             # ensure that we have the only correct external-id name: package-url
-            data["externalIds"]["package-url"] = cx_comp.purl
+            data["externalIds"]["package-url"] = cx_comp.purl.to_string()
 
         # use project site as fallback for source code download url
         website = CycloneDxSupport.get_ext_ref_website(cx_comp)
@@ -185,10 +185,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if not src_url:
             if repo:
                 print("    Using repository for source code download URL...")
-                data["sourceCodeDownloadurl"] = repo
+                data["sourceCodeDownloadurl"] = str(repo)
             elif website:
                 print("    Using website for source code download URL...")
-                data["sourceCodeDownloadurl"] = website
+                data["sourceCodeDownloadurl"] = str(website)
 
         language = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_LANGUAGE)
         if language:
@@ -205,7 +205,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :return: the release structure
         :rtype: release (dictionary)
         """
-        data = {}
+        data: Dict[str, Any] = {}
         data["description"] = "n/a"
         if cx_comp.description:
             data["description"] = cx_comp.description
@@ -213,11 +213,12 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
         language = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_LANGUAGE)
         if language:
-            data["languages"] = []
-            data["languages"].append(language)
+            languages: List[str] = []
+            languages.append(language)
+            data["languages"] = languages
 
         # optional properties
-        categories = []
+        categories: List[str] = []
         cat = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_CATEGORIES)
         if cat:
             categories.append(cat)
@@ -230,7 +231,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         data["homepage"] = "n/a"
         website = CycloneDxSupport.get_ext_ref_website(cx_comp)
         if website:
-            data["homepage"] = website
+            data["homepage"] = str(website)
 
         if cx_comp.purl:
             purl = PurlUtils.component_purl_from_release_purl(cx_comp.purl)
@@ -334,22 +335,22 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         filename = None
         filehash = None
         if filetype in ["SOURCE", "SOURCE_SELF"]:
-            url = CycloneDxSupport.get_ext_ref_source_url(cx_comp)
-            filename = CycloneDxSupport.get_ext_ref_source_file(cx_comp)
-            filehash = CycloneDxSupport.get_source_file_hash(cx_comp)
+            url = str(CycloneDxSupport.get_ext_ref_source_url(cx_comp))
+            filename = str(CycloneDxSupport.get_ext_ref_source_file(cx_comp))
+            filehash = str(CycloneDxSupport.get_source_file_hash(cx_comp))
 
         if filetype in ["BINARY", "BINARY_SELF"]:
-            url = CycloneDxSupport.get_ext_ref_binary_url(cx_comp)
-            filename = CycloneDxSupport.get_ext_ref_binary_file(cx_comp)
-            filehash = CycloneDxSupport.get_binary_file_hash(cx_comp)
+            url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
+            filename = str(CycloneDxSupport.get_ext_ref_binary_file(cx_comp))
+            filehash = str(CycloneDxSupport.get_binary_file_hash(cx_comp))
 
         # Note that we retreive the SHA1 has from the CycloneDX data.
         # But there is no guarantee that this *IS* really a SHA1 hash!
 
-        if (filename is None or filename == '') and url:
-            filename = urlparse(url)
-            if filename:
-                filename = os.path.basename(filename.path)
+        if (filename is None or filename == "") and url:
+            filename_parsed = urlparse(url)
+            if filename_parsed:
+                filename = os.path.basename(filename_parsed.path)  # type: ignore
 
         if not filename:
             print_red("    Unable to identify filename from url!")
@@ -408,6 +409,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             # if there's no exact match, try relaxed search
             for comprel in component["_embedded"]["sw360:releases"]:
                 # "2:5.2.1-1.debian" -> "5.2.1-1"
+                if not cx_comp.version:
+                    continue
                 bom_pattern = re.sub("^[0-9]+:", "", cx_comp.version)
                 bom_pattern = re.sub(r"[\. \(]*[dD]ebian[ \)]*$", "", bom_pattern)
                 sw360_pattern = re.sub("^[0-9]+:", "", comprel.get("version", ""))
@@ -435,7 +438,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             if self.onlyCreateReleases:
                 print_yellow("    No component id in bom, skipping due to createreleases mode!")
 
-                return None
+                return ""
 
             components = self.client.get_component_by_name(cx_comp.name)
             if not component and components["_embedded"]["sw360:components"]:

@@ -46,7 +46,7 @@ class TestCreateBom(TestBasePytest):
         args.debug = True
         args.verbose = True
 
-        with pytest.raises(SystemExit) as ex:
+        with pytest.raises(SystemExit) as ex:  # type: ignore
             sut.run(args)
         assert ResultCode.RESULT_AUTH_ERROR == ex.value.code
 
@@ -65,7 +65,7 @@ class TestCreateBom(TestBasePytest):
 
         self.add_login_response()
 
-        with pytest.raises(SystemExit) as ex:
+        with pytest.raises(SystemExit) as ex:  # type: ignore
             sut.run(args)
         assert ResultCode.RESULT_COMMAND_ERROR == ex.value.code
 
@@ -84,7 +84,7 @@ class TestCreateBom(TestBasePytest):
 
         self.add_login_response()
 
-        with pytest.raises(SystemExit) as ex:
+        with pytest.raises(SystemExit) as ex:  # type: ignore
             sut.run(args)
         assert ResultCode.RESULT_COMMAND_ERROR == ex.value.code
 
@@ -115,7 +115,7 @@ class TestCreateBom(TestBasePytest):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-        with pytest.raises(SystemExit) as ex:
+        with pytest.raises(SystemExit) as ex:  # type: ignore
             sut.run(args)
         assert ResultCode.RESULT_ERROR_ACCESSING_SW360 == ex.value.code
 
@@ -153,7 +153,7 @@ class TestCreateBom(TestBasePytest):
         captured = capsys.readouterr()
 
         assert "Multiple purls added" in captured.out
-        assert cdx_components[0].purl == "pkg:deb/debian/cli-support@1.3-1 pkg:pypi/cli-support@1.3"
+        assert cdx_components[0].purl.to_string() == "pkg:deb/debian/cli-support%401.3-1%20pkg:pypi/cli-support@1.3"
 
     @responses.activate
     def test_project_by_id(self):
@@ -209,23 +209,23 @@ class TestCreateBom(TestBasePytest):
 
         cdx_bom = sut.create_project_cdx_bom("p001")
         cx_comp = cdx_bom.components[0]
-        assert cx_comp.purl == release["externalIds"]["package-url"]
+        assert cx_comp.purl.to_string() == release["externalIds"]["package-url"]
 
         ext_refs_src_url = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_URL_COMMENT]
         assert len(ext_refs_src_url) == 1
-        assert ext_refs_src_url[0].url == release["sourceCodeDownloadurl"]
+        assert str(ext_refs_src_url[0].url) == release["sourceCodeDownloadurl"]
         assert ext_refs_src_url[0].type == ExternalReferenceType.DISTRIBUTION
 
         ext_refs_src_file = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_FILE_COMMENT]
         assert len(ext_refs_src_file) == 2
-        assert ext_refs_src_file[0].url == release["_embedded"]["sw360:attachments"][0]["filename"]
+        assert str(ext_refs_src_file[0].url) == release["_embedded"]["sw360:attachments"][0]["filename"]
         assert ext_refs_src_file[0].type == ExternalReferenceType.DISTRIBUTION
         assert ext_refs_src_file[0].hashes[0].alg == "SHA-1"
         assert ext_refs_src_file[0].hashes[0].content == release["_embedded"]["sw360:attachments"][0]["sha1"]
 
         ext_refs_vcs = [e for e in cx_comp.external_references if e.type == ExternalReferenceType.VCS]
         assert len(ext_refs_vcs) == 1
-        assert ext_refs_vcs[0].url == release["repository"]["url"]
+        assert str(ext_refs_vcs[0].url) == release["repository"]["url"]
 
         assert cdx_bom.metadata.component.name == project["name"]
         assert cdx_bom.metadata.component.version == project["version"]

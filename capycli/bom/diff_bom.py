@@ -9,7 +9,7 @@
 import os
 import sys
 from enum import Enum
-from typing import Tuple
+from typing import Optional, Tuple
 
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -53,7 +53,7 @@ class DiffBom(capycli.common.script_base.ScriptBase):
         self.equal_bom = None
         self.diff_bom = None
 
-    def find_in_bom(self, bom: Bom, component: Component) -> Component or None:
+    def find_in_bom(self, bom: Bom, component: Component) -> Optional[Component]:
         """Searches for an item with the given name and version in the given SBOM."""
         for c in bom.components:
             if MergeBom.are_same(c, component):

@@ -7,11 +7,12 @@
 # -------------------------------------------------------------------------------
 
 import json
+from typing import Any, Dict
 
 from capycli.main.exceptions import CaPyCliException
 
 
-def load_json_file(filename):
+def load_json_file(filename: str) -> Dict[str, Any]:
     """Load a JSON file"""
     try:
         with open(filename, encoding="utf-8") as fin:
@@ -22,7 +23,7 @@ def load_json_file(filename):
     return data
 
 
-def write_json_to_file(data, filename):
+def write_json_to_file(data: Dict[str, Any], filename: str) -> None:
     """Write the data a JSON file"""
     try:
         with open(filename, "w", encoding="utf-8") as outfile:
@@ -31,6 +32,6 @@ def write_json_to_file(data, filename):
         raise CaPyCliException("Error writing JSON file: " + str(exp))
 
 
-def print_json(data, sort_keys=False):
+def print_json(data: Dict[str, Any], sort_keys: bool = False) -> None:
     """Dump a JSON object to screen"""
     print(json.dumps(data, indent=2, sort_keys=sort_keys))

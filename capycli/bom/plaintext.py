@@ -9,6 +9,7 @@
 from typing import List
 
 from cyclonedx.model.component import Component
+from sortedcontainers import SortedSet
 
 from capycli import LOG
 from capycli.main.exceptions import CaPyCliException
@@ -58,6 +59,20 @@ class PlainTextSupport():
 
     @classmethod
     def write_cdx_components_as_flatlist(cls, bom: List[Component], outputfile: str) -> None:
+        LOG.debug(f"Writing to file {outputfile}")
+        try:
+            with open(outputfile, "w", encoding="utf-8") as fout:
+                for cx_comp in bom:
+                    name = cx_comp.name
+                    version = cx_comp.version
+                    fout.write(f"{name}, {version}\n")
+        except Exception as exp:
+            raise CaPyCliException("Error writing text file: " + str(exp))
+
+        LOG.debug("done")
+
+    @classmethod
+    def write_cdx_components_as_flatlist2(cls, bom: SortedSet, outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         try:
             with open(outputfile, "w", encoding="utf-8") as fout:

@@ -87,17 +87,17 @@ class GetJavaMavenPomDependencies(capycli.common.script_base.ScriptBase):
 
                         artifacts.append(artifact)
 
-        sbom = SbomCreator.create(None, addlicense=True, addprofile=True, addtools=True)
+        sbom = SbomCreator.create([], addlicense=True, addprofile=True, addtools=True)
         for artifact in artifacts:
             purl = PackageURL(
                 "maven", artifact.get("groupId", ""),
                 artifact.get("artifactId", ""), artifact.get("version", ""),
-                "", "").to_string()
+                "", "")
             cx_comp = Component(
                 name=artifact.get("artifactId", ""),
                 version=artifact.get("version", ""),
                 purl=purl,
-                bom_ref=purl
+                bom_ref=purl.to_string()
             )
 
             prop = Property(

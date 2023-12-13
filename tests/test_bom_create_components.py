@@ -14,6 +14,7 @@ import os
 import responses
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
 
 import capycli.bom.create_components
 from capycli.bom.create_components import BomCreateComponents
@@ -78,7 +79,7 @@ class CapycliTestBomCreateComponents(TestBase):
             name="activemodel",
             version="5.2.4.3",
             description="something",
-            purl="pkg:gem/activemodel@5.2.4.3"
+            purl=PackageURL.from_string("pkg:gem/activemodel@5.2.4.3")
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_LANGUAGE, "Ruby")
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_CATEGORIES, "devel")
@@ -264,4 +265,4 @@ class CapycliTestBomCreateComponents(TestBase):
 if __name__ == "__main__":
     APP = CapycliTestBomCreateComponents()
     APP.setUp()
-    APP.test_create_comp_release_no_component_id_required()
+    APP.test_create_component()

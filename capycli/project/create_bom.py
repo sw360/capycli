@@ -13,6 +13,7 @@ import sw360
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -27,10 +28,10 @@ LOG = get_logger(__name__)
 class CreateBom(capycli.common.script_base.ScriptBase):
     """Create a SBOM for a project on SW360."""
 
-    def get_external_id(self, name: str, release_details: dict):
+    def get_external_id(self, name: str, release_details: dict) -> str:
         """Returns the external id with the given name or None."""
         if "externalIds" not in release_details:
-            return None
+            return ""
 
         return release_details["externalIds"].get(name, "")
 
@@ -41,7 +42,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             if key["release"] == href:
                 return key["mainlineState"]
 
-        return None
+        return ""
 
     def create_project_bom(self, project) -> list:
         bom = []
@@ -60,14 +61,15 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                     # try another id name
                     purl = self.get_external_id("purl", release_details)
 
-                purl = PurlUtils.parse_purls_from_external_id(purl)
-                if len(purl) > 1:
+                purls = PurlUtils.parse_purls_from_external_id(purl)
+                if len(purls) > 1:
                     print_yellow("      Multiple purls added for", release["name"], release["version"])
                     print_yellow("      You must remove all but one in your SBOM!")
-                purl = " ".join(purl)
+                purl = " ".join(purls)
 
                 if purl:
-                    rel_item = Component(name=release["name"], version=release["version"], purl=purl, bom_ref=purl)
+                    rel_item = Component(name=release["name"], version=release["version"],
+                                         purl=PackageURL.from_string(purl), bom_ref=purl)
                 else:
                     rel_item = Component(name=release["name"], version=release["version"])
 
@@ -88,16 +90,17 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                                                      comment, release_details[key])
 
                 if "repository" in release_details and "url" in release_details["repository"]:
-                    CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment=None,
+                    CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment="",
                                                  value=release_details["repository"]["url"])
 
                 for at_type, comment in (("SOURCE", CaPyCliBom.SOURCE_FILE_COMMENT),
                                          ("BINARY", CaPyCliBom.BINARY_FILE_COMMENT)):
-                    attachments = self.get_release_attachments(release_details, (at_type, at_type + "_SELF"))
+                    attachments = self.get_release_attachments(release_details,
+                                                               (at_type, at_type + "_SELF"))  # type: ignore
                     for attachment in attachments:
                         CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
                                                      comment, attachment["filename"],
-                                                     HashAlgorithm.SHA_1, attachment.get("sha1"))
+                                                     HashAlgorithm.SHA_1, attachment.get("sha1", ""))
 
             except sw360.SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))

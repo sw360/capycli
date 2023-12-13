@@ -6,6 +6,10 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from __future__ import annotations
+
+from typing import Any, List, Tuple
+
 from capycli import get_logger
 
 LOG = get_logger(__name__)
@@ -18,10 +22,10 @@ class IncompatibleVersionError(Exception):
 
 class ComparableVersion:
     """Version string comparison."""
-    parts: list
+    parts: List[Tuple[Any, Any]]
     version: str
 
-    def __init__(self, version: str):
+    def __init__(self, version: str) -> None:
         self.version = version
         try:
             self.parts = self.parse(version)
@@ -29,11 +33,11 @@ class ComparableVersion:
             LOG.warning("Unable to parse version %s", version)
 
     @staticmethod
-    def parse(version: str):
+    def parse(version: str) -> List[Tuple[bool, int | str]]:
         version = version.lower()
 
         isdigit = False
-        parts = []
+        parts: List[Tuple[bool, int | str]] = []
         start = 0
         for i, c in enumerate(version):
             if c in [".", "-", "_"]:
@@ -55,11 +59,11 @@ class ComparableVersion:
 
         for i, part in enumerate(parts):
             if part[0]:
-                parts[i] = (part[0], int(part[1]))
+                parts[i] = (True, int(part[1]))
 
         return parts
 
-    def compare(self, other):
+    def compare(self, other: ComparableVersion) -> int:
         """
         Compare versions
         :param other: other version
@@ -71,7 +75,8 @@ class ComparableVersion:
             raise IncompatibleVersionError(e)
 
     @staticmethod
-    def get_part_or_default(part_list: list, pos: int, other: list):
+    def get_part_or_default(part_list: List[Tuple[bool, int | str]], pos: int,
+                            other: List[Tuple[bool, int | str]]) -> str | int:
         if pos < len(part_list):
             return part_list[pos][1]
         elif pos < len(other):
@@ -80,7 +85,8 @@ class ComparableVersion:
         else:
             return ""
 
-    def compare_recursive(self, me, i, other, j):
+    def compare_recursive(self, me: List[Tuple[bool, int | str]], i: int,
+                          other: List[Tuple[bool, int | str]], j: int) -> int:
         """
         Recursive go through version parts and compare them.
         Rules:
@@ -103,58 +109,66 @@ class ComparableVersion:
 
         if left == right:
             return self.compare_recursive(me, i + 1, other, j + 1)
-        if left > right:
+        # if str(left) > str(right): => test fails
+        # if int(left) > int(right): => test fails
+        if left > right:  # type: ignore
             return 1
         else:
             return -1
 
-    def __eq__(self, other):
+    def __eq__(self, other: ComparableVersion | object) -> bool:
         """describes equality operator(==)"""
+        if not isinstance(other, self.__class__):
+            return False
+
         try:
             return self.compare(other) == 0
         except IncompatibleVersionError:
             return self.version.__eq__(other.version)
 
-    def __ne__(self, other):
+    def __ne__(self, other: ComparableVersion | object) -> bool:
         """describes not equal to operator(!=)"""
+        if not isinstance(other, self.__class__):
+            return False
+
         try:
             return self.compare(other) != 0
         except IncompatibleVersionError:
             return self.version.__ne__(other.version)
 
-    def __le__(self, other):
+    def __le__(self, other: ComparableVersion) -> bool:
         """descries less than or equal to (<=)"""
         try:
             return self.compare(other) <= 0
         except IncompatibleVersionError:
             return self.version.__le__(other.version)
 
-    def __ge__(self, other):
+    def __ge__(self, other: ComparableVersion) -> bool:
         """describes greater than or equal to (>=)"""
         try:
             return self.compare(other) >= 0
         except IncompatibleVersionError:
             return self.version.__ge__(other.version)
 
-    def __gt__(self, other):
+    def __gt__(self, other: ComparableVersion) -> bool:
         """describes greater than (>)"""
         try:
             return self.compare(other) > 0
         except IncompatibleVersionError:
             return self.version.__gt__(other.version)
 
-    def __lt__(self, other):
+    def __lt__(self, other: ComparableVersion) -> bool:
         """describes less than operator(<)"""
         try:
             return self.compare(other) < 0
         except IncompatibleVersionError:
             return self.version.__lt__(other.version)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.version
 
     @property
-    def major(self):
+    def major(self) -> str:
         if self.parts:
             return self.parts[0][1]
         else:

@@ -406,9 +406,9 @@ class TestBomFilter(TestBase):
         self.assertEqual(4, len(bom.components))
         self.assertEqual(component["Name"], bom.components[2].name)
         self.assertEqual(component["Version"], bom.components[2].version)
-        self.assertEqual(component["RepositoryId"], bom.components[2].purl)
-        self.assertEqual(component["SourceFileUrl"], CycloneDxSupport.get_ext_ref_source_url(bom.components[2]))
-        self.assertEqual(component["SourceFile"], CycloneDxSupport.get_ext_ref_source_file(bom.components[2]))
+        self.assertEqual(component["RepositoryId"], bom.components[2].purl.to_string())
+        self.assertEqual(component["SourceFileUrl"], str(CycloneDxSupport.get_ext_ref_source_url(bom.components[2])))
+        self.assertEqual(component["SourceFile"], str(CycloneDxSupport.get_ext_ref_source_file(bom.components[2])))
         self.assertEqual(
             component["Language"],
             CycloneDxSupport.get_property_value(bom.components[2], CycloneDxSupport.CDX_PROP_LANGUAGE))
@@ -419,3 +419,8 @@ class TestBomFilter(TestBase):
         # clean test files
         self.delete_file(outputfile)
         self.delete_file(filterfile)
+
+
+if __name__ == "__main__":
+    lib = TestBomFilter()
+    lib.test_remove_single_item_by_purl()

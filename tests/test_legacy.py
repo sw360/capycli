@@ -10,6 +10,7 @@ import os
 from typing import List
 
 from cyclonedx.model.component import Component
+from sortedcontainers import SortedSet
 
 from capycli.bom.legacy import LegacySupport
 from capycli.common.capycli_bom_support import CycloneDxSupport
@@ -75,7 +76,7 @@ class TestLegacy(TestBase):
 
         filename_out = os.path.join(
             os.path.dirname(__file__), "fixtures", TestLegacy.OUTPUTFILE)
-        LegacySupport.write_cdx_components_as_legacy(cx_components, filename_out)
+        LegacySupport.write_cdx_components_as_legacy(SortedSet(cx_components), filename_out)
 
         cx_components2 = LegacySupport.legacy_to_cdx_components(filename_out)
         self.assert_default_test_bom(cx_components2)

@@ -660,3 +660,8 @@ class TestCheckBomItemStatus(TestBase):
         self.assertTrue("tomli, 2.0.1" in out)
         self.assertTrue("wheel, 0.38.4" in out)
         self.assertTrue("0.39.9" in out)
+
+
+if __name__ == "__main__":
+    lib = TestCheckBomItemStatus()
+    lib.test_simple_bom_with_errors()

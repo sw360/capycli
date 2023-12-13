@@ -11,7 +11,7 @@ from io import StringIO
 from unittest.mock import patch
 
 import pytest
-from cli_test_helpers import ArgvContext
+from cli_test_helpers import ArgvContext  # type: ignore
 
 from capycli.bom.create_components import BomCreateComponents
 from capycli.main import cli

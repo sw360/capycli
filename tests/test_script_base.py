@@ -211,7 +211,7 @@ class TestScriptBase(TestBase):
         )
 
         val = sut.find_project("MyName", "MyVersion")
-        self.assertIsNone(val)
+        self.assertEqual("", val)
 
     @responses.activate
     def test_find_project_fail_version_not_found(self):
@@ -247,7 +247,7 @@ class TestScriptBase(TestBase):
         )
 
         val = sut.find_project("MyName", "MyVersion", True)
-        self.assertIsNone(val)
+        self.assertEqual("", val)
 
     def test_get_error_message_no_info(self):
         sut = ScriptBase()

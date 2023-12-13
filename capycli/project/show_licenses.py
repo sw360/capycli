@@ -11,6 +11,7 @@ import os
 import shutil
 import sys
 import traceback
+from typing import Any, Dict, List
 
 import cli_support
 from colorama import Fore, Style
@@ -26,12 +27,12 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
     TEMPFOLDER = ".\\_cli_temp_"
 
     """Show licenses of all cleared compponents."""
-    def __init__(self):
-        self.nodelete = False
-        self.global_license_list = []
+    def __init__(self) -> None:
+        self.nodelete: bool = False
+        self.global_license_list: List[str] = []
 
     @classmethod
-    def ensure_dir(cls, folder_path):
+    def ensure_dir(cls, folder_path: str):
         """Ensures that the given path exists"""
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
@@ -40,7 +41,7 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
             print_red("  Unable to create temp folder!")
 
     @classmethod
-    def print_license_list(cls, license_list):
+    def print_license_list(cls, license_list: List[str]) -> None:
         """Displays the licenses color-coded"""
         for lic in license_list:
             color = Fore.RESET
@@ -64,8 +65,12 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
 
         print(Style.RESET_ALL)
 
-    def process_release(self, release, tempfolder):
+    def process_release(self, release: Dict[str, Any], tempfolder: str) -> None:
         """Processes a single release"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         if "_embedded" not in release:
             print_red("    No license information available!")
             return
@@ -113,7 +118,11 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
 
         self.print_license_list(license_list)
 
-    def show_licenses(self, id):
+    def show_licenses(self, id: str) -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         tempfolder = self.TEMPFOLDER
         self.ensure_dir(tempfolder)
 
@@ -155,7 +164,7 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
         if not self.nodelete:
             shutil.rmtree(tempfolder)
 
-    def show_command_help(self):
+    def show_command_help(self) -> None:
         print("\nusage: CaPyCli project licenses [options]")
         print("Options:")
         print("""
@@ -169,7 +178,7 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
 
         print()
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

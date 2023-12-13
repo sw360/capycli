@@ -8,9 +8,10 @@
 
 from typing import Any, Dict, List
 
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.component import Component
 from packageurl import PackageURL  # type: ignore
+from sortedcontainers import SortedSet
 
 from capycli import LOG
 from capycli.common import json_support
@@ -49,7 +50,7 @@ from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 
 class LegacySupport():
     @staticmethod
-    def get_purl_from_name(item: Dict[str, Any]) -> Any:
+    def get_purl_from_name(item: Dict[str, Any]) -> PackageURL:
         """Builds/guesses a package-url from name, version
         and provided language information."""
         lang = "generic"
@@ -63,16 +64,16 @@ class LegacySupport():
             if item["Language"].lower() == "javascript":
                 lang = "npm"
 
-        purl = PackageURL(type=lang, name=item.get("Name", ""), version=item.get("Version", "")).to_string()
+        purl = PackageURL(type=lang, name=item.get("Name", ""), version=item.get("Version", ""))
         return purl
 
     @staticmethod
-    def get_purl_from_legacy(item: Dict[str, Any]) -> Any:
+    def get_purl_from_legacy(item: Dict[str, Any]) -> PackageURL:
         if "RepositoryType" in item:
             if (item["RepositoryType"] == "package-url") or (item["RepositoryType"] == "purl"):
                 id = item.get("RepositoryId", "")
                 if id:
-                    return id
+                    return PackageURL.from_string(id)
 
         return LegacySupport.get_purl_from_name(item)
 
@@ -85,7 +86,7 @@ class LegacySupport():
                 name=item.get("Name", "").strip(),
                 version=item.get("Version", "").strip(),
                 purl=purl,
-                bom_ref=purl,
+                bom_ref=purl.to_string(),
                 description=item.get("Description", "").strip())
         else:
             cxcomp = Component(
@@ -99,7 +100,7 @@ class LegacySupport():
         if website:
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.WEBSITE,
-                url=website)
+                url=XsUri(website))
             cxcomp.external_references.add(ext_ref)
 
         projectClearingState = item.get("ProjectClearingState", "")
@@ -152,7 +153,7 @@ class LegacySupport():
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
-                url=sourceFileUrl)
+                url=XsUri(sourceFileUrl))
             hash = item.get("SourceFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
@@ -165,7 +166,7 @@ class LegacySupport():
                 ext_ref = ExternalReference(
                     reference_type=ExternalReferenceType.DISTRIBUTION,
                     comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-                    url=sourceUrl)
+                    url=XsUri(sourceUrl))
                 hash = item.get("SourceFileHash", "")
                 if hash:
                     ext_ref.hashes.add(HashType(
@@ -178,7 +179,7 @@ class LegacySupport():
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.DISTRIBUTION,
                 comment="source archive (local copy)",
-                url=sourceFile)
+                url=XsUri(sourceFile))
             hash = item.get("SourceFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
@@ -207,7 +208,7 @@ class LegacySupport():
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                url=binaryFile)
+                url=XsUri(binaryFile))
             hash = item.get("BinaryFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
@@ -222,7 +223,7 @@ class LegacySupport():
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_URL_COMMENT,
-                url=binaryFileUrl)
+                url=XsUri(binaryFileUrl))
             hash = item.get("BinaryFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
@@ -234,7 +235,7 @@ class LegacySupport():
         if repositoryUrl:
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.VCS,
-                url=repositoryUrl)
+                url=XsUri(repositoryUrl))
             cxcomp.external_references.add(ext_ref)
 
         language = item.get("Language", "")
@@ -263,23 +264,23 @@ class LegacySupport():
 
     @classmethod
     def cdx_component_to_legacy(cls, cx_comp: Component) -> Dict[str, Any]:
-        lcomp = {}
+        lcomp: Dict[str, Any] = {}
         lcomp["Name"] = cx_comp.name
         lcomp["Version"] = cx_comp.version or ""
         lcomp["Description"] = cx_comp.description or ""
         lcomp["Language"] = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_LANGUAGE)
         lcomp["SourceUrl"] = str(CycloneDxSupport.get_ext_ref_source_url(cx_comp))
-        lcomp["RepositoryUrl"] = CycloneDxSupport.get_ext_ref_repository(cx_comp)
+        lcomp["RepositoryUrl"] = str(CycloneDxSupport.get_ext_ref_repository(cx_comp))
         lcomp["SourceFile"] = str(CycloneDxSupport.get_ext_ref_source_file(cx_comp))
         lcomp["SourceFileHash"] = CycloneDxSupport.get_source_file_hash(cx_comp)
         lcomp["BinaryFile"] = str(CycloneDxSupport.get_ext_ref_binary_file(cx_comp))
         lcomp["BinaryFileHash"] = CycloneDxSupport.get_binary_file_hash(cx_comp)
         lcomp["BinaryFileUrl"] = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
-        lcomp["Homepage"] = CycloneDxSupport.get_ext_ref_website(cx_comp)
-        lcomp["ProjectSite"] = CycloneDxSupport.get_ext_ref_website(cx_comp)  # same!
+        lcomp["Homepage"] = str(CycloneDxSupport.get_ext_ref_website(cx_comp))
+        lcomp["ProjectSite"] = str(CycloneDxSupport.get_ext_ref_website(cx_comp))  # same!
         if cx_comp.purl:
             lcomp["RepositoryType"] = "package-url"
-            lcomp["RepositoryId"] = cx_comp.purl or ""
+            lcomp["RepositoryId"] = cx_comp.purl.to_string() or ""
         lcomp["Sw360Id"] = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
 
         lcomp["SourceFileType"] = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SRC_FILE_TYPE)
@@ -299,7 +300,7 @@ class LegacySupport():
         return lcomp
 
     @classmethod
-    def write_cdx_components_as_legacy(cls, bom: List[Component], outputfile: str) -> None:
+    def write_cdx_components_as_legacy(cls, bom: SortedSet, outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
 
         legacy_bom = []

@@ -16,7 +16,7 @@ import shutil
 from colorama import Fore, Style
 
 
-def create_backup(filename):
+def create_backup(filename: str) -> None:
     """Create backup file"""
     try:
         if os.path.isfile(filename):

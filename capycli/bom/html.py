@@ -6,9 +6,10 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import List, Optional
+from typing import Optional
 
 from cyclonedx.model.component import Component
+from sortedcontainers import SortedSet
 
 from capycli import LOG
 from capycli.common.html_support import HtmlSupport
@@ -19,7 +20,8 @@ class HtmlConversionSupport():
     @classmethod
     def write_cdx_components_as_html(
             cls,
-            bom: List[Component],
+            # bom: List[Component],
+            bom: SortedSet,
             outputfile: str,
             project: Optional[Component]) -> None:
         myhtml = HtmlSupport()

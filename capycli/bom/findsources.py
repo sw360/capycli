@@ -183,19 +183,19 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 if self.verbose:
                     print_text("    Repository URL available:", repository_url)
                 source_url = self.get_github_source_url(
-                    repository_url,
+                    str(repository_url),
                     component.version)
             if website and not source_url:
                 if self.verbose:
                     print_text("    Project site URL available:", website)
                 source_url = self.get_github_source_url(
-                    website,
+                    str(website),
                     component.version)
             if source_code_url and not source_url:
                 if self.verbose:
                     print_text("    Repository URL available:", source_code_url)
                 source_url = self.get_github_source_url(
-                    source_code_url,
+                    str(source_code_url),
                     component.version)
 
             if source_url:

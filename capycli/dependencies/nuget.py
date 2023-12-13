@@ -44,12 +44,12 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
             name = s.attributes["id"].value.strip()
             version = s.attributes["version"].value.strip()
-            purl = PackageURL("nuget", "", name, version, "", "").to_string()
+            purl = PackageURL("nuget", "", name, version, "", "")
             cxcomp = Component(
                 name=name,
                 version=version,
                 purl=purl,
-                bom_ref=purl)
+                bom_ref=purl.to_string())
 
             prop = Property(
                 name=CycloneDxSupport.CDX_PROP_LANGUAGE,
@@ -75,12 +75,12 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                     else:
                         version = version.item(0).childNodes.item(0).nodeValue
 
-                purl = PackageURL("nuget", "", name, version, "", "").to_string()
+                purl = PackageURL("nuget", "", name, version, "", "")
                 cxcomp = Component(
                     name=name,
                     version=version,
                     purl=purl,
-                    bom_ref=purl)
+                    bom_ref=purl.to_string())
 
                 prop = Property(
                     name=CycloneDxSupport.CDX_PROP_LANGUAGE,

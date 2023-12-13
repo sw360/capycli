@@ -10,7 +10,7 @@ import os
 import sys
 import unittest
 from io import BytesIO, TextIOWrapper
-from typing import Any
+from typing import Any, Dict
 
 import responses
 
@@ -19,7 +19,7 @@ class AppArguments():
     # Examples
     # command=['bom', 'diff', '.\\Tests\\bom_diff_1.json', '.\\tests\\bom_diff_1.json']
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.cachefile = None
         self.command = None
         self.create_overview = None
@@ -84,7 +84,7 @@ class TestBasePytest:
             outfile.write(text)
 
     @staticmethod
-    def capture_stderr(func: Any, *args, **kwargs) -> str:
+    def capture_stderr(func: Any, *args: Any, **kwargs: Any) -> str:
         """Capture stderr for the given function and return result as string"""
         # setup the environment
         old_stderr = sys.stderr
@@ -103,7 +103,7 @@ class TestBasePytest:
         return out
 
     @staticmethod
-    def capture_stdout(func: Any, *args, **kwargs) -> str:
+    def capture_stdout(func: Any, *args: Any, **kwargs: Any) -> str:
         """Capture stdout for the given function and return result as string"""
         # setup the environment
         old_stdout = sys.stdout
@@ -120,7 +120,7 @@ class TestBasePytest:
 
         return out
 
-    def add_login_response(self):
+    def add_login_response(self) -> None:
         """
         Add response for SW360 login.
         """
@@ -134,7 +134,7 @@ class TestBasePytest:
         )
 
     @staticmethod
-    def get_project_for_test() -> dict:
+    def get_project_for_test() -> Dict[str, Any]:
         """
         Return a SW360 project for unit testing.
         """
@@ -238,7 +238,7 @@ class TestBasePytest:
         return project
 
     @staticmethod
-    def get_release_wheel_for_test() -> dict:
+    def get_release_wheel_for_test() -> Dict[str, Any]:
         """
         Return a SW360 release for unit testing.
         """
@@ -329,7 +329,7 @@ class TestBasePytest:
         return release_wheel
 
     @staticmethod
-    def get_release_cli_for_test() -> dict:
+    def get_release_cli_for_test() -> Dict[str, Any]:
         """
         Return a SW360 release for unit testing.
         """

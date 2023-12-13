@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import Any, List, Optional
+
 from cyclonedx.model.component import Component
 
 from capycli.common.capycli_bom_support import CycloneDxSupport
@@ -43,12 +45,12 @@ class MapResult:
     # Component was not found
     NO_MATCH = "9-no-match"
 
-    def __init__(self, component: Component = None):
+    def __init__(self, component: Optional[Component] = None) -> None:
         self.component = component
         self.result = MapResult.NO_MATCH
         self._component_id = None
         self._release_id = None
-        self.releases = []
+        self.releases: List[Any] = []
 
     @property
     def component_id(self):

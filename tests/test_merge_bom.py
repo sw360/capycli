@@ -196,14 +196,14 @@ class TestMergeBom(TestBase):
         self.assertEqual(2, len(bom.components))
         self.assertEqual("certifi", bom.components[0].name)
         self.assertEqual("2022.12.7", bom.components[0].version)
-        self.assertEqual("pkg:pypi/certifi@2022.12.7", bom.components[0].purl)
+        self.assertEqual("pkg:pypi/certifi@2022.12.7", bom.components[0].purl.to_string())
         self.assertEqual(6, len(bom.components[0].external_references))
         self.assertEqual(1, len(bom.components[0].properties))
 
         self.assertEqual(2, len(bom.components))
         self.assertEqual("certifi", bom.components[1].name)
         self.assertEqual("2022.12.999", bom.components[1].version)
-        self.assertEqual("pkg:pypi/certifi@2022.12.999", bom.components[1].purl)
+        self.assertEqual("pkg:pypi/certifi@2022.12.999", bom.components[1].purl.to_string())
         self.assertEqual(6, len(bom.components[1].external_references))
         self.assertEqual(1, len(bom.components[1].properties))
 

@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any, Dict
 
 from cyclonedx.model.component import Component
 
@@ -23,7 +24,7 @@ class TestGetDependenciesJavascript(TestBase):
     OUTPUTFILE1 = "output.json"
 
     def create_package_lock_1(self, filename: str):
-        pl = {}
+        pl: Dict[str, Any] = {}
         pl["name"] = "APP"
         pl["version"] = "0.0.1"
         pl["lockfileVersion"] = 1
@@ -31,7 +32,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         dependencies = {}
 
-        dep1 = {}
+        dep1: Dict[str, Any] = {}
         dep1["version"] = "1.0.0"
         dep1["resolved"] = "artifactory/api/npm/npm-all/@agm/core/-/core-1.0.0.tgz"
         dep1["integrity"] = "sha1-sqd9GPv/4EzVyQzy6tQaVmP4mGI="
@@ -39,7 +40,7 @@ class TestGetDependenciesJavascript(TestBase):
         dep1["dev"] = "true"
         dependencies["@agm/core"] = dep1
 
-        dep2 = {}
+        dep2: Dict[str, Any] = {}
         dep2["version"] = "0.10.3"
         dep2["resolved"] = "artifactory/api/npm/npm-all/zone.js/-/zone.js-0.10.3.tgz"
         dep2["integrity"] = "sha1-Pl5NoDxgfJ3NkuN901aHoUoUDBY="
@@ -177,8 +178,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.assertEqual("tslib", sbom.components[4].name)
         self.assertEqual("2.3.1", sbom.components[4].version)
-        val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[4])
-        print(val)
+        val = str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[4]))
         self.assertEqual("https://github.com/Microsoft/tslib/archive/refs/tags/2.3.1.zip", val)
 
         self.delete_file(self.OUTPUTFILE1)

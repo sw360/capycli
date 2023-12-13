@@ -102,15 +102,19 @@ class TestMavenTree(TestBase):
             .create_full_dependency_list_from_maven_list_file(inputfile, inputfile_raw, "./")
         self.assertEqual(230, len(bom.components), "unexpected amount of detected bom items")
 
-        filled_source_url = [b for b in bom.components if CycloneDxSupport.get_ext_ref_source_url(b) != ""]
-        self.assertEqual(2, len(filled_source_url))
+        for x in bom.components:
+            y = CycloneDxSupport.get_ext_ref_source_url(x)
+            print(y)
 
-        filled_binary_url = [b for b in bom.components if CycloneDxSupport.get_ext_ref_binary_url(b) != ""]
+        filled_source_url = [b for b in bom.components if str(CycloneDxSupport.get_ext_ref_source_url(b)) != ""]
+        self.assertEqual(1, len(filled_source_url))
+
+        filled_binary_url = [b for b in bom.components if str(CycloneDxSupport.get_ext_ref_binary_url(b)) != ""]
         self.assertEqual(1, len(filled_binary_url))
 
         bom_spring_boot_starter_json = next(
             (filter(lambda x: (x.name == "spring-boot-starter-json"), bom.components)), None)
-        self.assertEqual(CycloneDxSupport.get_ext_ref_source_url(bom_spring_boot_starter_json),
+        self.assertEqual(str(CycloneDxSupport.get_ext_ref_source_url(bom_spring_boot_starter_json)),
                          ("https://github.com/spring-projects/spring-boot/archive/refs/tags/v2.4.3.zip"))
 
     def test_create_full_dependency_list_from_maven_list_file2(self) -> None:

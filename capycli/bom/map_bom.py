@@ -13,11 +13,12 @@ import pathlib
 import re
 import sys
 from enum import Enum
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
-from cyclonedx.model import ExternalReference, ExternalReferenceType
+from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
 
 import capycli.common.file_support
 import capycli.common.script_base
@@ -48,12 +49,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
     Map a given SBOM to data on SW360
     """
     def __init__(self) -> None:
-        self.releases = None
+        self.releases: List[Dict[str, Any]] = []
         self.old_releases = None
         self.verbosity = 1
         self.relaxed_debian_parsing = False
         self.mode = MapMode.ALL
-        self.purl_service: PurlService = None
+        self.purl_service: Optional[PurlService] = None
         self.no_match_by_name_only = True
 
     def is_id_match(self, release, component: Component) -> bool:
@@ -61,7 +62,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         if not component.purl:
             return False
 
-        cmp = component.purl.lower()
+        cmp = component.purl.to_string().lower()
         if "ExternalIds" in release:
             extid_list = release["ExternalIds"]
         else:
@@ -73,7 +74,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def filter_exceptions(self, partsBomItem: list) -> None:
+    def filter_exceptions(self, partsBomItem: List[str]) -> List[str]:
         """Filter some parts that appear too often in too many component names"""
         if ("cordova" in partsBomItem) and ("plugin" in partsBomItem):
             partsBomItem.remove("cordova")
@@ -81,7 +82,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return partsBomItem
 
-    def similar_name_match(self, component: Component, release: dict) -> bool:
+    def similar_name_match(self, component: Component, release: Dict[str, Any]) -> bool:
         """Determine whether there is a relase with a similar name. Similar means
         a combination of name words..."""
         SIMILARITY_THRESHOLD = 2
@@ -200,7 +201,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     name_match = component.name.lower() == release["Name"].lower()
                 version_exists = "Version" in release
                 if (name_match
-                    and version_exists
+                    and version_exists and component.version
                         and (component.version.lower() == release["Version"].lower())):
                     if self.is_better_match(
                         result.releases,
@@ -262,7 +263,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     break
 
             # fourth check: source filename
-            cmp_src_file = CycloneDxSupport.get_ext_ref_source_file(component)
+            cmp_src_file = str(CycloneDxSupport.get_ext_ref_source_file(component))
             if (("SourceFile" in release)
                 and cmp_src_file
                     and release["SourceFile"]):
@@ -357,7 +358,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 return result
             components = [
                 compref["_links"]["self"]["href"]
-                for compref in components["_embedded"]["sw360:components"]
+                for compref in components.get("_embedded", {}).get("sw360:components", [])  # type: ignore
                 if compref["name"].lower() == component.name.lower()
             ]
 
@@ -370,7 +371,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
             # Sorted alternatives in descending version order
             # Please note: the release list sometimes contain just the href but no version
-            rel_list = sorted(rel_list, key=lambda x: "version" in x and ComparableVersion(x['version']), reverse=True)
+            rel_list = sorted(rel_list,
+                              key=lambda x: "version" in x and ComparableVersion(
+                                  x.get("version", "")), reverse=True)  # type: ignore
             for relref in rel_list:
                 href = relref["_links"]["self"]["href"]
                 real_release = self.client.get_release_by_url(href)
@@ -409,7 +412,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 # again as we checked it when compiling component list)
                 version_exists = "Version" in release
                 if (version_exists
-                        and (component.version.lower() == release["Version"].lower())):
+                        and ((component.version or "").lower() == release.get("Version", "").lower())):
                     if self.is_better_match(
                         result.releases,
                             MapResult.FULL_MATCH_BY_NAME_AND_VERSION):
@@ -519,8 +522,11 @@ class MapBom(capycli.common.script_base.ScriptBase):
         # retrieve missing types later
         purl_types = set()
         for component in sbom.components:
-            if component.purl and len(component.purl) > 8 and component.purl.startswith("pkg:"):
-                purl_types.add(component.purl[4:7])
+
+            if component.purl:
+                p = component.purl.to_string()
+                if len(p) > 8 and p.startswith("pkg:"):
+                    purl_types.add(p[4:7])
         self.external_id_svc.build_purl_cache(purl_types, self.verbosity <= 1)
 
         mapresult: list[MapResult] = []
@@ -550,13 +556,17 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
     def create_overview(self, result: List[MapResult]) -> Dict[str, Any]:
         """Create JSON data with an mapping result overview"""
-        data = {}
-        dataitems = []
+        data: Dict[str, Any] = {}
+        dataitems: List[Dict[str, Any]] = []
         overall_result = "COMPLETE"
         count = 0
         for item in result:
-            dataitem = {}
-            dataitem["BomItem"] = item.component.name + ", " + item.component.version
+            if not item:
+                continue
+
+            dataitem: Dict[str, Any] = {}
+            if item.component:
+                dataitem["BomItem"] = item.component.name + ", " + (item.component.version or "")
             dataitem["ResultCode"] = item.result
             dataitem["ResultText"] = item.map_code_to_string(item.result)
             dataitems.append(dataitem)
@@ -592,7 +602,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return purl
 
-    def update_bom_item(self, component: Component, match: dict) -> Component:
+    def update_bom_item(self, component: Optional[Component], match: dict) -> Component:
         """Update the (current) SBOM item with values from the match"""
 
         # print(match.get("Name", "???"), match.get("Version", "???"), "purl =", match.get("RepositoryId", "XXX"))
@@ -604,7 +614,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 component = Component(
                     name=match.get("Name", ""),
                     version=match.get("Version", ""),
-                    purl=purl,
+                    purl=PackageURL.from_string(purl),
                     bom_ref=match.get("RepositoryId", ""))
             else:
                 component = Component(
@@ -625,7 +635,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 value_match = None
 
             if value_match:
-                component.purl = value_match
+                component.purl = PackageURL.from_string(value_match)
 
         # update if current is empty
         value_match = match.get("Language", "")
@@ -658,8 +668,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     ExternalReferenceType.DISTRIBUTION,
                     CaPyCliBom.SOURCE_URL_COMMENT,
                     value_match)
-            elif not ext_ref.url:
-                ext_ref.url = value_match
+            elif str(ext_ref.url) == "":
+                ext_ref.url = XsUri(value_match)
 
         value_match = match.get("SourceFile", "")
         if value_match:
@@ -673,8 +683,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     ExternalReferenceType.DISTRIBUTION,
                     CaPyCliBom.SOURCE_FILE_COMMENT,
                     value_match)
-            elif not ext_ref_src_file.url:
-                ext_ref_src_file.url = value_match
+            elif str(ext_ref_src_file.url) == "":
+                ext_ref_src_file.url = XsUri(value_match)
 
         value_match = match.get("BinaryFile", "")
         if value_match:
@@ -688,8 +698,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     ExternalReferenceType.DISTRIBUTION,
                     CaPyCliBom.BINARY_FILE_COMMENT,
                     value_match)
-            elif not ext_ref_bin_file.url:
-                ext_ref_bin_file.url = value_match
+            elif str(ext_ref_bin_file.url) == "":
+                ext_ref_bin_file.url = XsUri(value_match)
 
         value_match = match.get("ProjectSite", "")
         if value_match:
@@ -698,10 +708,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
             if not ext_ref:
                 ext_ref = ExternalReference(
                     reference_type=ExternalReferenceType.WEBSITE,
-                    url=value_match)
+                    url=XsUri(value_match))
                 component.external_references.add(ext_ref)
-            elif not ext_ref.url:
-                ext_ref.url = value_match
+            elif str(ext_ref.url) == "":
+                ext_ref.url = XsUri(value_match)
 
         # no updates for
         #  * SourceFileHash
@@ -741,15 +751,16 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     continue
 
                 newitem = item.component
-                CycloneDxSupport.update_or_set_property(
-                    newitem,
-                    CycloneDxSupport.CDX_PROP_MAPRESULT,
-                    MapResult.NO_MATCH)
-                if item.component_id is not None:
+                if newitem:
                     CycloneDxSupport.update_or_set_property(
                         newitem,
-                        CycloneDxSupport.CDX_PROP_COMPONENT_ID,
-                        item.component_id)
+                        CycloneDxSupport.CDX_PROP_MAPRESULT,
+                        MapResult.NO_MATCH)
+                    if item.component_id is not None:
+                        CycloneDxSupport.update_or_set_property(
+                            newitem,
+                            CycloneDxSupport.CDX_PROP_COMPONENT_ID,
+                            item.component_id)
                 newbom.components.add(newitem)
 
             # Sorted alternatives in descending version order
@@ -778,7 +789,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         data = []
 
         for item in result:
-            single_result = {}
+            single_result: Dict[str, Any] = {}
             for prop in item.component.properties:
                 if prop.name == CycloneDxSupport.CDX_PROP_MAPRESULT:
                     item.component.properties.remove(prop)
@@ -818,13 +829,16 @@ class MapBom(capycli.common.script_base.ScriptBase):
         :param bomitem: SBOM component
         :return: MapResult instance, (Optional) release url, (Optional) component url
         """
-        if self.relaxed_debian_parsing:
+        if self.relaxed_debian_parsing and component.version:
             component.version = self.cut_off_debian_extras(component.version)
 
         result = capycli.common.map_result.MapResult(component)
 
         # search release and component by purl which is independent of the component cache.
-        component, release = self.external_id_svc.search_component_and_release(component.purl)
+        if type(component.purl) is PackageURL:
+            component, release = self.external_id_svc.search_component_and_release(component.purl.to_string())
+        else:
+            component, release = self.external_id_svc.search_component_and_release(component.purl)  # type: ignore
         if component:
             result.component_id = self.client.get_id_from_href(component)
         if release:

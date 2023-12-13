@@ -7,12 +7,14 @@
 # -------------------------------------------------------------------------------
 
 import html
+from io import TextIOWrapper
 import json
 import os
 import platform
 import sys
+from typing import Any, Dict, List
 
-import cli_support
+from cli_support import LicenseTools, CliFile
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -36,7 +38,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
             self.lineend = "\n"
 
     @staticmethod
-    def element_has_not_readme_tag(element: object) -> bool:
+    def element_has_not_readme_tag(element: Any) -> bool:
         """Determines whether the specified item has a
         'not for Readme_OSS' tag."""
         if len(element.tags) == 0:
@@ -44,7 +46,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         tags = element.tags[0].split(",")
         for tag in tags:
-            if tag.upper() == cli_support.LicenseTools.NOT_README_TAG:
+            if tag.upper() == LicenseTools.NOT_README_TAG:
                 return True
 
         return False
@@ -66,7 +68,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
             + self.lineend)
         htmlfile.write('<html xmlns="http://www.w3.org/1999/xhtml">' + self.lineend)
 
-    def write_header(self, htmlfile) -> None:
+    def write_header(self, htmlfile: TextIOWrapper) -> None:
         """Writes the header tags."""
         htmlfile.write("<head>" + self.lineend)
         htmlfile.write(
@@ -136,15 +138,15 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         htmlfile.write("</title>" + self.lineend)
         htmlfile.write("</head>" + self.lineend)
 
-    def start_body(self, htmlfile) -> None:
+    def start_body(self, htmlfile: TextIOWrapper) -> None:
         """Write the start body tag."""
         htmlfile.write("<body>" + self.lineend)
 
-    def write_title_heading(self, htmlfile, title: str) -> None:
+    def write_title_heading(self, htmlfile: TextIOWrapper, title: str) -> None:
         """Write the title."""
         htmlfile.write("<h1>" + title + "</h1>" + self.lineend)
 
-    def write_preamble(self, config: dict, htmlfile) -> None:
+    def write_preamble(self, config: dict, htmlfile: TextIOWrapper) -> None:
         """Writes the legal preamble."""
         company = config.get("CompanyName", "YOUR COMPANY")
         htmlfile.write("<h2>Open Source Software</h2>" + self.lineend)
@@ -272,14 +274,14 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         result = name.replace(" ", "_")
         return result
 
-    def write_sub_project_info(self, htmlfile, cli_files) -> None:
+    def write_sub_project_info(self, htmlfile: TextIOWrapper, cli_files) -> None:
         """Writes the sub project information."""
 
         # NOT YET IMPLEMENTED
 
         pass
 
-    def write_release_info(self, htmlfile, cli_files) -> None:
+    def write_release_info(self, htmlfile: TextIOWrapper, cli_files) -> None:
         """Writes the release information."""
         htmlfile.write("<p>" + self.lineend)
         htmlfile.write("<strong>" + self.lineend)
@@ -301,14 +303,14 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         htmlfile.write("</ul>" + self.lineend)
 
-    def write_single_sub_project_info(self, htmlfile) -> None:
+    def write_single_sub_project_info(self, htmlfile: TextIOWrapper) -> None:
         """Writes the single sub-project information."""
 
         # NOT YET IMPLEMENTED
 
         pass
 
-    def write_single_release_info(self, htmlfile, clifile) -> None:
+    def write_single_release_info(self, htmlfile: TextIOWrapper, clifile) -> None:
         """Writes the single release information."""
         htmlfile.write(
             '<li id="'
@@ -362,7 +364,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         return text
 
-    def write_copyrights(self, htmlfile, clifile) -> None:
+    def write_copyrights(self, htmlfile: TextIOWrapper, clifile) -> None:
         """Writes the copyrights."""
         if len(clifile.copyrights) < 1:
             return
@@ -384,7 +386,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def write_acknowledgements(self, htmlfile, clifile) -> None:
+    def write_acknowledgements(self, htmlfile: TextIOWrapper, clifile) -> None:
         """Writes the acknowledgements."""
         if not self.release_has_acknowledgements(clifile):
             return
@@ -402,7 +404,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         htmlfile.write("</pre>" + self.lineend)
         htmlfile.write("\n" + self.lineend)
 
-    def write_licenses(self, htmlfile, clifile) -> None:
+    def write_licenses(self, htmlfile: TextIOWrapper, clifile) -> None:
         """Writes the licenses."""
         htmlfile.write(self.lineend)
         htmlfile.write("<b>Licenses:<br /></b>" + self.lineend)
@@ -437,17 +439,17 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         htmlfile.write("</ul>" + self.lineend)
         htmlfile.write(self.lineend)
 
-    def end_body_and_finish(self, htmlfile) -> None:
+    def end_body_and_finish(self, htmlfile: TextIOWrapper) -> None:
         htmlfile.write("</body>" + self.lineend)
         htmlfile.write("</html>" + self.lineend)
 
-    def read_config_file(self, filename: str) -> dict:
+    def read_config_file(self, filename: str) -> Dict[str, Any]:
         with open(filename) as file:
             text = file.read()
             config = json.loads(text)
         return config
 
-    def read_cli_files(self, config: dict) -> list:
+    def read_cli_files(self, config: Dict[str, Any]) -> List[str]:
         """Reads all CLI files"""
         cli_files = []
         unique_components = []
@@ -460,7 +462,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
             filename = file["CliFile"]
             if os.path.isfile(filename):
                 print_text("    Reading", component_name, "...")
-                clifile = cli_support.CLI.CliFile()
+                clifile = CliFile()
                 try:
                     clifile.read_from_file(filename)
                 except Exception as ex:
@@ -472,7 +474,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
                 cli_files.append(clifile)
             else:
                 print_yellow("    No data available for " + component_name)
-                clifile = cli_support.CLI.CliFile()
+                clifile = CliFile()
                 clifile.component = component_name
                 cli_files.append(clifile)
 
@@ -504,7 +506,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
 
         print()
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

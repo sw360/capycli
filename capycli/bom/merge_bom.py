@@ -8,6 +8,7 @@
 
 import os
 import sys
+from typing import Optional
 
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -72,7 +73,7 @@ class MergeBom(capycli.common.script_base.ScriptBase):
 
         return True
 
-    def find_in_bom(self, bom: Bom, component: Component) -> Component or None:
+    def find_in_bom(self, bom: Bom, component: Component) -> Optional[Component]:
         """Searches for an item with the given name and version in the given SBOM."""
         for c in bom.components:
             if self.are_same(c, component):

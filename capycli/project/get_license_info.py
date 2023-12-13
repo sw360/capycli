@@ -10,6 +10,7 @@ import json
 import logging
 import os
 import sys
+from typing import Any, Dict, List
 
 import sw360
 
@@ -26,10 +27,11 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
     """
     Get license info on all project components.
     """
-    def get_cli_files_for_release(self, release: dict, folder: str, no_overwrite: bool) -> list:
+    def get_cli_files_for_release(self, release: Dict[str, Any],
+                                  folder: str, no_overwrite: bool) -> List[Dict[str, Any]]:
         """Find all CLI file attachments for the given release, download them and return
         a list with the file information."""
-        files = []
+        files: List[Dict[str, Any]] = []
         if "_embedded" not in release:
             return files
 
@@ -69,10 +71,10 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             destination: str,
             no_overwrite: bool,
             use_all_files: bool,
-            config_file: str) -> dict:
+            config_file: str) -> Dict[str, Any]:
         """Downloads all CLI files and generates a configuration file for
         Readme_OSS generation"""
-        rdm_info = {}
+        rdm_info: Dict[str, Any] = {}
 
         try:
             self.project = self.client.get_project(project_id)
@@ -174,7 +176,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
         print()
 
     @classmethod
-    def write_result(cls, result: dict, filename: str, no_overwrite: bool) -> None:
+    def write_result(cls, result: Dict[str, Any], filename: str, no_overwrite: bool) -> None:
         """Write the Readme_OSS configuration to a JSON file"""
         if no_overwrite and os.path.isfile(filename):
             print_text("  Existing file '" + filename + "' will not be overwritten.")

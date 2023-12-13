@@ -131,9 +131,14 @@ class TestCheckGranularity(TestBase):
         self.assertEqual("Angular", sbom.components[0].name)
         self.assertEqual("15.2.6", sbom.components[0].version)
         val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])
-        self.assertEqual("https://github.com/angular/angular", val)
+        self.assertEqual("https://github.com/angular/angular", str(val))
 
         self.assertEqual("certifi", sbom.components[1].name)
         self.assertEqual("2022.12.7", sbom.components[1].version)
 
         self.delete_file(self.OUTPUTFILE1)
+
+
+if __name__ == "__main__":
+    lib = TestCheckGranularity()
+    lib.test_real_bom2()

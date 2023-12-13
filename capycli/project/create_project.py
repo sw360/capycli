@@ -9,7 +9,7 @@
 import logging
 import os
 import sys
-from typing import List
+from typing import Any, Dict, List
 
 import requests
 import sw360
@@ -29,7 +29,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
     Create or update a project on SW360.
     """
 
-    def __init__(self, onlyUpdateProject=False):
+    def __init__(self, onlyUpdateProject: bool = False) -> None:
         self.onlyUpdateProject = onlyUpdateProject
 
     def bom_to_release_list(self, sbom: Bom) -> List[str]:
@@ -40,8 +40,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             rid = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
             if not rid:
                 print_red(
-                    + "No SW360 id given for " + cx_comp.name
-                    + ", " + cx_comp.version)
+                    "No SW360 id given for " + str(cx_comp.name)
+                    + ", " + str(cx_comp.version))
                 continue
 
             linkedReleases.append(rid)
@@ -86,6 +86,9 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     print_red("  Error updating project!")
 
         except sw360.sw360_api.SW360Error as swex:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
             if swex.response.status_code == requests.codes["unauthorized"]:
                 print_red("  You are not authorized!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
@@ -97,7 +100,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         """Update an existing project with the given SBOM and version"""
 
         """Update project metadata based on existing metadata. This will only change the version"""
-        data = {}
+        data: Dict[str, Any] = {}
         data["description"] = project.get("description", "")
         data["businessUnit"] = project.get("businessUnit", "")
         data["tag"] = project.get("tag", "")
@@ -109,8 +112,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         data["version"] = new_version
         data["moderators"] = []
 
-        if project.get("_embedded").get("sw360:moderators"):
-            moderators = project.get("_embedded").get("sw360:moderators")
+        if project.get("_embedded", {}).get("sw360:moderators"):
+            moderators = project.get("_embedded", {}).get("sw360:moderators")
             moderator_emails = []
             for moderator in moderators:
                 moderator_email = moderator.get("email")
@@ -122,7 +125,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
     def bom_to_release_list_new(self, sbom: Bom) -> dict:
         """Creates a list with linked releases for a NEW project"""
-        linkedReleases = {}
+        linkedReleases: Dict[str, Any] = {}
 
         for cx_comp in sbom.components:
             rid = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
@@ -132,7 +135,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     + ", " + cx_comp.version)
                 continue
 
-            linkedRelease = {}
+            linkedRelease: Dict[str, Any] = {}
             linkedRelease["mainlineState"] = "SPECIFIC"
             linkedRelease["releaseRelation"] = "DYNAMICALLY_LINKED"
             linkedRelease["setMainlineState"] = True
@@ -203,13 +206,16 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 print("  Project created: " + self.project_id)
 
         except sw360.sw360_api.SW360Error as swex:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
             if swex.response.status_code == requests.codes["unauthorized"]:
                 print_red("  You are not authorized!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
             elif swex.response.status_code == requests.codes["forbidden"]:
                 print_red("  You are not authorized - do you have a valid write token?")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
-            else:
+            elif swex.details:
                 print_red(
                     str(swex.details.get("status", "")) + " " +
                     swex.details.get("error", "Error") + ": " +

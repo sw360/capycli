@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import datetime
+from typing import Any
 
 from colorama import Fore, Style
 
@@ -21,7 +22,7 @@ def _get_debug_prefix() -> str:
     return prefix
 
 
-def print_red(*args, **kwargs) -> None:
+def print_red(*args: Any, **kwargs: Any) -> None:
     """Print the given text in red color."""
     if capycli.is_debug_logging_enabled():
         print(_get_debug_prefix(), end="")
@@ -30,7 +31,7 @@ def print_red(*args, **kwargs) -> None:
     print(Style.RESET_ALL)
 
 
-def print_yellow(*args, **kwargs) -> None:
+def print_yellow(*args: Any, **kwargs: Any) -> None:
     """Print the given text in red color."""
     if capycli.is_debug_logging_enabled():
         print(_get_debug_prefix(), end="")
@@ -39,7 +40,7 @@ def print_yellow(*args, **kwargs) -> None:
     print(Style.RESET_ALL)
 
 
-def print_green(*args, **kwargs) -> None:
+def print_green(*args: Any, **kwargs: Any) -> None:
     """Print the given text in red color."""
     if capycli.is_debug_logging_enabled():
         print(_get_debug_prefix(), end="")
@@ -48,7 +49,7 @@ def print_green(*args, **kwargs) -> None:
     print(Style.RESET_ALL)
 
 
-def print_text(*args, **kwargs) -> None:
+def print_text(*args: Any, **kwargs: Any) -> None:
     """Print the given text."""
     if capycli.is_debug_logging_enabled():
         print(_get_debug_prefix(), end="")

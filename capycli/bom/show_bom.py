@@ -35,7 +35,7 @@ class ShowBom(capycli.common.script_base.ScriptBase):
 
             if verbose:
                 if bomitem.purl:
-                    print_text("    package-url:" + bomitem.purl)
+                    print_text("    package-url:" + bomitem.purl.to_string())
 
                 sw360id = CycloneDxSupport.get_property_value(bomitem, CycloneDxSupport.CDX_PROP_SW360ID)
                 if sw360id:

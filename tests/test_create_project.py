@@ -11,7 +11,7 @@ import os
 from typing import List
 
 import responses
-import responses.matchers
+import responses.matchers  # type: ignore
 
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_project import CreateProject
@@ -702,8 +702,3 @@ class TestCreateProject(TestBase):
     # test unknown/invalid release id
 
     # test upload attachments
-
-
-if __name__ == '__main__':
-    APP = TestCreateProject()
-    APP.test_project_update_old_version()

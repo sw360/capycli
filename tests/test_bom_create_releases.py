@@ -8,12 +8,11 @@
 
 """unit tests for bom/create_components.py in createreleases mode"""
 
-import unittest
-
 import responses
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
 
 import capycli.bom.create_components
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -392,7 +391,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         item = Component(
             name="activemodel",
             version="5.2.1",
-            purl="pkg:deb/debian/activemodel@5.2.1?arch=source"
+            purl=PackageURL.from_string("pkg:deb/debian/activemodel@5.2.1?arch=source")
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         self.app.create_component_and_release(item)
@@ -413,7 +412,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         item = Component(
             name="activemodel",
             version="5.2.1",
-            purl="pkg:deb/debian/activemodel@5.2.1?arch=source"
+            purl=PackageURL.from_string("pkg:deb/debian/activemodel@5.2.1?arch=source")
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         self.app.create_component_and_release(item)
@@ -445,7 +444,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         item = Component(
             name="activemodel",
             version="5.2.1",
-            purl="pkg:deb/debian/activemodel@5.2.1?arch=source"
+            purl=PackageURL.from_string("pkg:deb/debian/activemodel@5.2.1?arch=source")
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         self.app.update_component(item, "123", component_data)
@@ -881,30 +880,30 @@ class CapycliTestBomCreate(CapycliTestBase):
         # existing Id same as new Id
         item = Component(
             name="",
-            purl="pkg:deb/debian/bash@1.0%7E1"
+            purl=PackageURL.from_string("pkg:deb/debian/bash@1.0%7E1")
         )
         self.app.update_release(item, release_data)
         captured = self.capsys.readouterr()
         assert "differs from BOM id" not in captured.out
 
-        item.purl = "pkg:deb/debian/bash@1.0~1"
+        item.purl = PackageURL.from_string("pkg:deb/debian/bash@1.0~1")
         self.app.update_release(item, release_data)
         captured = self.capsys.readouterr()
         assert "differs from BOM id" not in captured.out
 
         # existing Id differs from new Id -> only warn
-        item.purl = "pkg:deb/debian/bash@2.0"
+        item.purl = PackageURL.from_string("pkg:deb/debian/bash@2.0")
         self.app.update_release(item, release_data)
         captured = self.capsys.readouterr()
         assert "differs from BOM id" in captured.out
-        assert item.purl == "pkg:deb/debian/bash@2.0"
+        assert item.purl.to_string() == "pkg:deb/debian/bash@2.0"
 
         # existing Id invalid
         release_data["externalIds"]["package-url"] = "pkg:something"  # invalid purl
         self.app.update_release(item, release_data)
         captured = self.capsys.readouterr()
         assert "differs from BOM id" in captured.out
-        assert item.purl == "pkg:deb/debian/bash@2.0"
+        assert item.purl.to_string() == "pkg:deb/debian/bash@2.0"
 
         # add new Id, no existing ID
         release_data = {
@@ -1102,4 +1101,6 @@ class CapycliTestBomCreate(CapycliTestBase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    APP = CapycliTestBomCreate()
+    APP.setUp()
+    APP.test_create_release_emptySourceFile()

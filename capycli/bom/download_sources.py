@@ -16,7 +16,7 @@ from typing import Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
 from cyclonedx.model.bom import Bom
 
 import capycli.common.json_support
@@ -56,7 +56,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
 
         try:
             response = requests.get(url, allow_redirects=True)
-            filename = self.get_filename_from_cd(response.headers.get('content-disposition'))
+            filename = self.get_filename_from_cd(response.headers.get("content-disposition", ""))
             if not filename:
                 filename = urlparse(url)
                 if filename:
@@ -95,7 +95,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
 
             source_url = CycloneDxSupport.get_ext_ref_source_url(component)
             if source_url:
-                result = self.download_source_file(source_url, source_folder)
+                result = self.download_source_file(source_url._uri, source_folder)
             else:
                 result = None
                 print_red("    No URL specified!")
@@ -114,7 +114,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                     ext_ref = ExternalReference(
                         reference_type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-                        url=path)
+                        url=XsUri(path))
                     new = True
                 else:
                     ext_ref.url = path
@@ -131,13 +131,16 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                 component, ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
             if ext_ref:
                 try:
-                    name = CycloneDxSupport.have_relative_ext_ref_path(ext_ref, bompath)
+                    name = CycloneDxSupport.have_relative_ext_ref_path(ext_ref, bompath.as_posix())
                     CycloneDxSupport.update_or_set_property(
                         component,
                         CycloneDxSupport.CDX_PROP_FILENAME,
                         name)
                 except ValueError:
-                    print_yellow("  SBOM file is not relative to source file " + ext_ref.url)
+                    if type(ext_ref.url) is XsUri:
+                        print_yellow("  SBOM file is not relative to source file " + ext_ref.url._uri)
+                    else:
+                        print_yellow("  SBOM file is not relative to source file " + str(ext_ref.url))
 
     def run(self, args):
         """Main method

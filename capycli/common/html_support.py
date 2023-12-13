@@ -99,7 +99,7 @@ class HtmlSupport:
         """show resulting html file"""
         os.system("output.html")
 
-    def create_style(self):
+    def create_style(self) -> str:
         """Create the HTML style information"""
         lineend = self.get_lineend()
         style = '<style type="text/css">' + lineend

@@ -9,6 +9,7 @@
 """Contains the logic for all of the default options for CaPyCli."""
 
 import os
+from typing import Any, Dict
 
 import tomli
 
@@ -367,7 +368,7 @@ class CommandlineSupport():
             dest="debug", action="store_true",
             help="Enable debug output")
 
-    def read_config(self, filename: str = None, config_string: str = None) -> dict:
+    def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:
         """
         Read configuration from string or config file.
         """
@@ -385,16 +386,18 @@ class CommandlineSupport():
                         toml_dict = tomli.load(f)
 
             if not toml_dict:
-                return None
+                return {}
 
             if "capycli" not in toml_dict:
-                return None
+                return {}
 
             return toml_dict["capycli"]
         except tomli.TOMLDecodeError as tex:
             LOG.warning("Config file has invalid format: " + repr(tex))
         except Exception as ex:
             LOG.warning("Error reading config file: " + repr(ex))
+
+        return {}
 
     def process_commandline(self, argv):
         """Reads the command line arguments"""
