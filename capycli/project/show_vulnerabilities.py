@@ -11,11 +11,11 @@ import sys
 from typing import Any, Dict, Optional
 
 import requests
-import sw360
 from colorama import Fore, Style
 
 import capycli.common.json_support
 import capycli.common.script_base
+import sw360
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 

@@ -12,9 +12,9 @@ import traceback
 from typing import Any, Dict
 
 import requests
-import sw360
 
 import capycli.common.script_base
+import sw360
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 

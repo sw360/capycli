@@ -1,6 +1,5 @@
-from typing import List
 import xml.etree.ElementTree as ET
-
+from typing import List
 
 class CliFileItemBase:
     def __init__(self) -> None:

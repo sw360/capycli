@@ -2,7 +2,6 @@
 
 from typing import Iterator, List, TextIO, Union
 
-
 class Requirement:
     line: str
     editable: bool

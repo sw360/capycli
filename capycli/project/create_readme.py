@@ -7,14 +7,14 @@
 # -------------------------------------------------------------------------------
 
 import html
-from io import TextIOWrapper
 import json
 import os
 import platform
 import sys
+from io import TextIOWrapper
 from typing import Any, Dict, List
 
-from cli_support import LicenseTools, CliFile
+from cli_support import CliFile, LicenseTools
 
 import capycli.common.script_base
 from capycli import get_logger

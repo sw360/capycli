@@ -9,13 +9,13 @@
 import logging
 import sys
 
-import sw360
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
 
 import capycli.common.script_base
+import sw360
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator
 from capycli.common.print import print_red, print_text, print_yellow

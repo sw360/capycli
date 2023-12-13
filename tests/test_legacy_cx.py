@@ -10,7 +10,6 @@ import os
 
 from cyclonedx.model import XsUri
 from cyclonedx.model.bom_ref import BomRef
-
 from sortedcontainers import SortedSet
 
 from capycli.bom.legacy_cx import LegacyCx

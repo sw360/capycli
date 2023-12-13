@@ -12,7 +12,6 @@ import sys
 from typing import Any, Dict, List, Optional
 
 import sw360
-
 from capycli import get_logger
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.common.script_support import ScriptSupport
