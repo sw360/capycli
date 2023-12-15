@@ -59,7 +59,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
     def component_has_not_readme_tag(comp: object) -> bool:
         return CreateReadmeOss.element_has_not_readme_tag(comp)
 
-    def write_start(self, htmlfile) -> None:
+    def write_start(self, htmlfile: TextIOWrapper) -> None:
         """Writes the start tags."""
         htmlfile.write('<?xml version="1.0" encoding="utf - 8" ?>' + self.lineend)
         htmlfile.write(
@@ -238,7 +238,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
             + self.lineend)
         htmlfile.write("<br />" + self.lineend)
 
-    def write_release_overview(self, htmlfile, cli_files: List[CliFile]) -> None:
+    def write_release_overview(self, htmlfile: TextIOWrapper, cli_files: List[CliFile]) -> None:
         """Writes the release overview."""
         htmlfile.write('<h2 id="releaseHeader">Releases</h2>' + self.lineend)
         htmlfile.write('<ul id="releaseOverview">' + self.lineend)

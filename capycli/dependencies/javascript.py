@@ -94,7 +94,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return sbom
 
-    def convert_package_lock(self, package_lock_file: str):
+    def convert_package_lock(self, package_lock_file: str) -> Bom:
         """Read package-lock.json and convert to bill of material"""
         bom = SbomCreator.create([], addlicense=True, addprofile=True, addtools=True)
         with open(package_lock_file) as fin:

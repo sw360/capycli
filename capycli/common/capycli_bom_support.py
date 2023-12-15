@@ -381,7 +381,7 @@ class CycloneDxSupport():
             CycloneDxSupport.set_ext_ref(comp, type, comment, value)
 
     @staticmethod
-    def have_relative_ext_ref_path(ext_ref: ExternalReference, rel_to: str):
+    def have_relative_ext_ref_path(ext_ref: ExternalReference, rel_to: str) -> str:
         if isinstance(ext_ref.url, str):
             bip = pathlib.PurePath(ext_ref.url)
         else:

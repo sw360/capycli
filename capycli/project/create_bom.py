@@ -16,7 +16,7 @@ from cyclonedx.model.component import Component
 from packageurl import PackageURL
 
 import capycli.common.script_base
-import sw360
+from sw360 import SW360Error
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator
 from capycli.common.print import print_red, print_text, print_yellow
@@ -109,7 +109,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                                                      comment, attachment["filename"],
                                                      HashAlgorithm.SHA_1, attachment.get("sha1", ""))
 
-            except sw360.SW360Error as swex:
+            except SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
@@ -131,14 +131,14 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return bom
 
-    def create_project_cdx_bom(self, project_id) -> Bom:
+    def create_project_cdx_bom(self, project_id: str) -> Bom:
         if not self.client:
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         try:
             project = self.client.get_project(project_id)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             print_red("  ERROR: unable to access project:" + repr(swex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
         if not project:
@@ -156,7 +156,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return sbom
 
-    def show_command_help(self):
+    def show_command_help(self) -> None:
         print("\nusage: CaPyCli project createbom [options]")
         print("Options:")
         print("""

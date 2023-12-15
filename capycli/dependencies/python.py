@@ -151,7 +151,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         """
         return PackageURL("pypi", '', name, version, '', '').to_string()
 
-    def add_meta_data_to_bomitem(self, cxcomp: Component, package_source: str = ""):
+    def add_meta_data_to_bomitem(self, cxcomp: Component, package_source: str = "") -> None:
         """
         Try to lookup meta data for the given item.
 

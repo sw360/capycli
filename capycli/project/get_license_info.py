@@ -13,7 +13,7 @@ import sys
 from typing import Any, Dict, List
 
 import capycli.common.script_base
-import sw360
+from sw360 import SW360Error
 from capycli.common.json_support import load_json_file
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.common.script_support import ScriptSupport
@@ -87,7 +87,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
 
         try:
             self.project = self.client.get_project(project_id)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             print_red("  ERROR: unable to access project: " + repr(swex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 

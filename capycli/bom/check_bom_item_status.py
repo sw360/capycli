@@ -17,7 +17,7 @@ from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 
 import capycli.common.script_base
-import sw360.sw360_api
+from sw360 import SW360Error
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_red, print_text
 from capycli.main.result_codes import ResultCode
@@ -48,7 +48,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
         try:
             release_details = self.client.get_release(sw360id)
             return release_details
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             if swex.response is None:
                 print_red("  Unknown error: " + swex.message)
             elif swex.response.status_code == requests.codes['not_found']:
@@ -83,7 +83,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                     return self.client.get_release_by_url(r["_links"]["self"]["href"])
 
             return None
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             if swex.response is None:
                 print_red("  Unknown error: " + swex.message)
             elif swex.response.status_code == requests.codes['not_found']:

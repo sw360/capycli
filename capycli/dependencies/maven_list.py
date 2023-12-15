@@ -11,7 +11,7 @@ import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import requests
 from cyclonedx.model import ExternalReference, ExternalReferenceType, Property, XsUri
@@ -35,7 +35,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
     def add_urls(
             self, cx_comp: Component,
             parsed_sources: List[str], parsed_binaries: List[str],
-            source_files: List[str], binary_files: List[str], files_directory: str):
+            source_files: List[str], binary_files: List[str], files_directory: str) -> None:
         """
         Adds URLs to corresponding bom item. This is done by checking if a dependency
         with the corresponding naming exists inside the list of parsed URLs and also
@@ -110,7 +110,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         return parsed_urls
 
-    def find_package_info(self, binary_file_url: str):
+    def find_package_info(self, binary_file_url: str) -> Optional[ET.Element]:
         """
         Downloads a pom file and returns the parsed content
         :param  binary_file_url: a binary file url
@@ -130,7 +130,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         return None
 
-    def try_find_metadata(self, cx_comp: Component):
+    def try_find_metadata(self, cx_comp: Component) -> None:
         """
         Extract information from pom file and add it to bom
         :param bomitem: item of a bom which represents a single package
@@ -152,22 +152,23 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
             namespaces = {"pom": "http://maven.apache.org/POM/4.0.0"}
             project_url = info.find("./pom:url", namespaces)
-            if project_url is not None:
+            if project_url is not None and project_url.text:
                 CycloneDxSupport.update_or_set_ext_ref(
                     cx_comp, ExternalReferenceType.WEBSITE, "", project_url.text)
             scm_url = info.find("./pom:scm/pom:url", namespaces)
             if scm_url is not None:
                 url = scm_url.text
-                CycloneDxSupport.update_or_set_ext_ref(
-                    cx_comp, ExternalReferenceType.VCS, "", url)
-                if "github.com" in url:
-                    if not str(url).startswith("http"):
-                        url = "https://" + url
-                    # bomitem["SourceUrl"] = url
-                    src_file_url = self.find_source_file(url, cx_comp.name, version)
+                if url:
                     CycloneDxSupport.update_or_set_ext_ref(
-                        cx_comp, ExternalReferenceType.DISTRIBUTION,
-                        CaPyCliBom.SOURCE_URL_COMMENT, src_file_url)
+                        cx_comp, ExternalReferenceType.VCS, "", url)
+                    if "github.com" in url:
+                        if not str(url).startswith("http"):
+                            url = "https://" + url
+                        # bomitem["SourceUrl"] = url
+                        src_file_url = self.find_source_file(url, cx_comp.name, version)
+                        CycloneDxSupport.update_or_set_ext_ref(
+                            cx_comp, ExternalReferenceType.DISTRIBUTION,
+                            CaPyCliBom.SOURCE_URL_COMMENT, src_file_url)
 
                     print(src_file_url)
             description = info.find("./pom:description", namespaces)
@@ -273,7 +274,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         return sbom
 
-    def create_bom_item(self, x) -> Component:
+    def create_bom_item(self, x: List[str]) -> Component:
         """
         Create a CycloneDX BOM item.
         """

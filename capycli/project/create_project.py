@@ -15,7 +15,7 @@ import requests
 from cyclonedx.model.bom import Bom
 
 import capycli.common.script_base
-import sw360
+from sw360 import SW360Error
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_red, print_text, print_yellow
@@ -89,7 +89,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 if not result2:
                     print_red("  Error updating project!")
 
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             if swex.response is None:
                 print_red("  Unknown error: " + swex.message)
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
@@ -218,7 +218,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 self.project_id = str(result['_links']['self']['href']).split('/')[-1]
                 print("  Project created: " + self.project_id)
 
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             if swex.response is None:
                 print_red("  Unknown error: " + swex.message)
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
@@ -340,12 +340,12 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print("Updating project...")
             try:
                 project = self.client.get_project(self.project_id)
-            except sw360.SW360Error as swex:
+            except SW360Error as swex:
                 print_red("  ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
             self.update_project(self.project_id, project, sbom, info)
-            if is_update_version:
+            if is_update_version and project:
                 self.update_project_version(self.project_id, project, args.version)
         else:
             if self.onlyUpdateProject:

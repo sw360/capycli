@@ -72,7 +72,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         return id_dict
 
-    def check_checkStatus(self, source_info: Dict[str, Any]):
+    def check_checkStatus(self, source_info: Dict[str, Any]) -> None:
         if not self.client:
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
@@ -98,7 +98,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def check_project_prerequisites(self, id: str, sbom: Bom):
+    def check_project_prerequisites(self, id: str, sbom: Bom) -> None:
         if not self.client:
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)

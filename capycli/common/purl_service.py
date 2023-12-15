@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 import packageurl
 
@@ -164,7 +164,7 @@ class PurlService:
         # no match in purl cache
         return None
 
-    def search_component_and_release(self, ext_id_value: str):
+    def search_component_and_release(self, ext_id_value: str) -> Tuple[str, str]:
         """
         Get SW360 component and release at once by external id
         :param ext_id_value: external id

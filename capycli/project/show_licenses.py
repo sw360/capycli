@@ -32,7 +32,7 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
         self.global_license_list: List[str] = []
 
     @classmethod
-    def ensure_dir(cls, folder_path: str):
+    def ensure_dir(cls, folder_path: str) -> None:
         """Ensures that the given path exists"""
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)

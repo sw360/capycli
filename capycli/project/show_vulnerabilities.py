@@ -15,7 +15,7 @@ from colorama import Fore, Style
 
 import capycli.common.json_support
 import capycli.common.script_base
-import sw360
+from sw360 import SW360Error
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -69,7 +69,7 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
                 sys.exit(ResultCode.RESULT_PROJECT_NOT_FOUND)
 
             return self.display_project(project)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             if swex.response is None:
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 

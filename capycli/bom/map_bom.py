@@ -13,7 +13,7 @@ import pathlib
 import re
 import sys
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
@@ -834,7 +834,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             cachefile, True, token, oauth2=oauth2, url=sw360_url)
         return rel_data
 
-    def map_bom_commons(self, component: Component):
+    def map_bom_commons(self, component: Component) -> Tuple[MapResult, str, str]:
         """
         Common parts to map from a SBOM component to the SW360 component/release.
         :param bomitem: SBOM component
@@ -851,15 +851,17 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         # search release and component by purl which is independent of the component cache.
         if type(component.purl) is PackageURL:
-            component, release = self.external_id_svc.search_component_and_release(component.purl.to_string())
+            component_href, release_href = self.external_id_svc.search_component_and_release(
+                component.purl.to_string())
         else:
-            component, release = self.external_id_svc.search_component_and_release(component.purl)  # type: ignore
-        if component:
-            result.component_id = self.client.get_id_from_href(component)
-        if release:
-            result.release_id = self.client.get_id_from_href(release)
+            component_href, release_href = self.external_id_svc.search_component_and_release(
+                component.purl)  # type: ignore
+        if component_href:
+            result.component_id = self.client.get_id_from_href(component_href)
+        if release_href:
+            result.release_id = self.client.get_id_from_href(release_href)
 
-        return result, release, component
+        return result, release_href, component_href
 
     @property
     def external_id_svc(self) -> PurlService:

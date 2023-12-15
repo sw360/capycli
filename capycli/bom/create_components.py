@@ -22,7 +22,7 @@ from cyclonedx.model.component import Component
 
 import capycli.common.json_support
 import capycli.common.script_base
-import sw360.sw360_api
+from sw360 import SW360Error
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.common.purl_utils import PurlUtils
@@ -73,7 +73,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         try:
             self.client.upload_release_attachment(
                 release_id, sourcefile, upload_type=filetype, upload_comment=comment)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             errortext = "    Error uploading source file: " + self.get_error_message(swex)
             print(Fore.LIGHTRED_EX + errortext + Style.RESET_ALL)
 
@@ -259,7 +259,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             release_new = self.client.create_new_release(
                 cx_comp.name, cx_comp.version or "",
                 component_id, release_details=data)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             errortext = "    Error creating component: " + self.get_error_message(swex)
             print_red(errortext)
             sys.exit(ResultCode.RESULT_ERROR_CREATING_COMPONENT)
@@ -486,7 +486,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                 component_details=data)
             print_yellow("    Component created")
             return component_new
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             errortext = "    Error creating component: " + self.get_error_message(swex)
             print_red(errortext)
             sys.exit(ResultCode.RESULT_ERROR_CREATING_COMPONENT)
@@ -583,7 +583,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                 print_text("    Release created")
 
             self.update_release(cx_comp, release)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             errortext = "    Error creating release: " + self.get_error_message(swex)
             print_red(errortext)
             sys.exit(ResultCode.RESULT_ERROR_CREATING_RELEASE)
