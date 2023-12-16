@@ -363,6 +363,22 @@ class CommandlineSupport():
             dest="outputformat",
             help="Specify output file format")
 
+        # used by bom Granularity
+        self.parser.add_argument(
+            "-rg",
+            "--remote-granularity",
+            dest="remote_granularity_list",
+            help="read the granularity list file from the download URL specified"
+        )
+
+        # used by bom Granularity
+        self.parser.add_argument(
+            "-lg",
+            "--local-granularity",
+            dest="local_granularity_list",
+            help="read the granularity list file from local"
+        )
+
         self.parser.add_argument(
             "-X",
             dest="debug", action="store_true",

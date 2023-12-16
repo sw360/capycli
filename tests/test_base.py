@@ -61,6 +61,8 @@ class AppArguments():
         self.force_exit = ""
         self.inputformat = ""
         self.outputformat = ""
+        self.remote_granularity_list = None
+        self.local_granularity_list = None
 
 
 class TestBasePytest:
