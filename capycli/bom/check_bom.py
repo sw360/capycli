@@ -11,12 +11,12 @@ import os
 import sys
 
 import requests
-import sw360.sw360_api
 from colorama import Fore, Style
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 
 import capycli.common.script_base
+import sw360.sw360_api
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode

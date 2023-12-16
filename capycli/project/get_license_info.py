@@ -11,9 +11,8 @@ import logging
 import os
 import sys
 
-import sw360
-
 import capycli.common.script_base
+import sw360
 from capycli.common.json_support import load_json_file
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.common.script_support import ScriptSupport

@@ -238,7 +238,6 @@ class TestBomDownloadsources(TestBase):
 
         self.assertTrue(False, "Error: we must never arrive here")
 
-
     @responses.activate
     def test_simple_bom_no_url(self) -> None:
         sut = BomDownloadSources()
@@ -255,7 +254,8 @@ class TestBomDownloadsources(TestBase):
             )
 
             try:
-                bom = CaPyCliBom.read_sbom(os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE))
+                bom = CaPyCliBom.read_sbom(os.path.join(os.path.dirname(__file__), "fixtures",
+                                                        TestBomDownloadsources.INPUTFILE))
                 bom.components.add(Component(name="foo", version="1.2.3"))
                 sut.download_sources(bom, tmpdirname)
                 resultfile = os.path.join(tmpdirname, "certifi-2022.12.7.tar.gz")

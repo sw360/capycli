@@ -7,13 +7,14 @@
 # -------------------------------------------------------------------------------
 
 import os
+from unittest.mock import mock_open, patch
+
 import responses
 
 from capycli.bom.check_granularity import CheckGranularity
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
-from unittest.mock import patch, mock_open
 
 
 class TestCheckGranularity(TestBase):

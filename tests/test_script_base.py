@@ -9,10 +9,10 @@
 import os
 
 import responses
-from sw360.sw360error import SW360Error
 
 from capycli.common.script_base import ScriptBase
 from capycli.main.result_codes import ResultCode
+from sw360.sw360error import SW360Error
 from tests.test_base import TestBase
 
 
