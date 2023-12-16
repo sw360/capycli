@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "capycli"
-version = "2.0.1"
+version = "2.1.0"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 authors = ["Thomas Graf <thomas.graf@siemens.com>"]
 license = "MIT"
@@ -68,5 +68,5 @@ build-backend = "poetry.masonry.api"
 [tool.pytest.ini_options]
 filterwarnings = [
     # note the use of single quote below to denote "raw" strings in TOML
-    'ignore:pkg_resources is deprecated as an API',
+    'ignore:pkg_resources is deprecated as an API:DeprecationWarning'
 ]

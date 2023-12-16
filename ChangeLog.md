@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.1.0 (2023-12-16)
 
 * Be more resilient about missing metadata in CycloneDX SBOMs.
 * The `-o` parameter of the command `project GetLicenseInfo` is now optional.
