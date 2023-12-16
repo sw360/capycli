@@ -157,6 +157,8 @@ component_name;replacement_name;comment;source_url
             self.assertEqual(check_granularity.granularity_list[0].component, '@angular/animations/browser')
             self.assertEqual(check_granularity.granularity_list[0].source_url, 'https://github.com/angular/angular')
 
+        self.delete_file("granularity_list.csv")
+
     @responses.activate
     def test_read_granularity_list_download(self):
         check_granularity = CheckGranularity()
