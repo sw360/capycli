@@ -15,6 +15,7 @@ import os
 import sys
 from typing import List, Optional
 
+import requests
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -47,17 +48,42 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
     def __init__(self):
         self.granularity_list = []
 
-    def read_granularity_list(self) -> None:
+    @staticmethod
+    def get_granularity_list(download_url):
+        '''This will only download granularity file from a public repository.
+        Make sure to give the raw version of the granularity file seperated by ;'''
+        response = requests.get(download_url)
+        response.raise_for_status()
+        with open('granularity_list.csv', 'wb') as f1:
+            f1.write(response.content)
+
+    def read_granularity_list(self, download_url=None, local_read_granularity=None) -> None:
         """Reads the granularity list from file."""
         self.granularity_list = []
-
-        # read CSV from data resource
-        # depending on the Python version we need different ways for this
-        if sys.version_info >= (3, 9):
-            resources = pkg_resources.files("capycli.data")
-            text_list = (resources / "granularity_list.csv").read_text()
-        else:
-            text_list = pkg_resources.read_text("capycli.data", "granularity_list.csv")
+        text_list = ""
+        if local_read_granularity:
+            try:
+                with open('granularity_list.csv', 'r') as f1:
+                    text_list = f1.read()
+            except FileNotFoundError as e:
+                print(f"File not found: {e} \n Reading the default granularity list")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+        if download_url:
+            try:
+                CheckGranularity.get_granularity_list(download_url)
+                with open('granularity_list.csv', 'r') as f1:
+                    text_list = f1.read()
+            except FileNotFoundError as e:
+                print(f"File not found: {e} \n Reading the default granularity list")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+        if not text_list:
+            if sys.version_info >= (3, 9):
+                resources = pkg_resources.files("capycli.data")
+                text_list = (resources / "granularity_list.csv").read_text()
+            else:
+                text_list = pkg_resources.read_text("capycli.data", "granularity_list.csv")
 
         for line in text_list.splitlines():
             # ignore header (first) line
@@ -205,6 +231,8 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
             print("    -i INPUTFILE          SBOM file to read from (JSON)")
             print("    -o OUTPUTFILE         write updated to this file (optinal)")
             print("    -v                    be verbose")
+            print("    -rg                   read the granularity list file from the URL specified")
+            print("    -lg                   read the granularity list file from local")
             return
 
         if not args.inputfile:
@@ -217,7 +245,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
 
         print_text("Reading granularity data from granularity_list.csv...")
         try:
-            self.read_granularity_list()
+            self.read_granularity_list(args.remote_granularity_list, args.local_granularity_list)
         except Exception as ex:
             print_red("Error reading granularity data: " + repr(ex))
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)

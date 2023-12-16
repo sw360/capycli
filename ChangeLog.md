@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.1.0 (2023-12-16)
 
 * Be more resilient about missing metadata in CycloneDX SBOMs.
 * The `-o` parameter of the command `project GetLicenseInfo` is now optional.
@@ -14,6 +14,9 @@
   If multiple purls are found, a warning is printed asking user to manually edit SBOM.
 * `project createbom` adds SW360 source and binary attachments as external reference to SBOM.
 * `project createbom` adds SW360 project name, version and description to SBOM.
+* `bom granularity` can now read custom granularity data from local files and remote URLs.
+* update dependencies, unfortunately vcrpy does not support urllib3 >= 2 and new vcrpy version
+  result in unit test issues.
 
 ## 2.0.0 (2023-06-02)
 

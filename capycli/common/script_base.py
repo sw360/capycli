@@ -20,6 +20,7 @@ import jwt
 import requests
 from cyclonedx.model.bom import Bom
 
+import sw360.sw360_api
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 from sw360 import SW360, SW360Error

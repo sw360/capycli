@@ -7,6 +7,9 @@
 # -------------------------------------------------------------------------------
 
 import os
+from unittest.mock import mock_open, patch
+
+import responses
 
 from capycli.bom.check_granularity import CheckGranularity
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -138,7 +141,48 @@ class TestCheckGranularity(TestBase):
 
         self.delete_file(self.OUTPUTFILE1)
 
+    @responses.activate
+    def test_read_granularity_list_local(self):
+        check_granularity = CheckGranularity()
+        read_data = '''
+component_name;replacement_name;comment;source_url
 
-if __name__ == "__main__":
-    lib = TestCheckGranularity()
-    lib.test_real_bom2()
+@angular/animations/browser;Angular;;https://github.com/angular/angular
+        '''
+        # with patch('builtins.open', new_callable=mock_open(read_data=read_data)) as mock_file:
+        with patch("builtins.open", mock_open(read_data=read_data)) as mock_file:
+
+            check_granularity.read_granularity_list(local_read_granularity=True)
+            mock_file.assert_called_once_with('granularity_list.csv', 'r')
+            self.assertEqual(check_granularity.granularity_list[0].component, '@angular/animations/browser')
+            self.assertEqual(check_granularity.granularity_list[0].source_url, 'https://github.com/angular/angular')
+
+        self.delete_file("granularity_list.csv")
+
+    @responses.activate
+    def test_read_granularity_list_download(self):
+        check_granularity = CheckGranularity()
+        body_data = '''
+component_name;replacement_name;comment;source_url
+
+@babel/helper-module-imports;babel;;https://github.com/babel/babel
+        '''
+        responses.add(responses.GET, 'http://example.com/granularity.csv', body=body_data)
+
+        check_granularity.read_granularity_list(download_url='http://example.com/granularity.csv')
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(responses.calls[0].request.url, 'http://example.com/granularity.csv')
+        self.assertEqual(check_granularity.granularity_list[0].component, '@babel/helper-module-imports')
+        self.assertEqual(check_granularity.granularity_list[0].source_url, 'https://github.com/babel/babel')
+
+    @responses.activate
+    def test_read_granularity_list_download_error(self):
+        responses.add(responses.GET, 'http://wrongurl.com/granularity.csv', status=500)
+        check_granularity = CheckGranularity()
+
+        check_granularity.read_granularity_list(download_url='http://wrongurl.com/granularity.csv')
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(responses.calls[0].request.url, 'http://wrongurl.com/granularity.csv')
+        self.assertEqual(check_granularity.granularity_list[1].component, '@angular/animations/browser/testing')
+        self.assertEqual(check_granularity.granularity_list[1].source_url, 'https://github.com/angular/angular')

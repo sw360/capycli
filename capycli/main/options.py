@@ -67,6 +67,7 @@ class CommandlineSupport():
         Create            create or update a project on SW360
         Update            update an exiting project, preserving linked releases
         GetLicenseInfo    get license info of all project components
+        CreateBom         create a SBOM for a project on SW360
         CreateReadme      create a Readme_OSS
         Vulnerabilities   show security vulnerabilities of a project
         ECC               show export control status of a project
@@ -362,6 +363,22 @@ class CommandlineSupport():
             choices=output_formats,
             dest="outputformat",
             help="Specify output file format")
+
+        # used by bom Granularity
+        self.parser.add_argument(
+            "-rg",
+            "--remote-granularity",
+            dest="remote_granularity_list",
+            help="read the granularity list file from the download URL specified"
+        )
+
+        # used by bom Granularity
+        self.parser.add_argument(
+            "-lg",
+            "--local-granularity",
+            dest="local_granularity_list",
+            help="read the granularity list file from local"
+        )
 
         self.parser.add_argument(
             "-X",
