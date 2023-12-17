@@ -20,7 +20,6 @@ import jwt
 import requests
 from cyclonedx.model.bom import Bom
 
-import sw360.sw360_api
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 from sw360 import SW360, SW360Error
@@ -104,14 +103,11 @@ class ScriptBase:
         elif swex.response.status_code == requests.codes["forbidden"]:
             return "You are not authorized!"
         else:
-            if swex.response.content is None:
-                return repr(swex)
-            else:
-                content = swex.response.content.decode("UTF8")
-                jcontent = json.loads(content)
-                text = "Error=" + jcontent["error"] + "(" +\
-                    str(jcontent["status"]) + "): " + jcontent["message"]
-                return text
+            content = swex.response.content.decode("UTF8")
+            jcontent = json.loads(content)
+            text = "Error=" + jcontent["error"] + "(" +\
+                str(jcontent["status"]) + "): " + jcontent["message"]
+            return text
 
     @staticmethod
     def get_release_attachments(release_details: Dict[str, Any],

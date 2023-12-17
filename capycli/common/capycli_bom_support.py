@@ -32,7 +32,7 @@ from cyclonedx.output.json import JsonV1Dot4
 from cyclonedx.parser import BaseParser
 from dateutil import parser as dateparser
 from packageurl import PackageURL
-from sortedcontainers import SortedSet  # type: ignore
+from sortedcontainers import SortedSet
 
 import capycli.common.script_base
 from capycli import LOG
@@ -80,7 +80,7 @@ class SbomJsonParser(BaseParser):
         if not self.metadata:
             return None
 
-        return self.metadata.component  # type: ignore
+        return self.metadata.component
 
     def link_dependencies_to_project(self, bom: Bom) -> None:
         if not bom.metadata:

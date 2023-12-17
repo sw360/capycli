@@ -17,10 +17,10 @@ from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 
 import capycli.common.script_base
-from sw360 import SW360Error
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_red, print_text
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error
 
 LOG = capycli.get_logger(__name__)
 

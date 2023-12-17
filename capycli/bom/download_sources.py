@@ -12,7 +12,7 @@ import os
 import pathlib
 import re
 import sys
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
@@ -34,15 +34,15 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
     Download source files from the URL specified in the SBOM.
     """
 
-    def get_filename_from_cd(self, cd: str):
+    def get_filename_from_cd(self, cd: str) -> str:
         """
         Get filename from content-disposition.
         """
         if not cd:
-            return None
+            return ""
         fname = re.findall('filename=(.+)', cd)
         if len(fname) == 0:
-            return None
+            return ""
         return fname[0].rstrip('"').lstrip('"')
 
     def download_source_file(self, url: str, source_folder: str) -> Optional[Tuple[str, str]]:
@@ -58,9 +58,9 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             response = requests.get(url, allow_redirects=True)
             filename = self.get_filename_from_cd(response.headers.get("content-disposition", ""))
             if not filename:
-                filename = urlparse(url)
-                if filename:
-                    filename = os.path.basename(filename.path)
+                filename_ps = urlparse(url)
+                if filename_ps:
+                    filename = os.path.basename(filename_ps.path)
 
             elif not filename:
                 print_red("    Unable to identify filename from url!")
@@ -124,7 +124,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                 if new:
                     component.external_references.add(ext_ref)
 
-    def update_local_path(self, sbom: Bom, bomfile: str):
+    def update_local_path(self, sbom: Bom, bomfile: str) -> None:
         bompath = pathlib.Path(bomfile).parent
         for component in sbom.components:
             ext_ref = CycloneDxSupport.get_ext_ref(
@@ -142,7 +142,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                     else:
                         print_yellow("  SBOM file is not relative to source file " + str(ext_ref.url))
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method
 
         @params:

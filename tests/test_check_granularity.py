@@ -142,7 +142,7 @@ class TestCheckGranularity(TestBase):
         self.delete_file(self.OUTPUTFILE1)
 
     @responses.activate
-    def test_read_granularity_list_local(self):
+    def test_read_granularity_list_local(self) -> None:
         check_granularity = CheckGranularity()
         read_data = '''
 component_name;replacement_name;comment;source_url
@@ -160,7 +160,7 @@ component_name;replacement_name;comment;source_url
         self.delete_file("granularity_list.csv")
 
     @responses.activate
-    def test_read_granularity_list_download(self):
+    def test_read_granularity_list_download(self) -> None:
         check_granularity = CheckGranularity()
         body_data = '''
 component_name;replacement_name;comment;source_url
@@ -176,7 +176,7 @@ component_name;replacement_name;comment;source_url
         self.assertEqual(check_granularity.granularity_list[0].source_url, 'https://github.com/babel/babel')
 
     @responses.activate
-    def test_read_granularity_list_download_error(self):
+    def test_read_granularity_list_download_error(self) -> None:
         responses.add(responses.GET, 'http://wrongurl.com/granularity.csv', status=500)
         check_granularity = CheckGranularity()
 

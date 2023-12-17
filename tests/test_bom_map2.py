@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any, Dict
 
 import responses
 from cyclonedx.model import ExternalReferenceType
@@ -37,7 +38,7 @@ class CapycliTestBomMap(CapycliTestBase):
     CACHE_FILE = "dummy_cache.json"
 
     @responses.activate
-    def setUp(self):
+    def setUp(self) -> None:
         self.app = MapBom()
         responses.add(responses.GET, SW360_BASE_URL, json={"status": "ok"})
         self.app.login("sometoken", "https://my.server.com")
@@ -45,9 +46,12 @@ class CapycliTestBomMap(CapycliTestBase):
     # ---------------------- map_bom_item purl cases ----------------------
 
     @responses.activate
-    def test_map_bom_item_purl_component(self):
+    def test_map_bom_item_purl_component(self) -> None:
         """test bom mapping: we have a component purl match, but different names
         """
+        if not self.app.client:
+            return
+
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
             None: SW360_BASE_URL + "components/a035"}}}})
         # different name in release cache
@@ -83,9 +87,12 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.releases[0]["ComponentId"] == "a035"
 
     @responses.activate
-    def test_map_bom_item_purl_release(self):
+    def test_map_bom_item_purl_release(self) -> None:
         """test bom mapping: we have a release purl match
         """
+        if not self.app.client:
+            return
+
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
             None: SW360_BASE_URL + "components/a035",
             "1.0~1": SW360_BASE_URL + "releases/1234"}}}})
@@ -109,7 +116,7 @@ class CapycliTestBomMap(CapycliTestBase):
     # ---------------------- map_bom_item_no_cache ----------------------
 
     @responses.activate
-    def test_map_bom_item_nocache_full_match_name_version(self):
+    def test_map_bom_item_nocache_full_match_name_version(self) -> None:
         bomitem = Component(
             name="awk",
             version="1.0")
@@ -139,7 +146,7 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.releases[0]["Sw360Id"] == "1235"
 
     @responses.activate
-    def test_map_bom_item_nocache_mixed_match(self):
+    def test_map_bom_item_nocache_mixed_match(self) -> None:
         bomitem = Component(
             name="mail",
             version="1.4")
@@ -187,9 +194,12 @@ class CapycliTestBomMap(CapycliTestBase):
     # ----------------- map_bom_item_no_cache purl cases --------------------
 
     @responses.activate
-    def test_map_bom_item_nocache_purl_component(self):
+    def test_map_bom_item_nocache_purl_component(self) -> None:
         """test bom mapping (nocache): we have a component purl match
         """
+        if not self.app.client:
+            return
+
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
             None: SW360_BASE_URL + "components/a035"}}}})
         bomitem = Component(
@@ -233,9 +243,12 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.releases[0]["ComponentId"] == "a035"
 
     @responses.activate
-    def test_map_bom_item_nocache_purl_nocomponent(self):
+    def test_map_bom_item_nocache_purl_nocomponent(self) -> None:
         """test bom mapping: we have no component purl match, so search by name
         """
+        if not self.app.client:
+            return
+
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
             None: SW360_BASE_URL + "components/a035"}}}})
         bomitem = Component(
@@ -264,14 +277,17 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        assert res.component_id is None
+        assert res.component_id == ""
         assert res.releases[0]["Sw360Id"] == "1235"
         assert res.releases[0]["ComponentId"] == "a034"
 
     @responses.activate
-    def test_map_bom_item_nocache_purl_release(self):
+    def test_map_bom_item_nocache_purl_release(self) -> None:
         """test bom mapping: we have a release purl match, but names differ
         """
+        if not self.app.client:
+            return
+
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
             None: SW360_BASE_URL + "components/a035",
             "1.0~1": SW360_BASE_URL + "releases/1234"}}}})
@@ -297,7 +313,7 @@ class CapycliTestBomMap(CapycliTestBase):
     # ----------------- create_updated_bom --------------------
 
     @responses.activate
-    def test_create_updated_bom_component_id(self):
+    def test_create_updated_bom_component_id(self) -> None:
         res = MapResult()
         res.component = Component(name="sed", version="1.1")
         res.result = MapResult.MATCH_BY_NAME
@@ -333,7 +349,7 @@ class CapycliTestBomMap(CapycliTestBase):
         assert prop == "a035"
 
     @responses.activate
-    def test_create_updated_bom_mixed_match(self):
+    def test_create_updated_bom_mixed_match(self) -> None:
         res = MapResult()
         res.component = Component(name="mail", version="1.4")
         res.result = MapResult.FULL_MATCH_BY_NAME_AND_VERSION
@@ -371,7 +387,7 @@ class CapycliTestBomMap(CapycliTestBase):
         out = TestBase.capture_stdout(sut.run, args)
         self.assertTrue("usage: CaPyCLI bom map [-h]" in out)
 
-    def test_app_bom_no_input_file_specified(self):
+    def test_app_bom_no_input_file_specified(self) -> None:
         db = MapBom()
 
         # create argparse command line argument object
@@ -385,7 +401,7 @@ class CapycliTestBomMap(CapycliTestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_input_file_not_found(self):
+    def test_app_bom_input_file_not_found(self) -> None:
         db = MapBom()
 
         # create argparse command line argument object
@@ -400,7 +416,7 @@ class CapycliTestBomMap(CapycliTestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, sysex.code)
 
-    def test_app_bom_input_file_invalid(self):
+    def test_app_bom_input_file_invalid(self) -> None:
         db = MapBom()
 
         # create argparse command line argument object
@@ -446,7 +462,7 @@ class CapycliTestBomMap(CapycliTestBase):
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)
 
     @responses.activate
-    def test_mapping_single_match_by_id(self):
+    def test_mapping_single_match_by_id(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -593,7 +609,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
 
-    def provide_cache_responses(self):
+    def provide_cache_responses(self) -> None:
         responses.add(
             responses.GET,
             url=self.MYURL + "resource/api/releases?allDetails=true",
@@ -660,7 +676,7 @@ class CapycliTestBomMap(CapycliTestBase):
         )
 
     @responses.activate
-    def test_mapping_use_cache(self):
+    def test_mapping_use_cache(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -810,7 +826,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_no_releases(self):
+    def test_mapping_no_releases(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -895,7 +911,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_no_releases_no_cache(self):
+    def test_mapping_no_releases_no_cache(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -993,7 +1009,7 @@ class CapycliTestBomMap(CapycliTestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_NO_UNIQUE_MAPPING, sysex.code)
 
-    def add_login_response(self):
+    def add_login_response(self) -> None:
         """
         Add response for SW360 login.
         """
@@ -1006,7 +1022,7 @@ class CapycliTestBomMap(CapycliTestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-    def add_empty_purl_cache_response(self):
+    def add_empty_purl_cache_response(self) -> None:
         """
         Add responses for empty purl cache.
         """
@@ -1042,7 +1058,7 @@ class CapycliTestBomMap(CapycliTestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-    def add_component_per_name_colorama_response(self):
+    def add_component_per_name_colorama_response(self) -> None:
         # component(s) by name
         responses.add(
             responses.GET,
@@ -1076,7 +1092,7 @@ class CapycliTestBomMap(CapycliTestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-    def add_component_colorama_response(self):
+    def add_component_colorama_response(self) -> None:
         # the component
         responses.add(
             responses.GET,
@@ -1115,7 +1131,7 @@ class CapycliTestBomMap(CapycliTestBase):
         )
 
     @responses.activate
-    def test_mapping_name_and_version(self):
+    def test_mapping_name_and_version(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1192,7 +1208,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OVERVIEW_FILE)
 
     @responses.activate
-    def test_mapping_source_hash(self):
+    def test_mapping_source_hash(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1281,7 +1297,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OVERVIEW_FILE)
 
     @responses.activate
-    def test_mapping_binary_hash(self):
+    def test_mapping_binary_hash(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1370,7 +1386,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OVERVIEW_FILE)
 
     @responses.activate
-    def test_mapping_name_only_found(self):
+    def test_mapping_name_only_found(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1450,7 +1466,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OVERVIEW_FILE)
 
     @responses.activate
-    def test_mapping_name_only_not_found(self):
+    def test_mapping_name_only_not_found(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1530,7 +1546,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OVERVIEW_FILE)
 
     @responses.activate
-    def test_mapping_require_result_not_found(self):
+    def test_mapping_require_result_not_found(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1613,7 +1629,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_require_result_found(self):
+    def test_mapping_require_result_found(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1706,7 +1722,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_cache_name_and_version(self):
+    def test_mapping_cache_name_and_version(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -1868,7 +1884,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_cache_source_hash(self):
+    def test_mapping_cache_source_hash(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -2018,7 +2034,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_cache_binary_hash(self):
+    def test_mapping_cache_binary_hash(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -2168,7 +2184,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_cache_source_file(self):
+    def test_mapping_cache_source_file(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -2318,7 +2334,7 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.CACHE_FILE)
 
     @responses.activate
-    def test_mapping_cache_similar(self):
+    def test_mapping_cache_similar(self) -> None:
         sut = MapBom()
 
         # create argparse command line argument object
@@ -2452,10 +2468,10 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OVERVIEW_FILE)
         TestBase.delete_file(self.CACHE_FILE)
 
-    def test_update_bom_item(self):
+    def test_update_bom_item(self) -> None:
         sut = MapBom()
 
-        match = {}
+        match: Dict[str, Any] = {}
         updated = sut.update_bom_item(None, match)
         self.assertIsNotNone(updated)
         self.assertEqual("", updated.name)
@@ -2545,26 +2561,32 @@ class CapycliTestBomMap(CapycliTestBase):
         match["Version"] = "2.0"
         match["RepositoryId"] = "pkg:pypi/a@2.0"
         updated = sut.update_bom_item(comp, match)
-        self.assertEqual("b", updated.name)
-        self.assertEqual("2.0", updated.version)
-        self.assertEqual("pkg:pypi/a@2.0", updated.purl.to_string())
+        self.assertIsNotNone(updated)
+        if updated:
+            self.assertEqual("b", updated.name)
+            self.assertEqual("2.0", updated.version)
+            if updated.purl:
+                self.assertEqual("pkg:pypi/a@2.0", updated.purl.to_string())
 
         # extra: update package-url
-        comp = Component(name="a", version="1.0", purl="pkg:pypi/a@1.0")
+        comp = Component(name="a", version="1.0", purl=PackageURL.from_string("pkg:pypi/a@1.0"))
         match = {}
         match["Name"] = "b"
         match["Version"] = "2.0"
         match["RepositoryId"] = "pkg:pypi/a@2.0"
         updated = sut.update_bom_item(comp, match)
-        self.assertEqual("b", updated.name)
-        self.assertEqual("2.0", updated.version)
-        self.assertEqual("pkg:pypi/a@2.0", updated.purl.to_string())
+        self.assertIsNotNone(updated)
+        if updated:
+            self.assertEqual("b", updated.name)
+            self.assertEqual("2.0", updated.version)
+            if updated.purl:
+                self.assertEqual("pkg:pypi/a@2.0", updated.purl.to_string())
 
-    def test_is_better_match(self):
+    def test_is_better_match(self) -> None:
         sut = MapBom()
 
         # empty release list
-        val = sut.is_better_match(None, MapResult.MATCH_BY_FILENAME)
+        val = sut.is_better_match([], MapResult.MATCH_BY_FILENAME)
         self.assertTrue(val)
 
         val = sut.is_better_match([], MapResult.MATCH_BY_FILENAME)
@@ -2623,7 +2645,7 @@ class CapycliTestBomMap(CapycliTestBase):
         val = sut.is_better_match(releases_found, MapResult.FULL_MATCH_BY_HASH)
         self.assertFalse(val)
 
-    def test_is_good_match(self):
+    def test_is_good_match(self) -> None:
         """
         Tests for
         * 'if match_item["MapResult"] <= MapResult.GOOD_MATCH_FOUND'
@@ -2643,4 +2665,4 @@ class CapycliTestBomMap(CapycliTestBase):
 if __name__ == "__main__":
     APP = CapycliTestBomMap()
     APP.setUp()
-    APP.test_update_bom_item()
+    APP.test_map_bom_item_nocache_purl_nocomponent()

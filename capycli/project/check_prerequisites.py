@@ -9,7 +9,7 @@
 import logging
 import os
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from colorama import Fore
 from cyclonedx.model.bom import Bom
@@ -98,7 +98,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def check_project_prerequisites(self, id: str, sbom: Bom) -> None:
+    def check_project_prerequisites(self, id: str, sbom: Optional[Bom]) -> None:
         if not self.client:
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
@@ -250,7 +250,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         else:
             print_text("    No linked releases")
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
@@ -302,8 +302,8 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             if args.verbose:
                 print_text(" ", self.get_comp_count_text(sbom), "read from SBOM")
 
-        name = args.name
-        version = None
+        name: str = args.name
+        version: str = ""
         if args.version:
             version = args.version
 

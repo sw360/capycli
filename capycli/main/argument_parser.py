@@ -12,28 +12,29 @@ import argparse
 import os
 import sys
 import textwrap
+from typing import Any, Dict, List
 
 
 class ArgumentParser(argparse.ArgumentParser):
     """Custom argument parser."""
-    def __init__(self, *args, **kwargs):
-        self.options = []
-        super(ArgumentParser, self).__init__(*args, **kwargs, add_help=False)
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        self.options: List[Dict[str, Any]] = []
+        super(ArgumentParser, self).__init__(*args, **kwargs, add_help=False)  # type: ignore
         self.program = {key: kwargs[key] for key in kwargs}
         self.command_help = None
 
-    def add_command_help(self, command_help):
+    def add_command_help(self, command_help: Any) -> None:
         self.command_help = command_help
 
-    def add_argument(self, *args, **kwargs):
+    def add_argument(self, *args: Any, **kwargs: Any) -> Any:
         super(ArgumentParser, self).add_argument(*args, **kwargs)
-        option = {}
+        option: Dict[str, Any] = {}
         option["flags"] = [item for item in args]
         for key in kwargs:
             option[key] = kwargs[key]
         self.options.append(option)
 
-    def print_help(self):
+    def print_help(self, file: Any = None) -> None:
         wrapper = textwrap.TextWrapper(width=120)
 
         # Print usage
@@ -64,7 +65,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
         # Print command help
         if self.command_help:
-            print(self.command_help)
+            print(self.command_help)  # type: ignore  # code is used!
             print()
 
         # Print options

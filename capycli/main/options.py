@@ -24,7 +24,7 @@ LOG = capycli.get_logger(__name__)
 class CommandlineSupport():
     CONFIG_FILE_NAME = ".capycli.cfg"
 
-    def __init__(self):
+    def __init__(self) -> None:
         custom_prog = "CaPyCli, " + capycli.get_app_version()
         custom_usage = "CaPyCli command subcommand [options]"
         command_help = """Commands and Sub-Commands
@@ -98,7 +98,7 @@ class CommandlineSupport():
 
         self.register_options()
 
-    def register_options(self):
+    def register_options(self) -> None:
         input_formats = []
         input_formats.append(BomFormat.TEXT)
         input_formats.append(BomFormat.CSV)
@@ -416,7 +416,7 @@ class CommandlineSupport():
 
         return {}
 
-    def process_commandline(self, argv):
+    def process_commandline(self, argv: Any) -> Any:
         """Reads the command line arguments"""
         args = self.parser.parse_args(argv)
         cfg = self.read_config()

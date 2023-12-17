@@ -7,12 +7,12 @@ from collections.abc import ItemsView, Iterable, Iterator, KeysView, MutableSequ
 from operator import eq, ge, gt, le, lt, ne
 from typing import Any, Optional, Tuple, Union, overload
 
-class SortedSet(MutableSet, Sequence):
-    def __init__(self, iterable=None, key=None) -> None:
+class SortedSet(MutableSet, Sequence):  # type: ignore
+    def __init__(self, iterable: Any = None, key: Any = None) -> None:
         ...
 
     @classmethod
-    def _fromset(cls, values, key=None) -> SortedSet:
+    def _fromset(cls, values: Any, key: Any = None) -> SortedSet:
         ...
 
     @property
@@ -50,7 +50,7 @@ class SortedSet(MutableSet, Sequence):
     def __iter__(self) -> Any:
         ...
 
-    def __reversed__(self) -> Iterator:
+    def __reversed__(self) -> Iterator:  # type: ignore
         ...
 
     def add(self, value: Any) -> None:
@@ -110,7 +110,7 @@ class SortedSet(MutableSet, Sequence):
         ...
 
 
-class SortedList(MutableSequence):
+class SortedList(MutableSequence):  # type: ignore
     def __init__(self, iterable: Any = None, key: Any = None) -> None:
         ...
 
@@ -130,10 +130,10 @@ class SortedList(MutableSequence):
     def add(self, value: Any) -> None:
         ...
 
-    def _expand(self, pos: int):
+    def _expand(self, pos: int) -> Any:
         ...
 
-    def update(self, iterable: Iterable):
+    def update(self, iterable: Iterable) -> Any:  # type: ignore
         ...
 
     def __contains__(self, value: Any) -> bool:
@@ -181,23 +181,26 @@ class SortedList(MutableSequence):
     def __setitem__(self, index: slice, values: Iterable[Any]) -> None:
         ...
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator:  # type: ignore
         ...
 
-    def __reversed__(self) -> Iterator:
+    def __reversed__(self) -> Iterator:  # type: ignore
         ...
 
     def reverse(self) -> None:
         ...
 
-    def islice(self, start: Optional[int] = None, stop: Optional[int] = None, reverse: bool = False) -> Iterator:
+    def islice(self, start: Optional[int] = None, stop: Optional[int] = None,
+               reverse: bool = False) -> Iterator:  # type: ignore
         ...
 
-    def _islice(self, min_pos: int, min_idx: int, max_pos: int, max_idx: int, reverse: bool) -> Iterator:
+    def _islice(self, min_pos: int, min_idx: int, max_pos: int,
+                max_idx: int, reverse: bool) -> Iterator:  # type: ignore
         ...
 
-    def irange(self, minimum: Optional[int] = None, maximum: Optional[int] = None, inclusive=(True, True),
-               reverse: bool = False) -> Iterator:
+    def irange(self, minimum: Optional[int] = None, maximum: Optional[int] = None,
+               inclusive: Tuple[bool, bool] = (True, True),
+               reverse: bool = False) -> Iterator:   # type: ignore
         ...
 
     def __len__(self) -> int:
@@ -259,10 +262,10 @@ def identity(value: Any) -> Any:
 class SortedKeyList(SortedList):
     """Sorted-key list is a subtype of sorted list.
     """
-    def __init__(self, iterable: Optional[Iterable] = None, key: Any = identity) -> None:
+    def __init__(self, iterable: Optional[Iterable] = None, key: Any = identity) -> None:  # type: ignore
         ...
 
-    def __new__(cls, iterable: Optional[Iterable] = None, key: Any = identity) -> SortedKeyList:
+    def __new__(cls, iterable: Optional[Iterable] = None, key: Any = identity) -> SortedKeyList:  # type: ignore
         return object.__new__(cls)
 
     @property
@@ -278,7 +281,7 @@ class SortedKeyList(SortedList):
     def _expand(self, pos: int) -> None:
         ...
 
-    def update(self, iterable: Iterable) -> None:
+    def update(self, iterable: Iterable) -> None:  # type: ignore
         ...
 
     def __contains__(self, value: Any) -> bool:
@@ -293,12 +296,14 @@ class SortedKeyList(SortedList):
     def _delete(self, pos: int, idx: int) -> None:
         ...
 
-    def irange(self, minimum: Optional[int] = None, maximum: Optional[int] = None, inclusive=(True, True),
-               reverse: bool = False) -> Iterator:
+    def irange(self, minimum: Optional[int] = None, maximum: Optional[int] = None,
+               inclusive: Tuple[bool, bool] = (True, True),
+               reverse: bool = False) -> Iterator:  # type: ignore
         ...
 
-    def irange_key(self, min_key: Optional[Any] = None, max_key: Optional[Any] = None, inclusive=(True, True),
-                   reverse: bool = False) -> Iterator:
+    def irange_key(self, min_key: Optional[Any] = None, max_key: Optional[Any] = None,
+                   inclusiv: Tuple[bool, bool] = (True, True),
+                   reverse: bool = False) -> Iterator:  # type: ignore
         ...
 
     def bisect_left(self, value: Any) -> int:
@@ -338,7 +343,7 @@ class SortedKeyList(SortedList):
         ...
 
 
-class SortedDict(dict):
+class SortedDict(dict):  # type: ignore
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         ...
 
@@ -356,10 +361,10 @@ class SortedDict(dict):
     def __delitem__(self, key: Any) -> None:
         ...
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator:  # type: ignore
         ...
 
-    def __reversed__(self) -> Iterator:
+    def __reversed__(self) -> Iterator:  # type: ignore
         ...
 
     def __setitem__(self, key: Any, value: Any) -> None:
@@ -373,7 +378,7 @@ class SortedDict(dict):
     # def __or__(self, other: Iterable[Tuple[Any, Any]]) -> SortedDict:
     #     ...
 
-    def __ror__(self, otherSortedDict) -> Any:
+    def __ror__(self, otherSortedDict: Any) -> Any:
         ...
 
     # @overload
@@ -388,7 +393,7 @@ class SortedDict(dict):
         ...
 
     @classmethod
-    def fromkeys(cls, iterable: Iterable, value: Any = None) -> SortedDict:
+    def fromkeys(cls, iterable: Iterable, value: Any = None) -> SortedDict:  # type: ignore
         ...
 
     def keys(self) -> Any:
@@ -438,14 +443,13 @@ class SortedDict(dict):
     def _check(self) -> None:
         ...
 
+    def _view_delitem(self, index: Any) -> None:
+        ...
 
-def _view_delitem(self, index: Any) -> None:
-    ...
 
-
-class SortedKeysView(KeysView, Sequence):
+class SortedKeysView(KeysView, Sequence):  # type: ignore
     @classmethod
-    def _from_iterable(cls, it: Iterable) -> SortedSet:
+    def _from_iterable(cls, it: Iterable) -> SortedSet:  # type: ignore
         ...
 
     @overload
@@ -457,9 +461,9 @@ class SortedKeysView(KeysView, Sequence):
         ...
 
 
-class SortedItemsView(ItemsView, Sequence):
+class SortedItemsView(ItemsView, Sequence):  # type: ignore
     @classmethod
-    def _from_iterable(cls, it: Iterable) -> SortedSet:
+    def _from_iterable(cls, it: Iterable) -> SortedSet:  # type: ignore
         ...
 
     @overload
@@ -471,7 +475,7 @@ class SortedItemsView(ItemsView, Sequence):
         ...
 
 
-class SortedValuesView(ValuesView, Sequence):
+class SortedValuesView(ValuesView, Sequence):  # type: ignore
     @overload
     def __getitem__(self, index: int) -> Any:
         ...

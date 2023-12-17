@@ -423,3 +423,8 @@ class RequestsMock:
 
 def __getattr__(name: str) -> Any:
     ...
+
+
+def activate(func: _F = ...) -> _F:
+    """Overload for scenario when 'responses.activate' is used."""
+    ...

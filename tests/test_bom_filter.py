@@ -38,7 +38,7 @@ class TestBomFilter(TestBase):
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("Usage: CaPyCli bom filter [-h] [-v]" in out)
 
-    def test_app_bom_no_input_file_specified(self):
+    def test_app_bom_no_input_file_specified(self) -> None:
         db = capycli.bom.filter_bom.FilterBom()
 
         # create argparse command line argument object

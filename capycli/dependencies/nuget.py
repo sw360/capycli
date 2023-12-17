@@ -9,6 +9,7 @@
 import os
 import re
 import sys
+from typing import Any
 from xml.dom import minidom
 
 from cyclonedx.model import Property
@@ -137,7 +138,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
         return bom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

@@ -17,11 +17,11 @@ from sw360 import SW360
 
 
 class PurlService:
-    def __init__(self, client: SW360, cache: Optional[Dict] = None) -> None:
+    def __init__(self, client: SW360, cache: Optional[Dict] = None) -> None:  # type: ignore
         self.client: SW360 = client
         self.purl_cache: PurlStore = PurlStore(cache)
 
-    def build_purl_cache(self, purl_types=tuple(), no_warnings: bool = True) -> None:
+    def build_purl_cache(self, purl_types: Any = tuple(), no_warnings: bool = True) -> None:
         """
         Retrieve all package-url external ids for components and releases
         and cache them in self.purl_cache as a chain of dictionaries. As the
@@ -102,7 +102,7 @@ class PurlService:
 
         return self.purl_cache.get_by_version(purl)
 
-    def search_component_by_external_id(self, ext_id_name: str, ext_id_value: str):
+    def search_component_by_external_id(self, ext_id_name: str, ext_id_value: str) -> str:
         """
         Get SW360 component by external id
 
@@ -119,10 +119,10 @@ class PurlService:
         """
 
         if ext_id_name != "package-url":
-            return None
+            return ""
 
         if not ext_id_value:
-            return None
+            return ""
 
         purl = packageurl.PackageURL.from_string(ext_id_value)
         self.build_purl_cache((purl.type,))
@@ -153,7 +153,7 @@ class PurlService:
                     component_candidates[component] = version
                 if len(component_candidates) > 1:
                     print_yellow("    Releases purls point to different components:", component_candidates)
-                    return None
+                    return ""
                 elif len(component_candidates) == 1:
                     component = list(component_candidates.keys())[0]
                     print_green(
@@ -161,8 +161,9 @@ class PurlService:
                         "via purl for release",
                         component_candidates[component])
                     return list(component_candidates.keys())[0]
+
         # no match in purl cache
-        return None
+        return ""
 
     def search_component_and_release(self, ext_id_value: str) -> Tuple[str, str]:
         """

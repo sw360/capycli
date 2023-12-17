@@ -49,9 +49,9 @@ class DiffType(str, Enum):
 
 class DiffBom(capycli.common.script_base.ScriptBase):
     """Compare two SBOM files    """
-    def __init__(self):
-        self.equal_bom = None
-        self.diff_bom = None
+    def __init__(self) -> None:
+        self.equal_bom: Bom
+        self.diff_bom: Bom
 
     def find_in_bom(self, bom: Bom, component: Component) -> Optional[Component]:
         """Searches for an item with the given name and version in the given SBOM."""
@@ -151,7 +151,7 @@ class DiffBom(capycli.common.script_base.ScriptBase):
 
         return result
 
-    def display_result(self, result: List[Dict[str, Any]], show_identical: bool):
+    def display_result(self, result: List[Dict[str, Any]], show_identical: bool) -> None:
         for item in result:
             if item["Result"] == DiffType.IDENTICAL:
                 if show_identical:
@@ -191,11 +191,11 @@ class DiffBom(capycli.common.script_base.ScriptBase):
                 str(item["Result"]) + ": " +
                 item["Name"] + ", " + item["Version"])
 
-    def write_result_to_json(self, filename: str, result: List[Dict[str, Any]]):
+    def write_result_to_json(self, filename: str, result: List[Dict[str, Any]]) -> None:
         """Write comparison result to a JSON file."""
         capycli.common.json_support.write_json_to_file(result, filename)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

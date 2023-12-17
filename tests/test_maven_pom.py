@@ -96,7 +96,7 @@ class TestGetJavaMavenPomDependencies(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_ERROR_READING_BOM, ex.code)
 
-    def test_get_dependencies_from_maven_pom(self):
+    def test_get_dependencies_from_maven_pom(self) -> None:
         sut = GetJavaMavenPomDependencies()
 
         # create argparse command line argument object

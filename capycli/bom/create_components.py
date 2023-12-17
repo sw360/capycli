@@ -22,12 +22,12 @@ from cyclonedx.model.component import Component
 
 import capycli.common.json_support
 import capycli.common.script_base
-from sw360 import SW360Error
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.common.purl_utils import PurlUtils
 from capycli.common.script_support import ScriptSupport
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error
 
 LOG = capycli.get_logger(__name__)
 
@@ -54,13 +54,14 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         "                          ignore prefixes like \"2:\" (epoch) and suffixes like \".debian\"",
     ]
 
-    def __init__(self, onlyCreateReleases=False):
-        self.source_folder = None
-        self.download = False
-        self.relaxed_debian_parsing = False
-        self.onlyCreateReleases = onlyCreateReleases
+    def __init__(self, onlyCreateReleases: bool = False) -> None:
+        self.source_folder: str = ""
+        self.download: bool = False
+        self.relaxed_debian_parsing: bool = False
+        self.onlyCreateReleases: bool = onlyCreateReleases
 
-    def upload_source_file(self, release_id, sourcefile, filetype="SOURCE", comment=""):
+    def upload_source_file(self, release_id: str, sourcefile: str,
+                           filetype: str = "SOURCE", comment: str = "") -> None:
         """Upload source code attachment
 
         @params:
@@ -70,6 +71,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             comment    - upload comment for SW360 attachment
         """
         print_text("    Uploading source file: " + sourcefile)
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             self.client.upload_release_attachment(
                 release_id, sourcefile, upload_type=filetype, upload_comment=comment)
@@ -77,7 +82,9 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             errortext = "    Error uploading source file: " + self.get_error_message(swex)
             print(Fore.LIGHTRED_EX + errortext + Style.RESET_ALL)
 
-    def upload_file_from_url(self, release_id, url, filename, filetype="SOURCE", comment="", attached_filenames=[]):
+    def upload_file_from_url(self, release_id: str, url: Optional[str], filename: str,
+                             filetype: str = "SOURCE", comment: str = "",
+                             attached_filenames: List[str] = []) -> None:
         """Download a file from a URL if it's not available locally
         and upload the file as attachment to SW360.
 
@@ -111,6 +118,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             fullpath = os.path.join(tmpfolder.name, filename)
 
         try:
+            if not url:
+                print_red("    No url specified!")
+                return
+
             response = requests.get(url, allow_redirects=True)
             if (response.status_code == requests.codes["ok"]):
                 print_text("      Writing file", fullpath)
@@ -118,7 +129,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                     open(fullpath, "wb").write(response.content)
                     if response.headers.__contains__("content-disposition"):
                         header = response.headers.get("content-disposition")
-                        if header.__contains__("filename="):
+                        if header and header.__contains__("filename="):
                             print_text("      Found header:", header)
                             newfilename = header.split("=")[-1]
                             newfilename = newfilename.strip('"')
@@ -238,7 +249,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             data["externalIds"] = {"package-url": purl}
         return data
 
-    def create_release(self, cx_comp: Component, component_id) -> Optional[Dict[str, Any]]:
+    def create_release(self, cx_comp: Component, component_id: str) -> Optional[Dict[str, Any]]:
         """Create a new release on SW360
 
         :param item: a single bill of materials item - a release
@@ -265,7 +276,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_CREATING_COMPONENT)
         return release_new
 
-    def update_release(self, cx_comp: Component, release_data: Dict[str, Any]):
+    def update_release(self, cx_comp: Component, release_data: Dict[str, Any]) -> None:
         """Update an existing release on SW360
 
         :param item: a single bill of materials item - a release
@@ -337,7 +348,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
     def upload_file(
             self, cx_comp: Component, release_data: Dict[str, Any],
-            release_id: str, filetype: str, comment: str):
+            release_id: str, filetype: str, comment: str) -> None:
         if not self.client:
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
@@ -361,7 +372,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if (filename is None or filename == "") and url:
             filename_parsed = urlparse(url)
             if filename_parsed:
-                filename = os.path.basename(filename_parsed.path)  # type: ignore
+                filename = os.path.basename(filename_parsed.path)
 
         if not filename:
             print_red("    Unable to identify filename from url!")
@@ -395,7 +406,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if not source_attachment_exists:
             self.upload_file_from_url(release_id, url, filename, filetype, comment, attached_filenames)
 
-    def search_for_release(self, component, cx_comp: Component):
+    def search_for_release(self, component: Dict[str, Any], cx_comp: Component) -> Optional[Dict[str, Any]]:
         """Checks whether the given component already contains
         the requested release
 
@@ -490,9 +501,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             errortext = "    Error creating component: " + self.get_error_message(swex)
             print_red(errortext)
             sys.exit(ResultCode.RESULT_ERROR_CREATING_COMPONENT)
-        return None
 
-    def update_component(self, cx_comp: Component, component_id, component_data):
+    def update_component(self, cx_comp: Component, component_id: str, component_data: Dict[str, Any]) -> None:
         """Update an existing component on SW360
 
         :param item: a single bill of materials item - a component
@@ -555,8 +565,9 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
             # get full component info
             component = self.client.get_component(component_id)
-            self.update_component(cx_comp, component_id, component)
-            release = self.search_for_release(component, cx_comp)
+            if component:
+                self.update_component(cx_comp, component_id, component)
+                release = self.search_for_release(component, cx_comp)
         else:
             if self.onlyCreateReleases:
                 print_red("    Component doesn't exist!")
@@ -582,7 +593,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                     cx_comp, self.get_sw360_id(component))
                 print_text("    Release created")
 
-            self.update_release(cx_comp, release)
+            if release:
+                self.update_release(cx_comp, release)
         except SW360Error as swex:
             errortext = "    Error creating release: " + self.get_error_message(swex)
             print_red(errortext)
@@ -629,7 +641,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             print_red("An error occured during component/release creation!")
             sys.exit(ResultCode.RESULT_ERROR_CREATING_ITEM)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

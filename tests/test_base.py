@@ -60,6 +60,8 @@ class AppArguments():
         self.force_exit: str = ""
         self.inputformat: str = ""
         self.outputformat: str = ""
+        self.remote_granularity_list: str = ""
+        self.local_granularity_list: str = ""
 
 
 class TestBasePytest:

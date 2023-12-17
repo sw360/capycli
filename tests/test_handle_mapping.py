@@ -12,7 +12,7 @@ from tests.test_base import AppArguments, TestBase
 
 
 class TestHandleMapping(TestBase):
-    def test_not_mapping_command(self):
+    def test_not_mapping_command(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("xx_unknown_xx")
@@ -20,7 +20,7 @@ class TestHandleMapping(TestBase):
         out = self.capture_stdout(run_mapping_command, args)
         self.assertEqual("", out)
 
-    def test_no_mapping_subcommand(self):
+    def test_no_mapping_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("mapping")
@@ -29,7 +29,7 @@ class TestHandleMapping(TestBase):
         self.assertTrue("No subcommand specified!" in out)
         self.assertTrue("mapping - mapping sub-commands" in out)
 
-    def test_unknown_subcommand(self):
+    def test_unknown_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("mapping")
@@ -41,7 +41,7 @@ class TestHandleMapping(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_mapping_tohtml(self):
+    def test_mapping_tohtml(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("mapping")
@@ -51,7 +51,7 @@ class TestHandleMapping(TestBase):
         out = self.capture_stdout(run_mapping_command, args)
         self.assertTrue("usage: CaPyCli mapping tohtml" in out)
 
-    def test_mapping_toxlsx(self):
+    def test_mapping_toxlsx(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("mapping")

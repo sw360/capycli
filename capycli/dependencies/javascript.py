@@ -207,7 +207,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return bom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

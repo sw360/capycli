@@ -12,7 +12,7 @@ from tests.test_base import AppArguments, TestBase
 
 
 class TestHandleBom(TestBase):
-    def test_not_bom_command(self):
+    def test_not_bom_command(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("xx_unknown_xx")
@@ -20,7 +20,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertEqual("", out)
 
-    def test_no_bom_subcommand(self):
+    def test_no_bom_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -29,7 +29,7 @@ class TestHandleBom(TestBase):
         self.assertTrue("No subcommand specified!" in out)
         self.assertTrue("bom               bill of material" in out)
 
-    def test_unknown_subcommand(self):
+    def test_unknown_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -41,7 +41,7 @@ class TestHandleBom(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_bom_show(self):
+    def test_bom_show(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -51,7 +51,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: capycli bom show" in out)
 
-    def test_bom_filter(self):
+    def test_bom_filter(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -61,7 +61,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("Usage: CaPyCli bom filter" in out)
 
-    def test_bom_check(self):
+    def test_bom_check(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -71,7 +71,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: CaPyCli bom check" in out)
 
-    def test_bom_checkitemstatus(self):
+    def test_bom_checkitemstatus(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -81,7 +81,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: capycli bom CheckItemStatus" in out)
 
-    def test_bom_map(self):
+    def test_bom_map(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -91,7 +91,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: CaPyCLI bom map" in out)
 
-    def test_bom_createreleases(self):
+    def test_bom_createreleases(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -101,7 +101,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: CaPyCLI bom createreleases" in out)
 
-    def test_bom_downloadsources(self):
+    def test_bom_downloadsources(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -111,7 +111,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: capycli bom downloadsources" in out)
 
-    def test_bom_granularity(self):
+    def test_bom_granularity(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -121,7 +121,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: CaPyCli bom granularity" in out)
 
-    def test_bom_diff(self):
+    def test_bom_diff(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -131,7 +131,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: CaPyCli bom diff" in out)
 
-    def test_bom_merge(self):
+    def test_bom_merge(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -141,7 +141,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: CaPyCli bom merge" in out)
 
-    def test_bom_findsources(self):
+    def test_bom_findsources(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")
@@ -151,7 +151,7 @@ class TestHandleBom(TestBase):
         out = self.capture_stdout(run_bom_command, args)
         self.assertTrue("usage: CaPyCli bom findsources" in out)
 
-    def test_bom_convert(self):
+    def test_bom_convert(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("bom")

@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import sys
+from typing import Any
 
 import capycli.bom.bom_convert
 import capycli.bom.check_bom
@@ -24,7 +25,7 @@ from capycli.common.print import print_red
 from capycli.main.result_codes import ResultCode
 
 
-def run_bom_command(args) -> None:
+def run_bom_command(args: Any) -> None:
     command = args.command[0].lower()
     if command != "bom":
         return

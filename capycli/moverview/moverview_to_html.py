@@ -8,6 +8,7 @@
 
 import os
 import sys
+from typing import Any, Dict
 
 import capycli.common.html_support
 import capycli.common.json_support
@@ -24,7 +25,7 @@ LOG = get_logger(__name__)
 class MappingOverviewToHtml(capycli.common.script_base.ScriptBase):
     """Create a HTML page showing the mapping overview."""
 
-    def mapping_overview_to_html(self, overview, outputfile):
+    def mapping_overview_to_html(self, overview: Dict[str, Any], outputfile: str) -> None:
         """Create a HTML page showing the mapping overview"""
         myhtml = capycli.common.html_support.HtmlSupport()
         lineend = myhtml.get_lineend()
@@ -73,7 +74,7 @@ class MappingOverviewToHtml(capycli.common.script_base.ScriptBase):
 
             myhtml.end_body_and_finish(htmlfile)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

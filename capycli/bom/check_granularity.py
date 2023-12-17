@@ -13,7 +13,7 @@ except ImportError:
     import importlib_resources as pkg_resources  # type: ignore
 import os
 import sys
-from typing import List, Optional
+from typing import Any, List, Optional
 
 import requests
 from cyclonedx.model import ExternalReferenceType
@@ -34,22 +34,22 @@ LOG = capycli.get_logger(__name__)
 
 class PotentialGranularityIssue:
     """Class to hold potential granularity issues."""
-    def __init__(self, component, replacement, comment="", source_url=""):
-        self.component = component
-        self.replacement = replacement
-        self.comment = comment
-        self.source_url = source_url
+    def __init__(self, component: str, replacement: str, comment: str = "", source_url: str = "") -> None:
+        self.component: str = component
+        self.replacement: str = replacement
+        self.comment: str = comment
+        self.source_url: str = source_url
 
 
 class CheckGranularity(capycli.common.script_base.ScriptBase):
     """
     Check the granularity of all releases in the SBOM.
     """
-    def __init__(self):
-        self.granularity_list = []
+    def __init__(self) -> None:
+        self.granularity_list: List[PotentialGranularityIssue] = []
 
     @staticmethod
-    def get_granularity_list(download_url):
+    def get_granularity_list(download_url: str) -> None:
         '''This will only download granularity file from a public repository.
         Make sure to give the raw version of the granularity file seperated by ;'''
         response = requests.get(download_url)
@@ -57,7 +57,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
         with open('granularity_list.csv', 'wb') as f1:
             f1.write(response.content)
 
-    def read_granularity_list(self, download_url=None, local_read_granularity=None) -> None:
+    def read_granularity_list(self, download_url: str = "", local_read_granularity: bool = False) -> None:
         """Reads the granularity list from file."""
         self.granularity_list = []
         text_list = ""
@@ -186,7 +186,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
 
         return new_list
 
-    def check_bom_items(self, sbom: Bom):
+    def check_bom_items(self, sbom: Bom) -> Bom:
         """Checks for each release in the list whether it can be found on the specified
         SW360 instance."""
 
@@ -213,7 +213,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
         sbom.components = SortedSet(reduced)
         return sbom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

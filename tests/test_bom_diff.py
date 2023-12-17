@@ -40,7 +40,7 @@ class TestBomDiff(TestBase):
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("usage: CaPyCli bom diff [-h]" in out)
 
-    def test_app_bom_no_files_specified(self):
+    def test_app_bom_no_files_specified(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -54,7 +54,7 @@ class TestBomDiff(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_only_one_file_specified(self):
+    def test_app_bom_only_one_file_specified(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -69,7 +69,7 @@ class TestBomDiff(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_first_file_not_found(self):
+    def test_app_bom_first_file_not_found(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -85,7 +85,7 @@ class TestBomDiff(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, sysex.code)
 
-    def test_app_bom_second_file_not_found(self):
+    def test_app_bom_second_file_not_found(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -101,7 +101,7 @@ class TestBomDiff(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, sysex.code)
 
-    def test_app_bom_cyclonedx_invalid_file1(self):
+    def test_app_bom_cyclonedx_invalid_file1(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -118,7 +118,7 @@ class TestBomDiff(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_ERROR_READING_BOM, sysex.code)
 
-    def test_app_bom_cyclonedx_invalid_file2(self):
+    def test_app_bom_cyclonedx_invalid_file2(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -135,7 +135,7 @@ class TestBomDiff(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_ERROR_READING_BOM, sysex.code)
 
-    def test_bom_identical(self):
+    def test_bom_identical(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -151,13 +151,14 @@ class TestBomDiff(TestBase):
         self.assertTrue("Release exists in both SBOMs: certifi, 2022.12.7" in out)
         self.assertIsNotNone(db.equal_bom)
         self.assertIsNotNone(db.diff_bom)
-        self.assertEqual(1, len(db.equal_bom.components))
-        self.assertEqual(0, len(db.diff_bom.components))
+        if db.diff_bom:
+            self.assertEqual(1, len(db.equal_bom.components))
+            self.assertEqual(0, len(db.diff_bom.components))
 
-        self.assertEqual("certifi", db.equal_bom.components[0].name)
-        self.assertEqual("2022.12.7", db.equal_bom.components[0].version)
+            self.assertEqual("certifi", db.equal_bom.components[0].name)
+            self.assertEqual("2022.12.7", db.equal_bom.components[0].version)
 
-    def test_bom_diff1(self):
+    def test_bom_diff1(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -173,13 +174,14 @@ class TestBomDiff(TestBase):
         self.assertTrue("Release has been removed:     certifi, 2022.12.7" in out)
         self.assertIsNotNone(db.equal_bom)
         self.assertIsNotNone(db.diff_bom)
-        self.assertEqual(0, len(db.equal_bom.components))
-        self.assertEqual(1, len(db.diff_bom.components))
+        if db.diff_bom:
+            self.assertEqual(0, len(db.equal_bom.components))
+            self.assertEqual(1, len(db.diff_bom.components))
 
-        self.assertEqual("certifi", db.diff_bom.components[0].name)
-        self.assertEqual("2022.12.7", db.diff_bom.components[0].version)
+            self.assertEqual("certifi", db.diff_bom.components[0].name)
+            self.assertEqual("2022.12.7", db.diff_bom.components[0].version)
 
-    def test_bom_diff2(self):
+    def test_bom_diff2(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -197,15 +199,16 @@ class TestBomDiff(TestBase):
         self.assertTrue("New release:                  certifi, 2022.12.999" in out)
         self.assertIsNotNone(db.equal_bom)
         self.assertIsNotNone(db.diff_bom)
-        self.assertEqual(0, len(db.equal_bom.components))
-        self.assertEqual(2, len(db.diff_bom.components))
+        if db.diff_bom:
+            self.assertEqual(0, len(db.equal_bom.components))
+            self.assertEqual(2, len(db.diff_bom.components))
 
-        self.assertEqual("certifi", db.diff_bom.components[0].name)
-        self.assertEqual("2022.12.7", db.diff_bom.components[0].version)
-        self.assertEqual("certifi", db.diff_bom.components[1].name)
-        self.assertEqual("2022.12.999", db.diff_bom.components[1].version)
+            self.assertEqual("certifi", db.diff_bom.components[0].name)
+            self.assertEqual("2022.12.7", db.diff_bom.components[0].version)
+            self.assertEqual("certifi", db.diff_bom.components[1].name)
+            self.assertEqual("2022.12.999", db.diff_bom.components[1].version)
 
-    def test_app_bom_different_with_fileoutput(self):
+    def test_app_bom_different_with_fileoutput(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object
@@ -258,7 +261,7 @@ class TestBomDiff(TestBase):
 
         self.delete_file(self.OUTPUTFILE)
 
-    def test_app_bom_different_with_fileoutput2(self):
+    def test_app_bom_different_with_fileoutput2(self) -> None:
         db = capycli.bom.diff_bom.DiffBom()
 
         # create argparse command line argument object

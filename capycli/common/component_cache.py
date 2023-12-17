@@ -115,7 +115,7 @@ class ComponentCacheManagement():
             self.old_releases = None
 
         if self.old_releases:
-            return len(self.old_releases)
+            return len(self.old_releases)  # type: ignore  # code is used!
         else:
             return 0
 

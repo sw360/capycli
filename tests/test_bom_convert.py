@@ -164,7 +164,7 @@ class TestBomConvert(TestBase):
 
         return differences
 
-    def test_convert_plain_to_plain(self):
+    def test_convert_plain_to_plain(self) -> None:
         sut = BomConvert()
 
         # create argparse command line argument object
@@ -189,7 +189,7 @@ class TestBomConvert(TestBase):
         result = self.compare_text_files(args.inputfile, args.outputfile)
         self.assertTrue(len(result) == 0)
 
-    def test_convert_legacy_to_legacy(self):
+    def test_convert_legacy_to_legacy(self) -> None:
         sut = BomConvert()
 
         # create argparse command line argument object

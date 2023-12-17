@@ -10,7 +10,7 @@ import logging
 import os
 import re
 import sys
-from typing import Any
+from typing import Any, Tuple
 
 import requests
 from cyclonedx.model import ExternalReferenceType
@@ -28,12 +28,12 @@ LOG = get_logger(__name__)
 class FindSources(capycli.common.script_base.ScriptBase):
     """Go through the list of SBOM items and try to determine the source code."""
 
-    def __init__(self):
-        self.verbose = False
+    def __init__(self) -> None:
+        self.verbose: bool = False
         self.version_regex = re.compile(r"[\d+\.|_]+[\d+]")
         self.github_project_name_regex = re.compile(r"^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$")
-        self.github_name = None
-        self.github_token = None
+        self.github_name: str = ""
+        self.github_token: str = ""
 
     def is_sourcefile_accessible(self, sourcefile_url: str) -> bool:
         """Check if the URL is accessible."""
@@ -70,7 +70,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         return repo_name
 
     @staticmethod
-    def get_github_info(repository_url: str, username="", token="") -> Any:
+    def get_github_info(repository_url: str, username: str = "", token: str = "") -> Any:
         """Query tag infos from GitHub."""
         try:
             headers = {}
@@ -87,7 +87,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             print_yellow("      Error acccessing GitHub: " + repr(ex))
             return None
 
-    def to_semver_string(self, version) -> str:
+    def to_semver_string(self, version: str) -> str:
         """Bring all version information to a format we can compare."""
         result = self.version_regex.search(version)
         if result is None:
@@ -160,7 +160,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         return source_url
 
-    def find_sources(self, bom: Bom):
+    def find_sources(self, bom: Bom) -> Tuple[int, int]:
         """Go through the list of SBOM items and try to determine the source code."""
 
         print_text("\nLooping through SBOM:")
@@ -215,7 +215,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         return (found_count, exist_count)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

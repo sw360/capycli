@@ -44,7 +44,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
     Determine Python components/dependencies for a given project
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.verbose = False
 
     def requirements_to_package_list(self, input_file: str) -> List[Dict[str, str]]:
@@ -420,7 +420,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         return result
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

@@ -11,7 +11,7 @@ import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
-from typing import List, Tuple, Optional
+from typing import Any, List, Optional, Tuple
 
 import requests
 from cyclonedx.model import ExternalReference, ExternalReferenceType, Property, XsUri
@@ -303,7 +303,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         return cx_comp
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

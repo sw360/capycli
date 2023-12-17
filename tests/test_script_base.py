@@ -17,17 +17,18 @@ from tests.test_base import TestBase
 
 
 class ResponseMock():
-    def __init__(self, text=None, ok=False, status_code=200, url=None):
-        self.text = text
-        self.ok = ok
-        self.url = url
-        self.status_code = status_code
-        self.content = None
+    def __init__(self, text: str = "", ok: bool = False,
+                 status_code: int = 200, url: str = "") -> None:
+        self.text: str = text
+        self.ok: bool = ok
+        self.url: str = url
+        self.status_code: int = status_code
+        self.content: bytes
 
 
 class TestScriptBase(TestBase):
     @responses.activate
-    def test_login_fails_no_answer(self):
+    def test_login_fails_no_answer(self) -> None:
         sut = ScriptBase()
 
         try:
@@ -37,7 +38,7 @@ class TestScriptBase(TestBase):
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)
 
     @responses.activate
-    def test_login_fails_unauthorized(self):
+    def test_login_fails_unauthorized(self) -> None:
         sut = ScriptBase()
 
         responses.add(
@@ -56,7 +57,7 @@ class TestScriptBase(TestBase):
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)
 
     @responses.activate
-    def test_login_fails_error(self):
+    def test_login_fails_error(self) -> None:
         sut = ScriptBase()
 
         responses.add(
@@ -75,7 +76,7 @@ class TestScriptBase(TestBase):
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)
 
     @responses.activate
-    def test_login_fails_no_url(self):
+    def test_login_fails_no_url(self) -> None:
         if os.environ.get("SW360ServerUrl", None):
             # SW360ServerUrl has a value that would mess up the test
             return
@@ -98,7 +99,7 @@ class TestScriptBase(TestBase):
             self.assertEqual(ResultCode.RESULT_ERROR_ACCESSING_SW360, ex.code)
 
     @responses.activate
-    def test_login_success(self):
+    def test_login_success(self) -> None:
         sut = ScriptBase()
 
         self.add_login_response()
@@ -106,7 +107,7 @@ class TestScriptBase(TestBase):
         value = sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
         self.assertTrue(value)
 
-    def test_analyze_token_ok(self):
+    def test_analyze_token_ok(self) -> None:
         sut = ScriptBase()
         encoded = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsic3czNjAtUkVTVC"
                    + "1BUEkiXSwidXNlcl9uYW1lIjoidGhvbWFzLmdyYWZAc2llbWVucy5jb20iLCJ"
@@ -118,7 +119,7 @@ class TestScriptBase(TestBase):
         self.assertTrue("Analyzing token..." in out)
         self.assertTrue("Token will expire on" in out)
 
-    def test_analyze_token_fail(self):
+    def test_analyze_token_fail(self) -> None:
         sut = ScriptBase()
         encoded = "eyXXJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
         out = self.capture_stdout(sut.analyze_token, encoded)
@@ -126,7 +127,7 @@ class TestScriptBase(TestBase):
         self.assertTrue("Unable to analyze token" in out)
 
     @responses.activate
-    def test_find_project_success(self):
+    def test_find_project_success(self) -> None:
         sut = ScriptBase()
 
         self.add_login_response()
@@ -163,7 +164,7 @@ class TestScriptBase(TestBase):
         self.assertEqual("007", val)
 
     @responses.activate
-    def test_find_project_fail_sw360_error(self):
+    def test_find_project_fail_sw360_error(self) -> None:
         sut = ScriptBase()
         self.add_login_response()
 
@@ -190,7 +191,7 @@ class TestScriptBase(TestBase):
             self.assertEqual(ResultCode.RESULT_ERROR_ACCESSING_SW360, ex.code)
 
     @responses.activate
-    def test_find_project_fail_no_project(self):
+    def test_find_project_fail_no_project(self) -> None:
         sut = ScriptBase()
         self.add_login_response()
 
@@ -214,7 +215,7 @@ class TestScriptBase(TestBase):
         self.assertEqual("", val)
 
     @responses.activate
-    def test_find_project_fail_version_not_found(self):
+    def test_find_project_fail_version_not_found(self) -> None:
         sut = ScriptBase()
         self.add_login_response()
 
@@ -249,7 +250,7 @@ class TestScriptBase(TestBase):
         val = sut.find_project("MyName", "MyVersion", True)
         self.assertEqual("", val)
 
-    def test_get_error_message_no_info(self):
+    def test_get_error_message_no_info(self) -> None:
         sut = ScriptBase()
 
         swex = SW360Error()
@@ -257,7 +258,7 @@ class TestScriptBase(TestBase):
         self.assertIsNotNone(val)
         self.assertEqual("SW360Error('None')", val)
 
-    def test_get_error_message_login(self):
+    def test_get_error_message_login(self) -> None:
         sut = ScriptBase()
 
         swex = SW360Error(None, TestBase.MYURL, message="Unable to login:")
@@ -265,7 +266,7 @@ class TestScriptBase(TestBase):
         self.assertIsNotNone(val)
         self.assertEqual("SW360Error('Unable to login:')", val)
 
-    def test_get_error_message(self):
+    def test_get_error_message(self) -> None:
         sut = ScriptBase()
 
         text = """{"text": "some message", "status_code" : "500"}"""
@@ -277,7 +278,7 @@ class TestScriptBase(TestBase):
         resp = ResponseMock(text, False, 500, TestBase.MYURL)
         resp.content = text2.encode("utf-8")
 
-        swex = SW360Error(resp, TestBase.MYURL, message="some error")
+        swex = SW360Error(resp, TestBase.MYURL, message="some error")  # type: ignore
         val = sut.get_error_message(swex)
         self.assertIsNotNone(val)
         self.assertEqual("Error=some other error(500): another message", val)

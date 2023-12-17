@@ -13,11 +13,11 @@ import sys
 from typing import Any, Dict, List
 
 import capycli.common.script_base
-from sw360 import SW360Error
 from capycli.common.json_support import load_json_file
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.common.script_support import ScriptSupport
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error
 
 LOG = capycli.get_logger(__name__)
 
@@ -201,7 +201,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
         with open(filename, "w") as outfile:
             json.dump(result, outfile, indent=2)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

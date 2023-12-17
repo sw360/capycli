@@ -31,6 +31,7 @@ from capycli.common.map_result import MapResult
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.common.purl_service import PurlService
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360
 
 LOG = get_logger(__name__)
 
@@ -57,7 +58,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         self.purl_service: Optional[PurlService] = None
         self.no_match_by_name_only = True
 
-    def is_id_match(self, release, component: Component) -> bool:
+    def is_id_match(self, release: Dict[str, Any], component: Component) -> bool:
         """Determines whether this release is a match via identifier for the specified SBOM item"""
         if not component.purl:
             return False
@@ -138,7 +139,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             return False
 
     @staticmethod
-    def is_good_match(match_code) -> bool:
+    def is_good_match(match_code: str) -> bool:
         """
         Returns True of this is a good match, i.e.
         """
@@ -163,13 +164,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def map_bom_item(self, component: Component, check_similar: bool, result_required: bool):
+    def map_bom_item(self, component: Component, check_similar: bool, result_required: bool) -> MapResult:
         """Maps a single SBOM item to the list of SW360 releases"""
 
         result, _, _ = self.map_bom_commons(component)
-
-        if not self.releases:
-            return None
 
         for release in self.releases:
             if ("Id" in release) and ("Sw360Id" not in release):
@@ -343,7 +341,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         new_version = parts[0]
         return new_version
 
-    def map_bom_item_no_cache(self, component: Component):
+    def map_bom_item_no_cache(self, component: Component) -> MapResult:
         """Maps a single SBOM item to SW360 via online checks (no cache!)"""
         if not self.client:
             print_red("  No client!")
@@ -369,7 +367,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             if release_url is not None:
                 rel_list = [{"_links": {"self": {"href": release_url}}}]
             else:
-                comp = self.client.get_component_by_url(compref)
+                comp = self.client.get_component_by_url(compref)  # type: ignore
                 if not comp:
                     continue
                 rel_list = comp["_embedded"].get("sw360:releases", [])
@@ -500,8 +498,11 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     print_text("    ADDED (MATCH_BY_NAME) " + release["Sw360Id"])
         return result
 
-    def has_release_clearing_result(self, client, result_item) -> bool:
+    def has_release_clearing_result(self, client: Optional[SW360], result_item: Dict[str, Any]) -> bool:
         """Checks whether this given result item has a clearing result"""
+        if not client:
+            return False
+
         print_text(
             "Checking clearing result for " + result_item["Name"] +
             ", " + result_item["Version"])
@@ -552,12 +553,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         return mapresult
 
-    def search_source_hash_match(self, hashvalue):
+    def search_source_hash_match(self, hashvalue: str) -> None:
         """Searches SW360 for a release with an attachment with
         the specified source file hash"""
         pass
 
-    def search_binary_hash_match(self, hashvalue):
+    def search_binary_hash_match(self, hashvalue: str) -> None:
         """Searches SW360 for a release with an attachment with
         the specified binary file hash"""
         pass
@@ -819,7 +820,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
     def refresh_component_cache(
             self, cachefile: str, use_existing_data: bool, token: str, oauth2: bool,
-            sw360_url: str):
+            sw360_url: str) -> List[Dict[str, Any]]:
         """Refreshes the component cache."""
         cache_mgr = ComponentCacheManagement()
 
@@ -878,7 +879,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             self.purl_service = PurlService(self.client)
         return self.purl_service
 
-    def setup_cache(self, args: Any):
+    def setup_cache(self, args: Any) -> None:
         if not args.nocache:
             if args.cachefile:
                 cachefile = args.cachefile
@@ -911,7 +912,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 print_red("No cached releases available!")
                 sys.exit(ResultCode.RESULT_NO_CACHED_RELEASES)
 
-    def show_help(self):
+    def show_help(self) -> None:
         """Show help text."""
         print("usage: CaPyCLI bom map [-h] [-cf CACHEFILE] [-rc] [-sc] [--nocache]")
         print("                            [-ov CREATE_OVERVIEW] [-mr WRITE_MAPRESULT] [-rr]")
@@ -948,7 +949,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         print("                          so SBOM version 3.1 will match SW360 version 3.1-3.debian")
         print("    -all                  also report matches for name, but different version")
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

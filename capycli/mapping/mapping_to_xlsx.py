@@ -8,6 +8,7 @@
 
 import os
 import sys
+from typing import Any, Dict, List
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -27,7 +28,7 @@ LOG = get_logger(__name__)
 class MappingToExcelXlsx(capycli.common.script_base.ScriptBase):
     """Create an Excel sheet showing the mapping result"""
 
-    def define_styles(self):
+    def define_styles(self) -> None:
         """Define style for Excel"""
         # fontDefault = Font(
         #    name="Calibri", size=11, bold=False, italic=False,vertAlign=None,
@@ -59,24 +60,27 @@ class MappingToExcelXlsx(capycli.common.script_base.ScriptBase):
             top=Side(border_style="thin", color="FF000000"),
             bottom=Side(border_style="thin", color="FF000000"))
 
-    def mapping_result_to_xlsx(self, details, outputfile):
+    def mapping_result_to_xlsx(self, details: List[Dict[str, Any]], outputfile: str) -> None:
         """Create an Excel sheet showing the mapping overview"""
         wb = Workbook()
         ws = wb.active
+        if not ws:
+            return
+
         self.define_styles()
 
-        ws["A1"] = "Mapping Result Overview"
-        ws["A1"].font = self.fontBold16
+        ws["A1"] = "Mapping Result Overview"  # type: ignore
+        ws["A1"].font = self.fontBold16  # type: ignore
 
-        ws["A3"] = "SBOM Component"
-        ws["A3"].fill = self.fillGray
-        ws["A3"].border = self.border
-        ws["B3"] = "Mapping Result"
-        ws["B3"].fill = self.fillGray
-        ws["B3"].border = self.border
-        ws["C3"] = "Matching Component"
-        ws["C3"].fill = self.fillGray
-        ws["C3"].border = self.border
+        ws["A3"] = "SBOM Component"  # type: ignore
+        ws["A3"].fill = self.fillGray  # type: ignore
+        ws["A3"].border = self.border  # type: ignore
+        ws["B3"] = "Mapping Result"  # type: ignore
+        ws["B3"].fill = self.fillGray  # type: ignore
+        ws["B3"].border = self.border  # type: ignore
+        ws["C3"] = "Matching Component"  # type: ignore
+        ws["C3"].fill = self.fillGray  # type: ignore
+        ws["C3"].border = self.border  # type: ignore
 
         row = 4
         max_width_component = 0
@@ -96,7 +100,7 @@ class MappingToExcelXlsx(capycli.common.script_base.ScriptBase):
                 else:
                     font = self.fontBoldOrange
 
-            c = ws.cell(row=row, column=1, value=versiontext)
+            c = ws.cell(row=row, column=1, value=versiontext)  # type: ignore
             c.font = font
             c.border = self.border
             c.alignment = Alignment(vertical="top")
@@ -105,7 +109,7 @@ class MappingToExcelXlsx(capycli.common.script_base.ScriptBase):
 
             text = MapResult.map_code_to_string(mapresult["Result"]) + \
                 " (" + str(mapresult["Result"]) + ")"
-            c = ws.cell(row=row, column=2, value=text)
+            c = ws.cell(row=row, column=2, value=text)  # type: ignore
             c.font = font
             c.border = self.border
             c.alignment = Alignment(vertical="top")
@@ -135,16 +139,16 @@ class MappingToExcelXlsx(capycli.common.script_base.ScriptBase):
                     if len(line) > max_width_match:
                         max_width_match = len(line)
 
-            c = ws.cell(row=row, column=3, value=text)
+            c = ws.cell(row=row, column=3, value=text)  # type: ignore
             c.alignment = Alignment(wrapText=True)
             c.font = font
             c.border = self.border
 
             row += 1
 
-        ws.column_dimensions["A"].width = max_width_component
-        ws.column_dimensions["B"].width = max_width_result
-        ws.column_dimensions["C"].width = max_width_match
+        ws.column_dimensions["A"].width = max_width_component  # type: ignore
+        ws.column_dimensions["B"].width = max_width_result  # type: ignore
+        ws.column_dimensions["C"].width = max_width_match  # type: ignore
 
         try:
             wb.save(outputfile)
@@ -152,7 +156,7 @@ class MappingToExcelXlsx(capycli.common.script_base.ScriptBase):
             print_red("Error wirting Excel sheet: " + repr(ex))
             sys.exit(ResultCode.RESULT_ERROR_WRITING_FILE)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

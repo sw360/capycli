@@ -10,7 +10,7 @@ from typing import Any, Dict, List
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.component import Component
-from packageurl import PackageURL  # type: ignore
+from packageurl import PackageURL
 from sortedcontainers import SortedSet
 
 from capycli import LOG
@@ -87,11 +87,6 @@ class LegacySupport():
                 version=item.get("Version", "").strip(),
                 purl=purl,
                 bom_ref=purl.to_string(),
-                description=item.get("Description", "").strip())
-        else:
-            cxcomp = Component(
-                name=item.get("Name", "").strip(),
-                version=item.get("Version", "").strip(),
                 description=item.get("Description", "").strip())
 
         website = item.get("ProjectSite", "")

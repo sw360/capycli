@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 from typing import List
 
-
 class CliFileItemBase:
     def __init__(self) -> None:
         self.files: List[str] = []
@@ -92,7 +91,7 @@ class LicenseTools:
         ...
 
     @staticmethod
-    def get_non_global_licenses(clifile: CliFile) -> list:
+    def get_non_global_licenses(clifile: CliFile) -> list:  # type: ignore
         ...
 
     @staticmethod

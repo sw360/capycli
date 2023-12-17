@@ -15,11 +15,11 @@ import requests
 from cyclonedx.model.bom import Bom
 
 import capycli.common.script_base
-from sw360 import SW360Error
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error
 
 LOG = get_logger(__name__)
 
@@ -151,7 +151,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
         return linkedReleases
 
-    def upload_attachments(self, attachments):
+    def upload_attachments(self, attachments: List[Dict[str, Any]]) -> None:
         """Upload attachments to project"""
         print("  Upload attachments to project")
         if not self.client:

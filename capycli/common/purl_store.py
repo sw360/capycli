@@ -28,7 +28,7 @@ class PurlStore:
         }
     }
     """
-    def __init__(self, cache: Optional[Dict] = None):
+    def __init__(self, cache: Optional[Dict] = None):  # type: ignore
         if cache:
             self.purl_cache = cache
         else:
@@ -58,28 +58,28 @@ class PurlStore:
         pc[purl.version] = entry
         return True, entry
 
-    def get_by_namespace(self, purl: PackageURL) -> Optional[Dict]:
+    def get_by_namespace(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
         if (purl.type in self.purl_cache
                 and purl.namespace in self.purl_cache[purl.type]):
             return self.purl_cache[purl.type][purl.namespace]
 
         return None
 
-    def get_by_name(self, purl: PackageURL) -> Optional[Dict]:
+    def get_by_name(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
         entries = self.get_by_namespace(purl)
         if entries and purl.name in entries:
             return entries[purl.name]
 
         return None
 
-    def get_by_version(self, purl: PackageURL) -> Optional[Dict]:
+    def get_by_version(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
         entries = self.get_by_name(purl)
         if entries and purl.version in entries:
             return entries[purl.version]
 
         return None
 
-    def remove_duplicates(self, duplicates: list) -> None:
+    def remove_duplicates(self, duplicates: list) -> None:  # type: ignore
         for d in duplicates:
             if d[0] not in self.purl_cache:
                 continue

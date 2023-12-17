@@ -31,13 +31,13 @@ class CapycliTestBomCreateComponents(TestBase):
     OUTPUTFILE = "output.json"
 
     @responses.activate
-    def setUp(self):
+    def setUp(self) -> None:
         self.app = capycli.bom.create_components.BomCreateComponents(onlyCreateReleases=False)
         responses.add(responses.GET, SW360_BASE_URL, json={"status": "ok"})
         self.app.login("sometoken", "https://my.server.com")
 
     @responses.activate
-    def test_create_component(self):
+    def test_create_component(self) -> None:
         """Component and Release don't exist. So create them.
         """
         responses.add(responses.GET, SW360_BASE_URL + 'components?name=activemodel', json={
@@ -55,7 +55,7 @@ class CapycliTestBomCreateComponents(TestBase):
             # verify data we send in POST
             match=[responses.matchers.json_params_matcher(component_data)],
             # server answer with created release data
-            json={**component_data,
+            json={**component_data,  # type: ignore
                   "_links": {"self": {
                       "href": SW360_BASE_URL + "components/06a6e5"}}})
 
@@ -68,10 +68,10 @@ class CapycliTestBomCreateComponents(TestBase):
             SW360_BASE_URL + 'releases',
             # verify data we send in POST
             match=[responses.matchers.json_params_matcher({
-                **release_data, "componentId": "06a6e5",
+                **release_data, "componentId": "06a6e5",  # type: ignore
             })],
             # server answer with created release data
-            json={**release_data,
+            json={**release_data,  # type: ignore
                   "_links": {"self": {
                       "href": SW360_BASE_URL + "releases/06a6e7"}}})
 
@@ -89,7 +89,7 @@ class CapycliTestBomCreateComponents(TestBase):
         assert len(responses.calls) == 3
 
     @responses.activate
-    def test_create_comp_release_no_component_id_required(self):
+    def test_create_comp_release_no_component_id_required(self) -> None:
         """Release doesn't exist. So create it.
         """
         responses.add(responses.GET, SW360_BASE_URL + 'components?name=activemodel', json={

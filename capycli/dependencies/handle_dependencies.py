@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import sys
+from typing import Any
 
 import capycli.dependencies.javascript
 import capycli.dependencies.maven_list
@@ -17,7 +18,7 @@ from capycli.common.print import print_red
 from capycli.main.result_codes import ResultCode
 
 
-def run_dependency_command(args):
+def run_dependency_command(args: Any) -> None:
     command = args.command[0].lower()
     if command != "getdependencies":
         return
@@ -44,26 +45,26 @@ def run_dependency_command(args):
 
     if subcommand == "python":
         """Determine Python components/dependencies for a given project"""
-        app = capycli.dependencies.python.GetPythonDependencies()
-        app.run(args)
+        app2 = capycli.dependencies.python.GetPythonDependencies()
+        app2.run(args)
         return
 
     if subcommand == "javascript":
         """Determine Javascript components/dependencies for a given project"""
-        app = capycli.dependencies.javascript.GetJavascriptDependencies()
-        app.run(args)
+        app3 = capycli.dependencies.javascript.GetJavascriptDependencies()
+        app3.run(args)
         return
 
     if subcommand == "mavenpom":
         """Determine Java components/dependencies for a given project"""
-        app = capycli.dependencies.maven_pom.GetJavaMavenPomDependencies()
-        app.run(args)
+        app4 = capycli.dependencies.maven_pom.GetJavaMavenPomDependencies()
+        app4.run(args)
         return
 
     if subcommand == "mavenlist":
         """Determine Java components/dependencies for a given project"""
-        app = capycli.dependencies.maven_list.GetJavaMavenTreeDependencies()
-        app.run(args)
+        app5 = capycli.dependencies.maven_list.GetJavaMavenTreeDependencies()
+        app5.run(args)
         return
 
     print_red("Unknown sub-command: " + subcommand)

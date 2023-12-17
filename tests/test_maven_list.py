@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import responses
@@ -67,14 +68,14 @@ class TestMavenTree(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, ex.code)
 
-    def test_maven_list_source_regex(self):
+    def test_maven_list_source_regex(self) -> None:
         inputfile_raw = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE_RAW)
         urls = GetJavaMavenTreeDependencies()\
             .extract_urls(inputfile_raw, GetJavaMavenTreeDependencies.SOURCES_REGEX)
 
         self.assertEqual(2, len(urls), "unexpected amount of detected source urls")
 
-    def test_maven_list_binary_regex(self):
+    def test_maven_list_binary_regex(self) -> None:
         inputfile_raw = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE_RAW)
         urls = GetJavaMavenTreeDependencies() \
             .extract_urls(inputfile_raw, GetJavaMavenTreeDependencies.BINARIES_REGEX)
@@ -83,7 +84,7 @@ class TestMavenTree(TestBase):
 
     @responses.activate
     @patch("subprocess.run")
-    def test_create_full_dependency_list_from_maven_list_file(self, mock_subprocess_run):
+    def test_create_full_dependency_list_from_maven_list_file(self, mock_subprocess_run: Any) -> None:
         file1 = os.path.join(os.path.dirname(__file__), "fixtures", "spring-boot-starter-json-2.4.3.pom")
         with open(file1, 'r') as file:
             content = file.read()
@@ -114,8 +115,9 @@ class TestMavenTree(TestBase):
 
         bom_spring_boot_starter_json = next(
             (filter(lambda x: (x.name == "spring-boot-starter-json"), bom.components)), None)
-        self.assertEqual(str(CycloneDxSupport.get_ext_ref_source_url(bom_spring_boot_starter_json)),
-                         ("https://github.com/spring-projects/spring-boot/archive/refs/tags/v2.4.3.zip"))
+        self.assertEqual(str(CycloneDxSupport.get_ext_ref_source_url(
+            bom_spring_boot_starter_json)),  # type: ignore
+            ("https://github.com/spring-projects/spring-boot/archive/refs/tags/v2.4.3.zip"))
 
     def test_create_full_dependency_list_from_maven_list_file2(self) -> None:
         sut = GetJavaMavenTreeDependencies()

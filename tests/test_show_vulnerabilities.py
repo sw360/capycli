@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any, Dict
 
 import responses
 
@@ -105,7 +106,7 @@ class TestShowSecurityVulnerability(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_PROJECT_NOT_FOUND, ex.code)
 
-    def get_vulnerabilities_for_test(self):
+    def get_vulnerabilities_for_test(self) -> Dict[str, Any]:
         """
         Get vulnerability response for tesing.
         """
@@ -231,7 +232,7 @@ class TestShowSecurityVulnerability(TestBase):
         self.delete_file(self.OUTPUTFILE)
 
     @responses.activate
-    def test_project_show_by_name(self):
+    def test_project_show_by_name(self) -> None:
         sut = ShowSecurityVulnerability()
 
         # create argparse command line argument object
@@ -331,10 +332,10 @@ class TestShowSecurityVulnerability(TestBase):
         self.assertTrue("Priority:          3 - minor" in out)
         self.assertTrue("Project Relevance: IN_ANALYSIS" in out)
 
-    def test_check_report(self):
+    def test_check_report(self) -> None:
         sut = ShowSecurityVulnerability()
 
-        report = {}
+        report: Dict[str, Any] = {}
         report["Vulnerabilities"] = []
         report["Vulnerabilities"].append({"priority": "0"})
 

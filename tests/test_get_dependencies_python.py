@@ -371,7 +371,7 @@ class TestGetDependenciesPython(TestBase):
         self.delete_file(self.OUTPUTFILE1)
         self.delete_file(self.OUTPUTFILE2)
 
-    def test_determine_file_type(self):
+    def test_determine_file_type(self) -> None:
         sut = GetPythonDependencies()
 
         actual = sut.determine_file_type("requirements.txt")
@@ -384,7 +384,7 @@ class TestGetDependenciesPython(TestBase):
         actual = sut.determine_file_type(".gitignore")
         self.assertEqual(InputFileType.REQUIREMENTS, actual)
 
-    def test_process_poetry_lock_v2(self):
+    def test_process_poetry_lock_v2(self) -> None:
         self.delete_file(self.OUTPUTFILE2)
 
         sut = GetPythonDependencies()

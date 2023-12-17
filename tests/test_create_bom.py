@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any
 
 import pytest
 import responses
@@ -46,7 +47,7 @@ class TestCreateBom(TestBasePytest):
         args.debug = True
         args.verbose = True
 
-        with pytest.raises(SystemExit) as ex:  # type: ignore
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
         assert ResultCode.RESULT_AUTH_ERROR == ex.value.code
 
@@ -65,7 +66,7 @@ class TestCreateBom(TestBasePytest):
 
         self.add_login_response()
 
-        with pytest.raises(SystemExit) as ex:  # type: ignore
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
         assert ResultCode.RESULT_COMMAND_ERROR == ex.value.code
 
@@ -84,7 +85,7 @@ class TestCreateBom(TestBasePytest):
 
         self.add_login_response()
 
-        with pytest.raises(SystemExit) as ex:  # type: ignore
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
         assert ResultCode.RESULT_COMMAND_ERROR == ex.value.code
 
@@ -115,12 +116,12 @@ class TestCreateBom(TestBasePytest):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-        with pytest.raises(SystemExit) as ex:  # type: ignore
+        with pytest.raises(SystemExit) as ex:
             sut.run(args)
         assert ResultCode.RESULT_ERROR_ACCESSING_SW360 == ex.value.code
 
     @responses.activate
-    def test_create_bom_multiple_purls(self, capsys):
+    def test_create_bom_multiple_purls(self, capsys: Any) -> None:
         sut = CreateBom()
 
         self.add_login_response()
@@ -153,10 +154,12 @@ class TestCreateBom(TestBasePytest):
         captured = capsys.readouterr()
 
         assert "Multiple purls added" in captured.out
-        assert cdx_components[0].purl.to_string() == "pkg:deb/debian/cli-support%401.3-1%20pkg:pypi/cli-support@1.3"
+        assert cdx_components[0].purl is not None
+        if cdx_components[0].purl:
+            assert cdx_components[0].purl.to_string() == "pkg:deb/debian/cli-support%401.3-1%20pkg:pypi/cli-support@1.3"
 
     @responses.activate
-    def test_project_by_id(self):
+    def test_project_by_id(self) -> None:
         sut = CreateBom()
 
         self.add_login_response()
@@ -227,12 +230,14 @@ class TestCreateBom(TestBasePytest):
         assert len(ext_refs_vcs) == 1
         assert str(ext_refs_vcs[0].url) == release["repository"]["url"]
 
-        assert cdx_bom.metadata.component.name == project["name"]
-        assert cdx_bom.metadata.component.version == project["version"]
-        assert cdx_bom.metadata.component.description == project["description"]
+        assert cdx_bom.metadata.component is not None
+        if cdx_bom.metadata.component:
+            assert cdx_bom.metadata.component.name == project["name"]
+            assert cdx_bom.metadata.component.version == project["version"]
+            assert cdx_bom.metadata.component.description == project["description"]
 
     @responses.activate
-    def test_project_show_by_name(self):
+    def test_project_show_by_name(self) -> None:
         sut = CreateBom()
 
         args = AppArguments()

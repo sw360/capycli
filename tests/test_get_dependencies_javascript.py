@@ -23,7 +23,7 @@ class TestGetDependenciesJavascript(TestBase):
     INPUTFILE1 = "package-lock.json"
     OUTPUTFILE1 = "output.json"
 
-    def create_package_lock_1(self, filename: str):
+    def create_package_lock_1(self, filename: str) -> None:
         pl: Dict[str, Any] = {}
         pl["name"] = "APP"
         pl["version"] = "0.0.1"
@@ -110,7 +110,7 @@ class TestGetDependenciesJavascript(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_convert_package_lock(self):
+    def test_convert_package_lock(self) -> None:
         self.create_package_lock_1("test_package_lock_1.json")
         sut = capycli.dependencies.javascript.GetJavascriptDependencies()
         sbom = sut.convert_package_lock("test_package_lock_1.json")
@@ -118,7 +118,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.delete_file("test_package_lock_1.json")
 
-    def test_try_find_metadata_simple(self):
+    def test_try_find_metadata_simple(self) -> None:
         self.create_package_lock_1("test_package_lock_1.json")
         sut = capycli.dependencies.javascript.GetJavascriptDependencies()
         sbom = sut.convert_package_lock("test_package_lock_1.json")
@@ -142,8 +142,8 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.delete_file("test_package_lock_1.json")
 
-    def test_issue_100(self):
-        bom = SbomCreator.create(None, addlicense=True, addprofile=True, addtools=True)
+    def test_issue_100(self) -> None:
+        bom = SbomCreator.create([], addlicense=True, addprofile=True, addtools=True)
         bom.components.add(Component(
             name="@types/fetch-jsonp",
             version="1.1.0"))

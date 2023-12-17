@@ -53,7 +53,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
         ]
     }
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self.verbose = False
 
     def load_filter_file(self, filter_file: str) -> Dict[str, Any]:
@@ -62,7 +62,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
         filter = json.load(f)
         return filter
 
-    def append_components(self, clist: List[Dict[str, Any]], to_add_list: List[Dict[str, Any]]):
+    def append_components(self, clist: List[Dict[str, Any]], to_add_list: List[Dict[str, Any]]) -> None:
         for to_add in to_add_list:
             clist.append(to_add)
 
@@ -96,7 +96,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
         comp = LegacySupport.legacy_component_to_cdx(filterentry)
         return comp
 
-    def update_bom_item_from_filter_entry(self, component: Component, filterentry: Dict[str, Any]):
+    def update_bom_item_from_filter_entry(self, component: Component, filterentry: Dict[str, Any]) -> None:
         if filterentry["Name"]:
             component.name = filterentry["Name"]
 
@@ -260,7 +260,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
         return bom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

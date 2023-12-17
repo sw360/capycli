@@ -149,7 +149,7 @@ class TestFindSources(TestBase):
 
         self.delete_file(args.outputfile)
 
-    def test_get_repo_name(self):
+    def test_get_repo_name(self) -> None:
         # simple
         repo = "https://github.com/JamesNK/Newtonsoft.Json"
         actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
@@ -180,7 +180,7 @@ class TestFindSources(TestBase):
 
         self.assertEqual("restsharp/RestSharp", actual)
 
-    def test_normalize_version(self):
+    def test_normalize_version(self) -> None:
         sut = FindSources()
         param_list = [('We don\'t know', '0.0.0'), ('pre_pr_153572', '0.0.0'), ('1_27_1_1', '1.27.1.1'),
                       ('2.6.3', '2.6.3'), ('2.0.0.RELEASE', '2.0.0'), ('1.29', '1.29.0'), ('1.06', '1.6.0'),

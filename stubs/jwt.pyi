@@ -51,11 +51,11 @@ class AbstractJWKBase(ABC):
         ...
 
     @abstractmethod
-    def sign(self, message: bytes, **options) -> bytes:
+    def sign(self, message: bytes, **options: Any) -> bytes:
         ...
 
     @abstractmethod
-    def verify(self, message: bytes, signature: bytes, **options) -> bool:
+    def verify(self, message: bytes, signature: bytes, **options: Any) -> bool:
         ...
 
     @abstractmethod
@@ -65,35 +65,36 @@ class AbstractJWKBase(ABC):
 
 class OctetJWK(AbstractJWKBase):
 
-    def __init__(self, key: bytes, kid=None, **options) -> None:
+    def __init__(self, key: bytes, kid: Any = None, **options: Any) -> None:
+        self.kid: Any
         ...
 
         optnames = {'use', 'key_ops', 'alg', 'x5u', 'x5c', 'x5t', 'x5t#s256'}
         self.options = {k: v for k, v in options.items() if k in optnames}
 
-    def get_kty(self):
+    def get_kty(self) -> Any:
         return 'oct'
 
-    def get_kid(self):
+    def get_kid(self) -> Any:
         return self.kid
 
     def is_sign_key(self) -> bool:
         ...
 
-    def _get_signer(self, options) -> Callable[[bytes, bytes], bytes]:
+    def _get_signer(self, options: Any) -> Callable[[bytes, bytes], bytes]:
         ...
 
-    def sign(self, message: bytes, **options) -> bytes:
+    def sign(self, message: bytes, **options: Any) -> bytes:
         ...
 
-    def verify(self, message: bytes, signature: bytes, **options) -> bool:
+    def verify(self, message: bytes, signature: bytes, **options: Any) -> bool:
         ...
 
-    def to_dict(self, public_only=True):
+    def to_dict(self, public_only: bool = True) -> Any:
         ...
 
     @classmethod
-    def from_dict(cls, dct):
+    def from_dict(cls, dct: Any) -> None:
         ...
 
 
@@ -102,11 +103,11 @@ class JWT:
         ...
 
     def encode(self, payload: Dict[str, Any],
-               key: Optional[AbstractJWKBase] = None, alg='HS256',
+               key: Optional[AbstractJWKBase] = None, alg: str = 'HS256',
                optional_headers: Optional[Dict[str, str]] = None) -> str:
         ...
 
     def decode(self, message: str, key: Optional[AbstractJWKBase] = None,
-               do_verify=True, algorithms: Optional[AbstractSet[str]] = None,
+               do_verify: bool = True, algorithms: Optional[AbstractSet[str]] = None,
                do_time_check: bool = True) -> Dict[str, Any]:
         ...

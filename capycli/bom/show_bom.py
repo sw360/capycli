@@ -12,6 +12,7 @@ Display the contents of a SBOM.
 
 import os
 import sys
+from typing import Any
 
 from cyclonedx.model.bom import Bom
 
@@ -49,7 +50,7 @@ class ShowBom(capycli.common.script_base.ScriptBase):
 
         print_text("\n" + str(len(bom.components)) + " items in bill of material\n")
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

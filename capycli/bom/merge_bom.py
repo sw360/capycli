@@ -8,7 +8,7 @@
 
 import os
 import sys
-from typing import Optional
+from typing import Any, Optional
 
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -89,7 +89,7 @@ class MergeBom(capycli.common.script_base.ScriptBase):
 
         return bom_old
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

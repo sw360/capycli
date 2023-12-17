@@ -149,7 +149,7 @@ class BomConvert(capycli.common.script_base.ScriptBase):
         print("    -if INPUTFORMAT       Specify input file format: capycli|sbom|text|csv|legacy|legacy-cx")
         print("    -of OUTPUTFORMAT      Specify output file format: capycli|text|csv|legacy|html")
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         print("\n" + capycli.APP_NAME + ", " + capycli.get_app_version() + " - Convert SBOM formats\n")
 

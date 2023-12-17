@@ -211,7 +211,7 @@ class TestPurlService(CapycliTestBase):
         res = purl_service.search_component_by_external_id(
             "package-url",
             "pkg:deb/debian/mypkg")
-        assert res is None
+        assert res == ""
 
     @responses.activate
     def test_purl_search_component_via_release(self) -> None:
@@ -276,7 +276,7 @@ class TestPurlService(CapycliTestBase):
         res = purl_service.search_component_by_external_id(
             "package-url",
             sw360_purl_components[1]["externalIds"]["package-url"])
-        assert res is None
+        assert res == ""
 
     def test_purl_search_component_and_release(self) -> None:
         test_cache: Dict[str, Any] = {

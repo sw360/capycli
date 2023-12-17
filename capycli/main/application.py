@@ -10,7 +10,7 @@
 
 import sys
 import time
-from typing import Any, Optional, List
+from typing import Any, List, Optional
 
 import capycli
 from capycli.bom import handle_bom
@@ -28,7 +28,7 @@ DEBUG_LOGGING = False
 
 
 class Application(object):
-    def __init__(self, program="CaPyCli", version=capycli.get_app_version()) -> None:
+    def __init__(self, program: str = "CaPyCli", version: str = capycli.get_app_version()) -> None:
         """Initialize our application."""
 
         #: The timestamp when the Application instance was instantiated.
@@ -94,9 +94,9 @@ class Application(object):
     def emit_exit_code(self, system_exit_exception: Optional[SystemExit]) -> None:
         if system_exit_exception is None:
             # successfull
-            if self.options and self.options.ex:
-                print("Exit code = 0")
-            # no need to do sys.exit(0) here - 0 is terh default exit code
+            if self.options and self.options.ex:  # type: ignore  # code is used!
+                print("Exit code = 0")  # type: ignore  # code is used!
+            # no need to do sys.exit(0) here - 0 is the default exit code
             # sys.exit(ResultCode.RESULT_OPERATION_SUCCEEDED)
         else:
             if isinstance(system_exit_exception.code, str):
@@ -105,8 +105,8 @@ class Application(object):
             if isinstance(system_exit_exception.code, int):
                 sys.exit(system_exit_exception.code)
 
-            if self.options and self.options.ex:
-                print("Exit code = 1")
+            if self.options and self.options.ex:  # type: ignore  # code is used!
+                print("Exit code = 1")  # type: ignore  # code is used!
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)
 
     def _run(self, argv: List[str]) -> None:
@@ -133,7 +133,7 @@ class Application(object):
 
         command: str
         if self.options:
-            command = self.options.command[0].lower()
+            command = self.options.command[0].lower()  # type: ignore  # code is used!
         if command == "getdependencies":
             handle_dependencies.run_dependency_command(self.options)
         elif command == "bom":

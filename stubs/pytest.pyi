@@ -45,6 +45,12 @@ def fixture(  # noqa: F811
 
 
 class RaisesContext():
+    def __enter__(self) -> Any:
+        ...
+
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> Any:
+        ...
+
     ...
 
 
