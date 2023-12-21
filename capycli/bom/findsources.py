@@ -207,8 +207,10 @@ class FindSources(capycli.common.script_base.ScriptBase):
         if not component:
             return ""
         component_name = component.name
-        component_version = component.version.removesuffix("+incompatible")
-
+        component_version = component.version
+        suffix = "+incompatible"
+        if component_version.endswith(suffix):
+            component_version = component_version[:-len(suffix)]
         repository_name = self.get_pkg_go_repo_url(component_name)
         if not len(repository_name):
             return ""
@@ -225,8 +227,12 @@ class FindSources(capycli.common.script_base.ScriptBase):
                     + Style.RESET_ALL)
                 source_url = repository_name + "/archive/" + commit_ref + ".zip"
             else:
-                component_name_without_repo_prefix = component_name.removeprefix("github.com/")
-                component_name_without_repo_prefix = component_name_without_repo_prefix.removeprefix("gopkg.in/")
+                if component_name.startswith("github.com/"):
+                    component_name_without_repo_prefix = component_name[len("github.com/"):]
+                else:
+                    component_name_without_repo_prefix = component_name
+                if component_name_without_repo_prefix.startswith("gopkg.in/"):
+                    component_name_without_repo_prefix = component_name_without_repo_prefix[len("gopkg.in/"):]
                 component_name_without_version = re.sub(r"/v[0-9]+$", '', component_name_without_repo_prefix)
                 component_name_without_version = re.sub(r"\.v[0-9]+$", '', component_name_without_version)
                 component_name_without_github_split = component_name_without_version.split("/")
@@ -234,7 +240,9 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 if len(component_name_without_github_split) > 2:
                     version_prefix = "/".join(component_name_without_github_split[2:])
 
-                tag_info = self.get_github_info(repository_name.removeprefix("https://github.com/"), self.github_name,
+                if repository_name.startswith("https://github.com/"):
+                    repository_name = repository_name[len("https://github.com/"):]
+                tag_info = self.get_github_info(repository_name, self.github_name,
                                                 self.github_token)
                 source_url = self.get_matching_tag(tag_info, component_version, repository_name, version_prefix)
 
@@ -290,8 +298,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 if version_prefix and tag.get("name").rpartition("/")[0] != version_prefix:
                     continue
 
-                version_diff = semver.compare(
-                    self.to_semver_string(tag.get("name", None)),
+                version_diff = semver.VersionInfo.parse(
+                    self.to_semver_string(tag.get("name", None))).compare(
                     self.to_semver_string(version))
             except Exception as e:
                 print(
