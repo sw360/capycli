@@ -345,10 +345,10 @@ class TestShowSecurityVulnerability(TestBase):
         ret = sut.check_report_for_critical_findings(report, "6")
         self.assertFalse(ret)
 
-        report = {}
+        report: Dict[str, Any] = {}
         report["Vulnerabilities"] = []
         report["Vulnerabilities"].append({"priority": "0"})
-        v = {}
+        v: Dict[str, Any] = {}
         v["priority"] = "1"
         v["projectRelevance"] = "NOT_CHECKED"
         report["Vulnerabilities"].append(v)

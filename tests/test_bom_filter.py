@@ -262,15 +262,15 @@ class TestBomFilter(TestBase):
         capycli.common.json_support.write_json_to_file(filter, filterfile_include)
 
         # create filter file that adds a single component
-        filter = {}
-        filter_entries = []
-        filter_entry = {}
-        component = {}
+        filter: Dict[str, Any] = {}
+        filter_entries: List[Dict[str, Any]] = []
+        filter_entry: Dict[str, Any] = {}
+        component: Dict[str, Any] = {}
         component["Name"] = "colora*"
         component["Version"] = "0.4.6"
         filter_entry["component"] = component
         filter_entry["Mode"] = "remove"
-        includes = []
+        includes: List[str] = []
         includes.append(self.FILTERFILE_INCLUDE)
         includes.append("DOES_NOT_EXIST")
 

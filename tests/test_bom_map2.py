@@ -2479,13 +2479,13 @@ class CapycliTestBomMap(CapycliTestBase):
 
         # simple
         comp = Component(name="a", version="1")
-        match = {}
+        match: Dict[str, Any] = {}
         updated = sut.update_bom_item(comp, match)
         self.assertEqual("a", updated.name)
         self.assertEqual("1", updated.version)
 
         # update all - no existing
-        match = {}
+        match: Dict[str, Any] = {}
         match["Name"] = "b"
         match["Version"] = "2"
         match["Language"] = "C#"
