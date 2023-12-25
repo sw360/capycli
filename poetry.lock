@@ -949,14 +949,14 @@ files = [
 
 [[package]]
 name = "sw360"
-version = "1.3.2rc1"
+version = "1.4.0"
 description = "Python interface to the SW360 software component catalogue"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "sw360-1.3.2rc1-py3-none-any.whl", hash = "sha256:0d564714ac3bc17feee51a3349668ac577e779f3feadfe2a0a8638835d0d43f2"},
-    {file = "sw360-1.3.2rc1.tar.gz", hash = "sha256:c0d14f08bc430c5ba3fe625d506fdcc8329b695e55b65bdcea8604fe43f425e3"},
+    {file = "sw360-1.4.0-py3-none-any.whl", hash = "sha256:350854144700c046fbcf2063e76a089ef2286e7a5b255b9928ce9625268e5a81"},
+    {file = "sw360-1.4.0.tar.gz", hash = "sha256:e6a09d8ba0c1b60982a9ec153b8ab58ce984ded54405526b5b73fde409ab132b"},
 ]
 
 [package.dependencies]
@@ -1271,4 +1271,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8" # drop support for 3.6 and 3.7 because of wheel and cli-support
-content-hash = "d6243c0572ad951dea3d50355407c0fe19440d250d26864f13002745c23706f5"
+content-hash = "c3973ae67f1b55874cdca80c7344a21a84ec9b9a5c7be43069b0fc6226d27079"

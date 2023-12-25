@@ -28,10 +28,7 @@ htmlcov/
 coverage.xml
 
 # preliminary
-sw360/
 cli/
-xxsw360/
-xxcli/
 Releases/
 
 # internal stuff
