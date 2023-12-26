@@ -16,11 +16,11 @@ SW360_BASE_URL = "https://my.server.com/resource/api/"
 
 
 class CapycliTestBase(unittest.TestCase):
-    @pytest.fixture(autouse=True)  # type: ignore
+    @pytest.fixture(autouse=True)
     def capsys(self, capsys: Any) -> None:
         """internal helper to access stdout/stderr captured by pytest
         """
-        self.capsys = capsys
+        self.capsys = capsys  # type: ignore
 
     def vcr(self, name: str, record_mode: str = "none") -> Any:
         """use vcr to mockup requests for integration tests
