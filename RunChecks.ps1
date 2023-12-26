@@ -13,7 +13,12 @@ Write-Host "markdownlint ..."
 npx -q markdownlint-cli *.md --disable MD041
 
 Write-Host "isort ..."
-isort .
+poetry run isort .
+
+Write-Host "mypy ..."
+poetry run mypy .
+
+Write-Host "Done."
 
 # -----------------------------------
 # -----------------------------------
