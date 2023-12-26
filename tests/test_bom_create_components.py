@@ -55,7 +55,7 @@ class CapycliTestBomCreateComponents(TestBase):
             # verify data we send in POST
             match=[responses.matchers.json_params_matcher(component_data)],
             # server answer with created release data
-            json={**component_data,  # type: ignore
+            json={**component_data,
                   "_links": {"self": {
                       "href": SW360_BASE_URL + "components/06a6e5"}}})
 
@@ -68,10 +68,10 @@ class CapycliTestBomCreateComponents(TestBase):
             SW360_BASE_URL + 'releases',
             # verify data we send in POST
             match=[responses.matchers.json_params_matcher({
-                **release_data, "componentId": "06a6e5",  # type: ignore
+                **release_data, "componentId": "06a6e5",
             })],
             # server answer with created release data
-            json={**release_data,  # type: ignore
+            json={**release_data,
                   "_links": {"self": {
                       "href": SW360_BASE_URL + "releases/06a6e7"}}})
 

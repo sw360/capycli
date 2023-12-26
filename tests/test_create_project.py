@@ -11,7 +11,7 @@ import os
 from typing import Any, Dict, List, Tuple
 
 import responses
-import responses.matchers  # type: ignore
+import responses.matchers
 
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_project import CreateProject

@@ -76,13 +76,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             name = req.name
             if req.local_file:
                 print_yellow(
-                    "WARNING: Local file " + req.path +
+                    "WARNING: Local file " + str(req.path) +
                     " does not have versions. Skipping.")
                 continue
 
             if not req.specs:
                 print_yellow(
-                    "WARNING: " + name +
+                    "WARNING: " + str(name) +
                     " does not have a version specified. Skipping.")
                 continue
 
@@ -90,10 +90,10 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 version = req.specs[0][1]
                 if req.specs[0][0] != "==":
                     print_yellow(
-                        "WARNING: " + name +
+                        "WARNING: " + str(name) +
                         " is not pinned to a specific version. Using: " + version)
 
-                package = {}
+                package: Dict[str, Any] = {}
                 package["name"] = name
                 package["version"] = version
                 package_list.append(package)

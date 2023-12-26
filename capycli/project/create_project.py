@@ -71,7 +71,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     "  " + str(len(project["_embedded"]["sw360:releases"])) +
                     " releases in project before update")
 
-            result = self.client.update_project_releases(data, project_id, add=self.onlyUpdateProject)
+            # note: type in sw360python, 1.4.0 is wrong - we are using the correct one!
+            result = self.client.update_project_releases(data, project_id, add=self.onlyUpdateProject)  # type: ignore
             if not result:
                 print_red("  Error updating project releases!")
             project = self.client.get_project(project_id)

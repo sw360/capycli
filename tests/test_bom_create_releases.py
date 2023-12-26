@@ -449,14 +449,14 @@ class CapycliTestBomCreate(CapycliTestBase):
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         self.app.update_component(item, "123", component_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" in captured.out
 
         component_data["externalIds"]["package-url"] = ('['
                                                         '"pkg:deb/ubuntu/activemodel?arch=source",'
                                                         '"pkg:deb/debian/activemodel?arch=source"]')
         self.app.update_component(item, "123", component_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" not in captured.out
         assert "WARNING" not in captured.out
 
@@ -503,7 +503,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         if release:
             assert release["_links"]["self"]["href"].endswith("06a6e7")
 
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
@@ -539,7 +539,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         if release:
             assert release["_links"]["self"]["href"].endswith("06a6e7")
 
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         print(captured.out)
         assert "Error" not in captured.out
         assert captured.err == ""
@@ -560,7 +560,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             self.app.update_release(item, release)
             assert release["_links"]["self"]["href"].endswith("06a6e7")
 
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         # assert "File not found" in captured.out
         assert captured.err == ""
 
@@ -597,7 +597,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "testcomment")
 
         assert len(responses.calls) == 4
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
@@ -624,7 +624,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
         self.app.upload_file(item2, {}, "06a6e7", "SOURCE", "")
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert len(responses.calls) == 2
         assert "Error" not in captured.out
         assert captured.err == ""
@@ -664,7 +664,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
         assert len(responses.calls) == 2
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
@@ -703,7 +703,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "BINARY_SELF", "")
 
         assert len(responses.calls) == 2
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
@@ -742,7 +742,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
 
         assert len(responses.calls) == 2
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
@@ -772,7 +772,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "old_url")
         self.app.update_release(item2, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" not in captured.out
 
         # existing URL differs from new URL
@@ -781,7 +781,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "new_url")
         self.app.update_release(item2, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
 
         # no existing URL, set new URL
@@ -838,7 +838,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.BINARY_URL_COMMENT, "old_url")
         self.app.update_release(item2, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" not in captured.out
 
         # existing URL differs from new URL
@@ -847,7 +847,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.BINARY_URL_COMMENT, "new_url")
         self.app.update_release(item2, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
 
         # no existing URL, set new URL
@@ -896,25 +896,25 @@ class CapycliTestBomCreate(CapycliTestBase):
             purl=PackageURL.from_string("pkg:deb/debian/bash@1.0%7E1")
         )
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" not in captured.out
 
         item.purl = PackageURL.from_string("pkg:deb/debian/bash@1.0~1")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" not in captured.out
 
         # existing Id differs from new Id -> only warn
         item.purl = PackageURL.from_string("pkg:deb/debian/bash@2.0")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" in captured.out
         assert item.purl.to_string() == "pkg:deb/debian/bash@2.0"
 
         # existing Id invalid
         release_data["externalIds"]["package-url"] = "pkg:something"  # invalid purl
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" in captured.out
         assert item.purl.to_string() == "pkg:deb/debian/bash@2.0"
 
@@ -989,7 +989,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "adduser-3.118.zip")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" not in captured.out
         assert len(responses.calls) == 1
 
@@ -1011,7 +1011,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             hash_value="456"))
         item.external_references.add(extref)
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different hash for source attachment" in captured.out
         assert len(responses.calls) == 2
 
@@ -1021,7 +1021,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "Readme.md")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" in captured.out
         assert len(responses.calls) == 3
 
@@ -1069,7 +1069,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "Readme.md")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" not in captured.out
         assert len(responses.calls) == 2
 
@@ -1101,7 +1101,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" in captured.out
 
         # currently, upload_file() will do nothing if *any* source attachment exists,
