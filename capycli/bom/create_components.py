@@ -19,6 +19,7 @@ import requests
 from colorama import Fore, Style
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from sw360 import SW360Error
 
 import capycli.common.json_support
 import capycli.common.script_base
@@ -27,7 +28,6 @@ from capycli.common.print import print_green, print_red, print_text, print_yello
 from capycli.common.purl_utils import PurlUtils
 from capycli.common.script_support import ScriptSupport
 from capycli.main.result_codes import ResultCode
-from sw360 import SW360Error
 
 LOG = capycli.get_logger(__name__)
 

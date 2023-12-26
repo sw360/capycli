@@ -1,5 +1,4 @@
 from _typeshed import Incomplete
-
 from requests import Response as Response
 
 class SW360Error(IOError):
