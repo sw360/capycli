@@ -34,7 +34,7 @@ class ScriptBase:
         self.project = None
         self.sw360_url = os.environ.get("SW360ServerUrl", None)
 
-    def login(self, token: str = "", url: str = "", oauth2: bool = False, exit_no_login: bool = True) -> bool:
+    def login(self, token: str = "", url: str = "", oauth2: bool = False) -> bool:
         """Login to SW360"""
         self.sw360_url = os.environ.get("SW360ServerUrl", None)
         sw360_api_token = os.environ.get("SW360ProductionToken", None)
@@ -46,21 +46,15 @@ class ScriptBase:
             self.sw360_url = url
 
         if not self.sw360_url:
-            if exit_no_login:
                 print_red("  No SW360 server URL specified!")
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
-            else:
-                return False
 
         if self.sw360_url[-1] != "/":
             self.sw360_url += "/"
 
         if not sw360_api_token:
-            if exit_no_login:
                 print_red("  No SW360 API token specified!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
-            else:
-                return False
 
         self.client = sw360.sw360_api.SW360(self.sw360_url, sw360_api_token, oauth2)
 

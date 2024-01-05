@@ -20,6 +20,7 @@ from typing import Any
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
 from sw360 import SW360Error
+from cyclonedx.model.component import Component
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -41,6 +42,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         self.github_project_name_regex = re.compile(r"^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$")
         self.github_name = None
         self.github_token = None
+        self.sw360_url = os.environ.get("SW360ServerUrl", None)
 
     def is_sourcefile_accessible(self, sourcefile_url: str) -> bool:
         """Check if the URL is accessible."""
@@ -143,7 +145,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             tags.extend(tmp)
         return tags
 
-    def to_semver_string(self, version) -> str:
+    def to_semver_string(self, version: str) -> str:
         """Bring all version information to a format we can compare."""
         result = self.version_regex.search(version)
         if result is None:
@@ -158,7 +160,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             return str(ver + ".0")
         return ver
 
-    def find_github_url(self, component, use_language=True) -> str:
+    def find_github_url(self, component: Component, use_language=True) -> str:
         """ Find github url for component"""
         if not component:
             return ""
@@ -202,7 +204,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 Style.RESET_ALL)
         return link_repo
 
-    def find_golang_url(self, component) -> str:
+    def find_golang_url(self, component: Component) -> str:
         """ Find github url for component"""
         if not component:
             return ""
@@ -268,7 +270,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         tag_info = self.get_github_info(repo_name, self.github_name, self.github_token)
         return self.get_matching_tag(tag_info, version, github_url)
 
-    def get_matching_tag(self, tag_info, version, github_url, version_prefix=None):
+    def get_matching_tag(self, tag_info: list, version: str, github_url: str, version_prefix=None):
         if not tag_info or (len(tag_info) == 0):
             print(
                 Fore.LIGHTRED_EX +
@@ -321,6 +323,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         # print("matching_tag", matching_tag)
         source_url = matching_tag.get("zipball_url", "")
+        if source_url == "":
+            return None
         source_url = source_url.replace(
             "https://api.github.com/repos", "https://github.com").replace(
                 "zipball/refs/tags", "archive/refs/tags")
@@ -378,7 +382,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         return source_url
 
-    def find_source_url_on_release(self, component) -> str:
+    def find_source_url_on_release(self, component: Component) -> str:
         """find the url from sourceCodeDownloadurl from the Id or Sw360Id"""
         url = None
         release_id = ""
@@ -390,7 +394,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             url = self.get_source_url_from_release(release_id)
         return url
 
-    def find_source_url_recursive_by_sw360(self, component) -> str:
+    def find_source_url_recursive_by_sw360(self, component: Component) -> str:
         """find the url via an other release of the parent component"""
         url = None
         found_by_component = False
@@ -421,7 +425,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         return url
 
     @staticmethod
-    def find_source_url_by_language(component) -> str:
+    def find_source_url_by_language(component: Component) -> str:
             capycli.dependencies.javascript.GetJavascriptDependencies().try_find_component_metadata(component, "")
             return CycloneDxSupport.get_ext_ref_source_url(component)
 
@@ -548,8 +552,11 @@ class FindSources(capycli.common.script_base.ScriptBase):
             print("    -h, --help            show this help message and exit")
             print("    -i INPUTFILE          SBOM file to read from (JSON)")
             print("    -o OUTPUTFILE         output file to write to")
+            print("    -t SW360_TOKEN        (optional) use this token for access to SW360")
+            print("    -oa, --oauth2         (optional) this is an oauth2 token")
+            print("    -url SW360_URL        (optional) use this URL for access to SW360")
             print("    -name NAME            (optional) GitHub name for login")
-            print("    -gt TOKEN              (optional) GitHub token for login")
+            print("    -gt TOKEN             (optional) GitHub token for login")
             print("    -v                    be verbose")
             return
 
@@ -563,17 +570,18 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         self.verbose = args.verbose
         self.github_name = args.name
-        self.github_token = args.sw360_token
+        self.github_token = args.github_token
+        if not self.sw360_url:
+            self.sw360_url = args.sw360_url
 
-        if self.login(
-            token=args.sw360_token, url=args.sw360_url,
-                oauth2=args.oauth2, exit_no_login=False):
+        if self.sw360_url:
+            self.login(
+            token=args.sw360_token, url=self.sw360_url,
+            oauth2=args.oauth2)
             print("Using SW360 releases and components to detect GitHub url")
-            self.github_token = args.github_token
             self.use_sw360 = True
         else:
             self.use_sw360 = False
-
         if self.verbose:
             if self.github_name and self.github_token:
                 print_text("Using provided GitHub credentials")

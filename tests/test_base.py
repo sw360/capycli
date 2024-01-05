@@ -63,6 +63,7 @@ class AppArguments():
         self.outputformat = ""
         self.remote_granularity_list = None
         self.local_granularity_list = None
+        self.github_token = ""
 
 
 class TestBasePytest:
