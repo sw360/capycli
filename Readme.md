@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
@@ -253,7 +253,7 @@ This is a Python project managed using ```Poetry```.
 
 ## Copyright & License
 
-Copyright 2018-2023 Siemens
+Copyright 2018-2024 Siemens
 
 This program and the accompanying materials are made
 available under the terms of the MIT License.  
