@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 from packageurl import PackageURL
 
@@ -44,7 +44,7 @@ class PurlStore:
         """ True if self else False """
         return bool(self.purl_cache)
 
-    def add(self, purl: PackageURL, entry: Any) -> tuple[bool, Any]:
+    def add(self, purl: PackageURL, entry: Any) -> Tuple[bool, Any]:
         # Prepare cache for purl
         pc = self.purl_cache
         for key in (purl.type, purl.namespace, purl.name):
