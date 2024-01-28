@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -18,6 +18,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import jwt
 import requests
+import sw360.sw360_api
 from cyclonedx.model.bom import Bom
 from sw360 import SW360, SW360Error
 

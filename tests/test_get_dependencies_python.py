@@ -404,7 +404,7 @@ class TestGetDependenciesPython(TestBase):
         self.assertTrue("Checking meta-data:" in out)
         self.assertTrue("cli-support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
-        self.assertTrue("35 components items written to file." in out)
+        self.assertTrue("37 components items written to file." in out)
 
         # ensure that dev dependencies are NOT listed
         self.assertTrue("flake8" not in out)

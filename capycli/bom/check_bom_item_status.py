@@ -12,6 +12,7 @@ import sys
 from typing import Any, Dict, Optional
 
 import requests
+import sw360.sw360_api
 from colorama import Fore, Style
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component

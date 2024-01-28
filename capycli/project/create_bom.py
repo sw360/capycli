@@ -10,6 +10,7 @@ import logging
 import sys
 from typing import Any, Dict, List
 
+import sw360
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component

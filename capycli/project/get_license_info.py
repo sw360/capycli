@@ -14,6 +14,8 @@ from typing import Any, Dict, List
 
 from sw360 import SW360Error
 
+import sw360
+
 import capycli.common.script_base
 from capycli.common.json_support import load_json_file
 from capycli.common.print import print_red, print_text, print_yellow

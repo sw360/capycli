@@ -12,6 +12,7 @@ import sys
 from typing import Any, Dict, List, Optional
 
 import requests
+import sw360
 from cyclonedx.model.bom import Bom
 from sw360 import SW360Error
 

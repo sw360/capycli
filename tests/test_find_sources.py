@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2022-2023 Siemens
+# Copyright (c) 2022-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -7,6 +7,9 @@
 # -------------------------------------------------------------------------------
 
 import os
+from unittest.mock import MagicMock, patch
+
+import responses
 
 import capycli.common.json_support
 import capycli.common.script_base
@@ -100,7 +103,7 @@ class TestFindSources(TestBase):
         self.assertTrue("Using anonymous GitHub access" in out)
         self.assertTrue("8 components read from SBOM" in out)
         self.assertTrue("1 source files were already available" in out)
-        self.assertTrue("5 source file URLs were found" in out)
+        self.assertTrue("6 source file URLs were found" in out)
 
         sbom = CaPyCliBom.read_sbom(args.outputfile)
         self.assertIsNotNone(sbom)
@@ -191,3 +194,136 @@ class TestFindSources(TestBase):
                 actual = sut.to_semver_string(version)
                 self.assertEqual(actual, expected)
                 self.assertTrue(actual == expected, 'version %s is %s' % (actual, expected))
+
+    @responses.activate
+    def test_get_release_component_id(self):
+        # Mock the sw360 client
+        mock_client = MagicMock()
+        mock_client.get_release.return_value = {"_links": {"sw360:component": {"href": self.MYURL + 'components/123'}}}
+
+        # Call the method and assert the result
+        find_sources = FindSources()
+        find_sources.client = mock_client
+        component_id = find_sources.get_release_component_id("some_release_id")
+        self.assertEqual(component_id, "123")
+
+    @responses.activate
+    def test_find_source_url_from_component(self):
+        # Mock the client
+        mock_client = MagicMock()
+        mock_client.get_component.return_value = {"_embedded": {"sw360:releases": [{"_links": {"self": {"href": self.MYURL + 'releases/456'}}}]}}  # noqa
+        mock_client.get_release.return_value = {"_links": {"sw360:component": {"href": self.MYURL + 'components/123'}}, "sourceCodeDownloadurl": "http://github.com/some/repo/0.0.0"}  # noqa
+
+        # Call the method and assert the result
+        find_sources = FindSources()
+        find_sources.client = mock_client  # Inject the mocked client
+        source_url = find_sources.find_source_url_from_component(component_id="some_component_id")
+        self.assertEqual(source_url, "http://github.com/some/repo/0.0.0")
+
+    @patch('requests.get')
+    @patch('bs4.BeautifulSoup')
+    def test_get_pkg_go_repo_url_success(self, mock_beautifulsoup, mock_requests_get):
+        # Mocking successful response
+        mock_requests_get.return_value.text = '<div class="UnitMeta-repo"><a href="https://github.com/example/repo/1.0.0">Repo Link</a></div>'  # noqa
+        mock_beautifulsoup.return_value.find.return_value = MagicMock(get=lambda x: 'https://github.com/example/repo/1.0.0')  # noqa
+        find_sources = FindSources()
+        repo_url = find_sources.get_pkg_go_repo_url('example/package')
+        self.assertEqual(repo_url, 'https://github.com/example/repo/1.0.0')
+
+    @patch('requests.get', side_effect=Exception('Some error'))
+    def test_get_pkg_go_repo_url_error(self, mock_requests_get):
+        # Mocking an exception during the request
+        find_sources = FindSources()
+        repo_url = find_sources.get_pkg_go_repo_url('some/package')
+        self.assertEqual(repo_url, 'https://pkg.go.dev/some/package')
+
+    @patch('capycli.bom.findsources.FindSources.get_github_info')
+    @patch('capycli.bom.findsources.FindSources.get_matching_tag')
+    def test_find_golang_url_github(self, mock_get_github_info, mock_get_matching_tag):
+        # Mocking a GitHub scenario
+        mock_get_github_info.return_value = 'https://pkg.go.dev/github.com/opencontainers/runc'
+        mock_get_matching_tag.return_value = 'https://github.com/opencontainers/runc/archive/refs/tags/v1.0.1.zip'
+        find_sources = FindSources()
+        component = MagicMock()
+        component.name = 'github.com/opencontainers/runc'
+        component.version = 'v1.0.1'
+        source_url = find_sources.find_golang_url(component)
+
+        self.assertEqual(source_url, 'https://pkg.go.dev/github.com/opencontainers/runc')
+
+    def test_find_golang_url_non_github(self):
+        # Mocking a non-GitHub scenario
+        find_sources = FindSources()
+        component = MagicMock()
+        component.name = 'example/package'
+        component.version = 'v1.0.0'
+        source_url = find_sources.find_golang_url(component)
+
+        self.assertEqual(source_url, '')
+
+    def test_no_matching_tag(self):
+
+        validTag = "3.2.0"
+        invalidTag = "0.03"
+        emptyString = ""
+        githubUrl = "https://github.com/apache/kafka"
+        zipball_url = "https://api.github.com/repos/apache/kafka/zipball/refs/tags/" + validTag
+        sourceUrl = "https://github.com/apache/kafka/archive/refs/tags/" + validTag + ".zip"
+        findResource = capycli.bom.findsources.FindSources()
+        # test Empty tagInfo array
+        tagInfo = []
+        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        self.assertEqual(actual, None)
+        # test Empty tag string
+        tagInfo = [{"name": emptyString, "zipball_url": zipball_url}]
+        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        self.assertEqual(actual, '')
+        # test Empty url string
+        tagInfo = [{"name": validTag, "zipball_url": emptyString}]
+        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        self.assertEqual(actual, None)
+        # test non-matching tag
+        tagInfo = [{"name": invalidTag, "zipball_url": zipball_url}]
+        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        self.assertEqual(actual, '')
+        # test valid tag
+        tagInfo = [{"name": validTag, "zipball_url": zipball_url}]
+        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        self.assertEqual(actual, sourceUrl)
+
+    @patch("time.sleep")
+    def test_get_source_url_success(self, mock_sleep):
+        mock_client = MagicMock()
+        mock_release_id = "123"
+        mock_source_url = "https://example.com/source.zip"
+
+        mock_client.get_release.return_value = {"sourceCodeDownloadurl": mock_source_url}
+
+        findsources = FindSources()
+        findsources.client = mock_client
+        result = findsources.get_source_url_from_release(mock_release_id)
+        self.assertEqual(result, mock_source_url)
+        mock_sleep.assert_not_called()
+
+    def test_get_source_url_no_source_url(self):
+        mock_client = MagicMock()
+        mock_release_id = "123"
+
+        mock_client.get_release.return_value = {"sourceCodeDownloadurl": ""}
+        findsources = FindSources()
+        findsources.client = mock_client
+
+        result = findsources.get_source_url_from_release(mock_release_id)
+        self.assertIsNone(result)
+        mock_client.get_release.assert_called_once_with(mock_release_id)
+
+    def test_get_source_url_exception(self):
+        mock_client = MagicMock()
+        mock_release_id = "123"
+
+        mock_client.get_release.side_effect = Exception("Unexpected error")
+        findsources = FindSources()
+        findsources.client = mock_client
+        with self.assertRaises(Exception):
+            findsources.get_source_url_from_release(mock_release_id)
+        mock_client.get_release.assert_called_once_with(mock_release_id)
