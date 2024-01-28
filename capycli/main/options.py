@@ -161,6 +161,13 @@ class CommandlineSupport():
         )
 
         self.parser.add_argument(
+            "-gt",
+            "--github_token",
+            dest="github_token",
+            help="use this token for access to github",
+        )
+
+        self.parser.add_argument(
             "-oa",
             "--oauth2",
             help="this is an oauth2 token",
