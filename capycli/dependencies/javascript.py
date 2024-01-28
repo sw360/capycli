@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, sameer.panda@siemens.com
 #
@@ -108,7 +108,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
                 modified_key = ""
                 if "node_modules/" in key:
-                  modified_key = key.rsplit("node_modules/", 1)[-1]
+                    modified_key = key.rsplit("node_modules/", 1)[-1]
                 else:
                     modified_key = key
 
@@ -156,9 +156,9 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
         with open(package_lock_file) as fin:
             data = json.load(fin)
             if data.get("lockfileVersion") > 2:
-              sbom = self.get_dependency_lockversion3(data, bom)
+                sbom = self.get_dependency_lockversion3(data, bom)
             else:
-               sbom = self.get_dependency(data, bom) 
+                sbom = self.get_dependency(data, bom)
 
         return sbom
 

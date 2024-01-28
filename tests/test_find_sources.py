@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2022-2023 Siemens
+# Copyright (c) 2022-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -210,8 +210,8 @@ class TestFindSources(TestBase):
     def test_find_source_url_from_component(self):
         # Mock the client
         mock_client = MagicMock()
-        mock_client.get_component.return_value = {"_embedded": {"sw360:releases": [{"_links": {"self": {"href": self.MYURL + 'releases/456'}}}]}}
-        mock_client.get_release.return_value = {"_links": {"sw360:component": {"href": self.MYURL + 'components/123'}}, "sourceCodeDownloadurl": "http://github.com/some/repo/0.0.0"}
+        mock_client.get_component.return_value = {"_embedded": {"sw360:releases": [{"_links": {"self": {"href": self.MYURL + 'releases/456'}}}]}}  # noqa
+        mock_client.get_release.return_value = {"_links": {"sw360:component": {"href": self.MYURL + 'components/123'}}, "sourceCodeDownloadurl": "http://github.com/some/repo/0.0.0"}  # noqa
 
         # Call the method and assert the result
         find_sources = FindSources()
@@ -223,8 +223,8 @@ class TestFindSources(TestBase):
     @patch('bs4.BeautifulSoup')
     def test_get_pkg_go_repo_url_success(self, mock_beautifulsoup, mock_requests_get):
         # Mocking successful response
-        mock_requests_get.return_value.text = '<div class="UnitMeta-repo"><a href="https://github.com/example/repo/1.0.0">Repo Link</a></div>'
-        mock_beautifulsoup.return_value.find.return_value = MagicMock(get=lambda x: 'https://github.com/example/repo/1.0.0')
+        mock_requests_get.return_value.text = '<div class="UnitMeta-repo"><a href="https://github.com/example/repo/1.0.0">Repo Link</a></div>'  # noqa
+        mock_beautifulsoup.return_value.find.return_value = MagicMock(get=lambda x: 'https://github.com/example/repo/1.0.0')  # noqa
         find_sources = FindSources()
         repo_url = find_sources.get_pkg_go_repo_url('example/package')
         self.assertEqual(repo_url, 'https://github.com/example/repo/1.0.0')

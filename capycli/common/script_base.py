@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -46,15 +46,15 @@ class ScriptBase:
             self.sw360_url = url
 
         if not self.sw360_url:
-                print_red("  No SW360 server URL specified!")
-                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+            print_red("  No SW360 server URL specified!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         if self.sw360_url[-1] != "/":
             self.sw360_url += "/"
 
         if not sw360_api_token:
-                print_red("  No SW360 API token specified!")
-                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+            print_red("  No SW360 API token specified!")
+            sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
         self.client = sw360.sw360_api.SW360(self.sw360_url, sw360_api_token, oauth2)
 

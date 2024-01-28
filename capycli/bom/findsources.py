@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, felix.hirschel@siemens.com
 #
@@ -16,7 +16,6 @@ import requests
 import semver
 
 # from packageurl import PackageURL
-from typing import Any
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
 from sw360 import SW360Error
@@ -167,8 +166,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
         component_name = component.name
         language = ""
         for val in component.properties:
-          if val.name == "siemens:primaryLanguage":
-            language = val.value
+            if val.name == "siemens:primaryLanguage":
+                language = val.value
         if not use_language:
             language = ""
         repositories = self.get_repositories(
@@ -286,11 +285,10 @@ class FindSources(capycli.common.script_base.ScriptBase):
             if tag_info["message"].startswith("Bad credentials"):
                 print_red("Invalid GitHub credential provided - aborting!")
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
- 
+
         # search for a tag matching our given version information
         matching_tag = None
 
-        normalized_version = self.to_semver_string(version)
         for tag in tag_info:
             if isinstance(tag, str):
                 # this should be dictionary, if it is a string then
@@ -426,8 +424,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
     @staticmethod
     def find_source_url_by_language(component: Component) -> str:
-            capycli.dependencies.javascript.GetJavascriptDependencies().try_find_component_metadata(component, "")
-            return CycloneDxSupport.get_ext_ref_source_url(component)
+        capycli.dependencies.javascript.GetJavascriptDependencies().try_find_component_metadata(component, "")
+        return CycloneDxSupport.get_ext_ref_source_url(component)
 
     def find_sources(self, bom: Bom):
         """Go through the list of SBOM items and try to determine the source code."""
@@ -447,8 +445,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
             source_url = None
             language = ""
             for val in component.properties:
-              if val.name == "siemens:primaryLanguage":
-                language = val.value
+                if val.name == "siemens:primaryLanguage":
+                    language = val.value
             # first check if not already set on the release.
             if self.use_sw360:
                 if self.verbose:
@@ -576,8 +574,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         if self.sw360_url:
             self.login(
-            token=args.sw360_token, url=self.sw360_url,
-            oauth2=args.oauth2)
+                token=args.sw360_token, url=self.sw360_url, oauth2=args.oauth2)
             print("Using SW360 releases and components to detect GitHub url")
             self.use_sw360 = True
         else:
