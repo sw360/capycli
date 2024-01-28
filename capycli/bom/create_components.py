@@ -16,13 +16,13 @@ from urllib.parse import urlparse
 
 import packageurl
 import requests
+import sw360.sw360_api
 from colorama import Fore, Style
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 
 import capycli.common.json_support
 import capycli.common.script_base
-import sw360.sw360_api
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.common.purl_utils import PurlUtils

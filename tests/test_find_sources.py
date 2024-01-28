@@ -7,6 +7,8 @@
 # -------------------------------------------------------------------------------
 
 import os
+from unittest.mock import MagicMock, patch
+
 import responses
 
 import capycli.common.json_support
@@ -15,7 +17,6 @@ from capycli.bom.findsources import FindSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
-from unittest.mock import MagicMock, patch
 
 
 class TestFindSources(TestBase):

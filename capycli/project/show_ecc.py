@@ -9,8 +9,9 @@
 import logging
 import sys
 
-import capycli.common.script_base
 import sw360
+
+import capycli.common.script_base
 from capycli.common.json_support import write_json_to_file
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode

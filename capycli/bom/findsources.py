@@ -10,24 +10,25 @@ import logging
 import os
 import re
 import sys
-from typing import Any
 import time
+from typing import Any
+
 import requests
 import semver
+from bs4 import BeautifulSoup
+from colorama import Fore, Style
 
 # from packageurl import PackageURL
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
-from sw360 import SW360Error
 from cyclonedx.model.component import Component
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
-from bs4 import BeautifulSoup
-from colorama import Fore, Style
 
 LOG = get_logger(__name__)
 

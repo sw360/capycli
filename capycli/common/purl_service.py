@@ -7,11 +7,11 @@
 # ----------
 
 import packageurl
+from sw360 import SW360
 
 from capycli.common.print import print_green, print_text, print_yellow
 from capycli.common.purl_store import PurlStore
 from capycli.common.purl_utils import PurlUtils
-from sw360 import SW360
 
 
 class PurlService:

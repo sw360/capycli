@@ -12,10 +12,10 @@ import sys
 from typing import List
 
 import requests
+import sw360
 from cyclonedx.model.bom import Bom
 
 import capycli.common.script_base
-import sw360
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_red, print_text, print_yellow
