@@ -127,9 +127,14 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         return repo_name
 
+    if not sys.version_info < (3, 10):
+        get_github_info_type = List[Dict[str, Any]] | Dict[str, Any]
+    else:
+        get_github_info_type = Any
+
     @staticmethod
     def get_github_info(repository_url: str, username: str = "",
-                        token: str = "") -> List[Dict[str, Any]] | Dict[str, Any]:
+                        token: str = "") -> get_github_info_type:
         """
         Query tag infos from GitHub.
 
