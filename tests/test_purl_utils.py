@@ -14,7 +14,7 @@ from capycli.common.purl_utils import PurlUtils
 
 
 class TestPurlUtils(unittest.TestCase):
-    def test_get_purls_from_external_id_invalid_entries(self):
+    def test_get_purls_from_external_id_invalid_entries(self) -> None:
 
         # no purl
         data = None
@@ -26,7 +26,7 @@ class TestPurlUtils(unittest.TestCase):
         actual = PurlUtils.parse_purls_from_external_id(data)
         self.assertListEqual(actual, [])
 
-    def test_get_purls_from_external_id_single_string(self):
+    def test_get_purls_from_external_id_single_string(self) -> None:
 
         # single valid purl
         data = "pkg:github/macchrome/winchrome@v80.0.3987.149-r989-Win64"
@@ -36,7 +36,7 @@ class TestPurlUtils(unittest.TestCase):
         self.assertEqual(len(actual), 1)
         self.assertEqual(actual[0], "pkg:github/macchrome/winchrome@v80.0.3987.149-r989-Win64")
 
-    def test_get_purls_from_external_id_strings(self):
+    def test_get_purls_from_external_id_strings(self) -> None:
 
         # valid purls separated by blank
         purl1 = "pkg:github/chrome/chrome@v80"
@@ -49,7 +49,7 @@ class TestPurlUtils(unittest.TestCase):
         self.assertEqual(actual[0], purl1)
         self.assertEqual(actual[1], purl2)
 
-    def test_get_purls_from_external_id_list(self):
+    def test_get_purls_from_external_id_list(self) -> None:
 
         # two valid purls as list
         purl1 = "pkg:github/chrome/chrome@v80"
@@ -61,7 +61,7 @@ class TestPurlUtils(unittest.TestCase):
         self.assertEqual(actual[0], purl1)
         self.assertEqual(actual[1], purl2)
 
-    def test_get_purls_from_external_id_list_as_string(self):
+    def test_get_purls_from_external_id_list_as_string(self) -> None:
 
         # two valid purls as list
         purl1 = "pkg:github/chrome/chrome@v80"
@@ -74,7 +74,7 @@ class TestPurlUtils(unittest.TestCase):
         self.assertEqual(actual[0], purl1)
         self.assertEqual(actual[1], purl2)
 
-    def test_get_purls_from_external_id_list_with_invalid_entries(self):
+    def test_get_purls_from_external_id_list_with_invalid_entries(self) -> None:
 
         # two valid purls as list
         purl1 = "pkg:github/chrome/chrome"
@@ -98,7 +98,7 @@ class TestPurlUtils(unittest.TestCase):
         self.assertEqual(actual[0], PackageURL.from_string(purl1))
         self.assertEqual(actual[1], PackageURL.from_string(purl2))
 
-    def test_contains(self):
+    def test_contains(self) -> None:
         input_purl = PackageURL.from_string("pkg:maven/org.springframework.boot/spring-boot-actuator@2.7.1?type=jar")
         search_purl = PackageURL.from_string("pkg:maven/org.springframework.boot/spring-boot-actuator@2.7.1")
         self.assertTrue(PurlUtils.contains([input_purl], search_purl))

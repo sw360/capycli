@@ -12,7 +12,7 @@ import pathlib
 import uuid
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional, Union
 
 from cyclonedx.model import (
     AttachedText,
@@ -31,7 +31,8 @@ from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.output.json import JsonV1Dot4
 from cyclonedx.parser import BaseParser
 from dateutil import parser as dateparser
-from sortedcontainers import SortedSet  # type: ignore
+from packageurl import PackageURL
+from sortedcontainers import SortedSet
 
 import capycli.common.script_base
 from capycli import LOG
@@ -56,20 +57,20 @@ class SbomJsonParser(BaseParser):
     def __init__(self, json_content: Dict[str, Any], mode: ParserMode = ParserMode.SBOM):
         super().__init__()
         LOG.debug("Processing CycloneDX data...")
-        self.parser_mode = mode
-        self.metadata = self.read_metadata(json_content.get("metadata"))
-        serial_number = json_content.get("serialNumber", None)
-        self.serial_number = uuid.UUID(serial_number) \
+        self.parser_mode: ParserMode = mode
+        self.metadata: Optional[BomMetaData] = self.read_metadata(json_content.get("metadata"))
+        serial_number: str = json_content.get("serialNumber", "")
+        self.serial_number: Optional[uuid.UUID] = uuid.UUID(serial_number) \
             if self.is_valid_serial_number(serial_number) \
             else None
-        components = json_content.get("components", None)
+        components = json_content.get("components", [])
         if components:
             for component_entry in components:
                 component = self.read_component(component_entry)
                 if component:
                     self._components.append(component)
         self.external_references = self.read_external_references(
-            json_content.get("externalReferences", None))
+            json_content.get("externalReferences", []))
 
         LOG.debug("...done.")
 
@@ -79,36 +80,39 @@ class SbomJsonParser(BaseParser):
         if not self.metadata:
             return None
 
-        return self.metadata.component  # type: ignore
+        return self.metadata.component
 
     def link_dependencies_to_project(self, bom: Bom) -> None:
-        if not self.metadata:
+        if not bom.metadata:
             return
 
-        if not self.metadata.component:
+        if not bom.metadata.component:
             return
 
         for component in self._components:
+            if not component:
+                continue
+
             bom.metadata.component.dependencies.add(component.bom_ref)
 
-    def get_tools(self) -> Optional[List[Tool]]:
+    def get_tools(self) -> SortedSet:
         """Get the list of tools read by the parser."""
         if not self.metadata:
-            return
+            return SortedSet()
 
         return self.metadata.tools
 
-    def get_metadata_licenses(self) -> Optional[SortedSet]:
+    def get_metadata_licenses(self) -> SortedSet:
         """Get the metadata licenses read by the parser."""
         if not self.metadata:
-            return
+            return SortedSet()
 
         return self.metadata.licenses
 
-    def get_metadata_properties(self) -> Optional[SortedSet]:
+    def get_metadata_properties(self) -> SortedSet:
         """Get the list of metadata properties read by the parser."""
         if not self.metadata:
-            return
+            return SortedSet()
 
         return self.metadata.properties
 
@@ -118,14 +122,15 @@ class SbomJsonParser(BaseParser):
 
         return not (serial_number is None or "urn:uuid:None" == serial_number)
 
-    def read_tools(self, param: Iterable[Dict[str, Any]]) -> Optional[Iterable[Tool]]:
+    def read_tools(self, param: Iterable[Dict[str, Any]]) -> SortedSet:
+        tools = SortedSet()
+
         if not param:
-            return None
+            return tools
 
         LOG.debug("CycloneDX: reading tools")
-        tools = []
         for tool in param:
-            tools.append(Tool(
+            tools.add(Tool(
                 vendor=tool.get("vendor"),
                 name=tool.get("name"),
                 version=tool.get("version"),
@@ -238,7 +243,7 @@ class SbomJsonParser(BaseParser):
             if entry.get("type"):
                 ex_refs.append(ExternalReference(
                     reference_type=self.read_external_reference_type(entry.get("type")),
-                    url=entry.get("url", None),
+                    url=XsUri(entry.get("url", "")),
                     comment=entry.get("comment"),
                     hashes=self.read_hashes(entry.get("hashes", []))
                 ))
@@ -251,6 +256,12 @@ class SbomJsonParser(BaseParser):
         name = entry.get("name", None)
         version = entry.get("version")
         LOG.debug(f"CycloneDX: reading component {name}, {version}")
+        purl_str = entry.get("purl", "")
+        # purl: PackageURL
+        if purl_str:
+            purl = PackageURL.from_string(purl_str)
+        else:
+            purl = None
         return Component(
             name=name,
             version=version,
@@ -258,7 +269,7 @@ class SbomJsonParser(BaseParser):
             author=entry.get("author"),
             description=entry.get("description"),
             copyright_=entry.get("copyright"),
-            purl=entry.get("purl"),
+            purl=purl,
             bom_ref=entry.get("bom-ref"),
             component_type=self.read_component_type(entry.get("type", None)),
             hashes=self.read_hashes(entry.get("hashes", None)),
@@ -343,10 +354,10 @@ class CycloneDxSupport():
 
     @staticmethod
     def set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str,
-                    hash_algo: str = None, hash: str = None) -> None:
+                    hash_algo: str = "", hash: str = "") -> None:
         ext_ref = ExternalReference(
             reference_type=type,
-            url=value,
+            url=XsUri(value),
             comment=comment)
 
         if hash_algo and hash:
@@ -370,11 +381,14 @@ class CycloneDxSupport():
             CycloneDxSupport.set_ext_ref(comp, type, comment, value)
 
     @staticmethod
-    def have_relative_ext_ref_path(ext_ref: ExternalReference, rel_to: str):
-        bip = pathlib.PurePath(ext_ref.url)
+    def have_relative_ext_ref_path(ext_ref: ExternalReference, rel_to: str) -> str:
+        if isinstance(ext_ref.url, str):
+            bip = pathlib.PurePath(ext_ref.url)
+        else:
+            bip = pathlib.PurePath(ext_ref.url._uri)
         file = bip.as_posix()
         if os.path.isfile(file):
-            ext_ref.url = "file://" + bip.relative_to(rel_to).as_posix()
+            ext_ref.url = XsUri("file://" + bip.relative_to(rel_to).as_posix())
         return bip.name
 
     @staticmethod
@@ -523,7 +537,7 @@ class SbomCreator():
         sbom.metadata.properties.add(prop)
 
     @staticmethod
-    def create(bom: List[Component], **kwargs: bool) -> Bom:
+    def create(bom: Union[List[Component], SortedSet], **kwargs: bool) -> Bom:
         sbom = Bom()
 
         if not sbom.metadata.properties:
@@ -543,20 +557,20 @@ class SbomCreator():
             SbomCreator.add_profile(sbom, "capycli")
 
         if not sbom.metadata.tools:
-            sbom.metadata.tools = []
+            sbom.metadata.tools = SortedSet()
 
         if "addtools" in kwargs and kwargs["addtools"]:
             SbomCreator.add_tools(sbom.metadata.tools)
 
         if "name" in kwargs or "version" in kwargs or "description" in kwargs:
-            sbom.metadata.component = Component(
-                name=kwargs.get("name"),
-                version=kwargs.get("version"),
-                description=kwargs.get("description")
-            )
+            _name = str(kwargs.get("name", ""))
+            _version = str(kwargs.get("version", ""))
+            _description = str(kwargs.get("description", ""))
+            if _name and _version and _description:
+                sbom.metadata.component = Component(name=_name, version=_version, description=_description)
 
         if bom:
-            sbom.components = bom
+            sbom.components = SortedSet(bom)
             if kwargs.get("addprojectdependencies") and sbom.metadata.component:
                 for component in sbom.components:
                     sbom.metadata.component.dependencies.add(component.bom_ref)
@@ -672,7 +686,7 @@ class CaPyCliBom():
         LOG.debug("done")
 
     @classmethod
-    def write_simple_sbom(cls, bom: List[Component], outputfile: str) -> None:
+    def write_simple_sbom(cls, bom: SortedSet, outputfile: str) -> None:
         LOG.debug(f"Writing to file {outputfile}")
         try:
             creator = SbomCreator()

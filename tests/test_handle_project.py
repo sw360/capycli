@@ -12,7 +12,7 @@ from tests.test_base import AppArguments, TestBase
 
 
 class TestHandleProject(TestBase):
-    def test_not_project_command(self):
+    def test_not_project_command(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("xx_unknown_xx")
@@ -20,7 +20,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertEqual("", out)
 
-    def test_no_project_subcommand(self):
+    def test_no_project_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -29,7 +29,7 @@ class TestHandleProject(TestBase):
         self.assertTrue("No subcommand specified!" in out)
         self.assertTrue("project - project related sub-commands" in out)
 
-    def test_unknown_subcommand(self):
+    def test_unknown_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -41,7 +41,7 @@ class TestHandleProject(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_project_find(self):
+    def test_project_find(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -51,7 +51,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project find" in out)
 
-    def test_project_show(self):
+    def test_project_show(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -61,7 +61,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project show " in out)
 
-    def test_project_prerequisites(self):
+    def test_project_prerequisites(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -71,7 +71,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("Usage: CaPyCli project prerequisites" in out)
 
-    def test_project_licenses(self):
+    def test_project_licenses(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -81,7 +81,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project licenses" in out)
 
-    def test_project_getlicenseinfo(self):
+    def test_project_getlicenseinfo(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -91,7 +91,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("Usage: CaPyCli project GetLicenseInfo" in out)
 
-    def test_project_createreadme(self):
+    def test_project_createreadme(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -101,7 +101,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project createreadme" in out)
 
-    def test_project_create(self):
+    def test_project_create(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -111,7 +111,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project create" in out)
 
-    def test_project_update(self):
+    def test_project_update(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -121,7 +121,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project create" in out)
 
-    def test_project_createbom(self):
+    def test_project_createbom(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -131,7 +131,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project createbom" in out)
 
-    def test_project_vulnerabilities(self):
+    def test_project_vulnerabilities(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")
@@ -141,7 +141,7 @@ class TestHandleProject(TestBase):
         out = self.capture_stdout(run_project_command, args)
         self.assertTrue("usage: CaPyCli project vulnerabilities" in out)
 
-    def test_project_ecc(self):
+    def test_project_ecc(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("project")

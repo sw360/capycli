@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-23 Siemens
+# Copyright (c) 2021-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -10,7 +10,7 @@ import os
 import sys
 import unittest
 from io import BytesIO, TextIOWrapper
-from typing import Any
+from typing import Any, Dict, List
 
 import responses
 
@@ -19,51 +19,50 @@ class AppArguments():
     # Examples
     # command=['bom', 'diff', '.\\Tests\\bom_diff_1.json', '.\\tests\\bom_diff_1.json']
 
-    def __init__(self):
-        self.cachefile = None
-        self.command = None
-        self.create_overview = None
-        self.cyclonedx = False
-        self.dbx = False
-        self.debug = False
-        self.destination = None
-        self.download = False
-        self.ex = False
-        self.filterfile = None
-        self.help = False
-        self.id = None
-        self.inputfile = None
-        self.name = None
-        self.ncli = False
-        self.nconf = False
-        self.nocache = False
-        self.oauth2 = False
-        self.old_version = None
-        self.outputfile = None
-        self.package_source = None
-        self.raw_input = None
-        self.refresh_cache = False
-        self.result_required = False
-        self.search_meta_data = False
-        self.similar = False
-        self.source = None
-        self.sw360_token = None
-        self.sw360_url = None
-        self.verbose = False
-        self.verbose2 = False
-        self.version = None
-        self.write_mapresult = None
-        self.xml = False
-        self.help = False
-        self.all = False
-        self.mode = "all"
-        self.format = ""
-        self.force_exit = ""
-        self.inputformat = ""
-        self.outputformat = ""
-        self.remote_granularity_list = None
-        self.local_granularity_list = None
-        self.github_token = ""
+    def __init__(self) -> None:
+        self.cachefile: str = ""
+        self.command: List[str] = []
+        self.create_overview: str = ""
+        self.cyclonedx: bool = False
+        self.dbx: bool = False
+        self.debug: bool = False
+        self.destination: str = ""
+        self.download: bool = False
+        self.ex: bool = False
+        self.filterfile: str = ""
+        self.help: bool = False
+        self.id: str = ""
+        self.inputfile: str = ""
+        self.name: str = ""
+        self.ncli: bool = False
+        self.nconf: bool = False
+        self.nocache: bool = False
+        self.oauth2: bool = False
+        self.old_version: str = ""
+        self.outputfile: str = ""
+        self.package_source: str = ""
+        self.raw_input: str = ""
+        self.refresh_cache: bool = False
+        self.result_required: bool = False
+        self.search_meta_data: bool = False
+        self.similar: bool = False
+        self.source: str = ""
+        self.sw360_token: str = ""
+        self.sw360_url: str = ""
+        self.verbose: bool = False
+        self.verbose2: bool = False
+        self.version: str = ""
+        self.write_mapresult: str = ""
+        self.xml: bool = False
+        self.all: bool = False
+        self.mode: str = "all"
+        self.format: str = ""
+        self.force_exit: str = ""
+        self.inputformat: str = ""
+        self.outputformat: str = ""
+        self.remote_granularity_list: str = ""
+        self.local_granularity_list: str = ""
+        self.github_token: str = ""
 
 
 class TestBasePytest:
@@ -87,7 +86,7 @@ class TestBasePytest:
             outfile.write(text)
 
     @staticmethod
-    def capture_stderr(func: Any, *args, **kwargs) -> str:
+    def capture_stderr(func: Any, *args: Any, **kwargs: Any) -> str:
         """Capture stderr for the given function and return result as string"""
         # setup the environment
         old_stderr = sys.stderr
@@ -106,7 +105,7 @@ class TestBasePytest:
         return out
 
     @staticmethod
-    def capture_stdout(func: Any, *args, **kwargs) -> str:
+    def capture_stdout(func: Any, *args: Any, **kwargs: Any) -> str:
         """Capture stdout for the given function and return result as string"""
         # setup the environment
         old_stdout = sys.stdout
@@ -123,7 +122,7 @@ class TestBasePytest:
 
         return out
 
-    def add_login_response(self):
+    def add_login_response(self) -> None:
         """
         Add response for SW360 login.
         """
@@ -137,7 +136,7 @@ class TestBasePytest:
         )
 
     @staticmethod
-    def get_project_for_test() -> dict:
+    def get_project_for_test() -> Dict[str, Any]:
         """
         Return a SW360 project for unit testing.
         """
@@ -241,7 +240,7 @@ class TestBasePytest:
         return project
 
     @staticmethod
-    def get_release_wheel_for_test() -> dict:
+    def get_release_wheel_for_test() -> Dict[str, Any]:
         """
         Return a SW360 release for unit testing.
         """
@@ -332,7 +331,7 @@ class TestBasePytest:
         return release_wheel
 
     @staticmethod
-    def get_release_cli_for_test() -> dict:
+    def get_release_cli_for_test() -> Dict[str, Any]:
         """
         Return a SW360 release for unit testing.
         """

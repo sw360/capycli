@@ -5,7 +5,9 @@
 #
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
+
 import json
+from typing import Any, Dict
 
 import packageurl
 from colorama import Fore, Style
@@ -16,7 +18,7 @@ class PurlUtils:
     Package URL utilities
     """
     @staticmethod
-    def get_purl_list_from_sw360_object(sw360_object: dict) -> list:
+    def get_purl_list_from_sw360_object(sw360_object: Dict) -> list:  # type: ignore
         """
         Parse SW360 object to get the list of package URL's
         :param sw360_object: sw360 object component/release
@@ -39,7 +41,7 @@ class PurlUtils:
         return purls
 
     @staticmethod
-    def parse_purls_from_external_id(purl_entries: any) -> list:
+    def parse_purls_from_external_id(purl_entries: Any) -> list:  # type: ignore
         """Parse package-url list as strings from SW360 external id"""
         if isinstance(purl_entries, list):
             return purl_entries
@@ -54,7 +56,7 @@ class PurlUtils:
         return []
 
     @staticmethod
-    def contains(purls: list, search_purl: packageurl.PackageURL) -> bool:
+    def contains(purls: list, search_purl: packageurl.PackageURL) -> bool:  # type: ignore
         """
         Search the given PackageURL in the provided list
         Important: The matching is only based on type, namespace, name and version.
@@ -69,7 +71,7 @@ class PurlUtils:
         return False
 
     @staticmethod
-    def convert_purls_to_external_id(purl_entries: list) -> str:
+    def convert_purls_to_external_id(purl_entries: list) -> str:  # type: ignore
         """Convert list of package-url to SW360 external id format"""
         if len(purl_entries) == 1:
             return purl_entries[0]
@@ -77,9 +79,8 @@ class PurlUtils:
             return "[\"" + "\",\"".join(purl_entries) + "\"]"
 
     @staticmethod
-    def component_purl_from_release_purl(component_purl):
-        purl = packageurl.PackageURL.from_string(component_purl)
-        purl = packageurl.PackageURL(type=purl.type, namespace=purl.namespace,
-                                     name=purl.name, version=None,
-                                     qualifiers=purl.qualifiers)
+    def component_purl_from_release_purl(component_purl: packageurl.PackageURL) -> str:
+        purl = packageurl.PackageURL(type=component_purl.type, namespace=component_purl.namespace,
+                                     name=component_purl.name, version=None,
+                                     qualifiers=component_purl.qualifiers)
         return purl.to_string()

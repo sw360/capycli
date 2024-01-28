@@ -9,6 +9,7 @@
 import os
 import sys
 import xml.etree.ElementTree as ET
+from typing import Any
 
 from cyclonedx.model import Property
 from cyclonedx.model.bom import Bom
@@ -31,7 +32,7 @@ class GetJavaMavenPomDependencies(capycli.common.script_base.ScriptBase):
     Read a pom.xml file, extracts the  dependencies
     and create a bill of material JSON file.
     """
-    def parse_xmlns(self, file):
+    def parse_xmlns(self, file: str) -> ET.ElementTree:
         events = "start", "start-ns"
 
         root = None
@@ -78,26 +79,26 @@ class GetJavaMavenPomDependencies(capycli.common.script_base.ScriptBase):
                     if dep.tag == ns + "dependency":
                         artifact = {}
                         for item in dep:
-                            if item.tag == ns + "groupId":
+                            if item.text and item.tag == ns + "groupId":
                                 artifact["groupId"] = item.text.strip()
-                            if item.tag == ns + "artifactId":
+                            if item.text and item.tag == ns + "artifactId":
                                 artifact["artifactId"] = item.text.strip()
-                            if item.tag == ns + "version":
+                            if item.text and item.tag == ns + "version":
                                 artifact["version"] = item.text.strip()
 
                         artifacts.append(artifact)
 
-        sbom = SbomCreator.create(None, addlicense=True, addprofile=True, addtools=True)
+        sbom = SbomCreator.create([], addlicense=True, addprofile=True, addtools=True)
         for artifact in artifacts:
             purl = PackageURL(
                 "maven", artifact.get("groupId", ""),
                 artifact.get("artifactId", ""), artifact.get("version", ""),
-                "", "").to_string()
+                "", "")
             cx_comp = Component(
                 name=artifact.get("artifactId", ""),
                 version=artifact.get("version", ""),
                 purl=purl,
-                bom_ref=purl
+                bom_ref=purl.to_string()
             )
 
             prop = Property(
@@ -109,7 +110,7 @@ class GetJavaMavenPomDependencies(capycli.common.script_base.ScriptBase):
 
         return sbom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

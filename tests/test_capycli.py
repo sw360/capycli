@@ -7,10 +7,10 @@
 # -------------------------------------------------------------------------------
 
 import os
-from typing import List
 
 from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component
+from sortedcontainers import SortedSet
 
 from capycli.common.capycli_bom_support import CaPyCliBom, SbomCreator, SbomWriter
 from tests.test_base import TestBase
@@ -21,7 +21,7 @@ class TestCaPyCli(TestBase):
     INPUTFILE2 = "capycli_extra.json"
     OUTPUTFILE = "sbom.json"
 
-    def assert_default_test_bom(self, cx_components: List[Component]) -> None:
+    def assert_default_test_bom(self, cx_components: SortedSet) -> None:
         self.assertEqual(4, len(cx_components))
 
         self.assertEqual("colorama", cx_components[0].name)
@@ -36,27 +36,27 @@ class TestCaPyCli(TestBase):
         self.assertEqual("wheel", cx_components[3].name)
         self.assertEqual("0.34.2", cx_components[3].version)
 
-    def assert_components(self, cx_components: List[Component]) -> None:
+    def assert_components(self, cx_components: SortedSet) -> None:
         self.assertEqual(4, len(cx_components))
 
         self.assertEqual("colorama", cx_components[0].name)
         self.assertEqual("0.4.3", cx_components[0].version)
-        self.assertEqual("pkg:pypi/colorama@0.4.3", cx_components[0].purl)
+        self.assertEqual("pkg:pypi/colorama@0.4.3", cx_components[0].purl.to_string())
         self.assertEqual(BomRef("pkg:pypi/colorama@0.4.3"), cx_components[0].bom_ref)
 
         self.assertEqual("python", cx_components[1].name)
         self.assertEqual("3.8", cx_components[1].version)
-        self.assertEqual("pkg:pypi/python@3.8", cx_components[1].purl)
+        self.assertEqual("pkg:pypi/python@3.8", cx_components[1].purl.to_string())
         self.assertEqual(BomRef("pkg:pypi/python@3.8"), cx_components[1].bom_ref)
 
         self.assertEqual("tomli", cx_components[2].name)
         self.assertEqual("2.0.1", cx_components[2].version)
-        self.assertEqual("pkg:pypi/tomli@2.0.1", cx_components[2].purl)
+        self.assertEqual("pkg:pypi/tomli@2.0.1", cx_components[2].purl.to_string())
         self.assertEqual(BomRef("pkg:pypi/tomli@2.0.1"), cx_components[2].bom_ref)
 
         self.assertEqual("wheel", cx_components[3].name)
         self.assertEqual("0.34.2", cx_components[3].version)
-        self.assertEqual("pkg:pypi/wheel@0.34.2", cx_components[3].purl)
+        self.assertEqual("pkg:pypi/wheel@0.34.2", cx_components[3].purl.to_string())
         self.assertEqual(BomRef("pkg:pypi/wheel@0.34.2"), cx_components[3].bom_ref)
 
     def test_read(self) -> None:
@@ -70,7 +70,7 @@ class TestCaPyCli(TestBase):
 
         self.assertEqual("colorama", sbom.components[0].name)
         self.assertEqual("0.4.3", sbom.components[0].version)
-        self.assertEqual("pkg:pypi/colorama@0.4.3", sbom.components[0].purl)
+        self.assertEqual("pkg:pypi/colorama@0.4.3", sbom.components[0].purl.to_string())
         self.assertEqual(BomRef("pkg:pypi/colorama@0.4.3"), sbom.components[0].bom_ref)
 
     def test_write_simple(self) -> None:
@@ -113,10 +113,15 @@ class TestCaPyCli(TestBase):
 
         filename_out = os.path.join(
             os.path.dirname(__file__), "fixtures", TestCaPyCli.OUTPUTFILE)
-        CaPyCliBom.write_simple_sbom(bom, filename_out)
+        CaPyCliBom.write_simple_sbom(SortedSet(bom), filename_out)
 
         sbom2 = CaPyCliBom.read_sbom(filename_out)
         self.assertEqual("test1", sbom2.components[0].name)
         self.assertEqual("99.9", sbom2.components[0].version)
 
         TestCaPyCli.delete_file(filename_out)
+
+
+if __name__ == "__main__":
+    lib = TestCaPyCli()
+    lib.test_write_simple()

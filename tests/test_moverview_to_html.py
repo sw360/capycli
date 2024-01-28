@@ -31,7 +31,7 @@ class TestMappingOverviewToHtml(TestBase):
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("usage: CaPyCli moverview tohtml" in out)
 
-    def test_app_bom_no_input_file_specified(self):
+    def test_app_bom_no_input_file_specified(self) -> None:
         db = MappingOverviewToHtml()
 
         # create argparse command line argument object
@@ -45,7 +45,7 @@ class TestMappingOverviewToHtml(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_input_file_not_found(self):
+    def test_app_bom_input_file_not_found(self) -> None:
         db = MappingOverviewToHtml()
 
         # create argparse command line argument object
@@ -60,7 +60,7 @@ class TestMappingOverviewToHtml(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, sysex.code)
 
-    def test_app_bom_no_output_file_specified(self):
+    def test_app_bom_no_output_file_specified(self) -> None:
         db = MappingOverviewToHtml()
 
         # create argparse command line argument object
@@ -76,7 +76,7 @@ class TestMappingOverviewToHtml(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_app_bom_input_file_invalid(self):
+    def test_app_bom_input_file_invalid(self) -> None:
         db = MappingOverviewToHtml()
 
         # create argparse command line argument object
@@ -93,7 +93,7 @@ class TestMappingOverviewToHtml(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_create_mapping_overview_html(self):
+    def test_create_mapping_overview_html(self) -> None:
         sut = MappingOverviewToHtml()
 
         outputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.OUTPUTFILE)

@@ -6,6 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import List
 
 import capycli.common.json_support
 import capycli.common.script_base
@@ -18,21 +19,21 @@ class TestApplication(TestBase):
     """
     Tests for the Application class.
     """
-    def test_init(self):
+    def test_init(self) -> None:
         sut = Application()
         self.assertEqual("CaPyCli", sut.program)
         self.assertIsNotNone(sut.version)
 
-    def test_check_no_arguments(self):
+    def test_check_no_arguments(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("Commands and Sub-Commands" in out)
 
-    def test_check_unknown_argument(self):
+    def test_check_unknown_argument(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("xx_unknown_xx")
 
         try:
@@ -41,9 +42,9 @@ class TestApplication(TestBase):
         except SystemExit as sysex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, sysex.code)
 
-    def test_check_for_version_display(self):
+    def test_check_for_version_display(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("capycli")
         args.append("--version")
 
@@ -51,17 +52,17 @@ class TestApplication(TestBase):
         self.assertTrue("CaPyCli - Clearing Automation Python Command Line Tool" in out)
         self.assertTrue("version " in out)
 
-    def test_check_for_global_help(self):
+    def test_check_for_global_help(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("-h")
 
         out = self.capture_stdout(sut._run, args)
         self.assertTrue("Commands and Sub-Commands" in out)
 
-    def test_check_for_debug_switch(self):
+    def test_check_for_debug_switch(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("-x")
         args.append("-h")
 
@@ -74,45 +75,45 @@ class TestApplication(TestBase):
 
         self.assertTrue(capycli.main.application.DEBUG_LOGGING)
 
-    def test_getdependencies(self):
+    def test_getdependencies(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("getdependencies")
         args.append("-h")
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("getdependencies - dependency detection specific sub-commands" in out)
 
-    def test_bom(self):
+    def test_bom(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("bom")
         args.append("-h")
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("bom               bill of material" in out)
 
-    def test_mapping(self):
+    def test_mapping(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("mapping")
         args.append("-h")
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("mapping - mapping sub-commands" in out)
 
-    def test_moverview(self):
+    def test_moverview(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("moverview")
         args.append("-h")
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("moverview - mapping overview sub-commands" in out)
 
-    def test_project(self):
+    def test_project(self) -> None:
         sut = Application()
-        args = []
+        args: List[str] = []
         args.append("project")
         args.append("-h")
 

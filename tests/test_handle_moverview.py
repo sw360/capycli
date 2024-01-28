@@ -12,7 +12,7 @@ from tests.test_base import AppArguments, TestBase
 
 
 class TestHandleMoverview(TestBase):
-    def test_not_moverview_command(self):
+    def test_not_moverview_command(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("xx_unknown_xx")
@@ -20,7 +20,7 @@ class TestHandleMoverview(TestBase):
         out = self.capture_stdout(run_moverview_command, args)
         self.assertEqual("", out)
 
-    def test_no_moverview_subcommand(self):
+    def test_no_moverview_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("moverview")
@@ -29,7 +29,7 @@ class TestHandleMoverview(TestBase):
         self.assertTrue("No subcommand specified!" in out)
         self.assertTrue("moverview - mapping overview sub-commands" in out)
 
-    def test_unknown_subcommand(self):
+    def test_unknown_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("moverview")
@@ -41,7 +41,7 @@ class TestHandleMoverview(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_moverview_tohtml(self):
+    def test_moverview_tohtml(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("moverview")
@@ -51,7 +51,7 @@ class TestHandleMoverview(TestBase):
         out = self.capture_stdout(run_moverview_command, args)
         self.assertTrue("usage: CaPyCli moverview tohtml" in out)
 
-    def test_moverview_toxlsx(self):
+    def test_moverview_toxlsx(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("moverview")

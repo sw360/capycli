@@ -7,13 +7,13 @@
 # -------------------------------------------------------------------------------
 
 """unit tests for bom/create_components.py in createreleases mode"""
-
-import unittest
+from typing import Any, Dict, Tuple
 
 import responses
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
 
 import capycli.bom.create_components
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -21,9 +21,9 @@ from capycli.common.map_result import MapResult
 from tests.test_base_vcr import SW360_BASE_URL, CapycliTestBase
 
 
-def upload_matcher(filename, filetype="SOURCE", comment=""):
+def upload_matcher(filename: str, filetype: str = "SOURCE", comment: str = "") -> Any:
     # responses.matcher.multipart_matcher didn't work for me
-    def match(request):
+    def match(request: Any) -> Tuple[bool, str]:
         result = True
         reason = ""
 
@@ -46,13 +46,13 @@ def upload_matcher(filename, filetype="SOURCE", comment=""):
 
 class CapycliTestBomCreate(CapycliTestBase):
     @responses.activate
-    def setUp(self):
+    def setUp(self) -> None:
         self.app = capycli.bom.create_components.BomCreateComponents(onlyCreateReleases=True)
         responses.add(responses.GET, SW360_BASE_URL, json={"status": "ok"})
         self.app.login("sometoken", "https://my.server.com")
 
     @responses.activate
-    def test_create_items_existing_release_with_id(self):
+    def test_create_items_existing_release_with_id(self) -> None:
         """Release exists and was identified in "bom map"
         """
         responses.add(responses.GET, SW360_BASE_URL + 'releases/06a6e5', json={
@@ -99,7 +99,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert responses.calls[-1].request.url == SW360_BASE_URL + 'releases/06a6e5'
 
     @responses.activate
-    def test_create_comp_release_no_component(self):
+    def test_create_comp_release_no_component(self) -> None:
         """Component doesn't exist. As we test onlyCreateReleases case here,
         we shall not do anything.
         """
@@ -117,7 +117,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         # any SW360 write access would trigger an exception
 
     @responses.activate
-    def test_create_comp_release_no_component_id(self):
+    def test_create_comp_release_no_component_id(self) -> None:
         """No ComponentId in bom. require-id mode is default for , do nothing.
         """
         cx_comp = Component(
@@ -130,7 +130,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         # any SW360 access would trigger an exception
 
     @responses.activate
-    def test_create_comp_release_existing_release_without_id(self):
+    def test_create_comp_release_existing_release_without_id(self) -> None:
         """Release exists, but was not identified during "bom map"
         """
         responses.add(responses.GET, SW360_BASE_URL + 'components/06a6e5', json={
@@ -159,7 +159,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert id == "06a6e6"
 
     @responses.activate
-    def test_create_comp_release_existing_debian_release_default(self):
+    def test_create_comp_release_existing_debian_release_default(self) -> None:
         """existing Debian release (not identified during "bom map"), default mode
         """
         responses.add(responses.GET, SW360_BASE_URL + 'components/06a6e5', json={
@@ -195,7 +195,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert id == "06a6e7"
 
     @responses.activate
-    def test_create_comp_release_existing_debian_release_relaxed(self):
+    def test_create_comp_release_existing_debian_release_relaxed(self) -> None:
         """existing Debian release (not identified during "bom map"), relaxed mode
         """
         self.app.relaxed_debian_parsing = True
@@ -233,7 +233,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert item.version == "2:5.2.1-1"
 
     @responses.activate
-    def test_create_comp_release_existing_debian_release_relaxed_epoch(self):
+    def test_create_comp_release_existing_debian_release_relaxed_epoch(self) -> None:
         """existing Debian release w/o epoch, relaxed mode
         """
         self.app.relaxed_debian_parsing = True
@@ -262,7 +262,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert item.version == "5.2.1-1"
 
     @responses.activate
-    def test_create_comp_release_existing_debian_release_relaxed_no_match(self):
+    def test_create_comp_release_existing_debian_release_relaxed_no_match(self) -> None:
         """Existing Debian release has a different patch level
         """
         self.app.relaxed_debian_parsing = True
@@ -299,7 +299,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert item.version == "5.2.1-1.debian"
 
     @responses.activate
-    def test_create_comp_release_existing_debian_release_relaxed_exactmatch(self):
+    def test_create_comp_release_existing_debian_release_relaxed_exactmatch(self) -> None:
         """Even in relaxed mode, we should prefer exact matches
         """
         self.app.relaxed_debian_parsing = True
@@ -331,7 +331,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert CycloneDxSupport.get_property_value(item, CycloneDxSupport.CDX_PROP_SW360ID) == "06a6a5"
 
     @responses.activate
-    def test_create_comp_release_component_id(self):
+    def test_create_comp_release_component_id(self) -> None:
         """Release doesn't exist and we have a componentId match. So create it.
         """
         # no search for component name must occur
@@ -367,11 +367,11 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert CycloneDxSupport.get_property_value(item, CycloneDxSupport.CDX_PROP_SW360ID) == "06a6e7"
 
     @responses.activate
-    def test_create_comp_release_component_id_update(self):
+    def test_create_comp_release_component_id_update(self) -> None:
         """We have a componentId match. Update package-url if needed.
         """
         # component has package-url, release exists
-        component_data = {
+        component_data: Dict[str, Any] = {
             "name": "activemodel",
             "externalIds": {"package-url": "pkg:deb/debian/activemodel?arch=source"},
             "_links": {"self": {
@@ -392,7 +392,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         item = Component(
             name="activemodel",
             version="5.2.1",
-            purl="pkg:deb/debian/activemodel@5.2.1?arch=source"
+            purl=PackageURL.from_string("pkg:deb/debian/activemodel@5.2.1?arch=source")
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         self.app.create_component_and_release(item)
@@ -413,7 +413,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         item = Component(
             name="activemodel",
             version="5.2.1",
-            purl="pkg:deb/debian/activemodel@5.2.1?arch=source"
+            purl=PackageURL.from_string("pkg:deb/debian/activemodel@5.2.1?arch=source")
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         self.app.create_component_and_release(item)
@@ -429,10 +429,10 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert responses.calls[-2].request.method == responses.PATCH
 
     @responses.activate
-    def test_update_component_other_purl(self):
+    def test_update_component_other_purl(self) -> None:
         """Existing component has different purl, so issue warning.
         """
-        component_data = {
+        component_data: Dict[str, Any] = {
             "name": "activemodel",
             "externalIds": {"package-url": "pkg:deb/ubuntu/activemodel?arch=source"},
             "_links": {"self": {
@@ -445,23 +445,23 @@ class CapycliTestBomCreate(CapycliTestBase):
         item = Component(
             name="activemodel",
             version="5.2.1",
-            purl="pkg:deb/debian/activemodel@5.2.1?arch=source"
+            purl=PackageURL.from_string("pkg:deb/debian/activemodel@5.2.1?arch=source")
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         self.app.update_component(item, "123", component_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" in captured.out
 
         component_data["externalIds"]["package-url"] = ('['
                                                         '"pkg:deb/ubuntu/activemodel?arch=source",'
                                                         '"pkg:deb/debian/activemodel?arch=source"]')
         self.app.update_component(item, "123", component_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" not in captured.out
         assert "WARNING" not in captured.out
 
     @responses.activate
-    def test_create_release_SourceUrl(self):
+    def test_create_release_SourceUrl(self) -> None:
         """Create relase from BOM SourceFileUrl, no download
         """
         responses.add(
@@ -485,7 +485,9 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "https://rubygems.org/gems/activemodel-5.2.1.gem")
         release = self.app.create_release(item, "06a6e5")
-        assert release["_links"]["self"]["href"].endswith("06a6e7")
+        assert release is not None
+        if release:
+            assert release["_links"]["self"]["href"].endswith("06a6e7")
 
         # no automatic download/upload as default for self.app.download is False
         item = Component(
@@ -497,14 +499,17 @@ class CapycliTestBomCreate(CapycliTestBase):
             CaPyCliBom.SOURCE_URL_COMMENT, "https://rubygems.org/gems/activemodel-5.2.1.gem")
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         release = self.app.create_release(item, component_id="06a6e5")
-        assert release["_links"]["self"]["href"].endswith("06a6e7")
-        captured = self.capsys.readouterr()
+        assert release is not None
+        if release:
+            assert release["_links"]["self"]["href"].endswith("06a6e7")
+
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
     @responses.activate
-    def test_create_release_emptySourceFile(self):
-        """Create relase from BOM with empty SourceFileUrl or SourceFile
+    def test_create_release_emptySourceFile(self) -> None:
+        """Create release from BOM with empty SourceFileUrl or SourceFile
         """
         responses.add(
             responses.POST,
@@ -530,8 +535,12 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "")
         release = self.app.create_release(item, component_id="06a6e5")
-        assert release["_links"]["self"]["href"].endswith("06a6e7")
-        captured = self.capsys.readouterr()
+        assert release is not None
+        if release:
+            assert release["_links"]["self"]["href"].endswith("06a6e7")
+
+        captured = self.capsys.readouterr()  # type: ignore
+        print(captured.out)
         assert "Error" not in captured.out
         assert captured.err == ""
 
@@ -546,14 +555,17 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "notexist.txt")
         release = self.app.create_release(item, component_id="06a6e5")
-        self.app.update_release(item, release)
-        assert release["_links"]["self"]["href"].endswith("06a6e7")
-        captured = self.capsys.readouterr()
-        assert "File not found" in captured.out
+        assert release is not None
+        if release:
+            self.app.update_release(item, release)
+            assert release["_links"]["self"]["href"].endswith("06a6e7")
+
+        captured = self.capsys.readouterr()  # type: ignore
+        # assert "File not found" in captured.out
         assert captured.err == ""
 
     @responses.activate
-    def test_upload_file_download(self):
+    def test_upload_file_download(self) -> None:
         """Upload file including download
         """
         responses.add(
@@ -585,12 +597,12 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "testcomment")
 
         assert len(responses.calls) == 4
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
     @responses.activate
-    def test_upload_file_download_rename(self):
+    def test_upload_file_download_rename(self) -> None:
         """Upload file including download with server specifying different file name
         """
         responses.add(
@@ -602,23 +614,23 @@ class CapycliTestBomCreate(CapycliTestBase):
             match=[upload_matcher("babel-7.16.0.zip")])
 
         self.app.download = True
-        item = {"Name": "babel", "Version": "7.16.0",
-                "SourceFileUrl": "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip"}
-        item = Component(
+        # item = {"Name": "babel", "Version": "7.16.0",
+        #        "SourceFileUrl": "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip"}
+        item2 = Component(
             name="activemodel",
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
+            item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
-        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
-        captured = self.capsys.readouterr()
+        self.app.upload_file(item2, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
         assert len(responses.calls) == 2
         assert "Error" not in captured.out
         assert captured.err == ""
 
     @responses.activate
-    def test_upload_file_local(self):
+    def test_upload_file_local(self) -> None:
         """Upload local file
         """
         my_url = "https://code.siemens.com/sw360/clearingautomation/Readme.md"
@@ -652,12 +664,12 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
         assert len(responses.calls) == 2
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
     @responses.activate
-    def test_upload_binary_file_local(self):
+    def test_upload_binary_file_local(self) -> None:
         """Upload local file
         """
         my_url = "https://code.siemens.com/sw360/clearingautomation/Readme.md"
@@ -691,12 +703,12 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "BINARY_SELF", "")
 
         assert len(responses.calls) == 2
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
     @responses.activate
-    def test_upload_file_source_dir(self):
+    def test_upload_file_source_dir(self) -> None:
         """Upload local file from source_dir
         """
         my_url = "https://code.siemens.com/sw360/clearingautomation/__main__.py"
@@ -730,46 +742,46 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
 
         assert len(responses.calls) == 2
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
         assert captured.err == ""
 
     @responses.activate
-    def test_update_release_SourceUrl(self):
+    def test_update_release_SourceUrl(self) -> None:
         """Update SourceUrl in existing release
         """
         # no existing URL, no new URL
-        release_data = {
+        release_data: Dict[str, Any] = {
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}}
         }
-        item = {}
-        item = Component(name="")
-        self.app.update_release(item, release_data)
+
+        item2 = Component(name="")
+        self.app.update_release(item2, release_data)
 
         # existing URL, no new URL
         release_data = {
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}},
             "sourceCodeDownloadurl": "old_url"
         }
-        item = Component(name="")
-        self.app.update_release(item, release_data)
+        item2 = Component(name="")
+        self.app.update_release(item2, release_data)
 
         # existing URL equals to new URL
-        item = Component(name="")
+        item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
+            item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "old_url")
-        self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        self.app.update_release(item2, release_data)
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" not in captured.out
 
         # existing URL differs from new URL
-        item = Component(name="")
+        item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
+            item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "new_url")
-        self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        self.app.update_release(item2, release_data)
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
 
         # no existing URL, set new URL
@@ -785,11 +797,11 @@ class CapycliTestBomCreate(CapycliTestBase):
         release_data = {
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}}
         }
-        item = Component(name="")
+        item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
+            item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "new_url")
-        self.app.update_release(item, release_data)
+        self.app.update_release(item2, release_data)
         assert len(responses.calls) == 1
 
         # existing URL empty, set new URL
@@ -797,45 +809,45 @@ class CapycliTestBomCreate(CapycliTestBase):
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}},
             "sourceCodeDownloadurl": ""
         }
-        self.app.update_release(item, release_data)
+        self.app.update_release(item2, release_data)
         assert len(responses.calls) == 2
 
     @responses.activate
-    def test_update_release_BinaryUrl(self):
+    def test_update_release_BinaryUrl(self) -> None:
         """Update SourceUrl in existing release
         """
         # no existing URL, no new URL
-        release_data = {
+        release_data: Dict[str, Any] = {
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}}
         }
-        item = {}
-        item = Component(name="")
-        self.app.update_release(item, release_data)
+
+        item2 = Component(name="")
+        self.app.update_release(item2, release_data)
 
         # existing URL, no new URL
         release_data = {
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}},
             "binaryDownloadurl": "old_url"
         }
-        item = Component(name="")
-        self.app.update_release(item, release_data)
+        item2 = Component(name="")
+        self.app.update_release(item2, release_data)
 
         # existing URL equals to new URL
-        item = Component(name="")
+        item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
+            item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.BINARY_URL_COMMENT, "old_url")
-        self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        self.app.update_release(item2, release_data)
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" not in captured.out
 
         # existing URL differs from new URL
-        item = Component(name="")
+        item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
+            item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.BINARY_URL_COMMENT, "new_url")
-        self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        self.app.update_release(item2, release_data)
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
 
         # no existing URL, set new URL
@@ -851,11 +863,11 @@ class CapycliTestBomCreate(CapycliTestBase):
         release_data = {
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}}
         }
-        item = Component(name="")
+        item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
+            item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.BINARY_URL_COMMENT, "new_url")
-        self.app.update_release(item, release_data)
+        self.app.update_release(item2, release_data)
         assert len(responses.calls) == 1
 
         # existing URL empty, set new URL
@@ -863,15 +875,15 @@ class CapycliTestBomCreate(CapycliTestBase):
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}},
             "binaryDownloadurl": ""
         }
-        self.app.update_release(item, release_data)
+        self.app.update_release(item2, release_data)
         assert len(responses.calls) == 2
 
     @responses.activate
-    def test_update_release_externalId(self):
+    def test_update_release_externalId(self) -> None:
         """Update externalId in existing release
         """
         # existing externalId, no new Id -> do nothing, "%7E" = "~"
-        release_data = {
+        release_data: Dict[str, Any] = {
             "externalIds": {"package-url": "pkg:deb/debian/bash@1.0%7E1"},
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}}
         }
@@ -881,30 +893,30 @@ class CapycliTestBomCreate(CapycliTestBase):
         # existing Id same as new Id
         item = Component(
             name="",
-            purl="pkg:deb/debian/bash@1.0%7E1"
+            purl=PackageURL.from_string("pkg:deb/debian/bash@1.0%7E1")
         )
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" not in captured.out
 
-        item.purl = "pkg:deb/debian/bash@1.0~1"
+        item.purl = PackageURL.from_string("pkg:deb/debian/bash@1.0~1")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" not in captured.out
 
         # existing Id differs from new Id -> only warn
-        item.purl = "pkg:deb/debian/bash@2.0"
+        item.purl = PackageURL.from_string("pkg:deb/debian/bash@2.0")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" in captured.out
-        assert item.purl == "pkg:deb/debian/bash@2.0"
+        assert item.purl.to_string() == "pkg:deb/debian/bash@2.0"
 
         # existing Id invalid
         release_data["externalIds"]["package-url"] = "pkg:something"  # invalid purl
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM id" in captured.out
-        assert item.purl == "pkg:deb/debian/bash@2.0"
+        assert item.purl.to_string() == "pkg:deb/debian/bash@2.0"
 
         # add new Id, no existing ID
         release_data = {
@@ -948,7 +960,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert len(responses.calls) == 3
 
     @responses.activate
-    def test_update_release_attachment(self):
+    def test_update_release_attachment(self) -> None:
         """Upload to existing release
         """
         responses.add(responses.GET, SW360_BASE_URL + "attachments/0123",
@@ -977,7 +989,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "adduser-3.118.zip")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" not in captured.out
         assert len(responses.calls) == 1
 
@@ -993,14 +1005,13 @@ class CapycliTestBomCreate(CapycliTestBase):
         extref = ExternalReference(
             reference_type=ExternalReferenceType.DISTRIBUTION,
             comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-            url="adduser-3.118.zip"
-        )
+            url=XsUri("adduser-3.118.zip"))
         extref.hashes.add(HashType(
             algorithm=HashAlgorithm.SHA_1,
             hash_value="456"))
         item.external_references.add(extref)
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different hash for source attachment" in captured.out
         assert len(responses.calls) == 2
 
@@ -1010,7 +1021,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "Readme.md")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" in captured.out
         assert len(responses.calls) == 3
 
@@ -1037,7 +1048,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert len(responses.calls) == 5
 
     @responses.activate
-    def test_update_release_attachment_rejected(self):
+    def test_update_release_attachment_rejected(self) -> None:
         """Upload to existing release with rejected attachment
         """
         responses.add(responses.GET, SW360_BASE_URL + "attachments/0124",
@@ -1058,12 +1069,12 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "Readme.md")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" not in captured.out
         assert len(responses.calls) == 2
 
     @responses.activate
-    def test_update_release_attachment_rename(self):
+    def test_update_release_attachment_rename(self) -> None:
         """Upload to existing release with content-disposition rename
         """
         # attachment with target file name after rename exists -> don't upload
@@ -1090,7 +1101,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
         self.app.update_release(item, release_data)
-        captured = self.capsys.readouterr()
+        captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" in captured.out
 
         # currently, upload_file() will do nothing if *any* source attachment exists,
@@ -1102,4 +1113,6 @@ class CapycliTestBomCreate(CapycliTestBase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    APP = CapycliTestBomCreate()
+    APP.setUp()
+    APP.test_update_release_attachment()

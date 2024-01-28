@@ -6,13 +6,15 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import Any, Dict, List
+
 import responses
 
 from capycli.bom.map_bom import MapBom
 from capycli.common.purl_service import PurlService
 from tests.test_base_vcr import SW360_BASE_URL, CapycliTestBase
 
-sw360_purl_releases = [
+sw360_purl_releases: List[Dict[str, Any]] = [
     {
         # in a purl, "~"" may be encoded as %7E and "+" must be "%2B"
         "externalIds": {
@@ -26,7 +28,7 @@ sw360_purl_releases = [
             "href": SW360_BASE_URL + "releases/06a6"}}},
 ]
 
-sw360_purl_components = [
+sw360_purl_components: List[Dict[str, Any]] = [
     {
         "externalIds": {
             "package-url": "pkg:deb/debian/sed?type=source"},
@@ -43,12 +45,12 @@ sw360_purl_components = [
 class TestPurlService(CapycliTestBase):
 
     @responses.activate
-    def setUp(self):
+    def setUp(self) -> None:
         self.app: MapBom = MapBom()
         responses.add(responses.GET, SW360_BASE_URL, json={"status": "ok"})
         self.app.login("sometoken", "https://my.server.com")
 
-    def purl_build_cache(self):
+    def purl_build_cache(self) -> PurlService:
         responses.add(
             responses.GET,
             SW360_BASE_URL + "releases/searchByExternalIds?package-url=",
@@ -58,21 +60,23 @@ class TestPurlService(CapycliTestBase):
             SW360_BASE_URL + "components/searchByExternalIds?package-url=",
             json={"_embedded": {"sw360:components": sw360_purl_components}})
 
-        purl_service = PurlService(self.app.client)
-        purl_service.build_purl_cache()
-        assert purl_service.purl_cache["deb"]["debian"]["sed"][None] == sw360_purl_components[0]["_links"]["self"]["href"] # noqa
-        assert purl_service.purl_cache["gem"][None]["mini_portile2"][None] == sw360_purl_components[1]["_links"]["self"]["href"] # noqa
-        assert purl_service.purl_cache["deb"]["debian"]["sed"]["4.4+1~2"] == sw360_purl_releases[0]["_links"]["self"]["href"] # noqa
-        assert purl_service.purl_cache["gem"][None]["mini_portile2"]["2.4.0"] == sw360_purl_releases[1]["_links"]["self"]["href"] # noqa
+        assert self.app.client is not None
+        if self.app.client:
+            purl_service = PurlService(self.app.client)
+            purl_service.build_purl_cache()
+            assert purl_service.purl_cache["deb"]["debian"]["sed"][None] == sw360_purl_components[0]["_links"]["self"]["href"] # noqa
+            assert purl_service.purl_cache["gem"][None]["mini_portile2"][None] == sw360_purl_components[1]["_links"]["self"]["href"] # noqa
+            assert purl_service.purl_cache["deb"]["debian"]["sed"]["4.4+1~2"] == sw360_purl_releases[0]["_links"]["self"]["href"] # noqa
+            assert purl_service.purl_cache["gem"][None]["mini_portile2"]["2.4.0"] == sw360_purl_releases[1]["_links"]["self"]["href"] # noqa
 
         return purl_service
 
     @responses.activate
-    def test_purl_build_cache(self):
+    def test_purl_build_cache(self) -> None:
         self.purl_build_cache()
 
     @responses.activate
-    def test_purl_build_cache__for_multi_purl_component(self):
+    def test_purl_build_cache__for_multi_purl_component(self) -> None:
         responses.add(
             responses.GET,
             SW360_BASE_URL + "releases/searchByExternalIds?package-url=",
@@ -94,14 +98,17 @@ class TestPurlService(CapycliTestBase):
                     }
                 }
             ]}})
-        purl_service = PurlService(self.app.client)
-        purl_service.build_purl_cache()
 
-        assert purl_service.purl_cache["maven"]["org.springframework"]["spring-tx"][None] == SW360_BASE_URL + "components/05a6" # noqa
-        assert purl_service.purl_cache["maven"]["org.springframework"]["spring-jcl"][None] == SW360_BASE_URL + "components/05a6" # noqa
+        assert self.app.client is not None
+        if self.app.client:
+            purl_service = PurlService(self.app.client)
+            purl_service.build_purl_cache()
+
+            assert purl_service.purl_cache["maven"]["org.springframework"]["spring-tx"][None] == SW360_BASE_URL + "components/05a6" # noqa
+            assert purl_service.purl_cache["maven"]["org.springframework"]["spring-jcl"][None] == SW360_BASE_URL + "components/05a6" # noqa
 
     @responses.activate
-    def test_purl_duplicates(self):
+    def test_purl_duplicates(self) -> None:
         # add duplicate for release and component
         duplicate_releases = {
             "_embedded": {"sw360:releases": sw360_purl_releases[1:2] + [{
@@ -123,6 +130,10 @@ class TestPurlService(CapycliTestBase):
                       SW360_BASE_URL + "components/searchByExternalIds?package-url=",
                       json=duplicate_components)
 
+        assert self.app.client is not None
+        if not self.app.client:
+            return
+
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
         assert "deb" not in purl_service.purl_cache
@@ -140,13 +151,17 @@ class TestPurlService(CapycliTestBase):
                           SW360_BASE_URL + "components/searchByExternalIds?package-url=",
                           json=duplicate_components)
 
+        assert self.app.client is not None
+        if not self.app.client:
+            return
+
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
         assert None not in purl_service.purl_cache["deb"]["debian"]["sed"]
         assert "2.4.0" not in purl_service.purl_cache["gem"][None]["mini_portile2"]
 
     @responses.activate
-    def test_purl_invalid(self):
+    def test_purl_invalid(self) -> None:
         invalid_releases = {
             "_embedded": {"sw360:releases": sw360_purl_releases + [{
                 "externalIds": {
@@ -161,12 +176,16 @@ class TestPurlService(CapycliTestBase):
                       SW360_BASE_URL + "components/searchByExternalIds?package-url=",
                       json={"_embedded": {"sw360:components": sw360_purl_components}})
 
+        assert self.app.client is not None
+        if not self.app.client:
+            return
+
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
         assert "2.0.0" not in purl_service.purl_cache["gem"][None]["mini_portile2"]
 
     @responses.activate
-    def test_purl_search_release(self):
+    def test_purl_search_release(self) -> None:
         purl_service = self.purl_build_cache()
 
         res = purl_service.search_release_by_external_id(
@@ -182,7 +201,7 @@ class TestPurlService(CapycliTestBase):
         assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
 
     @responses.activate
-    def test_purl_search_component(self):
+    def test_purl_search_component(self) -> None:
         purl_service = self.purl_build_cache()
         res = purl_service.search_component_by_external_id(
             "package-url",
@@ -192,10 +211,10 @@ class TestPurlService(CapycliTestBase):
         res = purl_service.search_component_by_external_id(
             "package-url",
             "pkg:deb/debian/mypkg")
-        assert res is None
+        assert res == ""
 
     @responses.activate
-    def test_purl_search_component_via_release(self):
+    def test_purl_search_component_via_release(self) -> None:
         responses.add(
             responses.GET,
             SW360_BASE_URL + "releases/searchByExternalIds?package-url=",
@@ -205,6 +224,11 @@ class TestPurlService(CapycliTestBase):
             SW360_BASE_URL + "components/searchByExternalIds?package-url=",
             # only first entry for components so we need to search via release
             json={"_embedded": {"sw360:components": sw360_purl_components[0:1]}})
+
+        assert self.app.client is not None
+        if not self.app.client:
+            return
+
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
 
@@ -219,7 +243,7 @@ class TestPurlService(CapycliTestBase):
         assert res == "myurl"
 
     @responses.activate
-    def test_purl_search_component_via_release_conflicts(self):
+    def test_purl_search_component_via_release_conflicts(self) -> None:
         responses.add(
             responses.GET,
             SW360_BASE_URL + "releases/searchByExternalIds?package-url=",
@@ -244,14 +268,18 @@ class TestPurlService(CapycliTestBase):
             SW360_BASE_URL + "releases/06dd",
             json={"_links": {"sw360:component": {"href": "anotherurl"}}})
 
+        assert self.app.client is not None
+        if not self.app.client:
+            return
+
         purl_service = PurlService(self.app.client)
         res = purl_service.search_component_by_external_id(
             "package-url",
             sw360_purl_components[1]["externalIds"]["package-url"])
-        assert res is None
+        assert res == ""
 
-    def test_purl_search_component_and_release(self):
-        test_cache: dict = {
+    def test_purl_search_component_and_release(self) -> None:
+        test_cache: Dict[str, Any] = {
             "maven": {
                 "org.test": {
                     "c1": {
@@ -261,6 +289,11 @@ class TestPurlService(CapycliTestBase):
                 }
             }
         }
+
+        assert self.app.client is not None
+        if not self.app.client:
+            return
+
         purl_service = PurlService(self.app.client, cache=test_cache)
         c, r = purl_service.search_component_and_release("pkg:maven/org.test/c1@1")
         self.assertIsNotNone(c)

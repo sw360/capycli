@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2023 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -9,11 +9,11 @@
 import logging
 import os
 import sys
-from typing import List
+from typing import Any, Dict, List, Optional
 
 import requests
-import sw360
 from cyclonedx.model.bom import Bom
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -29,7 +29,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
     Create or update a project on SW360.
     """
 
-    def __init__(self, onlyUpdateProject=False):
+    def __init__(self, onlyUpdateProject: bool = False) -> None:
         self.onlyUpdateProject = onlyUpdateProject
 
     def bom_to_release_list(self, sbom: Bom) -> List[str]:
@@ -40,16 +40,20 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             rid = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
             if not rid:
                 print_red(
-                    + "No SW360 id given for " + cx_comp.name
-                    + ", " + cx_comp.version)
+                    "No SW360 id given for " + str(cx_comp.name)
+                    + ", " + str(cx_comp.version))
                 continue
 
             linkedReleases.append(rid)
 
         return linkedReleases
 
-    def update_project(self, project_id: str, project: dict, sbom: Bom, project_info: dict) -> None:
+    def update_project(self, project_id: str, project: Optional[Dict[str, Any]],
+                       sbom: Bom, project_info: Dict[str, Any]) -> None:
         """Update an existing project with the given SBOM"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         data = self.bom_to_release_list(sbom)
 
@@ -67,7 +71,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     "  " + str(len(project["_embedded"]["sw360:releases"])) +
                     " releases in project before update")
 
-            result = self.client.update_project_releases(data, project_id, add=self.onlyUpdateProject)
+            # note: type in sw360python, 1.4.0 is wrong - we are using the correct one!
+            result = self.client.update_project_releases(data, project_id, add=self.onlyUpdateProject)  # type: ignore
             if not result:
                 print_red("  Error updating project releases!")
             project = self.client.get_project(project_id)
@@ -81,11 +86,14 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                         print_yellow("  You might want to call `project prerequisites` to check difference")
 
             if project_info:
-                result = self.client.update_project(project_info, project_id, add_subprojects=self.onlyUpdateProject)
-                if not result:
+                result2 = self.client.update_project(project_info, project_id, add_subprojects=self.onlyUpdateProject)
+                if not result2:
                     print_red("  Error updating project!")
 
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
             if swex.response.status_code == requests.codes["unauthorized"]:
                 print_red("  You are not authorized!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
@@ -93,11 +101,14 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 print_red("  You are not authorized - do you have a valid write token?")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-    def update_project_version(self, project_id: str, project: dict, new_version: str) -> None:
+    def update_project_version(self, project_id: str, project: Dict[str, Any], new_version: str) -> None:
         """Update an existing project with the given SBOM and version"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         """Update project metadata based on existing metadata. This will only change the version"""
-        data = {}
+        data: Dict[str, Any] = {}
         data["description"] = project.get("description", "")
         data["businessUnit"] = project.get("businessUnit", "")
         data["tag"] = project.get("tag", "")
@@ -109,8 +120,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         data["version"] = new_version
         data["moderators"] = []
 
-        if project.get("_embedded").get("sw360:moderators"):
-            moderators = project.get("_embedded").get("sw360:moderators")
+        if project.get("_embedded", {}).get("sw360:moderators"):
+            moderators = project.get("_embedded", {}).get("sw360:moderators")
             moderator_emails = []
             for moderator in moderators:
                 moderator_email = moderator.get("email")
@@ -120,9 +131,9 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
         self.client.update_project(data, project_id)
 
-    def bom_to_release_list_new(self, sbom: Bom) -> dict:
+    def bom_to_release_list_new(self, sbom: Bom) -> Dict[str, Any]:
         """Creates a list with linked releases for a NEW project"""
-        linkedReleases = {}
+        linkedReleases: Dict[str, Any] = {}
 
         for cx_comp in sbom.components:
             rid = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
@@ -132,7 +143,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     + ", " + cx_comp.version)
                 continue
 
-            linkedRelease = {}
+            linkedRelease: Dict[str, Any] = {}
             linkedRelease["mainlineState"] = "SPECIFIC"
             linkedRelease["releaseRelation"] = "DYNAMICALLY_LINKED"
             linkedRelease["setMainlineState"] = True
@@ -141,9 +152,12 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
         return linkedReleases
 
-    def upload_attachments(self, attachments):
+    def upload_attachments(self, attachments: List[Dict[str, Any]]) -> None:
         """Upload attachments to project"""
         print("  Upload attachments to project")
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         project_attachments = self.client.get_attachment_infos_for_project(self.project_id)
 
@@ -174,8 +188,11 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 self.client.upload_project_attachment(self.project_id, attachment['file'], "OTHER")
                 print_text("  Uploaded attachment " + attachment['file'])
 
-    def create_project(self, name: str, version: str, sbom: Bom, project_info: dict) -> None:
+    def create_project(self, name: str, version: str, sbom: Bom, project_info: Dict[str, Any]) -> None:
         """Create a new project with the given SBOM"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         data = project_info
         data["name"] = name
@@ -202,14 +219,17 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 self.project_id = str(result['_links']['self']['href']).split('/')[-1]
                 print("  Project created: " + self.project_id)
 
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
             if swex.response.status_code == requests.codes["unauthorized"]:
                 print_red("  You are not authorized!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
             elif swex.response.status_code == requests.codes["forbidden"]:
                 print_red("  You are not authorized - do you have a valid write token?")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
-            else:
+            elif swex.details:
                 print_red(
                     str(swex.details.get("status", "")) + " " +
                     swex.details.get("error", "Error") + ": " +
@@ -219,7 +239,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print_red("  General error creating project " + repr(ex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
@@ -281,6 +301,10 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         print_text("Loading SBOM file", args.inputfile)
         try:
             sbom = CaPyCliBom.read_sbom(args.inputfile)
@@ -291,7 +315,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         if args.verbose:
             print_text(" ", self.get_comp_count_text(sbom), "read from SBOM")
 
-        info = None
+        info: Dict[str, Any] = {}
         if args.source:
             print("Reading project information", args.source)
             try:
@@ -317,12 +341,12 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print("Updating project...")
             try:
                 project = self.client.get_project(self.project_id)
-            except sw360.SW360Error as swex:
+            except SW360Error as swex:
                 print_red("  ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
             self.update_project(self.project_id, project, sbom, info)
-            if is_update_version:
+            if is_update_version and project:
                 self.update_project_version(self.project_id, project, args.version)
         else:
             if self.onlyUpdateProject:

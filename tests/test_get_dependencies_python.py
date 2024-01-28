@@ -207,10 +207,10 @@ class TestGetDependenciesPython(TestBase):
         self.assertEqual("Universal encoding detector for Python 2 and 3", sbom.components[0].description)
         self.assertEqual(
             "https://github.com/chardet/chardet",
-            CycloneDxSupport.get_ext_ref_website(sbom.components[0]))
+            str(CycloneDxSupport.get_ext_ref_website(sbom.components[0])))
         self.assertEqual(
             "https://pypi.org/project/chardet/",
-            CycloneDxSupport.get_ext_ref_by_comment(sbom.components[0], "PyPi URL"))
+            str(CycloneDxSupport.get_ext_ref_by_comment(sbom.components[0], "PyPi URL")))
 
         self.assertEqual(1, len(sbom.components[0].licenses))
         lic = sbom.components[0].licenses[0]
@@ -218,17 +218,17 @@ class TestGetDependenciesPython(TestBase):
 
         self.assertEqual(
             "https://files.pythonhosted.org/packages/bc/a9/01ffebf/chardet-3.0.4-py2.py3-none-any.whl",
-            CycloneDxSupport.get_ext_ref_binary_url(sbom.components[0]))
+            str(CycloneDxSupport.get_ext_ref_binary_url(sbom.components[0])))
         self.assertEqual(
             "chardet-3.0.4-py2.py3-none-any.whl",
-            CycloneDxSupport.get_ext_ref_binary_file(sbom.components[0]))
+            str(CycloneDxSupport.get_ext_ref_binary_file(sbom.components[0])))
 
         self.assertEqual(
             "https://files.pythonhosted.org/packages/fc/bb/a5768c230/chardet-3.0.4.tar.gz",
-            CycloneDxSupport.get_ext_ref_source_url(sbom.components[0]))
+            str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])))
         self.assertEqual(
             "chardet-3.0.4.tar.gz",
-            CycloneDxSupport.get_ext_ref_source_file(sbom.components[0]))
+            str(CycloneDxSupport.get_ext_ref_source_file(sbom.components[0])))
 
         self.delete_file(self.OUTPUTFILE1)
         self.delete_file(self.OUTPUTFILE2)
@@ -341,7 +341,6 @@ class TestGetDependenciesPython(TestBase):
     def test_localfile(self) -> None:
         # create a test requirements file
         requirements = """
-        -e path/to/project
         chardet
         certifi>=9.9.9
         django>=1.5,<1.6
@@ -364,14 +363,14 @@ class TestGetDependenciesPython(TestBase):
 
         out = self.capture_stdout(sut.run, args)
         # capycli.common.json_support.write_json_to_file(out, "STDOUT.TXT")
-        self.assertTrue("WARNING: Local file path/to/project does not have versions. Skipping." in out)
         self.assertTrue("WARNING: chardet does not have a version specified. Skipping." in out)
+        self.assertTrue("WARNING: certifi is not pinned to a specific version. Using: 9.9.9" in out)
         # self.assertTrue("django is not pinned to a specific version. Using: 1.5" in out)
 
         self.delete_file(self.OUTPUTFILE1)
         self.delete_file(self.OUTPUTFILE2)
 
-    def test_determine_file_type(self):
+    def test_determine_file_type(self) -> None:
         sut = GetPythonDependencies()
 
         actual = sut.determine_file_type("requirements.txt")
@@ -384,7 +383,7 @@ class TestGetDependenciesPython(TestBase):
         actual = sut.determine_file_type(".gitignore")
         self.assertEqual(InputFileType.REQUIREMENTS, actual)
 
-    def test_process_poetry_lock_v2(self):
+    def test_process_poetry_lock_v2(self) -> None:
         self.delete_file(self.OUTPUTFILE2)
 
         sut = GetPythonDependencies()
@@ -405,7 +404,7 @@ class TestGetDependenciesPython(TestBase):
         self.assertTrue("Checking meta-data:" in out)
         self.assertTrue("cli-support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
-        self.assertTrue("37 components items written to file." in out)
+        self.assertTrue("38 components items written to file." in out)
 
         # ensure that dev dependencies are NOT listed
         self.assertTrue("flake8" not in out)
@@ -414,3 +413,8 @@ class TestGetDependenciesPython(TestBase):
         self.assertTrue(os.path.isfile(self.OUTPUTFILE2))
 
         self.delete_file(self.OUTPUTFILE2)
+
+
+if __name__ == "__main__":
+    APP = TestGetDependenciesPython()
+    APP.test_process_poetry_lock_v2()

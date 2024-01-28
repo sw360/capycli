@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2022-2023 Siemens
+# Copyright (c) 2022-2024 Siemens
 # All Rights Reserved.
 # Author: gernot.hillier@siemens.com
 #
@@ -7,7 +7,9 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any, Dict
 
+from cyclonedx.model import XsUri
 from cyclonedx.model.component import Component
 
 import capycli.common.script_base
@@ -24,8 +26,8 @@ class TestGetDependenciesJavascript(TestBase):
     OUTPUTFILE1 = "output.json"
     OUTPUTFILE2 = "output-3.json"
 
-    def create_package_lock_1(self, filename: str):
-        pl = {}
+    def create_package_lock_1(self, filename: str) -> None:
+        pl: Dict[str, Any] = {}
         pl["name"] = "APP"
         pl["version"] = "0.0.1"
         pl["lockfileVersion"] = 1
@@ -33,7 +35,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         dependencies = {}
 
-        dep1 = {}
+        dep1: Dict[str, Any] = {}
         dep1["version"] = "1.0.0"
         dep1["resolved"] = "artifactory/api/npm/npm-all/@agm/core/-/core-1.0.0.tgz"
         dep1["integrity"] = "sha1-sqd9GPv/4EzVyQzy6tQaVmP4mGI="
@@ -41,7 +43,7 @@ class TestGetDependenciesJavascript(TestBase):
         dep1["dev"] = "true"
         dependencies["@agm/core"] = dep1
 
-        dep2 = {}
+        dep2: Dict[str, Any] = {}
         dep2["version"] = "0.10.3"
         dep2["resolved"] = "artifactory/api/npm/npm-all/zone.js/-/zone.js-0.10.3.tgz"
         dep2["integrity"] = "sha1-Pl5NoDxgfJ3NkuN901aHoUoUDBY="
@@ -51,16 +53,16 @@ class TestGetDependenciesJavascript(TestBase):
 
         write_json_to_file(pl, filename)
 
-    def create_package_lock_3(self, filename: str):
-        pl = {}
+    def create_package_lock_3(self, filename: str) -> None:
+        pl: Dict[str, Any] = {}
         pl["name"] = "APP"
         pl["version"] = "0.0.3"
         pl["lockfileVersion"] = 3
         pl["requires"] = True
 
-        packages = {}
+        packages: Dict[str, Any] = {}
 
-        dep1 = {}
+        dep1: Dict[str, Any] = {}
         dep1["version"] = "3.0.0"
         dep1["resolved"] = "artifactory/api/npm/npm-all/@angular/router/-/router-3.0.0.tgz"
         dep1["integrity"] = "sha1-sqd9GUfj/&hfTGwhfiwmGI="
@@ -68,7 +70,7 @@ class TestGetDependenciesJavascript(TestBase):
         dep1["dev"] = "true"
         packages["@angular/router"] = dep1
 
-        dep2 = {}
+        dep2: Dict[str, Any] = {}
         dep2["version"] = "7.8.0"
         dep2["resolved"] = "artifactory/api/npm/npm-all/rxjs/-/rxjs-7.8.0.tgz"
         dep2["integrity"] = "sha1-Pl5NoDxgfJ3NkuN901aHoUoUDBY="
@@ -139,7 +141,7 @@ class TestGetDependenciesJavascript(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_convert_package_lock(self):
+    def test_convert_package_lock(self) -> None:
         self.create_package_lock_1("test_package_lock_1.json")
         sut = capycli.dependencies.javascript.GetJavascriptDependencies()
         sbom = sut.convert_package_lock("test_package_lock_1.json")
@@ -147,7 +149,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.delete_file("test_package_lock_1.json")
 
-    def test_convert_package_lock_3(self):
+    def test_convert_package_lock_3(self) -> None:
         self.create_package_lock_3("test_package_lock_3.json")
         sut = capycli.dependencies.javascript.GetJavascriptDependencies()
         sbom = sut.convert_package_lock("test_package_lock_3.json")
@@ -157,7 +159,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.delete_file("test_package_lock_3.json")
 
-    def test_try_find_metadata_simple(self):
+    def test_try_find_metadata_simple(self) -> None:
         self.create_package_lock_1("test_package_lock_1.json")
         sut = capycli.dependencies.javascript.GetJavascriptDependencies()
         sbom = sut.convert_package_lock("test_package_lock_1.json")
@@ -181,7 +183,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.delete_file("test_package_lock_1.json")
 
-    def test_try_find_metadata_simple_3(self):
+    def test_try_find_metadata_simple_3(self) -> None:
         self.create_package_lock_3("test_package_lock_3.json")
         sut = capycli.dependencies.javascript.GetJavascriptDependencies()
         sbom = sut.convert_package_lock("test_package_lock_3.json")
@@ -205,8 +207,8 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.delete_file("test_package_lock_3.json")
 
-    def test_issue_100(self):
-        bom = SbomCreator.create(None, addlicense=True, addprofile=True, addtools=True)
+    def test_issue_100(self) -> None:
+        bom = SbomCreator.create([], addlicense=True, addprofile=True, addtools=True)
         bom.components.add(Component(
             name="@types/fetch-jsonp",
             version="1.1.0"))
@@ -241,8 +243,7 @@ class TestGetDependenciesJavascript(TestBase):
 
         self.assertEqual("tslib", sbom.components[4].name)
         self.assertEqual("2.3.1", sbom.components[4].version)
-        val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[4])
-        print(val)
+        val = str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[4]))
         self.assertEqual("https://github.com/Microsoft/tslib/archive/refs/tags/2.3.1.zip", val)
 
         self.delete_file(self.OUTPUTFILE1)
@@ -273,7 +274,7 @@ class TestGetDependenciesJavascript(TestBase):
         self.assertEqual("7.8.1", sbom.components[2].version)
         val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[1])
         print(val)
-        self.assertEqual("https://github.com/angular/angular/archive/refs/tags/15.2.9.zip", val)
+        self.assertEqual(XsUri("https://github.com/angular/angular/archive/refs/tags/15.2.9.zip"), val)
 
         self.delete_file(self.OUTPUTFILE2)
 
@@ -339,3 +340,8 @@ class TestGetDependenciesJavascript(TestBase):
         self.assertEqual("7.8.1", sbom.components[2].version)
 
         self.delete_file(self.OUTPUTFILE2)
+
+
+if __name__ == "__main__":
+    APP = TestGetDependenciesJavascript()
+    APP.test_get_metadata_source_archive_url_lockfile3()

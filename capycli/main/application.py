@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2023 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -10,6 +10,7 @@
 
 import sys
 import time
+from typing import Any, List, Optional
 
 import capycli
 from capycli.bom import handle_bom
@@ -27,13 +28,13 @@ DEBUG_LOGGING = False
 
 
 class Application(object):
-    def __init__(self, program="CaPyCli", version=capycli.get_app_version()):
+    def __init__(self, program: str = "CaPyCli", version: str = capycli.get_app_version()) -> None:
         """Initialize our application."""
 
         #: The timestamp when the Application instance was instantiated.
         self.start_time = time.time()
         #: The timestamp when the Application finished reported errors.
-        self.end_time = None  # type: float
+        self.end_time = 0  # type: float
         #: The name of the program being run
         self.program = program
         #: The version of the program being run
@@ -46,7 +47,7 @@ class Application(object):
         #: :attr:`option_manager`
         self.args = None
 
-    def check_for_version_display(self, argv) -> bool:
+    def check_for_version_display(self, argv: Any) -> bool:
         """Check for --version option"""
         for arg in argv:
             if arg == "--version":
@@ -58,7 +59,7 @@ class Application(object):
 
         return False
 
-    def check_for_global_help(self, argv) -> bool:
+    def check_for_global_help(self, argv: Any) -> bool:
         """Check for -h option without any command"""
         global_help = False
         if len(argv) > 1:
@@ -71,19 +72,18 @@ class Application(object):
 
         return global_help
 
-    def exit(self):
-        # type: () -> None
+    def exit(self) -> None:
         """Handle finalization and exiting the program."""
         pass
 
-    def has_debug_switch(self, argv) -> bool:
+    def has_debug_switch(self, argv: Any) -> bool:
         for arg in argv:
             if arg.lower() == "-x":
                 return True
 
         return False
 
-    def initialize(self, argv):
+    def initialize(self, argv: Any) -> None:
         if self.has_debug_switch(argv):
             capycli.configure_logging(2)
             global DEBUG_LOGGING
@@ -91,12 +91,12 @@ class Application(object):
         else:
             capycli.configure_logging(1)
 
-    def emit_exit_code(self, system_exit_exception):
+    def emit_exit_code(self, system_exit_exception: Optional[SystemExit]) -> None:
         if system_exit_exception is None:
             # successfull
-            if self.options and self.options.ex:
-                print("Exit code = 0")
-            # no need to do sys.exit(0) here - 0 is terh default exit code
+            if self.options and self.options.ex:  # type: ignore  # code is used!
+                print("Exit code = 0")  # type: ignore  # code is used!
+            # no need to do sys.exit(0) here - 0 is the default exit code
             # sys.exit(ResultCode.RESULT_OPERATION_SUCCEEDED)
         else:
             if isinstance(system_exit_exception.code, str):
@@ -105,11 +105,11 @@ class Application(object):
             if isinstance(system_exit_exception.code, int):
                 sys.exit(system_exit_exception.code)
 
-            if self.options and self.options.ex:
-                print("Exit code = 1")
+            if self.options and self.options.ex:  # type: ignore  # code is used!
+                print("Exit code = 1")  # type: ignore  # code is used!
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)
 
-    def _run(self, argv: list):
+    def _run(self, argv: List[str]) -> None:
         self.initialize(argv)
 
         cmdline = options.CommandlineSupport()
@@ -131,7 +131,9 @@ class Application(object):
 
         self.options = cmdline.process_commandline(argv)
 
-        command = self.options.command[0].lower()
+        command: str
+        if self.options:
+            command = self.options.command[0].lower()  # type: ignore  # code is used!
         if command == "getdependencies":
             handle_dependencies.run_dependency_command(self.options)
         elif command == "bom":
@@ -146,7 +148,7 @@ class Application(object):
             print_red("Unknown command: " + command)
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
-    def run(self, argv: list):
+    def run(self, argv: List[str]) -> None:
         """Run our application.
         This method will also handle KeyboardInterrupt exceptions for the
         entirety of the CaPyCli application.

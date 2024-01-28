@@ -19,7 +19,7 @@ class TestComponentCache(TestBase):
     CACHE_FILE = "dummy_cache.json"
 
     @responses.activate
-    def test_refresh_component_cache_with_cache(self):
+    def test_refresh_component_cache_with_cache(self) -> None:
         sut = ComponentCacheManagement()
 
         # for login
@@ -126,7 +126,7 @@ class TestComponentCache(TestBase):
         self.assertEqual("pkg:pypi/colorama@0.4.3", result[0]["ExternalIds"]["package-url"])
 
     @responses.activate
-    def test_refresh_component_cache_no_cache(self):
+    def test_refresh_component_cache_no_cache(self) -> None:
         sut = ComponentCacheManagement()
 
         # for login

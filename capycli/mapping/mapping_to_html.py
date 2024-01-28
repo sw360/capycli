@@ -8,6 +8,7 @@
 
 import os
 import sys
+from typing import Any, Dict, List
 
 import capycli.common.html_support
 import capycli.common.json_support
@@ -26,7 +27,7 @@ class MappingToHtml(capycli.common.script_base.ScriptBase):
 
     RELEASE_URL = os.environ.get("SW360ServerUrl", "") + "/group/guest/components/-/component/release/detailRelease/"
 
-    def mapping_result_to_html(self, details, outputfile):
+    def mapping_result_to_html(self, details: List[Dict[str, Any]], outputfile: str) -> None:
         """Create a HTML page showing the mapping overview"""
         myhtml = capycli.common.html_support.HtmlSupport()
         lineend = myhtml.get_lineend()
@@ -137,7 +138,7 @@ class MappingToHtml(capycli.common.script_base.ScriptBase):
 
             myhtml.end_body_and_finish(htmlfile)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

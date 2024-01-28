@@ -8,10 +8,11 @@
 
 import tempfile
 from io import StringIO
+from typing import Any
 from unittest.mock import patch
 
 import pytest
-from cli_test_helpers import ArgvContext
+from cli_test_helpers import ArgvContext  # type: ignore
 
 from capycli.bom.create_components import BomCreateComponents
 from capycli.main import cli
@@ -19,11 +20,11 @@ from tests.test_base import AppArguments, TestBase
 
 
 class TestBomCreateReleasesIntegration(TestBase):
-    def setUp(self):
+    def setUp(self) -> None:
         # Create a temporary directory
         self.test_dir = tempfile.mkdtemp()
 
-    def test_bom_create_releases_help(self):
+    def test_bom_create_releases_help(self) -> None:
         sut = BomCreateComponents()
 
         # create argparse command line argument object
@@ -36,7 +37,7 @@ class TestBomCreateReleasesIntegration(TestBase):
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("usage: CaPyCLI bom createcomponents" in out)
 
-    def test_bom_create_components_help(self):
+    def test_bom_create_components_help(self) -> None:
         sut = BomCreateComponents()
 
         # create argparse command line argument object
@@ -50,7 +51,7 @@ class TestBomCreateReleasesIntegration(TestBase):
         self.assertTrue("usage: CaPyCLI bom createcomponents" in out)
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_bom_create_components_shall_cause_error_on_missing_input(self, stdout):
+    def test_bom_create_components_shall_cause_error_on_missing_input(self, stdout: Any) -> None:
         """
         Does 'capycli bom createcomponents' fail with error message if the user missed specifying the input file
         """
@@ -62,7 +63,7 @@ class TestBomCreateReleasesIntegration(TestBase):
         assert "No input file specified!" in stdout.getvalue()
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_bom_create_components_shall_cause_error_on_missing_input_file(self, stdout):
+    def test_bom_create_components_shall_cause_error_on_missing_input_file(self, stdout: Any) -> None:
         """
         Does 'capycli bom createcomponents' fail with error message if the input file doesn't exist
         """

@@ -105,3 +105,8 @@ class TestCheckBom(TestBase):
         self.assertTrue("wheel, 0.38.4" in out)
         self.assertTrue("package-url:pkg:pypi/wheel@0.38.4" in out)
         self.assertTrue("SW360 id:e0995819173d4ac8b1a4da3548935976" in out)
+
+
+if __name__ == "__main__":
+    lib = TestCheckBom()
+    lib.test_simple_bom()

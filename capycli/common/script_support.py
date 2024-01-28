@@ -11,13 +11,14 @@ Support methods for python scripts.
 """
 
 import time
+from typing import Any, Dict
 
 from cyclonedx.model.component import Component
 
 
 def printProgressBar(
-    iteration, total, prefix='', suffix='', decimals=1,
-        length=100, fill='█', printEnd="\r"):
+    iteration: int, total: int, prefix: str = '', suffix: str = '', decimals: int = 1,
+        length: int = 100, fill: str = '█', printEnd: str = "\r") -> None:
     """
     Call in a loop to create terminal progress bar
     @params:
@@ -44,7 +45,7 @@ class ScriptSupport:
     """Support methods for python scripts."""
 
     @staticmethod
-    def show_progress(total, current):
+    def show_progress(total: int, current: int) -> None:
         """Show progress for the user"""
         pos0 = "\x1b[0G"
         out = "[" + str(total) + "/" + str(current) + "]"
@@ -52,7 +53,7 @@ class ScriptSupport:
         print(out + pos0, end="", flush=True)
 
     @staticmethod
-    def get_time():
+    def get_time() -> str:
         """Show current (local) time"""
         now = time.localtime()
         t = str(now.tm_year) + "-" + str(now.tm_mon) + "-" \
@@ -61,7 +62,7 @@ class ScriptSupport:
         return t
 
     @staticmethod
-    def get_full_name_from_dict(dictionary, name_key, version_key):
+    def get_full_name_from_dict(dictionary: Dict[Any, Any], name_key: str, version_key: str) -> str:
         """Returns the full name of a project or release"""
         fullname = dictionary[name_key]
         if (version_key in dictionary) and (dictionary[version_key]):
@@ -69,7 +70,8 @@ class ScriptSupport:
 
         return fullname
 
-    def get_full_name_from_component(component: Component):
+    @staticmethod
+    def get_full_name_from_component(component: Component) -> str:
         """Returns the full name of a CycloneDX component"""
         fullname = component.name
         if component.version:

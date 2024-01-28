@@ -4,7 +4,9 @@
 # Author: rayk.bajohr@siemens.com
 #
 # SPDX-License-Identifier: MIT
-# ----------
+# -------------------------------------------------------------------------------
+
+from typing import Any, Dict, Optional, Tuple
 
 from packageurl import PackageURL
 
@@ -26,23 +28,23 @@ class PurlStore:
         }
     }
     """
-    def __init__(self, cache: dict = None):
+    def __init__(self, cache: Optional[Dict] = None):  # type: ignore
         if cache:
             self.purl_cache = cache
         else:
             self.purl_cache = {}
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Any:
         return self.purl_cache[key]
 
-    def __contains__(self, key):
+    def __contains__(self, key: str) -> bool:
         return key in self.purl_cache
 
-    def __bool__(self, *args, **kwargs):
+    def __bool__(self, *args: Any, **kwargs: Any) -> bool:
         """ True if self else False """
         return bool(self.purl_cache)
 
-    def add(self, purl: PackageURL, entry: any):
+    def add(self, purl: PackageURL, entry: Any) -> Tuple[bool, Any]:
         # Prepare cache for purl
         pc = self.purl_cache
         for key in (purl.type, purl.namespace, purl.name):
@@ -56,28 +58,28 @@ class PurlStore:
         pc[purl.version] = entry
         return True, entry
 
-    def get_by_namespace(self, purl: PackageURL) -> dict:
+    def get_by_namespace(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
         if (purl.type in self.purl_cache
                 and purl.namespace in self.purl_cache[purl.type]):
             return self.purl_cache[purl.type][purl.namespace]
 
         return None
 
-    def get_by_name(self, purl: PackageURL) -> dict:
+    def get_by_name(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
         entries = self.get_by_namespace(purl)
         if entries and purl.name in entries:
             return entries[purl.name]
 
         return None
 
-    def get_by_version(self, purl: PackageURL):
+    def get_by_version(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
         entries = self.get_by_name(purl)
         if entries and purl.version in entries:
             return entries[purl.version]
 
         return None
 
-    def remove_duplicates(self, duplicates: list):
+    def remove_duplicates(self, duplicates: list) -> None:  # type: ignore
         for d in duplicates:
             if d[0] not in self.purl_cache:
                 continue

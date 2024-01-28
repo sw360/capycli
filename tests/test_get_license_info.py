@@ -92,7 +92,7 @@ class TestGetLicenseInfo(TestBase):
             self.assertEqual(ResultCode.RESULT_FILE_NOT_FOUND, ex.code)
 
     @responses.activate
-    def test_project_not_found_by_name(self):
+    def test_project_not_found_by_name(self) -> None:
         sut = GetLicenseInfo()
 
         # create argparse command line argument object
@@ -132,7 +132,7 @@ class TestGetLicenseInfo(TestBase):
             self.assertEqual(ResultCode.RESULT_PROJECT_NOT_FOUND, ex.code)
 
     @responses.activate
-    def test_error_getting_project(self):
+    def test_error_getting_project(self) -> None:
         sut = GetLicenseInfo()
 
         # create argparse command line argument object
@@ -213,7 +213,7 @@ class TestGetLicenseInfo(TestBase):
             shutil.rmtree(".//cli_files")
 
     @responses.activate
-    def test_get_license_info_no_components(self):
+    def test_get_license_info_no_components(self) -> None:
         sut = GetLicenseInfo()
 
         # create argparse command line argument object
@@ -297,7 +297,7 @@ class TestGetLicenseInfo(TestBase):
             shutil.rmtree(".//cli_files")
 
     @responses.activate
-    def test_get_license_info_no_cli_files(self):
+    def test_get_license_info_no_cli_files(self) -> None:
         sut = GetLicenseInfo()
 
         # create argparse command line argument object
@@ -404,7 +404,7 @@ class TestGetLicenseInfo(TestBase):
             shutil.rmtree(".//cli_files")
 
     @responses.activate
-    def test_get_license_info(self):
+    def test_get_license_info(self) -> None:
         sut = GetLicenseInfo()
 
         # create argparse command line argument object
@@ -581,7 +581,7 @@ class TestGetLicenseInfo(TestBase):
             shutil.rmtree(".//cli_files")
 
     @responses.activate
-    def test_get_license_info_existing_config(self):
+    def test_get_license_info_existing_config(self) -> None:
         sut = GetLicenseInfo()
 
         # create argparse command line argument object

@@ -8,6 +8,7 @@
 
 import logging
 import sys
+from typing import Any, Dict
 
 import sw360
 
@@ -22,7 +23,7 @@ LOG = capycli.get_logger(__name__)
 class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
     """Show project export control details."""
 
-    def show_project_status(self, result: dict):
+    def show_project_status(self, result: Dict[str, Any]) -> None:
         if not result:
             return
 
@@ -70,10 +71,14 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
         else:
             print_text("    No linked releases")
 
-    def get_project_status(self, project_id: str):
+    def get_project_status(self, project_id: str) -> Dict[str, Any]:
         """Get the project status for the project with the specified id"""
         print_text("Retrieving project details...")
         result = {}
+
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         try:
             self.project = self.client.get_project(project_id)
@@ -119,6 +124,10 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
 
                 try:
                     release_details = self.client.get_release_by_url(href)
+                    if not release_details:
+                        print_red("  ERROR: unable toget release")
+                        continue
+
                     # capycli.common.json_support.print_json(release_details)
                     eccinfo = release_details.get("eccInformation", {})
                     rel_item["EccStatus"] = eccinfo.get("eccStatus", "UNKNOWN")
@@ -143,7 +152,7 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
 
         return result
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
@@ -173,9 +182,9 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        name = args.name
-        version = None
-        pid = None
+        name: str = args.name
+        version: str = ""
+        pid: str = ""
         if args.version:
             version = args.version
 

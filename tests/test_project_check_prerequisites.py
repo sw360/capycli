@@ -168,7 +168,7 @@ class TestCheckPrerequisites(TestBase):
         self.assertTrue("Searching for project..." in out)
         self.assertTrue("No matching project found" in out)
 
-    def add_find_project_response(self):
+    def add_find_project_response(self) -> None:
         """
         Add response for find project by name.
         """
@@ -556,4 +556,4 @@ class TestCheckPrerequisites(TestBase):
 
 if __name__ == '__main__':
     APP = TestCheckPrerequisites()
-    APP.test_check_project_error_reading_project()
+    APP.test_check_project_check_fail()

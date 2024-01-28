@@ -112,7 +112,7 @@ class TestBomConvert(TestBase):
         args.outputfile = self.OUTPUTFILE
 
         out = self.capture_stdout(sut.run, args)
-        out = self.assertTrue("No output format specified, defaulting to sbom" in out)
+        self.assertTrue("No output format specified, defaulting to sbom" in out)
 
     def test_invalid_input_file(self) -> None:
         sut = BomConvert()
@@ -164,7 +164,7 @@ class TestBomConvert(TestBase):
 
         return differences
 
-    def test_convert_plain_to_plain(self):
+    def test_convert_plain_to_plain(self) -> None:
         sut = BomConvert()
 
         # create argparse command line argument object
@@ -189,7 +189,7 @@ class TestBomConvert(TestBase):
         result = self.compare_text_files(args.inputfile, args.outputfile)
         self.assertTrue(len(result) == 0)
 
-    def test_convert_legacy_to_legacy(self):
+    def test_convert_legacy_to_legacy(self) -> None:
         sut = BomConvert()
 
         # create argparse command line argument object

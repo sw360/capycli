@@ -8,7 +8,7 @@
 
 import json
 import os
-from typing import List
+from typing import Any, Dict, List, Tuple
 
 import responses
 import responses.matchers
@@ -18,9 +18,9 @@ from capycli.project.create_project import CreateProject
 from tests.test_base import AppArguments, TestBase
 
 
-def min_json_matcher(check: dict):
+def min_json_matcher(check: Dict[str, Any]) -> Any:
     # responses.matcher.multipart_matcher didn't work for me
-    def match(request):
+    def match(request: Any) -> Tuple[bool, str]:
         result = True
         reason = ""
 
@@ -44,14 +44,14 @@ def min_json_matcher(check: dict):
     return match
 
 
-def update_release_matcher(releases: List[str]):
+def update_release_matcher(releases: List[str]) -> Any:
     """
     Matches the updated releases.
 
     Args:
         releases (list[str]): list of releases
     """
-    def match(request):
+    def match(request: Any) -> Tuple[bool, str]:
         result = True
         reason = ""
 
@@ -702,8 +702,3 @@ class TestCreateProject(TestBase):
     # test unknown/invalid release id
 
     # test upload attachments
-
-
-if __name__ == '__main__':
-    APP = TestCreateProject()
-    APP.test_project_update_old_version()

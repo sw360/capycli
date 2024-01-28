@@ -110,7 +110,7 @@ class TestShowLicenses(TestBase):
         if os.path.exists(sut.TEMPFOLDER):
             shutil.rmtree(sut.TEMPFOLDER)
 
-    def get_wheel_for_test(self):
+    def get_wheel_for_test(self) -> None:
         """
         Provide release and attachment responses.
         """
@@ -165,7 +165,7 @@ class TestShowLicenses(TestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-    def get_cli_for_test(self):
+    def get_cli_for_test(self) -> None:
         """
         Provide release and attachment responses.
         """
@@ -208,7 +208,7 @@ class TestShowLicenses(TestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-    def get_cli_file_gpl(self):
+    def get_cli_file_gpl(self) -> str:
         """
         Return the XML contents of a CLI file with GPL-2.0 license.
         """

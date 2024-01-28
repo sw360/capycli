@@ -13,19 +13,19 @@ from tests.test_base import TestBase
 class TestCommandlineSupport(TestBase):
     INPUTFILE_INVALID = "plaintext.txt"
 
-    def test_read_config(self):
+    def test_read_config(self) -> None:
         sut = CommandlineSupport()
         toml_str = """
            [capycli]
            url = "https://secretserver.com"
            token = "superToken"
            """
-        val = sut.read_config(None, toml_str)
+        val = sut.read_config("", toml_str)
         self.assertIsNotNone(val)
         self.assertEqual("https://secretserver.com", val["url"])
         self.assertEqual("superToken", val["token"])
 
-    def test_process_commandline(self):
+    def test_process_commandline(self) -> None:
         sut = CommandlineSupport()
         argv = [
             "bom",
@@ -46,7 +46,7 @@ class TestCommandlineSupport(TestBase):
            sw360_url = "https://secretserver.com"
            sw360_token = "superToken"
            """
-        cf = sut.read_config(None, toml_str)
+        cf = sut.read_config("", toml_str)
         self.assertIsNotNone(cf)
         self.assertEqual("https://secretserver.com", cf["sw360_url"])
         self.assertEqual("superToken", cf["sw360_token"])

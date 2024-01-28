@@ -131,7 +131,7 @@ class TestFindProject(TestBase):
         self.assertTrue("Project found, name = CaPyCLI, version = 1.9.0" in out)
 
     @responses.activate
-    def test_project_find_by_name_and_version(self):
+    def test_project_find_by_name_and_version(self) -> None:
         sut = FindProject()
 
         # create argparse command line argument object
@@ -194,7 +194,7 @@ class TestFindProject(TestBase):
         self.assertTrue("CaPyCLI, 1.9.0 => ID = p001" in out)
 
     @responses.activate
-    def test_project_find_by_name(self):
+    def test_project_find_by_name(self) -> None:
         sut = FindProject()
 
         # create argparse command line argument object
@@ -253,7 +253,7 @@ class TestFindProject(TestBase):
         self.assertTrue("CaPyCLI, 1.2.0 => ID = p002" in out)
 
     @responses.activate
-    def test_project_find_by_name_no_data(self):
+    def test_project_find_by_name_no_data(self) -> None:
         sut = FindProject()
 
         # create argparse command line argument object

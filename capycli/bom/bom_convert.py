@@ -13,6 +13,8 @@ import sys
 from enum import Enum
 from typing import Any
 
+from sortedcontainers import SortedSet
+
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
@@ -58,15 +60,15 @@ class BomConvert(capycli.common.script_base.ScriptBase):
             # default is CaPyCLI
             outputformat = BomFormat.CAPYCLI
 
-        cdx_components = []
+        cdx_components: SortedSet
         project = None
         sbom = None
         try:
             if inputformat == BomFormat.TEXT:
-                cdx_components = PlainTextSupport.flatlist_to_cdx_components(inputfile)
+                cdx_components = SortedSet(PlainTextSupport.flatlist_to_cdx_components(inputfile))
                 print_text(f"  {len(cdx_components)} components read from file {inputfile}")
             elif inputformat == BomFormat.CSV:
-                cdx_components = CsvSupport.csv_to_cdx_components(inputfile)
+                cdx_components = SortedSet(CsvSupport.csv_to_cdx_components(inputfile))
                 print_text(f"  {len(cdx_components)} components read from file {inputfile}")
             elif (inputformat == BomFormat.CAPYCLI) or (inputformat == BomFormat.SBOM):
                 sbom = CaPyCliBom.read_sbom(inputfile)
@@ -74,7 +76,7 @@ class BomConvert(capycli.common.script_base.ScriptBase):
                 project = sbom.metadata.component
                 print_text(f"  {len(cdx_components)} components read from file {inputfile}")
             elif inputformat == BomFormat.LEGACY:
-                cdx_components = LegacySupport.legacy_to_cdx_components(inputfile)
+                cdx_components = SortedSet(LegacySupport.legacy_to_cdx_components(inputfile))
                 print_text(f"  {len(cdx_components)} components read from file {inputfile}")
             elif inputformat == BomFormat.LEGACY_CX:
                 sbom = LegacyCx.read_sbom(inputfile)
@@ -89,7 +91,7 @@ class BomConvert(capycli.common.script_base.ScriptBase):
 
         try:
             if outputformat == BomFormat.TEXT:
-                PlainTextSupport.write_cdx_components_as_flatlist(cdx_components, outputfile)
+                PlainTextSupport.write_cdx_components_as_flatlist2(cdx_components, outputfile)
                 print_text(f"  {len(cdx_components)} components written to file {outputfile}")
             elif outputformat == BomFormat.CSV:
                 CsvSupport.write_cdx_components_as_csv(cdx_components, outputfile)
@@ -147,7 +149,7 @@ class BomConvert(capycli.common.script_base.ScriptBase):
         print("    -if INPUTFORMAT       Specify input file format: capycli|sbom|text|csv|legacy|legacy-cx")
         print("    -of OUTPUTFORMAT      Specify output file format: capycli|text|csv|legacy|html")
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         print("\n" + capycli.APP_NAME + ", " + capycli.get_app_version() + " - Convert SBOM formats\n")
 

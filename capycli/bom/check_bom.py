@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -9,12 +9,13 @@
 import logging
 import os
 import sys
+from typing import Any, Dict, Optional
 
 import requests
-import sw360.sw360_api
 from colorama import Fore, Style
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -39,33 +40,46 @@ class CheckBom(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def _find_by_id(self, component: Component) -> dict:
+    def _find_by_id(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         sw360id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
+        version = component.version or ""
         for step in range(3):
             try:
                 release_details = self.client.get_release(sw360id)
                 return release_details
-            except sw360.sw360_api.SW360Error as swex:
-                if swex.response.status_code == requests.codes['not_found']:
+            except SW360Error as swex:
+                if swex.response is None:
+                    print_red("  Unknown error: " + swex.message)
+                elif swex.response.status_code == requests.codes['not_found']:
                     print_yellow(
                         "  Not found " + component.name +
-                        ", " + component.version + ", " + sw360id)
+                        ", " + version + ", " + sw360id)
                     break
 
                 # only report other errors if this is the third attempt
                 if step >= 2:
                     print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
                     print(
-                        "  " + component.name + ", " + component.version +
+                        "  " + component.name + ", " + version +
                         ", " + sw360id)
-                    print("  Status Code: " + str(swex.response.status_code))
+                    if swex.response:
+                        print("  Status Code: " + str(swex.response.status_code))
                     if swex.message:
                         print("    Message: " + swex.message)
                     print(Style.RESET_ALL)
 
         return None
 
-    def _find_by_name(self, component: Component) -> dict:
+    def _find_by_name(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+        version = component.version or ""
         for step in range(3):
             try:
                 releases = self.client.get_releases_by_name(component.name)
@@ -73,23 +87,26 @@ class CheckBom(capycli.common.script_base.ScriptBase):
                     return None
 
                 for r in releases:
-                    if r.get("version", "") == component.version:
+                    if r.get("version", "") == version:
                         return r
 
                 return None
-            except sw360.sw360_api.SW360Error as swex:
-                if swex.response.status_code == requests.codes['not_found']:
+            except SW360Error as swex:
+                if swex.response is None:
+                    print_red("  Unknown error: " + swex.message)
+                elif swex.response.status_code == requests.codes['not_found']:
                     print_yellow(
                         "  Not found " + component.name +
-                        ", " + component.version)
+                        ", " + version)
                     break
 
                 # only report other errors if this is the third attempt
                 if step >= 2:
                     print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
                     print(
-                        "  " + component.name + ", " + component.version)
-                    print("  Status Code: " + str(swex.response.status_code))
+                        "  " + component.name + ", " + version)
+                    if swex.response:
+                        print("  Status Code: " + str(swex.response.status_code))
                     if swex.message:
                         print("    Message: " + swex.message)
                     print(Style.RESET_ALL)
@@ -99,6 +116,10 @@ class CheckBom(capycli.common.script_base.ScriptBase):
     def check_releases(self, bom: Bom) -> int:
         """Checks for each release in the list whether it can be found on the specified
         SW360 instance."""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         found_count = 0
         for component in bom.components:
             release_details = None
@@ -116,7 +137,7 @@ class CheckBom(capycli.common.script_base.ScriptBase):
                 found_count += 1
                 continue
 
-            if not id:
+            if not sw360id:
                 print_yellow(
                     "  " + component.name +
                     ", " + component.version +
@@ -125,7 +146,7 @@ class CheckBom(capycli.common.script_base.ScriptBase):
 
         return found_count
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

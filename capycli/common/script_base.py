@@ -14,12 +14,12 @@ import json
 import os
 import sys
 from datetime import datetime
-from typing import List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import jwt
 import requests
-import sw360.sw360_api
 from cyclonedx.model.bom import Bom
+from sw360 import SW360, SW360Error
 
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
@@ -28,16 +28,16 @@ from capycli.main.result_codes import ResultCode
 class ScriptBase:
     """Base class for python scripts."""
 
-    def __init__(self):
-        self.client = None
-        self.project_id = ""
-        self.project = None
-        self.sw360_url = os.environ.get("SW360ServerUrl", None)
+    def __init__(self) -> None:
+        self.client: Optional[SW360] = None
+        self.project_id: str = ""
+        self.project: Optional[dict[str, Any]] = None
+        self.sw360_url: str = os.environ.get("SW360ServerUrl", "")
 
     def login(self, token: str = "", url: str = "", oauth2: bool = False) -> bool:
         """Login to SW360"""
-        self.sw360_url = os.environ.get("SW360ServerUrl", None)
-        sw360_api_token = os.environ.get("SW360ProductionToken", None)
+        self.sw360_url = os.environ.get("SW360ServerUrl", "")
+        sw360_api_token = os.environ.get("SW360ProductionToken", "")
 
         if token:
             sw360_api_token = token
@@ -56,11 +56,11 @@ class ScriptBase:
             print_red("  No SW360 API token specified!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        self.client = sw360.sw360_api.SW360(self.sw360_url, sw360_api_token, oauth2)
+        self.client = SW360(self.sw360_url, sw360_api_token, oauth2)
 
         try:
             result = self.client.login_api(sw360_api_token)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             if (swex.response is not None) and (swex.response.status_code == requests.codes["unauthorized"]):
                 print_red("  You are not authorized!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
@@ -77,7 +77,7 @@ class ScriptBase:
         print_text("  Analyzing token...")
         try:
             # alg = RS256
-            decoded = jwt.decode(token, verify=False)
+            decoded = jwt.decode(token, verify=False)  # type: ignore
             if "exp" in decoded:
                 exp_seconds = int(decoded["exp"])
                 exp = datetime.fromtimestamp(exp_seconds)
@@ -96,31 +96,29 @@ class ScriptBase:
         except Exception as ex:
             print_yellow("  Unable to analyze token:" + repr(ex))
 
-    def get_error_message(self, swex: sw360.sw360_api.SW360Error) -> str:
+    def get_error_message(self, swex: SW360Error) -> str:
         """Display a usefull error message for a SW360Error exception"""
         if swex.response is None:
             return repr(swex)
         elif swex.response.status_code == requests.codes["forbidden"]:
             return "You are not authorized!"
         else:
-            if swex.response.content is None:
-                return repr(swex)
-            else:
-                content = swex.response.content.decode("UTF8")
-                jcontent = json.loads(content)
-                text = "Error=" + jcontent["error"] + "(" +\
-                    str(jcontent["status"]) + "): " + jcontent["message"]
-                return text
+            content = swex.response.content.decode("UTF8")
+            jcontent = json.loads(content)
+            text = "Error=" + jcontent["error"] + "(" +\
+                str(jcontent["status"]) + "): " + jcontent["message"]
+            return text
 
     @staticmethod
-    def get_release_attachments(release_details: dict, att_types: Tuple[str] = None) -> List[dict]:
+    def get_release_attachments(release_details: Dict[str, Any],
+                                att_types: Optional[Tuple[str]] = None) -> List[Dict[str, Any]]:
         """Returns the attachments with the given types from a release. Use empty att_types
         to get all attachments."""
         if "_embedded" not in release_details:
-            return None
+            return []
 
         if "sw360:attachments" not in release_details["_embedded"]:
-            return None
+            return []
 
         found = []
         attachments = release_details["_embedded"]["sw360:attachments"]
@@ -133,23 +131,27 @@ class ScriptBase:
 
         return found
 
-    def release_web_url(self, release_id) -> str:
+    def release_web_url(self, release_id: str) -> str:
         """Returns the HTML URL for a given release_id."""
         return (self.sw360_url + "group/guest/components/-/component/release/detailRelease/"
                 + release_id)
 
     def find_project(self, name: str, version: str, show_results: bool = False) -> str:
         """Find the project with the matching name and version on SW360"""
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         print_text("  Searching for project...")
         try:
             projects = self.client.get_projects_by_name(name)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             print_red("  Error searching for project: " + repr(swex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         if not projects:
             print_yellow("  No matching project found!")
-            return None
+            return ""
 
         for project in projects:
             href = project["_links"]["self"]["href"]
@@ -175,7 +177,7 @@ class ScriptBase:
                 if project["version"].lower() == version.lower():
                     return pid
 
-        return None
+        return ""
 
     @staticmethod
     def get_comp_count_text(bom: Bom) -> str:
@@ -186,7 +188,7 @@ class ScriptBase:
             return f"{count} components"
 
     @staticmethod
-    def list_to_string(list: list) -> str:
+    def list_to_string(list: List[str]) -> str:
         """Convert a list of values to a comma separated string"""
         result = ", ".join(str(x) for x in list)
         return result

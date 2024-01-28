@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -10,8 +10,9 @@ import json
 import logging
 import os
 import sys
+from typing import Any, Dict, List
 
-import sw360
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli.common.json_support import load_json_file
@@ -26,20 +27,27 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
     """
     Get license info on all project components.
     """
-    def get_cli_files_for_release(self, release: dict, folder: str, no_overwrite: bool) -> list:
+    def get_cli_files_for_release(self, release: Dict[str, Any],
+                                  folder: str, no_overwrite: bool) -> List[Dict[str, Any]]:
         """Find all CLI file attachments for the given release, download them and return
         a list with the file information."""
-        files = []
+        files: List[Dict[str, Any]] = []
         if "_embedded" not in release:
             return files
 
         if "sw360:attachments" not in release["_embedded"]:
             return files
 
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         attachment_infos = release["_embedded"]["sw360:attachments"]
         for key in attachment_infos:
             att_href = key["_links"]["self"]["href"]
             attachment = self.client.get_attachment_by_url(att_href)
+            if not attachment:
+                continue
             if not attachment["attachmentType"] == "COMPONENT_LICENSE_INFO_XML":
                 continue
 
@@ -69,16 +77,24 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             destination: str,
             no_overwrite: bool,
             use_all_files: bool,
-            config_file: str) -> dict:
+            config_file: str) -> Dict[str, Any]:
         """Downloads all CLI files and generates a configuration file for
         Readme_OSS generation"""
-        rdm_info = {}
+        rdm_info: Dict[str, Any] = {}
+
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         try:
             self.project = self.client.get_project(project_id)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             print_red("  ERROR: unable to access project: " + repr(swex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+        if not self.project:
+            print_red("  ERROR: unable to access project")
+            return {}
 
         rdm_info["ProjectName"] = ScriptSupport.get_full_name_from_dict(
             self.project, "name", "version")
@@ -113,6 +129,9 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             for key in releases:
                 href = key["_links"]["self"]["href"]
                 release = self.client.get_release_by_url(href)
+                if not release:
+                    print_red("  ERROR: unable to access release")
+                    continue
 
                 component_name = release["name"]
                 if "version" in release:
@@ -174,7 +193,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
         print()
 
     @classmethod
-    def write_result(cls, result: dict, filename: str, no_overwrite: bool) -> None:
+    def write_result(cls, result: Dict[str, Any], filename: str, no_overwrite: bool) -> None:
         """Write the Readme_OSS configuration to a JSON file"""
         if no_overwrite and os.path.isfile(filename):
             print_text("  Existing file '" + filename + "' will not be overwritten.")
@@ -183,7 +202,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
         with open(filename, "w") as outfile:
             json.dump(result, outfile, indent=2)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

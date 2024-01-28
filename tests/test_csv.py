@@ -11,6 +11,7 @@ import os
 from typing import List
 
 from cyclonedx.model.component import Component
+from sortedcontainers import SortedSet
 
 from capycli.bom.csv import CsvSupport
 from tests.test_base import TestBase
@@ -51,7 +52,7 @@ class TestCsv(TestBase):
 
         filename_out = os.path.join(
             os.path.dirname(__file__), "fixtures", TestCsv.OUTPUTFILE)
-        CsvSupport.write_cdx_components_as_csv(cx_components, filename_out)
+        CsvSupport.write_cdx_components_as_csv(SortedSet(cx_components), filename_out)
 
         self.assertListEqual(
             list(io.open(filename)),

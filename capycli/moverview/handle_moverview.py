@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import sys
+from typing import Any
 
 import capycli.moverview.moverview_to_html
 import capycli.moverview.moverview_to_xlsx
@@ -14,7 +15,7 @@ from capycli.common.print import print_red
 from capycli.main.result_codes import ResultCode
 
 
-def run_moverview_command(args):
+def run_moverview_command(args: Any) -> None:
     command = args.command[0].lower()
     if command != "moverview":
         return
@@ -38,8 +39,8 @@ def run_moverview_command(args):
 
     if subcommand == "toxlsx":
         """Create an Excel sheet showing the mapping overview."""
-        app = capycli.moverview.moverview_to_xlsx.MappingOverviewToExcelXlsx()
-        app.run(args)
+        app2 = capycli.moverview.moverview_to_xlsx.MappingOverviewToExcelXlsx()
+        app2.run(args)
         return
 
     print_red("Unknown sub-command: " + subcommand)

@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import sys
+from typing import Any
 
 import capycli.mapping.mapping_to_html
 import capycli.mapping.mapping_to_xlsx
@@ -14,7 +15,7 @@ from capycli.common.print import print_red
 from capycli.main.result_codes import ResultCode
 
 
-def run_mapping_command(args):
+def run_mapping_command(args: Any) -> None:
     command = args.command[0].lower()
     if command != "mapping":
         return
@@ -38,8 +39,8 @@ def run_mapping_command(args):
 
     if subcommand == "toxlsx":
         """Create an Excel sheet showing the mapping result."""
-        app = capycli.mapping.mapping_to_xlsx.MappingToExcelXlsx()
-        app.run(args)
+        app2 = capycli.mapping.mapping_to_xlsx.MappingToExcelXlsx()
+        app2.run(args)
         return
 
     print_red("Unknown sub-command: " + subcommand)

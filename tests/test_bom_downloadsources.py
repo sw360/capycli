@@ -142,7 +142,13 @@ class TestBomDownloadsources(TestBase):
 
                 ext_ref = CycloneDxSupport.get_ext_ref(
                     out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
-                self.assertEqual(ext_ref.url, resultfile)
+                self.assertIsNotNone(ext_ref)
+                if ext_ref:  # only for mypy
+                    self.assertEqual(ext_ref.url._uri, resultfile)
+                    # if ext_ref.url is XsUri:
+                    #    self.assertEqual(ext_ref.url._uri, resultfile)
+                    # else:
+                    #    self.assertEqual(ext_ref.url, resultfile)
 
                 self.delete_file(args.outputfile)
                 return
@@ -184,7 +190,9 @@ class TestBomDownloadsources(TestBase):
 
                 ext_ref = CycloneDxSupport.get_ext_ref(
                     out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
-                self.assertEqual(ext_ref.url, "file://certifi-2022.12.7.tar.gz")
+                self.assertIsNotNone(ext_ref)
+                if ext_ref:  # only for mypy
+                    self.assertEqual(ext_ref.url._uri, "file://certifi-2022.12.7.tar.gz")
 
                 self.delete_file(args.outputfile)
                 return
@@ -254,8 +262,10 @@ class TestBomDownloadsources(TestBase):
             )
 
             try:
-                bom = CaPyCliBom.read_sbom(os.path.join(os.path.dirname(__file__), "fixtures",
-                                                        TestBomDownloadsources.INPUTFILE))
+                bom = CaPyCliBom.read_sbom(
+                    os.path.join(
+                        os.path.dirname(__file__),
+                        "fixtures", TestBomDownloadsources.INPUTFILE))
                 bom.components.add(Component(name="foo", version="1.2.3"))
                 sut.download_sources(bom, tmpdirname)
                 resultfile = os.path.join(tmpdirname, "certifi-2022.12.7.tar.gz")
@@ -263,7 +273,9 @@ class TestBomDownloadsources(TestBase):
 
                 ext_ref = CycloneDxSupport.get_ext_ref(
                     bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
-                self.assertEqual(ext_ref.url, resultfile)
+                self.assertIsNotNone(ext_ref)
+                if ext_ref:  # only for mypy
+                    self.assertEqual(str(ext_ref.url), resultfile)
 
                 self.assertEqual(len(bom.components[1].external_references), 0)
                 return
@@ -272,3 +284,8 @@ class TestBomDownloadsources(TestBase):
                 print(e)
 
         self.assertTrue(False, "Error: we must never arrive here")
+
+
+if __name__ == "__main__":
+    lib = TestBomDownloadsources()
+    lib.test_simple_bom_no_url()

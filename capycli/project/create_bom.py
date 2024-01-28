@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2021-2023 Siemens
+# Copyright (c) 2021-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -8,11 +8,13 @@
 
 import logging
 import sys
+from typing import Any, Dict, List
 
-import sw360
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -27,26 +29,29 @@ LOG = get_logger(__name__)
 class CreateBom(capycli.common.script_base.ScriptBase):
     """Create a SBOM for a project on SW360."""
 
-    def get_external_id(self, name: str, release_details: dict):
+    def get_external_id(self, name: str, release_details: Dict[str, Any]) -> str:
         """Returns the external id with the given name or None."""
         if "externalIds" not in release_details:
-            return None
+            return ""
 
         return release_details["externalIds"].get(name, "")
 
-    def get_clearing_state(self, proj, href) -> str:
+    def get_clearing_state(self, proj: Dict[str, Any], href: str) -> str:
         """Returns the clearing state of the given component/release"""
         rel = proj["linkedReleases"]
         for key in rel:
             if key["release"] == href:
                 return key["mainlineState"]
 
-        return None
+        return ""
 
-    def create_project_bom(self, project) -> list:
-        bom = []
+    def create_project_bom(self, project: Dict[str, Any]) -> List[Component]:
+        bom: List[Component] = []
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-        releases = project["_embedded"].get("sw360:releases", [])
+        releases: List[Dict[str, Any]] = project["_embedded"].get("sw360:releases", [])
         releases.sort(key=lambda s: s["name"].lower())
         for release in releases:
             print_text("   ", release["name"], release["version"])
@@ -54,20 +59,24 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
             try:
                 release_details = self.client.get_release_by_url(href)
+                if not release_details:
+                    print_red("    ERROR: unable to access release:" + href)
+                    sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
                 purl = self.get_external_id("package-url", release_details)
                 if not purl:
                     # try another id name
                     purl = self.get_external_id("purl", release_details)
 
-                purl = PurlUtils.parse_purls_from_external_id(purl)
-                if len(purl) > 1:
+                purls = PurlUtils.parse_purls_from_external_id(purl)
+                if len(purls) > 1:
                     print_yellow("      Multiple purls added for", release["name"], release["version"])
                     print_yellow("      You must remove all but one in your SBOM!")
-                purl = " ".join(purl)
+                purl = " ".join(purls)
 
                 if purl:
-                    rel_item = Component(name=release["name"], version=release["version"], purl=purl, bom_ref=purl)
+                    rel_item = Component(name=release["name"], version=release["version"],
+                                         purl=PackageURL.from_string(purl), bom_ref=purl)
                 else:
                     rel_item = Component(name=release["name"], version=release["version"])
 
@@ -88,18 +97,19 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                                                      comment, release_details[key])
 
                 if "repository" in release_details and "url" in release_details["repository"]:
-                    CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment=None,
+                    CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment="",
                                                  value=release_details["repository"]["url"])
 
                 for at_type, comment in (("SOURCE", CaPyCliBom.SOURCE_FILE_COMMENT),
                                          ("BINARY", CaPyCliBom.BINARY_FILE_COMMENT)):
-                    attachments = self.get_release_attachments(release_details, (at_type, at_type + "_SELF"))
+                    attachments = self.get_release_attachments(release_details,
+                                                               (at_type, at_type + "_SELF"))  # type: ignore
                     for attachment in attachments:
                         CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
                                                      comment, attachment["filename"],
-                                                     HashAlgorithm.SHA_1, attachment.get("sha1"))
+                                                     HashAlgorithm.SHA_1, attachment.get("sha1", ""))
 
-            except sw360.SW360Error as swex:
+            except SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
@@ -121,11 +131,18 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return bom
 
-    def create_project_cdx_bom(self, project_id) -> Bom:
+    def create_project_cdx_bom(self, project_id: str) -> Bom:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             project = self.client.get_project(project_id)
-        except sw360.sw360_api.SW360Error as swex:
+        except SW360Error as swex:
             print_red("  ERROR: unable to access project:" + repr(swex))
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+        if not project:
+            print_red("  ERROR: unable to access project")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         print_text("  Project name: " + project["name"] + ", " + project["version"])
@@ -134,12 +151,12 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         creator = SbomCreator()
         sbom = creator.create(cdx_components, addlicense=True, addprofile=True, addtools=True,
-                              name=project.get("name"), version=project.get("version"),
-                              description=project.get("description"), addprojectdependencies=True)
+                              name=project.get("name", ""), version=project.get("version", ""),
+                              description=project.get("description", ""), addprojectdependencies=True)
 
         return sbom
 
-    def show_command_help(self):
+    def show_command_help(self) -> None:
         print("\nusage: CaPyCli project createbom [options]")
         print("Options:")
         print("""
@@ -154,7 +171,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         print()
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
@@ -177,8 +194,8 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
-        name = args.name
-        version = None
+        name: str = args.name
+        version: str = ""
         if args.version:
             version = args.version
 

@@ -9,6 +9,7 @@
 """Contains the logic for all of the default options for CaPyCli."""
 
 import os
+from typing import Any, Dict
 
 import tomli
 
@@ -23,7 +24,7 @@ LOG = capycli.get_logger(__name__)
 class CommandlineSupport():
     CONFIG_FILE_NAME = ".capycli.cfg"
 
-    def __init__(self):
+    def __init__(self) -> None:
         custom_prog = "CaPyCli, " + capycli.get_app_version()
         custom_usage = "CaPyCli command subcommand [options]"
         command_help = """Commands and Sub-Commands
@@ -97,7 +98,7 @@ class CommandlineSupport():
 
         self.register_options()
 
-    def register_options(self):
+    def register_options(self) -> None:
         input_formats = []
         input_formats.append(BomFormat.TEXT)
         input_formats.append(BomFormat.CSV)
@@ -391,7 +392,7 @@ class CommandlineSupport():
             dest="debug", action="store_true",
             help="Enable debug output")
 
-    def read_config(self, filename: str = None, config_string: str = None) -> dict:
+    def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:
         """
         Read configuration from string or config file.
         """
@@ -409,10 +410,10 @@ class CommandlineSupport():
                         toml_dict = tomli.load(f)
 
             if not toml_dict:
-                return None
+                return {}
 
             if "capycli" not in toml_dict:
-                return None
+                return {}
 
             return toml_dict["capycli"]
         except tomli.TOMLDecodeError as tex:
@@ -420,7 +421,9 @@ class CommandlineSupport():
         except Exception as ex:
             LOG.warning("Error reading config file: " + repr(ex))
 
-    def process_commandline(self, argv):
+        return {}
+
+    def process_commandline(self, argv: Any) -> Any:
         """Reads the command line arguments"""
         args = self.parser.parse_args(argv)
         cfg = self.read_config()

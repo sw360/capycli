@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any, Dict
 from unittest.mock import MagicMock
 
 import responses
@@ -19,7 +20,7 @@ from tests.test_base import AppArguments, TestBase
 class TestShowProject(TestBase):
     OUTPUTFILE = "output.json"
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.client_mock = MagicMock()
         self.sut = ShowProject()
         self.sut.client = self.client_mock
@@ -171,7 +172,7 @@ class TestShowProject(TestBase):
         self.assertTrue("wheel, 0.38.4 = SPECIFIC, APPROVED" in out)
 
     @responses.activate
-    def test_project_show_by_name(self):
+    def test_project_show_by_name(self) -> None:
         sut = ShowProject()
 
         # create argparse command line argument object
@@ -265,7 +266,7 @@ class TestShowProject(TestBase):
         self.assertTrue("wheel, 0.38.4 = SPECIFIC, APPROVED" in out)
 
     @responses.activate
-    def test_project_show_with_subproject(self):
+    def test_project_show_with_subproject(self) -> None:
         sut = ShowProject()
 
         # create argparse command line argument object
@@ -285,7 +286,7 @@ class TestShowProject(TestBase):
 
         # the project, with sub-project
         project = self.get_project_for_test()
-        subproject = {}
+        subproject: Dict[str, Any] = {}
         subproject["name"] = "sub-project-dummy"
         subproject["version"] = "2.0.1"
         subproject["securityResponsibles"] = []
@@ -342,7 +343,7 @@ class TestShowProject(TestBase):
         self.assertTrue(os.path.isfile(self.OUTPUTFILE), "no output file generated")
         self.delete_file(self.OUTPUTFILE)
 
-    def test_project_show_with_defaults(self):
+    def test_project_show_with_defaults(self) -> None:
         """
         Ensure project show will use the default values if the response
         miss some parts of the required data.

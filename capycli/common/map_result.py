@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from typing import Any, List, Optional
+
 from cyclonedx.model.component import Component
 
 from capycli.common.capycli_bom_support import CycloneDxSupport
@@ -43,33 +45,35 @@ class MapResult:
     # Component was not found
     NO_MATCH = "9-no-match"
 
-    def __init__(self, component: Component = None):
-        self.component = component
-        self.result = MapResult.NO_MATCH
-        self._component_id = None
-        self._release_id = None
-        self.releases = []
+    def __init__(self, component: Optional[Component] = None) -> None:
+        self.component: Optional[Component] = component
+        self.result: str = MapResult.NO_MATCH
+        self._component_id: str = ""
+        self._release_id: str = ""
+        self.releases: List[Any] = []
 
     @property
-    def component_id(self):
+    def component_id(self) -> str:
         return self._component_id
 
     @component_id.setter
-    def component_id(self, value):
+    def component_id(self, value: str) -> None:
         self._component_id = value
-        CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_COMPONENT_ID, value)
+        if self.component:
+            CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_COMPONENT_ID, value)
 
     @property
-    def release_id(self):
+    def release_id(self) -> str:
         return self._release_id
 
     @release_id.setter
-    def release_id(self, value):
+    def release_id(self, value: str) -> None:
         self._release_id = value
-        CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_SW360ID, value)
+        if self.component:
+            CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_SW360ID, value)
 
     @classmethod
-    def map_code_to_string(cls, map_code):
+    def map_code_to_string(cls, map_code: str) -> str:
         """"Converts a map code to a string"""
         if map_code == MapResult.NO_MATCH:
             return "No match"
@@ -88,7 +92,7 @@ class MapResult:
 
         return ""
 
-    def __str__(self):
+    def __str__(self) -> str:
         rel = ""
         if self.releases:
             more = ""
@@ -105,12 +109,19 @@ class MapResult:
                 + more
             )
 
-        return (
-            self.map_code_to_string(self.result)
-            + ", "
-            + self.component.name
-            + ", "
-            + self.component.version
-            + " "
-            + rel
-        )
+        if not self.component:
+            return (
+                self.map_code_to_string(self.result)
+                + ", (no component), "
+                + rel
+            )
+        else:
+            return (
+                self.map_code_to_string(self.result)
+                + ", "
+                + str(self.component.name)
+                + ", "
+                + str(self.component.version or "")
+                + " "
+                + str(rel)
+            )

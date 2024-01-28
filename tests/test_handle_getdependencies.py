@@ -12,7 +12,7 @@ from tests.test_base import AppArguments, TestBase
 
 
 class TestHandleDependencies(TestBase):
-    def test_not_getdependencies_command(self):
+    def test_not_getdependencies_command(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("xx_unknown_xx")
@@ -20,7 +20,7 @@ class TestHandleDependencies(TestBase):
         out = self.capture_stdout(run_dependency_command, args)
         self.assertEqual("", out)
 
-    def test_no_getdependencies_subcommand(self):
+    def test_no_getdependencies_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")
@@ -29,7 +29,7 @@ class TestHandleDependencies(TestBase):
         self.assertTrue("No subcommand specified!" in out)
         self.assertTrue("getdependencies - dependency detection specific sub-commands" in out)
 
-    def test_unknown_subcommand(self):
+    def test_unknown_subcommand(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")
@@ -41,7 +41,7 @@ class TestHandleDependencies(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
-    def test_getdependencies_nuget(self):
+    def test_getdependencies_nuget(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")
@@ -51,7 +51,7 @@ class TestHandleDependencies(TestBase):
         out = self.capture_stdout(run_dependency_command, args)
         self.assertTrue("Usage: capycli getdependencies nuget" in out)
 
-    def test_getdependencies_python(self):
+    def test_getdependencies_python(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")
@@ -61,7 +61,7 @@ class TestHandleDependencies(TestBase):
         out = self.capture_stdout(run_dependency_command, args)
         self.assertTrue("usage: capycli getdependencies python" in out)
 
-    def test_getdependencies_javascript(self):
+    def test_getdependencies_javascript(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")
@@ -71,7 +71,7 @@ class TestHandleDependencies(TestBase):
         out = self.capture_stdout(run_dependency_command, args)
         self.assertTrue("CaPyCli getdependencies javascript" in out)
 
-    def test_getdependencies_mavenpom(self):
+    def test_getdependencies_mavenpom(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")
@@ -81,7 +81,7 @@ class TestHandleDependencies(TestBase):
         out = self.capture_stdout(run_dependency_command, args)
         self.assertTrue("CaPyCli getdependencies mavenpom" in out)
 
-    def test_getdependencies_mavenlist(self):
+    def test_getdependencies_mavenlist(self) -> None:
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")

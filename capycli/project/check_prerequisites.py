@@ -9,6 +9,7 @@
 import logging
 import os
 import sys
+from typing import Any, Dict, List, Optional
 
 from colorama import Fore
 from cyclonedx.model.bom import Bom
@@ -25,7 +26,7 @@ LOG = get_logger(__name__)
 class CheckPrerequisites(capycli.common.script_base.ScriptBase):
     """Checks whether all prerequisites for a successfull software clearing are fulfilled."""
 
-    def get_clearing_state(self, project: dict, href: str) -> str:
+    def get_clearing_state(self, project: Dict[str, Any], href: str) -> str:
         """Returns the clearing state of the given component/release"""
         rel = project["linkedReleases"]
         for key in rel:
@@ -34,7 +35,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         return ""
 
-    def get_source_code(self, release: dict) -> list:
+    def get_source_code(self, release: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Return list of attachment infos for all source code attachments"""
         if "_embedded" not in release:
             return []
@@ -49,10 +50,10 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         ]
         return att
 
-    def get_component_management_id(self, release: dict) -> dict:
+    def get_component_management_id(self, release: Dict[str, Any]) -> Dict[Any, Any]:
         """Retries the first component management id"""
         if "externalIds" not in release:
-            return None
+            return {}
 
         id_dict = dict(release.get("externalIds", {}))
 
@@ -71,11 +72,15 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         return id_dict
 
-    def check_checkStatus(self, source_info):
+    def check_checkStatus(self, source_info: Dict[str, Any]) -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         attachment = self.client.get_attachment_by_url(
             source_info["_links"]["self"]["href"]
         )
-        if attachment["checkStatus"] == "ACCEPTED":
+        if attachment and attachment["checkStatus"] == "ACCEPTED":
             print_green(
                 "        " +
                 attachment["filename"] +
@@ -93,11 +98,19 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def check_project_prerequisites(self, id: str, sbom: Bom):
+    def check_project_prerequisites(self, id: str, sbom: Optional[Bom]) -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         try:
             project = self.client.get_project(id)
         except Exception as ex:
             print_red("Error retrieving project details: \n" + repr(ex))
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+        if not project:
+            print_red("Error retrieving project details")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         print_text("  Project name: " + project["name"] + ", " + project["version"])
@@ -142,6 +155,10 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             for key in releases:
                 href = key["_links"]["self"]["href"]
                 release = self.client.get_release_by_url(href)
+                if not release:
+                    print_red("Error accessign release " + href)
+                    continue
+
                 state = self.get_clearing_state(project, href)
 
                 print_text("    " + key["name"] + ", " + key["version"] + ": " + state)
@@ -233,7 +250,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         else:
             print_text("    No linked releases")
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
@@ -285,8 +302,8 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             if args.verbose:
                 print_text(" ", self.get_comp_count_text(sbom), "read from SBOM")
 
-        name = args.name
-        version = None
+        name: str = args.name
+        version: str = ""
         if args.version:
             version = args.version
 

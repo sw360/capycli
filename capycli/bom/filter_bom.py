@@ -9,7 +9,7 @@
 import json
 import os
 import sys
-from typing import Optional
+from typing import Any, Dict, List, Optional
 
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
@@ -53,27 +53,27 @@ class FilterBom(capycli.common.script_base.ScriptBase):
         ]
     }
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self.verbose = False
 
-    def load_filter_file(self, filter_file: str) -> dict:
+    def load_filter_file(self, filter_file: str) -> Dict[str, Any]:
         """Load a single filter file - without any further processing"""
         f = open(filter_file, "r")
         filter = json.load(f)
         return filter
 
-    def append_components(self, clist: list, to_add_list: list):
+    def append_components(self, clist: List[Dict[str, Any]], to_add_list: List[Dict[str, Any]]) -> None:
         for to_add in to_add_list:
             clist.append(to_add)
 
-    def show_filter(self, filter: dict) -> None:
+    def show_filter(self, filter: Dict[str, Any]) -> None:
         for entry in filter["Components"]:
             comp = entry["component"]
             print_text(
                 "  ", comp.get("Name", ""), comp.get("Version", ""),
                 comp.get("RepositoryId", ""), entry["Mode"])
 
-    def find_bom_item(self, bom: Bom, filterentry: dict) -> Optional[Component]:
+    def find_bom_item(self, bom: Bom, filterentry: Dict[str, Any]) -> Optional[Component]:
         """Find an entry in list of bom items."""
         for component in bom.components:
             if component.purl:
@@ -92,11 +92,11 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
         return None
 
-    def create_bom_item_from_filter_entry(self, filterentry: dict) -> Component:
+    def create_bom_item_from_filter_entry(self, filterentry: Dict[str, Any]) -> Component:
         comp = LegacySupport.legacy_component_to_cdx(filterentry)
         return comp
 
-    def update_bom_item_from_filter_entry(self, component: Component, filterentry: dict):
+    def update_bom_item_from_filter_entry(self, component: Component, filterentry: Dict[str, Any]) -> None:
         if filterentry["Name"]:
             component.name = filterentry["Name"]
 
@@ -210,9 +210,9 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
                     if component.purl:
                         if prefix:
-                            match = component.purl.startswith(prefix)
+                            match = component.purl.to_string().startswith(prefix)
                         else:
-                            match = component.purl == filterentry["component"]["RepositoryId"]
+                            match = component.purl.to_string() == filterentry["component"]["RepositoryId"]
 
                 if match:
                     if filterentry["Mode"] == "remove":
@@ -231,7 +231,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
                 if existing_entry:
                     self.update_bom_item_from_filter_entry(existing_entry, filterentry["component"])
                     if self.verbose:
-                        print_text("  Updated " + existing_entry.name + ", " + existing_entry.version)
+                        print_text("  Updated " + existing_entry.name + ", " + (existing_entry.version or ""))
                 else:
                     if filterentry["component"].get("Name") is None:
                         print_red("To be added dependency missing Name attribute in Filter file.")
@@ -240,7 +240,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
                     bomitem = self.create_bom_item_from_filter_entry(filterentry["component"])
                     list_temp.append(bomitem)
                     if self.verbose:
-                        print_text("  Added " + bomitem.name + ", " + bomitem.version)
+                        print_text("  Added " + bomitem.name + ", " + (bomitem.version or ""))
 
                 filterentry["Processed"] = True
 
@@ -260,7 +260,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
         return bom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

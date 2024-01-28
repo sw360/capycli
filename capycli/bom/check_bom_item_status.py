@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -12,10 +12,10 @@ import sys
 from typing import Any, Dict, Optional
 
 import requests
-import sw360.sw360_api
 from colorama import Fore, Style
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -39,20 +39,26 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
         return False
 
     def _find_by_id(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         sw360id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
+        version = component.version or ""
         try:
             release_details = self.client.get_release(sw360id)
             return release_details
-        except sw360.sw360_api.SW360Error as swex:
-            if swex.response.status_code == requests.codes['not_found']:
+        except SW360Error as swex:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+            elif swex.response.status_code == requests.codes['not_found']:
                 print(
                     Fore.LIGHTYELLOW_EX + "  Not found " + component.name +
-                    ", " + component.version + ", " +
-                    sw360id + Style.RESET_ALL)
+                    ", " + version + ", " + sw360id + Style.RESET_ALL)
             else:
                 print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
                 print(
-                    "  " + str(component.name) + ", " + str(component.version) +
+                    "  " + component.name + ", " + version +
                     ", " + sw360id)
                 print("  Status Code: " + str(swex.response.status_code))
                 if swex.message:
@@ -62,25 +68,32 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
         return None
 
     def _find_by_name(self, component: Component) -> Optional[Dict[str, Any]]:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+        version = component.version or ""
         try:
             releases = self.client.get_releases_by_name(component.name)
             if not releases:
                 return None
 
             for r in releases:
-                if r.get("version", "") == component.version:
+                if r.get("version", "") == version:
                     return self.client.get_release_by_url(r["_links"]["self"]["href"])
 
             return None
-        except sw360.sw360_api.SW360Error as swex:
-            if swex.response.status_code == requests.codes['not_found']:
+        except SW360Error as swex:
+            if swex.response is None:
+                print_red("  Unknown error: " + swex.message)
+            elif swex.response.status_code == requests.codes['not_found']:
                 print(
                     Fore.LIGHTYELLOW_EX + "  Not found " + component.name +
-                    ", " + component.version + ", " +
+                    ", " + version + ", " +
                     Style.RESET_ALL)
             else:
                 print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
-                print("  " + str(component.name) + ", " + str(component.version))
+                print("  " + str(component.name) + ", " + str(version))
                 print("  Status Code: " + str(swex.response.status_code))
                 if swex.message:
                     print("    Message: " + swex.message)
@@ -89,6 +102,10 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
             return None
 
     def show_bom_item_status(self, bom: Bom, all: bool = False) -> None:
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         for component in bom.components:
             release = None
             id = CycloneDxSupport.get_property_value(component, CycloneDxSupport.CDX_PROP_SW360ID)
@@ -117,6 +134,9 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                         release["_links"]["sw360:component"]["href"]
                     )
                 )
+                if not comp_sw360:
+                    print_red("Error accessing component")
+                    continue
 
                 rel_list = comp_sw360["_embedded"]["sw360:releases"]
                 print("  " + component.name + ", " + component.version + " => ", end="", flush=True)
@@ -124,6 +144,9 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                 for orel in rel_list:
                     href = orel["_links"]["self"]["href"]
                     rel = self.client.get_release_by_url(href)
+                    if not rel:
+                        print_red("Error accessing release " + href)
+                        continue
                     cs = rel.get("clearingState", "(unkown clearing state)")
                     if cs == "APPROVED":
                         print(Fore.LIGHTGREEN_EX, end="", flush=True)
@@ -141,7 +164,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                     " => --- no id ---")
                 continue
 
-    def run(self, args) -> None:
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

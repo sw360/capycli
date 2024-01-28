@@ -6,14 +6,12 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-import json
 import logging
 import os
-import subprocess
 import sys
 from enum import Enum
 from io import TextIOWrapper
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import chardet
 import requests
@@ -46,26 +44,8 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
     Determine Python components/dependencies for a given project
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.verbose = False
-
-    # NOT USED AT THE MOMENT
-    def create_local_package_list(self) -> dict:
-        """
-        Create a list of all packages in the local environment.
-
-        :return a list of the local Python packages
-        :rtype list of package item dictionaries, as returned by pip
-        """
-        args = ["pip3", "list", "--format", "json"]
-        proc = subprocess.Popen(
-            args,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            shell=False)
-        raw_data = proc.communicate()[0]
-        package_list = json.loads(raw_data)
-        return package_list
 
     def requirements_to_package_list(self, input_file: str) -> List[Dict[str, str]]:
         """
@@ -91,18 +71,18 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         :return a list of the local Python packages.
         :rtype list of package item dictionaries, as retuned by pip.
         """
-        package_list = []
+        package_list: List[Dict[str, str]] = []
         for req in requirements.parse(requirements_file):
             name = req.name
             if req.local_file:
                 print_yellow(
-                    "WARNING: Local file " + req.path +
+                    "WARNING: Local file " + str(req.path) +
                     " does not have versions. Skipping.")
                 continue
 
             if not req.specs:
                 print_yellow(
-                    "WARNING: " + name +
+                    "WARNING: " + str(name) +
                     " does not have a version specified. Skipping.")
                 continue
 
@@ -110,17 +90,17 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 version = req.specs[0][1]
                 if req.specs[0][0] != "==":
                     print_yellow(
-                        "WARNING: " + name +
+                        "WARNING: " + str(name) +
                         " is not pinned to a specific version. Using: " + version)
 
-                package = {}
+                package: Dict[str, Any] = {}
                 package["name"] = name
                 package["version"] = version
                 package_list.append(package)
 
         return package_list
 
-    def get_package_meta_info(self, name: str, version: str, package_source: str = "") -> dict or None:
+    def get_package_meta_info(self, name: str, version: str, package_source: str = "") -> Optional[Dict[str, Any]]:
         """
         Retrieves meta data of the given package from PyPi.
 
@@ -171,14 +151,17 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         """
         return PackageURL("pypi", '', name, version, '', '').to_string()
 
-    def add_meta_data_to_bomitem(self, cxcomp: Component, package_source: str = ""):
+    def add_meta_data_to_bomitem(self, cxcomp: Component, package_source: str = "") -> None:
         """
         Try to lookup meta data for the given item.
 
         :param bomitem: a single bill of material item (a single component)
         :type bomitem: dictionary
         """
-        meta = self.get_package_meta_info(cxcomp.name, cxcomp.version, package_source)
+        version = ""
+        if cxcomp.version:
+            version = cxcomp.version
+        meta = self.get_package_meta_info(cxcomp.name, version, package_source)
         if not meta:
             LOG.debug(f"No meta data found for {cxcomp.name}, {cxcomp.version}")
             return
@@ -247,7 +230,8 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file url")
 
-    def convert_package_list(self, package_list: list, search_meta_data: bool, package_source: str = "") -> Bom:
+    def convert_package_list(self, package_list: List[Dict[str, Any]], search_meta_data: bool,
+                             package_source: str = "") -> Bom:
         """
         Convert package list to SBOM.
 
@@ -257,13 +241,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         :rtype list of bom item dictionaries
         """
         creator = SbomCreator()
-        sbom = creator.create(None, addlicense=True, addprofile=True, addtools=True)
+        sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         for package in package_list:
             purl = self.generate_purl(package["name"], package["version"])
             cxcomp = Component(
                 name=package.get("name", "").strip(),
                 version=package.get("version", "").strip(),
-                purl=purl,
+                purl=PackageURL.from_string(purl),
                 bom_ref=purl,
                 description=package.get("Description", "").strip())
 
@@ -279,7 +263,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         return sbom
 
-    def print_package_list(self, package_list: list) -> None:
+    def print_package_list(self, package_list: List[Dict[str, Any]]) -> None:
         """
         Print the package list.
 
@@ -348,7 +332,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         LOG.debug(f"poetry_lock_version: {poetry_lock_version}")
 
         creator = SbomCreator()
-        sbom = creator.create(None, addlicense=True, addprofile=True, addtools=True)
+        sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         for package in poetry_lock["package"]:
             name = package.get("name", "").strip()
             version = package.get("version", "").strip()
@@ -359,12 +343,12 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 LOG.debug("  Ignoring development dependency")
                 continue
 
-            purl = PackageURL(type="pypi", name=name, version=version).to_string()
+            purl = PackageURL(type="pypi", name=name, version=version)
             cxcomp = Component(
                 name=name,
                 version=version,
                 purl=purl,
-                bom_ref=purl,
+                bom_ref=purl.to_string(),
                 description=package.get("description", "").strip())
 
             prop = Property(
@@ -436,7 +420,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         return result
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

@@ -10,9 +10,10 @@ import json
 import logging
 import os
 import sys
+from typing import Any, Dict, Optional
 
 import requests
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -31,7 +32,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
     """
     Determine Javascript components/dependencies for a given project.
     """
-    def get_dependency(self, data: dict, sbom: Bom) -> Bom:
+    def get_dependency(self, data: Dict[str, Any], sbom: Bom) -> Bom:
         dependencies = data.get("dependencies", {})
         for key in dependencies:
             dep = dependencies[key]
@@ -44,19 +45,19 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 continue
 
             LOG.debug("Checking dependency: " + key + "," + dep["version"])
-            purl = PackageURL("npm", "", key, dep["version"], "", "").to_string()
+            purl = PackageURL("npm", "", key, dep["version"], "", "")
             cxcomp = Component(
                 name=key.strip(),
                 version=dep["version"].strip(),
                 purl=purl,
-                bom_ref=purl)
+                bom_ref=purl.to_string())
 
             url = dep.get("resolved", "")
             if url:
                 ext_ref = ExternalReference(
                     reference_type=ExternalReferenceType.DISTRIBUTION,
                     comment=CaPyCliBom.BINARY_URL_COMMENT,
-                    url=url)
+                    url=XsUri(url))
                 cxcomp.external_references.add(ext_ref)
 
             url = dep.get("resolved", "").split('/')[-1]
@@ -64,7 +65,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 ext_ref = ExternalReference(
                     reference_type=ExternalReferenceType.DISTRIBUTION,
                     comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                    url=url)
+                    url=XsUri(url))
                 # the encoding of the hashes in package-lock.json is incompatible to
                 # the encoding in CyloneDX.
                 # hash = dep.get("integrity", "")
@@ -93,7 +94,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return sbom
 
-    def get_dependency_lockversion3(self, data: dict, sbom: Bom) -> Bom:
+    def get_dependency_lockversion3(self, data: Dict[str, Any], sbom: Bom) -> Bom:
         dependencies = data.get("packages", {})
         for key in dependencies:
             if key:
@@ -113,19 +114,19 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                     modified_key = key
 
                 LOG.debug("Checking dependency: " + modified_key + "," + dep["version"])
-                purl = PackageURL("npm", "", modified_key, dep["version"], "", "").to_string()
+                purl = PackageURL("npm", "", modified_key, dep["version"], "", "")
                 cxcomp = Component(
                     name=modified_key.strip(),
                     version=dep["version"].strip(),
                     purl=purl,
-                    bom_ref=purl)
+                    bom_ref=purl.to_string())
 
                 url = dep.get("resolved", "")
                 if url:
                     ext_ref = ExternalReference(
                         reference_type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.BINARY_URL_COMMENT,
-                        url=url)
+                        url=XsUri(url))
                     cxcomp.external_references.add(ext_ref)
 
                 url = dep.get("resolved", "").split('/')[-1]
@@ -133,7 +134,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                     ext_ref = ExternalReference(
                         reference_type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                        url=url)
+                        url=XsUri(url))
 
                     cxcomp.external_references.add(ext_ref)
 
@@ -150,9 +151,9 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return sbom
 
-    def convert_package_lock(self, package_lock_file: str):
+    def convert_package_lock(self, package_lock_file: str) -> Bom:
         """Read package-lock.json and convert to bill of material"""
-        bom = SbomCreator.create(None, addlicense=True, addprofile=True, addtools=True)
+        bom = SbomCreator.create([], addlicense=True, addprofile=True, addtools=True)
         with open(package_lock_file) as fin:
             data = json.load(fin)
             if data.get("lockfileVersion") > 2:
@@ -162,7 +163,8 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return sbom
 
-    def find_package_info(self, pckgName: str, pckgVrsn: str = "", package_source: str = "") -> dict or None:
+    def find_package_info(self, pckgName: str, pckgVrsn: str = "",
+                          package_source: str = "") -> Optional[Dict[str, Any]]:
         hdr = {}
         if not pckgName:
             return None
@@ -197,28 +199,31 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
         """
         Find metadata for a single component.
         """
+        version = ""
+        if bomitem.version:
+            version = bomitem.version
         info = self.find_package_info(
             pckgName=bomitem.name,
-            pckgVrsn=bomitem.version,
+            pckgVrsn=version,
             package_source=package_source)
         if not info:
             print_yellow(
                 "  No info found for component " +
                 bomitem.name +
                 ", " +
-                bomitem.version)
+                version)
             return bomitem
 
         val = info.get("homepage", "")
         if val:
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.WEBSITE,
-                url=val)
+                url=XsUri(val))
             bomitem.external_references.add(ext_ref)
 
         repository = info.get("repository")
         url = ""
-        if repository is not None and type(repository) == dict:
+        if repository is not None and type(repository) is dict:
             url = repository.get("url", "")
             url = url.replace('git+', '')
             url = url.replace('git://', '')
@@ -227,12 +232,12 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
-                url=url)
+                url=XsUri(url))
             bomitem.external_references.add(ext_ref)
         if "github.com" in url:
             if not str(url).startswith("http"):
                 url = "https://" + url
-            url = self.find_source_file(url, bomitem.name, bomitem.version)
+            url = self.find_source_file(url, bomitem.name, version)
             CycloneDxSupport.update_or_set_ext_ref(
                 bomitem,
                 ExternalReferenceType.DISTRIBUTION,
@@ -240,15 +245,16 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 url)
         bomitem.description = info.get("description", "")
         if not CycloneDxSupport.get_binary_file_hash(bomitem):
-            ext_ref = CycloneDxSupport.get_ext_ref(
+            ext_ref2 = CycloneDxSupport.get_ext_ref(
                 bomitem,
                 ExternalReferenceType.DISTRIBUTION,
                 CaPyCliBom.BINARY_FILE_COMMENT)
-            hash = info.get("dist", "").get("integrity", "")
-            if ext_ref and hash:
-                ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=hash))
+            if ext_ref2:
+                hash = info.get("dist", "").get("integrity", "")
+                if ext_ref and hash:
+                    ext_ref.hashes.add(HashType(
+                        algorithm=HashAlgorithm.SHA_1,
+                        hash_value=hash))
 
         return bomitem
 
@@ -261,7 +267,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return bom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG

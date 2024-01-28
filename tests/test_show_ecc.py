@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+from typing import Any, Dict
 
 import responses
 
@@ -165,7 +166,7 @@ class TestShowExportControlStatus(TestBase):
         self.assertTrue("wheel, 0.38.4: ECC status=APPROVED, ECCN=N, AL=N" in out)
 
     @responses.activate
-    def test_project_ecc_by_name(self):
+    def test_project_ecc_by_name(self) -> None:
         sut = ShowExportControlStatus()
 
         # create argparse command line argument object
@@ -264,7 +265,7 @@ class TestShowExportControlStatus(TestBase):
         self.delete_file(self.OUTPUTFILE)
 
     @responses.activate
-    def test_project_show_ecc_with_subproject(self):
+    def test_project_show_ecc_with_subproject(self) -> None:
         sut = ShowExportControlStatus()
 
         # create argparse command line argument object
@@ -283,7 +284,7 @@ class TestShowExportControlStatus(TestBase):
 
         # the project, with sub-project
         project = self.get_project_for_test()
-        subproject = {}
+        subproject: Dict[str, Any] = {}
         subproject["name"] = "sub-project-dummy"
         subproject["version"] = "2.0.1"
         subproject["securityResponsibles"] = []

@@ -8,6 +8,7 @@
 
 import os
 import sys
+from typing import Any, Dict
 
 from openpyxl import Workbook
 from openpyxl.styles import Border, Font, PatternFill, Side
@@ -27,7 +28,7 @@ LOG = get_logger(__name__)
 class MappingOverviewToExcelXlsx(capycli.common.script_base.ScriptBase):
     """Create an Excel sheet showing the mapping overview."""
 
-    def define_styles(self):
+    def define_styles(self) -> None:
         """Define style for Excel"""
         # fontDefault = Font(
         #    name="Calibri", size=11, bold=False, italic=False,vertAlign=None,
@@ -59,30 +60,33 @@ class MappingOverviewToExcelXlsx(capycli.common.script_base.ScriptBase):
             top=Side(border_style="thin", color="FF000000"),
             bottom=Side(border_style="thin", color="FF000000"))
 
-    def mapping_overview_to_xlsx(self, overview, outputfile):
+    def mapping_overview_to_xlsx(self, overview: Dict[str, Any], outputfile: str) -> None:
         """Create an Excel sheet showing the mapping overview"""
         wb = Workbook()
         ws = wb.active
+        if not ws:
+            return
+
         self.define_styles()
 
-        ws["A1"] = "Mapping Result Overview"
-        ws["A1"].font = self.fontBold16
+        ws["A1"] = "Mapping Result Overview"  # type: ignore
+        ws["A1"].font = self.fontBold16  # type: ignore
 
-        ws["A3"] = "Overall Result: " + overview["OverallResult"]
+        ws["A3"] = "Overall Result: " + overview["OverallResult"]  # type: ignore
         if overview["OverallResult"] == "COMPLETE":
-            ws["A3"].font = self.fontBoldBlue
+            ws["A3"].font = self.fontBoldBlue  # type: ignore
         else:
-            ws["A3"].font = self.fontBoldRed
+            ws["A3"].font = self.fontBoldRed  # type: ignore
 
-        ws["A5"] = "Component"
-        ws["A5"].fill = self.fillGray
-        ws["A5"].border = self.border
-        ws["B5"] = "Mapping Result"
-        ws["B5"].fill = self.fillGray
-        ws["B5"].border = self.border
-        ws["C5"] = "Mapping Code"
-        ws["C5"].fill = self.fillGray
-        ws["C5"].border = self.border
+        ws["A5"] = "Component"  # type: ignore
+        ws["A5"].fill = self.fillGray  # type: ignore
+        ws["A5"].border = self.border  # type: ignore
+        ws["B5"] = "Mapping Result"  # type: ignore
+        ws["B5"].fill = self.fillGray  # type: ignore
+        ws["B5"].border = self.border  # type: ignore
+        ws["C5"] = "Mapping Code"  # type: ignore
+        ws["C5"].fill = self.fillGray  # type: ignore
+        ws["C5"].border = self.border  # type: ignore
 
         row = 6
         max_width_component = 0
@@ -97,31 +101,31 @@ class MappingOverviewToExcelXlsx(capycli.common.script_base.ScriptBase):
                 else:
                     font = self.fontBoldOrange
 
-            c = ws.cell(row=row, column=1, value=item["BomItem"])
+            c = ws.cell(row=row, column=1, value=item["BomItem"])  # type: ignore
             c.font = font
             c.border = self.border
             if len(item["BomItem"]) > max_width_component:
                 max_width_component = len(item["BomItem"])
 
-            c = ws.cell(row=row, column=2, value=item["ResultText"])
+            c = ws.cell(row=row, column=2, value=item["ResultText"])  # type: ignore
             c.font = font
             c.border = self.border
             if len(item["ResultText"]) > max_width_text:
                 max_width_text = len(item["ResultText"])
 
-            c = ws.cell(row=row, column=3, value=item["ResultCode"])
+            c = ws.cell(row=row, column=3, value=item["ResultCode"])  # type: ignore
             c.font = font
             c.border = self.border
 
             row += 1
 
-        ws.column_dimensions["A"].width = max_width_component
-        ws.column_dimensions["B"].width = max_width_text
-        ws.column_dimensions["C"].width = len("Mapping Code")
+        ws.column_dimensions["A"].width = max_width_component  # type: ignore
+        ws.column_dimensions["B"].width = max_width_text  # type: ignore
+        ws.column_dimensions["C"].width = len("Mapping Code")  # type: ignore
 
         wb.save(outputfile)
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
             global LOG
