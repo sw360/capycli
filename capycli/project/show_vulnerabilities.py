@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2020-2023 Siemens
+# Copyright (c) 2020-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -11,7 +11,6 @@ import sys
 from typing import Any, Dict, Optional
 
 import requests
-import sw360
 from colorama import Fore, Style
 from sw360 import SW360Error
 

@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -13,8 +13,6 @@ import sys
 from typing import Any, Dict, List
 
 from sw360 import SW360Error
-
-import sw360
 
 import capycli.common.script_base
 from capycli.common.json_support import load_json_file

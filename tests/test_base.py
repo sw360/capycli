@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-23 Siemens
+# Copyright (c) 2021-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -62,6 +62,7 @@ class AppArguments():
         self.outputformat: str = ""
         self.remote_granularity_list: str = ""
         self.local_granularity_list: str = ""
+        self.github_token: str = ""
 
 
 class TestBasePytest:

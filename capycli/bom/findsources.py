@@ -10,7 +10,8 @@ import logging
 import os
 import re
 import sys
-from typing import Any, Tuple
+import time
+from typing import Any
 
 import requests
 import semver
@@ -39,9 +40,9 @@ class FindSources(capycli.common.script_base.ScriptBase):
         self.verbose: bool = False
         self.version_regex = re.compile(r"[\d+\.|_]+[\d+]")
         self.github_project_name_regex = re.compile(r"^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$")
-        self.github_name = None
-        self.github_token = None
-        self.sw360_url = os.environ.get("SW360ServerUrl", None)
+        self.github_name: str = ""
+        self.github_token: str = ""
+        self.sw360_url: str = os.environ.get("SW360ServerUrl", None)
 
     def is_sourcefile_accessible(self, sourcefile_url: str) -> bool:
         """Check if the URL is accessible."""

@@ -18,7 +18,6 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import jwt
 import requests
-import sw360.sw360_api
 from cyclonedx.model.bom import Bom
 from sw360 import SW360, SW360Error
 
