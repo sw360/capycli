@@ -3,7 +3,6 @@
 from abc import ABC, abstractmethod
 from typing import AbstractSet, Any, Callable, Dict, Optional
 
-
 class JWTException(Exception):
     """
     common base class for all exceptions used in python-jwt
