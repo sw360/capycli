@@ -10,6 +10,7 @@
 * `getdependencies javascript` can now handle package-lock.json files of version 3.
 * `bom findsources` can do source URL discovery using sw360 lookup, perform extensive
   GitLab deep search, and adapt search strategy based on diverse programming languages.
+* Have type support.
 
 ## 2.1.0 (2023-12-16)
 
