@@ -44,6 +44,10 @@ files = [
 [package.dependencies]
 soupsieve = ">1.2"
 
+[package.extras]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
+
 [[package]]
 name = "certifi"
 version = "2023.11.17"
@@ -987,14 +991,14 @@ tests = ["coverage (>=6.0.0)", "flake8", "mypy", "pytest (>=7.0.0)", "pytest-asy
 
 [[package]]
 name = "semver"
-version = "2.13.0"
-description = "Python helper for Semantic Versioning (http://semver.org/)"
+version = "3.0.2"
+description = "Python helper for Semantic Versioning (https://semver.org)"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.7"
 files = [
-    {file = "semver-2.13.0-py2.py3-none-any.whl", hash = "sha256:ced8b23dceb22134307c1b8abfa523da14198793d9787ac838e70e29e77458d4"},
-    {file = "semver-2.13.0.tar.gz", hash = "sha256:fa0fe2722ee1c3f57eac478820c3a5ae2f624af8264cbdf9000c980ff7f75e3f"},
+    {file = "semver-3.0.2-py3-none-any.whl", hash = "sha256:b1ea4686fe70b981f85359eda33199d60c53964284e0cfb4977d243e37cf4bf4"},
+    {file = "semver-3.0.2.tar.gz", hash = "sha256:6253adb39c70f6e51afed2fa7152bcd414c411286088fb4b9effb133885ab4cc"},
 ]
 
 [[package]]
@@ -1090,6 +1094,21 @@ files = [
 ]
 
 [[package]]
+name = "types-beautifulsoup4"
+version = "4.12.0.20240106"
+description = "Typing stubs for beautifulsoup4"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-beautifulsoup4-4.12.0.20240106.tar.gz", hash = "sha256:98d628985b71b140bd3bc22a8cb0ab603c2f2d08f20d37925965eb4a21739be8"},
+    {file = "types_beautifulsoup4-4.12.0.20240106-py3-none-any.whl", hash = "sha256:cbdd60ab8aeac737ac014431b6e921b43e84279c0405fdd25a6900bb0e71da5b"},
+]
+
+[package.dependencies]
+types-html5lib = "*"
+
+[[package]]
 name = "types-colorama"
 version = "0.4.15.12"
 description = "Typing stubs for colorama"
@@ -1099,6 +1118,18 @@ python-versions = "*"
 files = [
     {file = "types-colorama-0.4.15.12.tar.gz", hash = "sha256:fbdfc5d9d24d85c33bd054fbe33adc6cec44eedb19cfbbabfbbb57dc257ae4b8"},
     {file = "types_colorama-0.4.15.12-py3-none-any.whl", hash = "sha256:23c9d4a00961227f7ef018d5a1c190c4bbc282119c3ee76a17677a793f13bb82"},
+]
+
+[[package]]
+name = "types-html5lib"
+version = "1.1.11.20240106"
+description = "Typing stubs for html5lib"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-html5lib-1.1.11.20240106.tar.gz", hash = "sha256:fc3a1b18eb601b3eeaf92c900bd67675c0a4fa1dd1d2a2893ebdb46923547ee9"},
+    {file = "types_html5lib-1.1.11.20240106-py3-none-any.whl", hash = "sha256:61993cb89220107481e0f1da65c388ff8cf3d8c5f6e8483c97559639a596b697"},
 ]
 
 [[package]]
@@ -1461,4 +1492,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8" # drop support for 3.6 and 3.7 because of wheel and cli-support
-content-hash = "d234b4b1711360d96ad529331986510e107f37a7b576ddc493663f4cc93b35ad"
+content-hash = "897930c786d39af512886c5070c6921540d48251a706ac099fff0aa2f980578d"

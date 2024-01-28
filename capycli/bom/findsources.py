@@ -11,7 +11,7 @@ import os
 import re
 import sys
 import time
-from typing import Any
+from typing import Any, Dict, List, Tuple
 
 import requests
 import semver
@@ -42,7 +42,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         self.github_project_name_regex = re.compile(r"^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$")
         self.github_name: str = ""
         self.github_token: str = ""
-        self.sw360_url: str = os.environ.get("SW360ServerUrl", None)
+        self.sw360_url: str = os.environ.get("SW360ServerUrl", "")
 
     def is_sourcefile_accessible(self, sourcefile_url: str) -> bool:
         """Check if the URL is accessible."""
@@ -70,7 +70,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         return False
 
     @staticmethod
-    def github_request(url: str, username="", token=""):
+    def github_request(url: str, username: str = "", token: str = "") -> Any:
         try:
             headers = {}
             if token:
@@ -96,10 +96,11 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 Fore.LIGHTYELLOW_EX +
                 "      Error acccessing GitHub: " + repr(ex) +
                 Style.RESET_ALL)
-            return None
+
+            return {}
 
     @staticmethod
-    def get_repositories(name: str, language: str, username="", token=""):
+    def get_repositories(name: str, language: str, username: str = "", token: str = "") -> Any:
         """Query for GitHub repositories"""
         query = name + " language:" + language.lower()
         search_url = "https://api.github.com/search/repositories?q=" + query
@@ -122,16 +123,22 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 Fore.LIGHTYELLOW_EX +
                 "      Error getting repo name from: " + github_url +
                 Style.RESET_ALL)
-            return None
+            return ""
 
         return repo_name
 
     @staticmethod
-    def get_github_info(repository_url: str, username: str = "", token: str = "") -> Any:
-        """Query tag infos from GitHub."""
+    def get_github_info(repository_url: str, username: str = "",
+                        token: str = "") -> List[Dict[str, Any]] | Dict[str, Any]:
+        """
+        Query tag infos from GitHub.
+
+        In the good case a list of tags entries (= dictionaries) is returned.
+        In the bad case a JSON error message is returned.
+        """
         length_per_page = 100
         page = 1
-        tags = []
+        tags: List[Dict[str, Any]] = []
         tag_url = "https://api.github.com/repos/" + repository_url + "/tags"
         query = "?per_page=%s&page=%s" % (length_per_page, page)
         tmp = FindSources.github_request(tag_url + query, username, token)
@@ -160,7 +167,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             return str(ver + ".0")
         return ver
 
-    def find_github_url(self, component: Component, use_language=True) -> str:
+    def find_github_url(self, component: Component, use_language: bool = True) -> str:
         """ Find github url for component"""
         if not component:
             return ""
@@ -182,7 +189,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         if len(name_match):
             for match in name_match:
                 tag_info = self.github_request(match["tags_url"], self.github_name, self.github_token)
-                source_url = self.get_matching_tag(tag_info, component.version, match["html_url"])
+                source_url = self.get_matching_tag(tag_info, component.version or "", match["html_url"])
                 if len(name_match) == 1:
                     return source_url
                 elif source_url:
@@ -195,21 +202,26 @@ class FindSources(capycli.common.script_base.ScriptBase):
         link_repo = repo_request_url
         try:
             pkg_go_page = requests.get(repo_request_url)
+            if not pkg_go_page:
+                return ""
+
             soup = BeautifulSoup(pkg_go_page.text, 'html.parser')
-            link_repo = soup.find('div', class_='UnitMeta-repo').find('a').get("href")
+            link_repo = soup.find('div', class_='UnitMeta-repo').find('a').get("href")  # type: ignore
         except Exception as ex:
             print(
                 Fore.LIGHTYELLOW_EX +
                 "      Error trying to get repository url: " + repr(ex) +
                 Style.RESET_ALL)
+
         return link_repo
 
     def find_golang_url(self, component: Component) -> str:
         """ Find github url for component"""
         if not component:
             return ""
-        component_name = component.name
-        component_version = component.version
+
+        component_name = component.name or ""
+        component_version = component.version or ""
         suffix = "+incompatible"
         if component_version.endswith(suffix):
             component_version = component_version[:-len(suffix)]
@@ -244,9 +256,10 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
                 if repository_name.startswith("https://github.com/"):
                     repository_name = repository_name[len("https://github.com/"):]
-                tag_info = self.get_github_info(repository_name, self.github_name,
-                                                self.github_token)
-                source_url = self.get_matching_tag(tag_info, component_version, repository_name, version_prefix)
+                tag_info = self.get_github_info(repository_name, self.github_name, self.github_token)
+                tag_info_checked = self.check_for_github_error(tag_info)
+                source_url = self.get_matching_tag(tag_info_checked, component_version,
+                                                   repository_name, version_prefix or "")
 
         # component["RepositoryUrl"] = repository_name
         return source_url
@@ -268,15 +281,13 @@ class FindSources(capycli.common.script_base.ScriptBase):
             print_text("      repo_name:", repo_name)
 
         tag_info = self.get_github_info(repo_name, self.github_name, self.github_token)
-        return self.get_matching_tag(tag_info, version, github_url)
+        tag_info_checked = self.check_for_github_error(tag_info)
+        return self.get_matching_tag(tag_info_checked, version, github_url)
 
-    def get_matching_tag(self, tag_info: list, version: str, github_url: str, version_prefix=None):
-        if not tag_info or (len(tag_info) == 0):
-            print(
-                Fore.LIGHTRED_EX +
-                "      No tags info reply from GitHub! " + github_url +
-                Style.RESET_ALL)
-            return None
+    def check_for_github_error(self, tag_info: List[Dict[str, Any]] | Dict[str, Any]) -> List[Dict[str, Any]]:
+        if isinstance(tag_info, list):
+            # assume valid answer
+            return tag_info
 
         # check for 'rate limit exceeded' message
         if "message" in tag_info:
@@ -287,17 +298,26 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 print_red("Invalid GitHub credential provided - aborting!")
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
 
+        return []
+
+    def get_matching_tag(self, tag_info: List[Dict[str, Any]], version: str, github_url: str,
+                         version_prefix: str = "") -> str:
+        if not tag_info or (len(tag_info) == 0):
+            print(
+                Fore.LIGHTRED_EX +
+                "      No tags info reply from GitHub! " + github_url +
+                Style.RESET_ALL)
+            return ""
+
         # search for a tag matching our given version information
         matching_tag = None
 
         for tag in tag_info:
-            if isinstance(tag, str):
-                # this should be dictionary, if it is a string then
-                # something went wrong!
-                continue
             try:
-                if version_prefix and tag.get("name").rpartition("/")[0] != version_prefix:
-                    continue
+                if version_prefix:
+                    name = tag.get("name")
+                    if name and name.rpartition("/")[0] != version_prefix:
+                        continue
 
                 version_diff = semver.VersionInfo.parse(
                     self.to_semver_string(tag.get("name", None))).compare(
@@ -323,7 +343,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         # print("matching_tag", matching_tag)
         source_url = matching_tag.get("zipball_url", "")
         if source_url == "":
-            return None
+            return ""
         source_url = source_url.replace(
             "https://api.github.com/repos", "https://github.com").replace(
                 "zipball/refs/tags", "archive/refs/tags")
@@ -333,35 +353,52 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
     def get_source_url_from_release(self, release_id: str) -> str:
         """ get source code url from release """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
         for x in range(5):
             try:
                 # print(self.client)
                 release_details = self.client.get_release(release_id)
-                source_url = release_details.get("sourceCodeDownloadurl", "")
-                if self.verbose:
-                    print("getting source url from get from sw360 for release_id " + release_id)
-                if source_url != "":
-                    return source_url
-                break
+                if release_details:
+                    source_url = release_details.get("sourceCodeDownloadurl", "")
+                    if self.verbose:
+                        print("getting source url from get from sw360 for release_id " + release_id)
+                    if source_url != "":
+                        return source_url
+                    break
             except SW360Error as ex:
-                if x < 4 and ex.response.status_code == requests.codes["bad_gateway"]:
+                if x < 4 and ex.response and ex.response.status_code == requests.codes["bad_gateway"]:
                     time.sleep(5)
                 else:
                     raise ex
 
-        return None
+        return ""
 
     def get_release_component_id(self, release_id: str) -> str:
         """ get the component id of a release """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         release_details = self.client.get_release(release_id)
+        if not release_details:
+            return ""
+
         return str(release_details["_links"]["sw360:component"]["href"]).split('/')[-1]
 
     def find_source_url_from_component(self, component_id: str) -> str:
         """ find source code url from component releases """
+        if not self.client:
+            print_red("  No client!")
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         component_details = self.client.get_component(component_id)
-        source_url = None
+        if not component_details:
+            return ""
+
+        source_url = ""
         github = "github.com"
         if component_details.get("_embedded") and \
                 component_details["_embedded"].get("sw360:releases"):
@@ -375,7 +412,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             print(f'{source_url} found over component_id {component_id}')
 
         if not source_url and "github.com" in component_details.get("homepage", ""):
-            source_url = component_details.get("homepage")
+            source_url = component_details.get("homepage") or ""
             if source_url and self.verbose:
                 print(f'{source_url} found on github over component homepage')
 
@@ -383,7 +420,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
     def find_source_url_on_release(self, component: Component) -> str:
         """find the url from sourceCodeDownloadurl from the Id or Sw360Id"""
-        url = None
+        url = ""
         release_id = ""
         for val in component.properties:
             if val.name == "siemens:sw360Id":
@@ -391,13 +428,14 @@ class FindSources(capycli.common.script_base.ScriptBase):
         if release_id:
             # get the existing source_url for any kind of release.
             url = self.get_source_url_from_release(release_id)
+
         return url
 
     def find_source_url_recursive_by_sw360(self, component: Component) -> str:
         """find the url via an other release of the parent component"""
-        url = None
+        url = ""
         found_by_component = False
-        version = component.version
+        version = component.version or ""
         release_id = ""
         component_id = ""
         for val in component.properties:
@@ -428,7 +466,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         capycli.dependencies.javascript.GetJavascriptDependencies().try_find_component_metadata(component, "")
         return CycloneDxSupport.get_ext_ref_source_url(component)
 
-    def find_sources(self, bom: Bom):
+    def find_sources(self, bom: Bom) -> Tuple[int, int]:
         """Go through the list of SBOM items and try to determine the source code."""
 
         print_text("\nLooping through SBOM:")

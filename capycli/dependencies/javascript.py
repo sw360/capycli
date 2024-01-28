@@ -94,7 +94,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return sbom
 
-    def get_dependency_lockversion3(self, data: dict, sbom: Bom) -> Bom:
+    def get_dependency_lockversion3(self, data: Dict[str, Any], sbom: Bom) -> Bom:
         dependencies = data.get("packages", {})
         for key in dependencies:
             if key:
@@ -114,19 +114,19 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                     modified_key = key
 
                 LOG.debug("Checking dependency: " + modified_key + "," + dep["version"])
-                purl = PackageURL("npm", "", modified_key, dep["version"], "", "").to_string()
+                purl = PackageURL("npm", "", modified_key, dep["version"], "", "")
                 cxcomp = Component(
                     name=modified_key.strip(),
                     version=dep["version"].strip(),
                     purl=purl,
-                    bom_ref=purl)
+                    bom_ref=purl.to_string())
 
                 url = dep.get("resolved", "")
                 if url:
                     ext_ref = ExternalReference(
                         reference_type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.BINARY_URL_COMMENT,
-                        url=url)
+                        url=XsUri(url))
                     cxcomp.external_references.add(ext_ref)
 
                 url = dep.get("resolved", "").split('/')[-1]
@@ -134,7 +134,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                     ext_ref = ExternalReference(
                         reference_type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                        url=url)
+                        url=XsUri(url))
 
                     cxcomp.external_references.add(ext_ref)
 
@@ -151,7 +151,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
         return sbom
 
-    def convert_package_lock(self, package_lock_file: str):
+    def convert_package_lock(self, package_lock_file: str) -> Bom:
         """Read package-lock.json and convert to bill of material"""
         bom = SbomCreator.create([], addlicense=True, addprofile=True, addtools=True)
         with open(package_lock_file) as fin:
