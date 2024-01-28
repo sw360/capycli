@@ -289,7 +289,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         tag_info_checked = self.check_for_github_error(tag_info)
         return self.get_matching_tag(tag_info_checked, version, github_url)
 
-    def check_for_github_error(self, tag_info: List[Dict[str, Any]] | Dict[str, Any]) -> List[Dict[str, Any]]:
+    def check_for_github_error(self, tag_info: get_github_info_type) -> List[Dict[str, Any]]:
         if isinstance(tag_info, list):
             # assume valid answer
             return tag_info
