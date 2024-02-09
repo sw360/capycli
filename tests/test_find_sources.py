@@ -85,7 +85,31 @@ class TestFindSources(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_ERROR_READING_BOM, ex.code)
 
-    def test_find_sources(self) -> None:
+    def mock_github_request_side_effect(self, url: str, username: str = "", token: str = "") -> Any:
+        # Define different mock responses based on the URL
+        if url == 'https://api.github.com/repos/tartley/colorama/tags?per_page=100&page=1':
+            return [{'name': '0.4.6',  'zipball_url': 'https://api.github.com/repos/tartley/colorama/zipball/refs/tags/0.4.6', 'tarball_url': 'https://api.github.com/repos/tartley/colorama/tarball/refs/tags/0.4.6', 'commit': {'sha': '3de9f013df4b470069d03d250224062e8cf15c49', 'url': 'https://api.github.com/repos/tartley/colorama/commits/3de9f013df4b470069d03d250224062e8cf15c49'}, 'node_id': 'MDM6UmVmMTg4OTIyMDk6cmVmcy90YWdzLzAuNC42'}]
+        elif url == 'https://api.github.com/repos/sindresorhus/into-stream/tags?per_page=100&page=1':
+            return [{'name': 'v6.0.0', 'zipball_url': 'https://api.github.com/repos/sindresorhus/into-stream/zipball/refs/tags/v6.0.0', 'tarball_url': 'https://api.github.com/repos/sindresorhus/into-stream/tarball/refs/tags/v6.0.0', 'commit': {'sha': '4e07b9f4f84e59de83f2d6b246d945b3f2362ded', 'url': 'https://api.github.com/repos/sindresorhus/into-stream/commits/4e07b9f4f84e59de83f2d6b246d945b3f2362ded'}, 'node_id': 'MDM6UmVmMzY1MzMwNDQ6cmVmcy90YWdzL3Y2LjAuMA=='}]
+        elif url == 'https://api.github.com/repos/python/cpython/tags?per_page=100&page=1':
+            return [{'name': 'v3.8.0', 'zipball_url': 'https://api.github.com/repos/python/cpython/zipball/refs/tags/v3.8.0', 'tarball_url': 'https://api.github.com/repos/python/cpython/tarball/refs/tags/v3.8.0', 'commit': {'sha': 'fa919fdf2583bdfead1df00e842f24f30b2a34bf', 'url': 'https://api.github.com/repos/python/cpython/commits/fa919fdf2583bdfead1df00e842f24f30b2a34bf'}, 'node_id': 'MDM6UmVmODE1OTg5NjE6cmVmcy90YWdzL3YzLjguMA=='}]
+        elif url == 'https://api.github.com/repos/pypa/something/tags?per_page=100&page=1':
+           return {'message': 'Not Found', 'documentation_url': 'https://docs.github.com/rest/repos/repos#list-repository-tags'}       
+        elif url == 'https://api.github.com/search/repositories?q=something language:':
+            return {'total_count': 0}
+        elif url == 'https://api.github.com/repos/avoidwork/tiny-lru/tags?per_page=100&page=1':
+            return [{'name': '11.0.1', 'zipball_url': 'https://api.github.com/repos/avoidwork/tiny-lru/zipball/refs/tags/11.0.1', 'tarball_url': 'https://api.github.com/repos/avoidwork/tiny-lru/tarball/refs/tags/11.0.1', 'commit': {'sha': 'a698b7ba6b7b981ee3ab39e3d7903aa1e984777b', 'url': 'https://api.github.com/repos/avoidwork/tiny-lru/commits/a698b7ba6b7b981ee3ab39e3d7903aa1e984777b'}, 'node_id': 'MDM6UmVmMTE2ODQxMjU6cmVmcy90YWdzLzExLjAuMQ=='}]
+        elif url == 'https://api.github.com/repos/pypa/wheel/tags?per_page=100&page=1':
+            return [{'name': '0.38.4', 'zipball_url': 'https://api.github.com/repos/pypa/wheel/zipball/refs/tags/0.38.4', 'tarball_url': 'https://api.github.com/repos/pypa/wheel/tarball/refs/tags/0.38.4', 'commit': {'sha': '814c2efe8e40051039c5a6de6945e04ecdd162ee', 'url': 'https://api.github.com/repos/pypa/wheel/commits/814c2efe8e40051039c5a6de6945e04ecdd162ee'}, 'node_id': 'MDM6UmVmOTgzNDY4ODU6cmVmcy90YWdzLzAuMzguNA=='}]
+        elif url == 'https://api.github.com/repos/jeremyfa/yaml.js/tags?per_page=100&page=1':
+            return [            {'name': 'v0.3.0', 'zipball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/zipball/refs/tags/v0.3.0', 'tarball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/tarball/refs/tags/v0.3.0', 'commit': {'sha': '51a74dc0c39d78af7c64e12eafef2711f31abb27', 'url': 'https://api.github.com/repos/jeremyfa/yaml.js/commits/51a74dc0c39d78af7c64e12eafef2711f31abb27'}, 'node_id': 'MDM6UmVmMTAyMzYzODpyZWZzL3RhZ3MvdjAuMy4w'}]
+        elif url == 'https://api.github.com/repos/jeremyfa/yaml.js/tags?per_page=100&page=1':
+            return [{'name': 'v0.3.0', 'zipball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/zipball/refs/tags/v0.3.0', 'tarball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/tarball/refs/tags/v0.3.0', 'commit': {'sha': '51a74dc0c39d78af7c64e12eafef2711f31abb27', 'url': 'https://api.github.com/repos/jeremyfa/yaml.js/commits/51a74dc0c39d78af7c64e12eafef2711f31abb27'}, 'node_id': 'MDM6UmVmMTAyMzYzODpyZWZzL3RhZ3MvdjAuMy4w'}]
+        else:
+            return []
+
+    @patch('capycli.bom.findsources.FindSources.github_request')
+    def test_find_sources(self, mock_github_request) -> None:
         sut = FindSources()
 
         # create argparse command line argument object
@@ -98,6 +122,7 @@ class TestFindSources(TestBase):
         args.debug = True
         args.verbose = True
 
+        mock_github_request.side_effect  = self.mock_github_request_side_effect
         out = self.capture_stdout(sut.run, args)
         self.assertTrue(self.INPUTFILE in out)
         self.assertTrue(self.OUTPUTFILE in out)
