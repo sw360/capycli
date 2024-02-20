@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## 2.2.0 (2024-01-28)
+## 2.2.0 (2024-02-20)
 
 * `getdependencies javascript` can now handle package-lock.json files of version 3.
 * `bom findsources` can do source URL discovery using sw360 lookup, perform extensive
