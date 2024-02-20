@@ -521,7 +521,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 if self.verbose:
                     print_text("    Repository URL available:", repository_url)
                 source_url = self.get_github_source_url(
-                    binary_url,
+                    str(binary_url),
                     component.version)
             website = CycloneDxSupport.get_ext_ref_website(component)
             if website and not source_url:
