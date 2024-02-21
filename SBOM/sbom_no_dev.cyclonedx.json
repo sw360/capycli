@@ -1,585 +1,2916 @@
 {
-    "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
-    "bomFormat": "CycloneDX",
-    "specVersion": "1.4",
-    "serialNumber": "urn:uuid:a818e5d0-c335-478a-8bf6-f2c3fcb8f4ab",
-    "version": 1,
-    "metadata": {
-        "timestamp": "2023-03-07T17:13:25.361508+00:00",
-        "tools": [
-            {
-                "vendor": "CycloneDX",
-                "name": "cyclonedx-bom",
-                "version": "3.10.1"
-            },
-            {
-                "vendor": "CycloneDX",
-                "name": "cyclonedx-python-lib",
-                "version": "3.1.0",
-                "externalReferences": [
-                    {
-                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/actions",
-                        "type": "build-system"
-                    },
-                    {
-                        "url": "https://pypi.org/project/cyclonedx-python-lib/",
-                        "type": "distribution"
-                    },
-                    {
-                        "url": "https://cyclonedx.github.io/cyclonedx-python-lib/",
-                        "type": "documentation"
-                    },
-                    {
-                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/issues",
-                        "type": "issue-tracker"
-                    },
-                    {
-                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/LICENSE",
-                        "type": "license"
-                    },
-                    {
-                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/CHANGELOG.md",
-                        "type": "release-notes"
-                    },
-                    {
-                        "url": "https://github.com/CycloneDX/cyclonedx-python-lib",
-                        "type": "vcs"
-                    },
-                    {
-                        "url": "https://cyclonedx.org",
-                        "type": "website"
-                    }
-                ]
-            }
+  "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:558fcf60-926c-4e28-bd86-a671213b1ba0",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2024-02-21T12:45:16.637340+00:00",
+    "tools": [
+      {
+        "vendor": "Siemens AG",
+        "name": "CaPyCLI",
+        "version": "2.2.0",
+        "externalReferences": [
+          {
+            "url": "https://github.com/sw360/capycli",
+            "type": "website"
+          }
         ]
-    },
-    "components": [
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/certifi@2022.12.7",
-            "name": "certifi",
-            "version": "2022.12.7",
-            "purl": "pkg:pypi/certifi@2022.12.7",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/certifi/2022.12.7",
-                    "comment": "Distribution file: certifi-2022.12.7-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/certifi/2022.12.7",
-                    "comment": "Distribution file: certifi-2022.12.7.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/chardet@3.0.4",
-            "name": "chardet",
-            "version": "3.0.4",
-            "purl": "pkg:pypi/chardet@3.0.4",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/chardet/3.0.4",
-                    "comment": "Distribution file: chardet-3.0.4-py2.py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/chardet/3.0.4",
-                    "comment": "Distribution file: chardet-3.0.4.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/charset-normalizer@2.1.1",
-            "name": "charset-normalizer",
-            "version": "2.1.1",
-            "purl": "pkg:pypi/charset-normalizer@2.1.1",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/charset-normalizer/2.1.1",
-                    "comment": "Distribution file: charset-normalizer-2.1.1.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/charset-normalizer/2.1.1",
-                    "comment": "Distribution file: charset_normalizer-2.1.1-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "83e9a75d1911279afd89352c68b45348559d1fc0506b054b346651b5e7fee29f"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/cli-support@1.3",
-            "name": "cli-support",
-            "version": "1.3",
-            "purl": "pkg:pypi/cli-support@1.3",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/cli-support/1.3",
-                    "comment": "Distribution file: cli_support-1.3-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "3b23fab4256c3758da78636d0d4df47ee1f729f7b9af144ec50b041dc7f776d0"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/cli-support/1.3",
-                    "comment": "Distribution file: cli_support-1.3.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "7b21168afacaf5059d4fcce0d5f95bd9c57a28699d53217425f849d2b7468913"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/colorama@0.4.6",
-            "name": "colorama",
-            "version": "0.4.6",
-            "purl": "pkg:pypi/colorama@0.4.6",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/colorama/0.4.6",
-                    "comment": "Distribution file: colorama-0.4.6-py2.py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/colorama/0.4.6",
-                    "comment": "Distribution file: colorama-0.4.6.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/et-xmlfile@1.1.0",
-            "name": "et-xmlfile",
-            "version": "1.1.0",
-            "purl": "pkg:pypi/et-xmlfile@1.1.0",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/et-xmlfile/1.1.0",
-                    "comment": "Distribution file: et_xmlfile-1.1.0-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/et-xmlfile/1.1.0",
-                    "comment": "Distribution file: et_xmlfile-1.1.0.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/idna@3.4",
-            "name": "idna",
-            "version": "3.4",
-            "purl": "pkg:pypi/idna@3.4",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/idna/3.4",
-                    "comment": "Distribution file: idna-3.4-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/idna/3.4",
-                    "comment": "Distribution file: idna-3.4.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/openpyxl@3.0.10",
-            "name": "openpyxl",
-            "version": "3.0.10",
-            "purl": "pkg:pypi/openpyxl@3.0.10",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/openpyxl/3.0.10",
-                    "comment": "Distribution file: openpyxl-3.0.10-py2.py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "0ab6d25d01799f97a9464630abacbb34aafecdcaa0ef3cba6d6b3499867d0355"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/openpyxl/3.0.10",
-                    "comment": "Distribution file: openpyxl-3.0.10.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "e47805627aebcf860edb4edf7987b1309c1b3632f3750538ed962bbcc3bd7449"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/packageurl-python@0.10.4",
-            "name": "packageurl-python",
-            "version": "0.10.4",
-            "purl": "pkg:pypi/packageurl-python@0.10.4",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/packageurl-python/0.10.4",
-                    "comment": "Distribution file: packageurl-python-0.10.4.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "5c91334f942cd55d45eb0c67dd339a535ef90e25f05b9ec016ad188ed0ef9048"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/packageurl-python/0.10.4",
-                    "comment": "Distribution file: packageurl_python-0.10.4-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "bf8a1ffe755634776f6563904d792fb0aa13b377fc86115c36fe17f69b6e59db"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/pyjwt@1.7.1",
-            "name": "pyjwt",
-            "version": "1.7.1",
-            "purl": "pkg:pypi/pyjwt@1.7.1",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/pyjwt/1.7.1",
-                    "comment": "Distribution file: PyJWT-1.7.1-py2.py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/pyjwt/1.7.1",
-                    "comment": "Distribution file: PyJWT-1.7.1.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/requests@2.28.1",
-            "name": "requests",
-            "version": "2.28.1",
-            "purl": "pkg:pypi/requests@2.28.1",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/requests/2.28.1",
-                    "comment": "Distribution file: requests-2.28.1-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/requests/2.28.1",
-                    "comment": "Distribution file: requests-2.28.1.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/requirements-parser@0.2.0",
-            "name": "requirements-parser",
-            "version": "0.2.0",
-            "purl": "pkg:pypi/requirements-parser@0.2.0",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/requirements-parser/0.2.0",
-                    "comment": "Distribution file: requirements-parser-0.2.0.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "5963ee895c2d05ae9f58d3fc641082fb38021618979d6a152b6b1398bd7d4ed4"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/requirements-parser/0.2.0",
-                    "comment": "Distribution file: requirements_parser-0.2.0-py2-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "76650b4a9d98fc65edf008a7920c076bb2a76c08eaae230ce4cfc6f51ea6a773"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/sw360@1.2.1",
-            "name": "sw360",
-            "version": "1.2.1",
-            "purl": "pkg:pypi/sw360@1.2.1",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/sw360/1.2.1",
-                    "comment": "Distribution file: sw360-1.2.1-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "27e14092064d074aa09150cc1fde9a503b4ca2920d76a633bebc4dcdb8745c8b"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/sw360/1.2.1",
-                    "comment": "Distribution file: sw360-1.2.1.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "599bb875bfee2ae02b368c3eb08d057855905602e5ac3956d1d6959be916f135"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/urllib3@1.26.13",
-            "name": "urllib3",
-            "version": "1.26.13",
-            "purl": "pkg:pypi/urllib3@1.26.13",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/urllib3/1.26.13",
-                    "comment": "Distribution file: urllib3-1.26.13-py2.py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "47cc05d99aaa09c9e72ed5809b60e7ba354e64b59c9c173ac3018642d8bb41fc"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/urllib3/1.26.13",
-                    "comment": "Distribution file: urllib3-1.26.13.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "c083dd0dce68dbfbe1129d5271cb90f9447dea7d52097c6e0126120c521ddea8"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "library",
-            "bom-ref": "pkg:pypi/wheel@0.38.4",
-            "name": "wheel",
-            "version": "0.38.4",
-            "purl": "pkg:pypi/wheel@0.38.4",
-            "externalReferences": [
-                {
-                    "url": "https://pypi.org/project/wheel/0.38.4",
-                    "comment": "Distribution file: wheel-0.38.4-py3-none-any.whl",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "b60533f3f5d530e971d6737ca6d58681ee434818fab630c83a734bb10c083ce8"
-                        }
-                    ]
-                },
-                {
-                    "url": "https://pypi.org/project/wheel/0.38.4",
-                    "comment": "Distribution file: wheel-0.38.4.tar.gz",
-                    "type": "distribution",
-                    "hashes": [
-                        {
-                            "alg": "SHA-256",
-                            "content": "965f5259b566725405b05e7cf774052044b1ed30119b5d586b2703aafe8719ac"
-                        }
-                    ]
-                }
-            ]
-        }
+      },
+      {
+        "vendor": "Siemens AG",
+        "name": "standard-bom",
+        "version": "2.0.0",
+        "externalReferences": [
+          {
+            "url": "https://code.siemens.com/sbom/standard-bom",
+            "type": "website"
+          }
+        ]
+      }
     ],
-    "dependencies": [
-        {
-            "ref": "pkg:pypi/certifi@2022.12.7",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/chardet@3.0.4",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/charset-normalizer@2.1.1",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/cli-support@1.3",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/colorama@0.4.6",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/et-xmlfile@1.1.0",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/idna@3.4",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/openpyxl@3.0.10",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/packageurl-python@0.10.4",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/pyjwt@1.7.1",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/requests@2.28.1",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/requirements-parser@0.2.0",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/sw360@1.2.1",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/urllib3@1.26.13",
-            "dependsOn": []
-        },
-        {
-            "ref": "pkg:pypi/wheel@0.38.4",
-            "dependsOn": []
+    "licenses": [
+      {
+        "license": {
+          "id": "CC0-1.0"
         }
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "capycli"
+      }
     ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/backports-zoneinfo@0.2.1",
+      "name": "backports-zoneinfo",
+      "version": "0.2.1",
+      "description": "Backport of the standard library zoneinfo module",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/backports-zoneinfo@0.2.1",
+      "externalReferences": [
+        {
+          "url": "backports.zoneinfo-0.2.1-cp38-cp38-win_amd64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "backports.zoneinfo-0.2.1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/ad/85/475e514c3140937cf435954f78dedea1861aeab7662d11de232bdaa90655/backports.zoneinfo-0.2.1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/backports.zoneinfo/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/pganssle/zoneinfo",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/beautifulsoup4@4.12.2",
+      "name": "beautifulsoup4",
+      "version": "4.12.2",
+      "description": "Screen-scraping library",
+      "purl": "pkg:pypi/beautifulsoup4@4.12.2",
+      "externalReferences": [
+        {
+          "url": "beautifulsoup4-4.12.2-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "beautifulsoup4-4.12.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/57/f4/a69c20ee4f660081a7dedb1ac57f29be9378e04edfcb90c526b923d4bebc/beautifulsoup4-4.12.2-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/af/0b/44c39cf3b18a9280950ad63a579ce395dda4c32193ee9da7ff0aed547094/beautifulsoup4-4.12.2.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/beautifulsoup4/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/certifi@2023.11.17",
+      "name": "certifi",
+      "version": "2023.11.17",
+      "description": "Python package for providing Mozilla's CA Bundle.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/certifi@2023.11.17",
+      "externalReferences": [
+        {
+          "url": "certifi-2023.11.17-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "certifi-2023.11.17.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/64/62/428ef076be88fa93716b576e4a01f919d25968913e817077a386fcbe4f42/certifi-2023.11.17-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d4/91/c89518dd4fe1f3a4e3f6ab7ff23cb00ef2e8c9adf99dacc618ad5e068e28/certifi-2023.11.17.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/certifi/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/certifi/python-certifi",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/chardet@5.2.0",
+      "name": "chardet",
+      "version": "5.2.0",
+      "description": "Universal encoding detector for Python 3",
+      "licenses": [
+        {
+          "license": {
+            "name": "LGPL"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/chardet@5.2.0",
+      "externalReferences": [
+        {
+          "url": "chardet-5.2.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "chardet-5.2.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/38/6f/f5fbc992a329ee4e0f288c1fe0e2ad9485ed064cac731ed2fe47dcc38cbf/chardet-5.2.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/f3/0d/f7b6ab21ec75897ed80c17d79b15951a719226b9fababf1e40ea74d69079/chardet-5.2.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/chardet/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/chardet/chardet",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/charset-normalizer@3.3.2",
+      "name": "charset-normalizer",
+      "version": "3.3.2",
+      "description": "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/charset-normalizer@3.3.2",
+      "externalReferences": [
+        {
+          "url": "charset-normalizer-3.3.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "charset_normalizer-3.3.2-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/charset-normalizer/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/Ousret/charset_normalizer",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/cli-support@2.0.0",
+      "name": "cli-support",
+      "version": "2.0.0",
+      "description": "Support component license information (CLI) files",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/cli-support@2.0.0",
+      "externalReferences": [
+        {
+          "url": "cli_support-2.0.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "cli_support-2.0.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/40/be/30a3f07379a6b1826a3898faa36ba947e60958b6ffa97bee2b3a4f99db5a/cli_support-2.0.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a2/af/d488b9223fa92dfbc4502aed7639e8e7e1906df5563d6638db8a1e05aec2/cli_support-2.0.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/cli-support/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/sw360/clipython",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/colorama@0.4.6",
+      "name": "colorama",
+      "version": "0.4.6",
+      "description": "Cross-platform colored terminal text.",
+      "purl": "pkg:pypi/colorama@0.4.6",
+      "externalReferences": [
+        {
+          "url": "colorama-0.4.6-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "colorama-0.4.6.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/colorama/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/cyclonedx-bom@3.11.7",
+      "name": "cyclonedx-bom",
+      "version": "3.11.7",
+      "description": "CycloneDX Software Bill of Materials (SBOM) generation utility",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/cyclonedx-bom@3.11.7",
+      "externalReferences": [
+        {
+          "url": "cyclonedx_bom-3.11.7-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "cyclonedx_bom-3.11.7.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/df/f5/6057f76ca661ec89d14241a3181ec85d2c46bb47f7996298d04857b919b2/cyclonedx_bom-3.11.7.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e7/1b/832c209fdcc7722af0911bd28b38c26d8fef5088cb9eaa99919c0a3e7bbb/cyclonedx_bom-3.11.7-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/cyclonedx-bom/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/CycloneDX/cyclonedx-python/#readme",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/cyclonedx-python-lib@3.1.5",
+      "name": "cyclonedx-python-lib",
+      "version": "3.1.5",
+      "description": "A library for producing CycloneDX SBOM (Software Bill of Materials) files.",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/cyclonedx-python-lib@3.1.5",
+      "externalReferences": [
+        {
+          "url": "cyclonedx_python_lib-3.1.5-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "cyclonedx_python_lib-3.1.5.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d8/f4/9edc007e4ff68cdc3b23960659f2bd1eb36f31e9f45b4c2d581bd78f983d/cyclonedx_python_lib-3.1.5-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/dd/0d/2d77978ff3ebe445c00ffc209eb205d126ef7a8ece69e7f3d014e561bada/cyclonedx_python_lib-3.1.5.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/cyclonedx-python-lib/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/CycloneDX/cyclonedx-python-lib",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/dateparser@1.2.0",
+      "name": "dateparser",
+      "version": "1.2.0",
+      "description": "Date parsing library designed to parse dates from HTML pages",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/dateparser@1.2.0",
+      "externalReferences": [
+        {
+          "url": "dateparser-1.2.0-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "dateparser-1.2.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/1a/b2/f6b29ab17d7959eb1a0a5c64f5011dc85051ad4e25e401cbddcc515db00f/dateparser-1.2.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a4/29/db12aa4dda81580be1999824a689bd52aa40061fc12c9ccdc3feab5ea718/dateparser-1.2.0-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/dateparser/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/scrapinghub/dateparser",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/et-xmlfile@1.1.0",
+      "name": "et-xmlfile",
+      "version": "1.1.0",
+      "description": "An implementation of lxml.xmlfile for the standard library",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/et-xmlfile@1.1.0",
+      "externalReferences": [
+        {
+          "url": "et_xmlfile-1.1.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "et_xmlfile-1.1.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/3d/5d/0413a31d184a20c763ad741cc7852a659bf15094c24840c5bdd1754765cd/et_xmlfile-1.1.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/96/c2/3dd434b0108730014f1b96fd286040dc3bcb70066346f7e01ec2ac95865f/et_xmlfile-1.1.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/et-xmlfile/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "https://foss.heptapod.net/openpyxl/et_xmlfile",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/idna@3.6",
+      "name": "idna",
+      "version": "3.6",
+      "description": "Internationalized Domain Names in Applications (IDNA)",
+      "purl": "pkg:pypi/idna@3.6",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c2/e7/a82b05cf63a603df6e68d59ae6a68bf5064484a0718ea5033660af4b54a9/idna-3.6-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/idna/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "idna-3.6-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "idna-3.6.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/importlib-resources@5.13.0",
+      "name": "importlib-resources",
+      "version": "5.13.0",
+      "description": "Read resources from Python packages",
+      "purl": "pkg:pypi/importlib-resources@5.13.0",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/7a/68/bd9dd6bbf06772c7accce77d0354d783333fbe712a60b08fc13540c05422/importlib_resources-5.13.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a5/f1/8711c49ffd121083007a24c1bff0d324c9ff621d4fdf8b4ffcb8d9e60330/importlib_resources-5.13.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/importlib-resources/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "importlib_resources-5.13.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "importlib_resources-5.13.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/python/importlib_resources",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/openpyxl@3.1.2",
+      "name": "openpyxl",
+      "version": "3.1.2",
+      "description": "A Python library to read/write Excel 2010 xlsx/xlsm files",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/openpyxl@3.1.2",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/42/e8/af028681d493814ca9c2ff8106fc62a4a32e4e0ae14602c2a98fc7b741c8/openpyxl-3.1.2.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/6a/94/a59521de836ef0da54aaf50da6c4da8fb4072fb3053fa71f052fd9399e7a/openpyxl-3.1.2-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/openpyxl/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "openpyxl-3.1.2-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "openpyxl-3.1.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://openpyxl.readthedocs.io",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/packageurl-python@0.13.1",
+      "name": "packageurl-python",
+      "version": "0.13.1",
+      "description": "A purl aka. Package URL parser and builder",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/packageurl-python@0.13.1",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/52/b9/209a78e8f1c296521d349b5608b2d22a166879d2b10a70ecce5436ee8e1b/packageurl_python-0.13.1-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e5/9d/9ef479ff1378b70adea861c2d1548033763ebf3f703d4d7b913eaae73e01/packageurl-python-0.13.1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/packageurl-python/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "packageurl-python-0.13.1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "packageurl_python-0.13.1-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/package-url/packageurl-python",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/packaging@23.2",
+      "name": "packaging",
+      "version": "23.2",
+      "description": "Core utilities for Python packages",
+      "purl": "pkg:pypi/packaging@23.2",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/ec/1a/610693ac4ee14fcdf2d9bf3c493370e4f2ef7ae2e19217d7a237ff42367d/packaging-23.2-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/packaging/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "packaging-23.2-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "packaging-23.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/pip-requirements-parser@32.0.1",
+      "name": "pip-requirements-parser",
+      "version": "32.0.1",
+      "description": "pip requirements parser - a mostly correct pip requirements parsing library because it uses pip's own code.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/pip-requirements-parser@32.0.1",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/54/d0/d04f1d1e064ac901439699ee097f58688caadea42498ec9c4b4ad2ef84ab/pip_requirements_parser-32.0.1-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/5e/2a/63b574101850e7f7b306ddbdb02cb294380d37948140eecd468fae392b54/pip-requirements-parser-32.0.1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/pip-requirements-parser/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "pip-requirements-parser-32.0.1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "pip_requirements_parser-32.0.1-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/nexB/pip-requirements-parser",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/pyjwt@1.7.1",
+      "name": "pyjwt",
+      "version": "1.7.1",
+      "description": "JSON Web Token implementation in Python",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/pyjwt@1.7.1",
+      "externalReferences": [
+        {
+          "url": "PyJWT-1.7.1-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "PyJWT-1.7.1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/2f/38/ff37a24c0243c5f45f5798bd120c0f873eeed073994133c084e1cf13b95c/PyJWT-1.7.1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/87/8b/6a9f14b5f781697e51259d81657e6048fd31a113229cf346880bb7545565/PyJWT-1.7.1-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/PyJWT/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "http://github.com/jpadilla/pyjwt",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/pyparsing@3.1.1",
+      "name": "pyparsing",
+      "version": "3.1.1",
+      "description": "pyparsing module - Classes and methods to define and execute parsing grammars",
+      "purl": "pkg:pypi/pyparsing@3.1.1",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/37/fe/65c989f70bd630b589adfbbcd6ed238af22319e90f059946c26b4835e44b/pyparsing-3.1.1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/39/92/8486ede85fcc088f1b3dba4ce92dd29d126fd96b0008ea213167940a2475/pyparsing-3.1.1-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/pyparsing/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "pyparsing-3.1.1-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "pyparsing-3.1.1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/python-dateutil@2.8.2",
+      "name": "python-dateutil",
+      "version": "2.8.2",
+      "description": "Extensions to the standard Python datetime module",
+      "licenses": [
+        {
+          "license": {
+            "name": "Dual License"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/python-dateutil@2.8.2",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/36/7a/87837f39d0296e723bb9b62bbb257d0355c7f6128853c78955f57342a56d/python_dateutil-2.8.2-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/python-dateutil/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "python-dateutil-2.8.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "python_dateutil-2.8.2-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/dateutil/dateutil",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/pytz@2023.3.post1",
+      "name": "pytz",
+      "version": "2023.3.post1",
+      "description": "World timezone definitions, modern and historical",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/pytz@2023.3.post1",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/32/4d/aaf7eff5deb402fd9a24a1449a8119f00d74ae9c2efa79f8ef9994261fc2/pytz-2023.3.post1-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/69/4f/7bf883f12ad496ecc9514cd9e267b29a68b3e9629661a2bbc24f80eff168/pytz-2023.3.post1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/pytz/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "pytz-2023.3.post1-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "pytz-2023.3.post1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "http://pythonhosted.org/pytz",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/regex@2023.12.25",
+      "name": "regex",
+      "version": "2023.12.25",
+      "description": "Alternative regular expression module, to replace re.",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache Software License"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/regex@2023.12.25",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/00/d4/d876ce23d76103db84f3b2aeb3cba7c6b9b5750a2e2125ef6bfa2be53deb/regex-2023.12.25-cp311-cp311-musllinux_1_1_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/05/3c/e77e4c13492d34171af2765c4263d35573b4b8d813f58bb33dae3da5c897/regex-2023.12.25-cp310-cp310-musllinux_1_1_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/05/9e/80c20f1151432a6025690c9c2037053039b028a7b236fa81d7e7ac9dec60/regex-2023.12.25-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/0b/d4/5498d06a7a05be1b3e1e553d60fb61292afe5ca9fdc2aea5283f30651f1b/regex-2023.12.25-cp312-cp312-macosx_10_9_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/0c/48/8413b04134176a59bb40a42f680a3b3ce132c1a3d73ab9d5f5db40874b7c/regex-2023.12.25-cp38-cp38-win32.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/12/ea/73cc9fea46f631a2b36347b7de9d20c9120a45b53924496fe75b9b467682/regex-2023.12.25-cp312-cp312-musllinux_1_1_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/1b/aa/f9beeee2217de48fd47d68fc5ea9655f66440b33fa8212bad42427fe3587/regex-2023.12.25-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/1d/af/4bd17254cdda1d8092460ee5561f013c4ca9c33ecf1aab81b44280327cab/regex-2023.12.25-cp312-cp312-win_amd64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/23/ef/41e00af6e1eb77acf7295ff50ed3c443b56763dd0c65371058c378b5ce6c/regex-2023.12.25-cp39-cp39-musllinux_1_1_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/27/98/e2f151d958bea25682118c68f22e49fe98d8797aadfbf0d5df0288118c6d/regex-2023.12.25-cp311-cp311-macosx_10_9_universal2.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/2a/3a/9601d6e8a49ce7a124268c4c79d54f22416242e5096cd4fca07f7bfac46b/regex-2023.12.25-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/2b/4c/a029f68882fd9689e895ea4f304987fe853a03cee010b0c00c5278d03554/regex-2023.12.25-cp38-cp38-macosx_10_9_universal2.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/2d/06/8c07ade57639bd30543b96715a0c1eef72d65aabdf7ff6f0b6b1f8bd371f/regex-2023.12.25-cp310-cp310-musllinux_1_1_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/2e/15/58c7b42d4ebc85b88696483c739d2c3b1db7234d7ab3c1aef50cf9b88d51/regex-2023.12.25-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/30/ca/330269e793b12059dd2a220fa6a62d31e7397afe59b92e993ec66b71d9b1/regex-2023.12.25-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/32/91/7a7e2c80280df22b93c4aff5c8d1ef42f741a938f20ad7de68adc55e2a7b/regex-2023.12.25-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/35/e1/ba18181ac00d2a8d4a920fec1a3cd3a0e279fe4f4b939dc2ea353f41041c/regex-2023.12.25-cp39-cp39-win_amd64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/3d/d8/e5f7fcd33adaa3ce346ff5baf4319956873c49cbb0ed11566f921883096b/regex-2023.12.25-cp310-cp310-macosx_11_0_arm64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/3f/b1/df76e0c38fcb7b64b23bd86de820c1cfa7b3b35005122b468df8e93f2bfa/regex-2023.12.25-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/40/ef/acde6b823da62186d4309de039e470e3f08311e5b40b754aec187d82939f/regex-2023.12.25-cp310-cp310-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/43/4a/a8005c5aa6bb602fcfab48fa729a05eceade6400d6468dbe713f1796795f/regex-2023.12.25-cp38-cp38-musllinux_1_1_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/48/d7/41efecdd60b117d60618620b0d2af5d0638d1955c9266a5492235ed38fc8/regex-2023.12.25-cp312-cp312-musllinux_1_1_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/49/cd/4740e6bf0a6d8f00e07be0ea9072548a7d0f80bf7f899291a9381a5e7b92/regex-2023.12.25-cp38-cp38-musllinux_1_1_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/4a/61/06e359b43c1a2cc288899846eea298aead9821098f58ccffecd167505aba/regex-2023.12.25-cp37-cp37m-musllinux_1_1_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/4c/6c/c3c1c4f8249371546a6a4b43ce360d8fa8970ffef1e4a276f4cc9e9b8565/regex-2023.12.25-cp37-cp37m-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/50/b7/2031d4f803db9eb66cfc1ebf56ca0ce5261961c44088d22a412e962bcd85/regex-2023.12.25-cp38-cp38-musllinux_1_1_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/57/59/2fb680ddb311087fa92d36ac471d2c973cfe6b8ff4a8c2b6d6ad125d67e2/regex-2023.12.25-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/57/c9/99a839d1a5dbdec67c4959bbb371818b435f6128616ac95140406bd2d1cc/regex-2023.12.25-cp37-cp37m-win_amd64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/59/d6/3d8fb38120053e4d7b196f32fa5c3a760f8349cdee02c021617e6e653e61/regex-2023.12.25-cp310-cp310-macosx_10_9_universal2.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/5b/40/f1f77be3c32770c44c6d06047a8630beac0100298eaa9faf5b6f4a8c8cd8/regex-2023.12.25-cp38-cp38-win_amd64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/60/79/137700bb0f13ccafeecec8a1302655c2486452d41f28f5775173fa953142/regex-2023.12.25-cp39-cp39-musllinux_1_1_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/60/9e/4b0223e05776aa3be806a902093b2ab1de3ba26b652d92065d5c7e1d4df3/regex-2023.12.25-cp311-cp311-macosx_11_0_arm64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/64/c7/700257786f4d4974993364469438ac7498288c2b4aa683dc3230de3fd42d/regex-2023.12.25-cp312-cp312-win32.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/66/65/90e759a89534b850fa20e533e587748e967c44f58333b40f6d62718df1b1/regex-2023.12.25-cp312-cp312-macosx_11_0_arm64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/6e/62/4227b2ad7232fa8cdd34ab35cea2269b605900d7139af3e3fae0fa53a81c/regex-2023.12.25-cp37-cp37m-win32.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/6e/82/2e9bf54a8e9a3d64c31c5f3978aa2cec633078d8bd2d3dbf5b3d62df2ec0/regex-2023.12.25-cp39-cp39-macosx_10_9_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/70/0f/311ada39601c7bd7904b6ab3b01b414438a16efab5f2009f35a273999942/regex-2023.12.25-cp311-cp311-musllinux_1_1_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7a/00/8b2322e246d0a392c91bdb43750bb900fab5d48d693c1497b3ea6656f851/regex-2023.12.25-cp310-cp310-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/e6/f22ad63b72ff39101d7b7dbeff81a78bc8b82b1106c8b73d1c460983c885/regex-2023.12.25-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/81/8a/96a62ce98e8ff1b16db56fde3debc8a571f6b7ea42ee137eb0d995cdfa26/regex-2023.12.25-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/82/71/3f613eb12ee0513c4cf7eea5be8bb067a6e07523279f6743d7d3d7c62b22/regex-2023.12.25-cp38-cp38-musllinux_1_1_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/83/3e/3b0cd5bac2e1c3dda2340e8d46d922b37ccda31ffe24adfcd1c54a6fcae4/regex-2023.12.25-cp37-cp37m-musllinux_1_1_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/83/eb/144d2db5cf2ac3989d0ea4273040218d68bd67422133548da47043423594/regex-2023.12.25-cp310-cp310-win_amd64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/84/0e/1e435f46997cf601aedb0d0efee86f137d982c3bd5864a4534081f8bb9db/regex-2023.12.25-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/8a/8d/8c70bce12045fa622949d3fd3e4e64a01b506a3e670dada8c5f9b3be1e34/regex-2023.12.25-cp310-cp310-macosx_10_9_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/8b/b8/14527ca54351156f65c90f8728ee62e646a484dbce0e4cbffb34489e5bb0/regex-2023.12.25-cp312-cp312-macosx_10_9_universal2.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/8d/4d/5546af3d7b50ccc10eb511bec0a1029821882be76c49d8c79116163e6a62/regex-2023.12.25-cp312-cp312-musllinux_1_1_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/8d/6b/2f6478814954c07c04ba60b78d688d3d7bab10d786e0b6c1db607e4f6673/regex-2023.12.25-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/8d/fc/8ade283909c52f795bdc9b9fe44f85c6da5417f9be84c3d245706406551e/regex-2023.12.25-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/92/2a/6431462df58f29515be33fa8b3800efa73b2be47664e71af557101e2a733/regex-2023.12.25-cp311-cp311-win32.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/97/33/101559f6506a98b55613efa484d072d23fdeca3ef6876d43a8c49c7ec65f/regex-2023.12.25-cp311-cp311-musllinux_1_1_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/9b/71/b55b5ffc75918a96ea99794783524609ac3ff9e2d8f51e7ece8648a968f6/regex-2023.12.25-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a2/da/2b04560d91bdf49d3ca519c08db68a5d37d02e526b491f1a5c179ec3d21d/regex-2023.12.25-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a3/58/ea9e50b29028fea7b8b97ddc246463df4d29a7244c94999baf7ab1d882d0/regex-2023.12.25-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a4/db/7d05718f5157257ee9f980d381f54efdaccb95c0db8e05071ce4d8ee3347/regex-2023.12.25-cp310-cp310-musllinux_1_1_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a5/49/2d83a9332d97b750cf964a2e8c6c689cc32a328dc7f82379d887ca641968/regex-2023.12.25-cp37-cp37m-musllinux_1_1_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/a8/01/18232f93672c1d530834e2e0568a80eaab1df12d67ae499b1762ab462b5c/regex-2023.12.25-cp311-cp311-win_amd64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/ac/fc/b7b7da0eb7110d1c4529b9d74d5d1ba92f85f0ce32be72f490f5eebfcdab/regex-2023.12.25-cp310-cp310-win32.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/ae/04/29f5b681c3e4f0cdabdf3b98e7f211385be2de8cbf2577f130d421c7fae5/regex-2023.12.25-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/af/30/027e03ea8312f79d95f9bec5c758c0e423d75620134be5b0eaeda3cfc20b/regex-2023.12.25-cp39-cp39-musllinux_1_1_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b2/61/7f3ac9acb68205cfe5c0ef2210e9982260db817967bfea74871339ea1629/regex-2023.12.25-cp38-cp38-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b5/29/ddfd602f350a5f71926fec1f6f1ba9f5fcc7a05b36b364009904a119dfc7/regex-2023.12.25-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b5/39/31626e7e75b187fae7f121af3c538a991e725c744ac893cc2cfd70ce2853/regex-2023.12.25.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b5/51/e884e1e021a8819251e09606354733a62decffd703ad6fd1ed9098a003a0/regex-2023.12.25-cp310-cp310-musllinux_1_1_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b8/2f/dbfade801c0d19eaee278b2f2d45c1106158676078f1e95b6716dc0c8d53/regex-2023.12.25-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b8/5d/d2f0a1091c00ee5a854199423609c69eaa8b48a8352a6626c0ae85265b6a/regex-2023.12.25-cp310-cp310-musllinux_1_1_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b9/0a/082d5677a724fdbf8fee8fa65ff4472eb10dee0d028e0d269024fae58bdf/regex-2023.12.25-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/bb/21/2832bfa23fe34d7ff0cf8878ec762362bdafc5107af2229ff42ce008d525/regex-2023.12.25-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/be/a8/165b58247039958bac3be16ea6d96b868c3e535fd96e2b102f1c04e9ca21/regex-2023.12.25-cp37-cp37m-macosx_10_9_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c1/69/b9671621092a1f9b16892bc638368efb3ce00648ce79b91d472feaa740c9/regex-2023.12.25-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c5/b3/f5c06f5ebb865a63ea775828038d5ce48263806616e4ad5092ff50e22c93/regex-2023.12.25-cp39-cp39-macosx_11_0_arm64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c5/fb/d7d23657fb16e5e01e1129c8b2a2445c884854e188e62655c0285b1cf44b/regex-2023.12.25-cp38-cp38-musllinux_1_1_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c6/b2/5f135bae42695796b5b68eb7d1aa00d39d16c39e1a60a3e0892ac8c73edc/regex-2023.12.25-cp312-cp312-musllinux_1_1_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c8/b5/882aa0697e46d29a9f796c91221e03b1beec3c29664718c7d26ce05e7fb8/regex-2023.12.25-cp311-cp311-musllinux_1_1_aarch64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d2/a0/4c4f4b4bab4b82137ece75619fafc2bdecae4d984b2e2a5000c4ea1c10f1/regex-2023.12.25-cp39-cp39-win32.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d5/7c/5a531f7690ede1028ba80a78e45c7fd2d7481e316c6f18bf689d24852f2f/regex-2023.12.25-cp38-cp38-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d6/3b/909ab8c13caf117cab2d494f4e0ba5c973a66014b15e8ccd5ec1a704f179/regex-2023.12.25-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d7/ad/c44702756cd84b49bc40a02c8a856813341eb35904e35b4efc1357f41c8c/regex-2023.12.25-cp38-cp38-macosx_11_0_arm64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d8/44/8c81700465f3fd13ba01bdc2d262339d03aa57d319db3a863889d143a252/regex-2023.12.25-cp37-cp37m-musllinux_1_1_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d9/52/249f4047a548d84b6f805fcb6e3b44e9590433c748577e3d4cbd89feaf90/regex-2023.12.25-cp39-cp39-musllinux_1_1_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/dc/c2/b3c89e9c8933ceb2a8f56fcd25f1133f21d8e490fbdbd76160dfc2c83a6e/regex-2023.12.25-cp311-cp311-macosx_10_9_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/dd/66/1274fd78698d799dc4c6b30a5b78c7bfc7b854c0e6e77df8884c21f08f21/regex-2023.12.25-cp39-cp39-musllinux_1_1_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e2/98/8384cc2f697bcf00398de3faf5727353ca2357381dee70eba2c022e8f569/regex-2023.12.25-cp39-cp39-macosx_10_9_universal2.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e3/66/29a1feac5c69907fedd6b3d8562d5ddc7c28fdf8585da6484617fe4c0b5e/regex-2023.12.25-cp311-cp311-musllinux_1_1_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e5/62/765114c47f070e2fbe6788a96798383a8b9cf1e1baab4035288295dedc6c/regex-2023.12.25-cp38-cp38-macosx_10_9_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/eb/00/208ce4387c9ef72b751c34c4c84667bd8b47a70f3a6cc26f2240f8aab97e/regex-2023.12.25-cp37-cp37m-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/eb/10/4ccc8eed80f11c082a2883d49d4090aa80c7f65704216a529f490cb089b1/regex-2023.12.25-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/ee/07/d62cbcf2b87bd1255f13d7f7a7d5bb9f46d0fca6fb771a0aa6ee441a97d9/regex-2023.12.25-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/ef/2e/1e93f6c7a303cc08d9562c96030924b24d45419a78a288ebd6dc61a2246c/regex-2023.12.25-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/f2/9e/42b68eb9000707e82abe0c360cf46e73d457321b51e62a4dfb5938b148c6/regex-2023.12.25-cp37-cp37m-musllinux_1_1_s390x.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/f9/ef/14fcc5f19b0e72b64d4d530ae9bb8ba9739f6ced9c80d061c68ff93d5ebc/regex-2023.12.25-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/fa/53/b473865d5b44d1395874f0b88df5143def8ef2f7bd11424083260aa93461/regex-2023.12.25-cp312-cp312-musllinux_1_1_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/fe/4e/242050c3ff38c08f16b31a5a338525def3f85b819fc0c5a97c35217098a7/regex-2023.12.25-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/regex/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-macosx_10_9_universal2.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-macosx_10_9_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-macosx_11_0_arm64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-musllinux_1_1_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-musllinux_1_1_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-musllinux_1_1_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-musllinux_1_1_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-musllinux_1_1_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-win32.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp310-cp310-win_amd64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-macosx_10_9_universal2.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-macosx_10_9_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-macosx_11_0_arm64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-musllinux_1_1_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-musllinux_1_1_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-musllinux_1_1_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-musllinux_1_1_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-musllinux_1_1_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-win32.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp311-cp311-win_amd64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-macosx_10_9_universal2.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-macosx_10_9_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-macosx_11_0_arm64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-musllinux_1_1_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-musllinux_1_1_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-musllinux_1_1_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-musllinux_1_1_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-musllinux_1_1_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-win32.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp312-cp312-win_amd64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-macosx_10_9_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-musllinux_1_1_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-musllinux_1_1_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-musllinux_1_1_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-musllinux_1_1_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-musllinux_1_1_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-win32.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp37-cp37m-win_amd64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-macosx_10_9_universal2.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-macosx_10_9_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-macosx_11_0_arm64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-musllinux_1_1_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-musllinux_1_1_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-musllinux_1_1_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-musllinux_1_1_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-musllinux_1_1_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-win32.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp38-cp38-win_amd64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-macosx_10_9_universal2.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-macosx_10_9_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-macosx_11_0_arm64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-musllinux_1_1_aarch64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-musllinux_1_1_i686.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-musllinux_1_1_ppc64le.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-musllinux_1_1_s390x.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-musllinux_1_1_x86_64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-win32.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25-cp39-cp39-win_amd64.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "regex-2023.12.25.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/mrabarnett/mrab-regex",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/requests@2.31.0",
+      "name": "requests",
+      "version": "2.31.0",
+      "description": "Python HTTP for Humans.",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache 2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/requests@2.31.0",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/70/8e/0e2d847013cb52cd35b38c009bb167a1a26b2ce6cd6965bf26b47bc0bf44/requests-2.31.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/requests/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "requests-2.31.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "requests-2.31.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://requests.readthedocs.io",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/requirements-parser@0.5.0",
+      "name": "requirements-parser",
+      "version": "0.5.0",
+      "description": "This is a small Python module for parsing Pip requirement files.",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/requirements-parser@0.5.0",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/c2/f9/76106e710015f0f8da37bff8db378ced99ae2553cc4b1cffb0aef87dc4ac/requirements-parser-0.5.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/f8/89/612e3b326d87780dc1daf39af7696634f969838213cddae4f553f75d04ae/requirements_parser-0.5.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/requirements-parser/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "requirements-parser-0.5.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "requirements_parser-0.5.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/madpah/requirements-parser",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/semver@3.0.2",
+      "name": "semver",
+      "version": "3.0.2",
+      "description": "Python helper for Semantic Versioning (https://semver.org)",
+      "licenses": [
+        {
+          "license": {
+            "name": "BSD"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/semver@3.0.2",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/41/6c/a536cc008f38fd83b3c1b98ce19ead13b746b5588c9a0cb9dd9f6ea434bc/semver-3.0.2.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/9a/77/0cc7a8a3bc7e53d07e8f47f147b92b0960e902b8254859f4aee5c4d7866b/semver-3.0.2-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/semver/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "semver-3.0.2-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "semver-3.0.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/python-semver/python-semver",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/setuptools@69.0.3",
+      "name": "setuptools",
+      "version": "69.0.3",
+      "description": "Easily download, build, install, upgrade, and uninstall Python packages",
+      "purl": "pkg:pypi/setuptools@69.0.3",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/55/3a/5121b58b578a598b269537e09a316ad2a94fdd561a2c6eb75cd68578cc6b/setuptools-69.0.3-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/fc/c9/b146ca195403e0182a374e0ea4dbc69136bad3cd55bc293df496d625d0f7/setuptools-69.0.3.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/setuptools/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "setuptools-69.0.3-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "setuptools-69.0.3.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/pypa/setuptools",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/six@1.16.0",
+      "name": "six",
+      "version": "1.16.0",
+      "description": "Python 2 and 3 compatibility utilities",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/six@1.16.0",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d9/5a/e7c31adbe875f2abbb91bd84cf2dc52d792b5a01506781dbcf25c91daf11/six-1.16.0-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/six/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "six-1.16.0-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "six-1.16.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/benjaminp/six",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/sortedcontainers@2.4.0",
+      "name": "sortedcontainers",
+      "version": "2.4.0",
+      "description": "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache 2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/sortedcontainers@2.4.0",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/sortedcontainers/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "sortedcontainers-2.4.0-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "sortedcontainers-2.4.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "http://www.grantjenks.com/docs/sortedcontainers/",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/soupsieve@2.4.1",
+      "name": "soupsieve",
+      "version": "2.4.1",
+      "description": "A modern CSS selector implementation for Beautiful Soup.",
+      "purl": "pkg:pypi/soupsieve@2.4.1",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/47/9e/780779233a615777fbdf75a4dee2af7a345f4bf74b42d4a5f836800b9d91/soupsieve-2.4.1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/49/37/673d6490efc51ec46d198c75903d99de59baffdd47aea3d071b80a9e4e89/soupsieve-2.4.1-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/soupsieve/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "soupsieve-2.4.1-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "soupsieve-2.4.1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/sw360@1.4.0",
+      "name": "sw360",
+      "version": "1.4.0",
+      "description": "Python interface to the SW360 software component catalogue",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/sw360@1.4.0",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/13/d2/33886463c9dd3e3ede3b62000a9d74dcbb5755fc598cec2ae0011beaea2e/sw360-1.4.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c3/cb/8029cea4c88ce6a03de7459d80f3d498e156ad0feb1212a62975649ba869/sw360-1.4.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/sw360/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "sw360-1.4.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "sw360-1.4.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/sw360/sw360python",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/toml@0.10.2",
+      "name": "toml",
+      "version": "0.10.2",
+      "description": "Python Library for Tom's Obvious, Minimal Language",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/toml@0.10.2",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/44/6f/7120676b6d73228c96e17f1f794d8ab046fc910d781c8d151120c3f1569e/toml-0.10.2-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/toml/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "toml-0.10.2-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "toml-0.10.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/uiri/toml",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/tomli@2.0.1",
+      "name": "tomli",
+      "version": "2.0.1",
+      "description": "A lil' TOML parser",
+      "purl": "pkg:pypi/tomli@2.0.1",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/97/75/10a9ebee3fd790d20926a90a2547f0bf78f371b2f13aa822c759680ca7b9/tomli-2.0.1-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c0/3f/d7af728f075fb08564c5949a9c95e44352e23dee646869fa104a3b2060a3/tomli-2.0.1.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/tomli/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "tomli-2.0.1-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "tomli-2.0.1.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/tzdata@2023.3",
+      "name": "tzdata",
+      "version": "2023.3",
+      "description": "Provider of IANA time zone data",
+      "licenses": [
+        {
+          "license": {
+            "name": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/tzdata@2023.3",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/70/e5/81f99b9fced59624562ab62a33df639a11b26c582be78864b339dafa420d/tzdata-2023.3.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d5/fb/a79efcab32b8a1f1ddca7f35109a50e4a80d42ac1c9187ab46522b2407d7/tzdata-2023.3-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/tzdata/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "tzdata-2023.3-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "tzdata-2023.3.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/python/tzdata",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/tzlocal@5.2",
+      "name": "tzlocal",
+      "version": "5.2",
+      "description": "tzinfo object for the local timezone",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/tzlocal@5.2",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/04/d3/c19d65ae67636fe63953b20c2e4a8ced4497ea232c43ff8d01db16de8dc0/tzlocal-5.2.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/97/3f/c4c51c55ff8487f2e6d0e618dba917e3c3ee2caae6cf0fbb59c9b1876f2e/tzlocal-5.2-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/tzlocal/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "tzlocal-5.2-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "tzlocal-5.2.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/urllib3@1.26.18",
+      "name": "urllib3",
+      "version": "1.26.18",
+      "description": "HTTP library with thread-safe connection pooling, file post, and more.",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/urllib3@1.26.18",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/0c/39/64487bf07df2ed854cc06078c27c0d0abc59bd27b32232876e403c333a08/urllib3-1.26.18.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/b0/53/aa91e163dcfd1e5b82d8a890ecf13314e3e149c05270cc644581f77f17fd/urllib3-1.26.18-py2.py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/urllib3/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "urllib3-1.26.18-py2.py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "urllib3-1.26.18.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://urllib3.readthedocs.io/",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/wheel@0.38.4",
+      "name": "wheel",
+      "version": "0.38.4",
+      "description": "A built-package format for Python",
+      "licenses": [
+        {
+          "license": {
+            "name": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:pypi/wheel@0.38.4",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/a2/b8/6a06ff0f13a00fc3c3e7d222a995526cbca26c1ad107691b6b1badbbabf1/wheel-0.38.4.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/bd/7c/d38a0b30ce22fc26ed7dbc087c6d00851fb3395e9d0dac40bec1f905030c/wheel-0.38.4-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/wheel/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "wheel-0.38.4-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "wheel-0.38.4.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/pypa/wheel",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/zipp@3.17.0",
+      "name": "zipp",
+      "version": "3.17.0",
+      "description": "Backport of pathlib-compatible object wrapper for zip files",
+      "purl": "pkg:pypi/zipp@3.17.0",
+      "externalReferences": [
+        {
+          "url": "https://files.pythonhosted.org/packages/58/03/dd5ccf4e06dec9537ecba8fcc67bbd4ea48a2791773e469e73f94c3ba9a6/zipp-3.17.0.tar.gz",
+          "comment": "source archive (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/d9/66/48866fc6b158c81cc2bfecc04c480f105c6040e8b077bc54c634b4a67926/zipp-3.17.0-py3-none-any.whl",
+          "comment": "binary (download location)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://pypi.org/project/zipp/",
+          "comment": "PyPi URL",
+          "type": "distribution"
+        },
+        {
+          "url": "zipp-3.17.0-py3-none-any.whl",
+          "comment": "relativePath",
+          "type": "distribution"
+        },
+        {
+          "url": "zipp-3.17.0.tar.gz",
+          "comment": "source archive (local copy)",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/jaraco/zipp",
+          "type": "website"
+        }
+      ],
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/backports-zoneinfo@0.2.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/beautifulsoup4@4.12.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/certifi@2023.11.17",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/chardet@5.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/charset-normalizer@3.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/cli-support@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/colorama@0.4.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/cyclonedx-bom@3.11.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/cyclonedx-python-lib@3.1.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/dateparser@1.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/et-xmlfile@1.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/idna@3.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/importlib-resources@5.13.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/openpyxl@3.1.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/packageurl-python@0.13.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/packaging@23.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/pip-requirements-parser@32.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/pyjwt@1.7.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/pyparsing@3.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/python-dateutil@2.8.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/pytz@2023.3.post1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/regex@2023.12.25",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/requests@2.31.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/requirements-parser@0.5.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/semver@3.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/setuptools@69.0.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/six@1.16.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/sortedcontainers@2.4.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/soupsieve@2.4.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/sw360@1.4.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/toml@0.10.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/tomli@2.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/tzdata@2023.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/tzlocal@5.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/urllib3@1.26.18",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/wheel@0.38.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:pypi/zipp@3.17.0",
+      "dependsOn": []
+    }
+  ]
 }
