@@ -170,7 +170,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
                             cx_comp, ExternalReferenceType.DISTRIBUTION,
                             CaPyCliBom.SOURCE_URL_COMMENT, src_file_url)
 
-                    print(src_file_url)
+                        print(src_file_url)
             description = info.find("./pom:description", namespaces)
             if description is not None:
                 cx_comp.description = description.text
