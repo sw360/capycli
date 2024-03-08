@@ -100,6 +100,15 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             if swex.response.status_code == requests.codes["forbidden"]:
                 print_red("  You are not authorized - do you have a valid write token?")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
+            if swex.response:
+                print_red("  " + swex.response.status_code + ": " + swex.response.text)
+                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+            if swex.details:
+                print_red("  " + swex.details.get("error", "") + ": " + swex.details.get("message", ""))
+                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+
+            print_red("  Unknown error updating project: " + repr(swex))
+            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
     def update_project_version(self, project_id: str, project: Dict[str, Any], new_version: str) -> None:
         """Update an existing project with the given SBOM and version"""
