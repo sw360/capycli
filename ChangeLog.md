@@ -5,6 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## 2.2.1 (2024-02-20)
+
+* Update dependencies, especially use sw360, version 1.4.1. to fix a problem in `project update`.
+
 ## 2.2.0 (2024-02-20)
 
 * `getdependencies javascript` can now handle package-lock.json files of version 3.
