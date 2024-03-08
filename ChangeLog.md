@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## 2.2.1 (2024-02-20)
+## 2.2.1 (2024-03-08)
 
 * Update dependencies, especially use sw360, version 1.4.1. to fix a problem in `project update`.
 
