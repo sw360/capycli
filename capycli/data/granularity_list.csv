@@ -1600,27 +1600,34 @@ docker-java-api;Docker Java;;https://github.com/docker-java/docker-java
 docker-java-transport;Docker Java;;https://github.com/docker-java/docker-java
 docker-java-transport-httpclient5;Docker Java;;https://github.com/docker-java/docker-java
 docker-java-transport-zerodep;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-bom;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-core;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-transport-jersey;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-transport-netty;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-transport-okhttp;Docker Java;;https://github.com/docker-java/docker-java
+docker-java-transport-tck;Docker Java;;https://github.com/docker-java/docker-java
+docker-java;Docker Java;;https://github.com/docker-java/docker-java
 
- infinispan-cachestore-remote;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-client-hotrod;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-clustered-counter;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-commons;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-core;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-jb-marshalling;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-multimap;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-server-core;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-server-hotrod;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-tasks;Infinispan;;https://github.com/infinispan/infinispan
- infinispan-tasks-api;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-cachestore-remote;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-client-hotrod;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-clustered-counter;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-commons;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-core;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-jb-marshalling;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-multimap;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-server-core;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-server-hotrod;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-tasks;Infinispan;;https://github.com/infinispan/infinispan
+infinispan-tasks-api;Infinispan;;https://github.com/infinispan/infinispan
 
- jansi-freebsd32;Jansi;;https://github.com/fusesource/jansi	
- jansi-freebsd64;Jansi;;https://github.com/fusesource/jansi	
- jansi-linux32;Jansi;;https://github.com/fusesource/jansi	
- jansi-linux64;Jansi;;https://github.com/fusesource/jansi	
- jansi-native;Jansi;;https://github.com/fusesource/jansi
- jansi-osx;Jansi;;https://github.com/fusesource/jansi
- jansi-windows32;Jansi;;https://github.com/fusesource/jansi
- jansi-windows64;Jansi;;https://github.com/fusesource/jansi
+jansi-freebsd32;Jansi;;https://github.com/fusesource/jansi	
+jansi-freebsd64;Jansi;;https://github.com/fusesource/jansi	
+jansi-linux32;Jansi;;https://github.com/fusesource/jansi	
+jansi-linux64;Jansi;;https://github.com/fusesource/jansi	
+jansi-native;Jansi;;https://github.com/fusesource/jansi
+jansi-osx;Jansi;;https://github.com/fusesource/jansi
+jansi-windows32;Jansi;;https://github.com/fusesource/jansi
+jansi-windows64;Jansi;;https://github.com/fusesource/jansi
 
 resteasy-client;Resteasy;;https://github.com/resteasy/resteasy
 resteasy-client-api;Resteasy;;https://github.com/resteasy/resteasy
@@ -1755,7 +1762,7 @@ sundr-model;Sundrio;;https://github.com/sundrio/sundrio
 sundr-model-base;Sundrio;;https://github.com/sundrio/sundrio
 sundr-model-repo;Sundrio;;https://github.com/sundrio/sundrio
 sundr-model-utils;Sundrio;;https://github.com/sundrio/sundrio
-;;;
+
 babel-jest;Jest;;https://github.com/facebook/jest
 babel-plugin-jest-hoist;Jest;;https://github.com/facebook/jest
 babel-preset-jest;Jest;;https://github.com/facebook/jest
@@ -1856,6 +1863,9 @@ keycloak-model-map-hot-rod;Keycloak;;https://github.com/keycloak/keycloak
 keycloak-model-legacy-private;Keycloak;;https://github.com/keycloak/keycloak
 keycloak-config-api;Keycloak;;https://github.com/keycloak/keycloak
 keycloak-model-legacy;Keycloak;;https://github.com/keycloak/keycloak
+Keycloak;KEYCLOAK;;https://github.com/keycloak/keycloak
+keycloak-admin-client;KEYCLOAK;;https://github.com/keycloak/keycloak
+keycloak-core;KEYCLOAK;;https://github.com/keycloak/keycloak
 
 jboss-marshalling-river;Jboss-marshalling;;https://github.com/jboss-remoting/jboss-marshalling
 jboss-marshalling-osgi;Jboss-marshalling;;https://github.com/jboss-remoting/jboss-marshalling
@@ -1871,11 +1881,11 @@ cdi;Narayana;;https://github.com/jbosstm/narayana
 narayana-jts-integration;Narayana;;https://github.com/jbosstm/narayana
 jms;Narayana;;https://github.com/jbosstm/narayana
 
- quarkus-logging-gelf-deployment ;Quarkus;;https://github.com/quarkusio/quarkus
- quarkus-security;Quarkus;;https://github.com/quarkusio/quarkus
- quarkus-vault;Quarkus;;https://github.com/quarkusio/quarkus
- quarkus-vault-deployment;Quarkus;;https://github.com/quarkusio/quarkus
- quarkus-vault-model;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-logging-gelf-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-security;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vault;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vault-deployment;Quarkus;;https://github.com/quarkusio/quarkus
+quarkus-vault-model;Quarkus;;https://github.com/quarkusio/quarkus
 quarkus-agroal;Quarkus;;https://github.com/quarkusio/quarkus
 quarkus-agroal-deployment;Quarkus;;https://github.com/quarkusio/quarkus
 quarkus-agroal-spi;Quarkus;;https://github.com/quarkusio/quarkus
@@ -2293,11 +2303,16 @@ opentelemetry-extension-trace-propagators;opentelemetry-java;;https://github.com
 opentelemetry-sdk;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
 opentelemetry-sdk-common;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
 opentelemetry-sdk-extension-autoconfigure-spi;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-sdk-extension-autoconfigure;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
 opentelemetry-sdk-logs;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
 opentelemetry-sdk-metrics;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
 opentelemetry-sdk-trace;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
 opentelemetry-semconv;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
-
+opentelemetry-api-events;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-exporter-logging;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-extension-incubator;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-java;opentelemetry-java;;https://github.com/open-telemetry/opentelemetry-java
+opentelemetry-java-instrumentation;opentelemetry-java-instrumentation;;https://github.com/open-telemetry/opentelemetry-java-instrumentation
 opentelemetry-instrumentation-api;opentelemetry-java-instrumentation;;https://github.com/open-telemetry/opentelemetry-java-instrumentation
 opentelemetry-instrumentation-api-semconv;opentelemetry-java-instrumentation;;https://github.com/open-telemetry/opentelemetry-java-instrumentation
 opentelemetry-logback-mdc-1.0;opentelemetry-java-instrumentation;;https://github.com/open-telemetry/opentelemetry-java-instrumentation
@@ -2353,11 +2368,6 @@ opentelemetry-logback-mdc-1.0;opentelemetry-java-instrumentation;;https://github
 @material/touch-target;material-components-web;;https://github.com/material-components/material-components-web
 @material/typography;material-components-web;;https://github.com/material-components/material-components-web
 
-
-aws-java-sdk-core;aws-java-sdk;;https://github.com/aws/aws-sdk-java
-aws-java-sdk-s3;aws-java-sdk;;https://github.com/aws/aws-sdk-java
-aws-java-sdk-sts;aws-java-sdk;;https://github.com/aws/aws-sdk-java
-jmespath-java;aws-java-sdk;;https://github.com/aws/aws-sdk-java
 
 google-http-client-appengine;google-http-client;;https://github.com/googleapis/google-http-java-client
 google-http-client-gson;google-http-client;;https://github.com/googleapis/google-http-java-client
@@ -2687,6 +2697,482 @@ groovy-cli-picocli;Apache Groovy;;https://archive.apache.org/dist/groovy/
 @turf/union;Turf;;https://github.com/Turfjs/turf
 @turf/unkink-polygon;Turf;;https://github.com/Turfjs/turf
 @turf/voronoi;Turf;;https://github.com/Turfjs/turf
+
+selenium-api;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-chrome-driver;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-chromium-driver;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-devtools-v116;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-devtools-v117;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-devtools-v118;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-devtools-v85;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-edge-driver;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-firefox-driver;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-http;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-ie-driver;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-java;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-json;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-manager;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-os;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-remote-driver;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-safari-driver;Selenium;;https://github.com/SeleniumHQ/selenium
+selenium-support;Selenium;;https://github.com/SeleniumHQ/selenium
+
+camunda-bpm-platform;Camunda Platform;;https://github.com/camunda/camunda-bpm-platform
+camunda-bpm-spring-boot-starter-external-task-client;Camunda Platform;;https://github.com/camunda/camunda-bpm-platform
+camunda-engine-rest-client-openapi-java;Camunda Platform;;https://github.com/camunda/camunda-bpm-platform
+camunda-engine-rest-client-openapi-springboot;Camunda Platform;;https://github.com/camunda/camunda-bpm-platform
+camunda-external-task-client;Camunda Platform;;https://github.com/camunda/camunda-bpm-platform
+camunda-external-task-client-spring;Camunda Platform;;https://github.com/camunda/camunda-bpm-platform
+
+org.jacoco.agent;JaCoCo;;https://github.com/jacoco/jacoco
+org.jacoco.core;JaCoCo;;https://github.com/jacoco/jacoco
+org.jacoco.report;JaCoCo;;https://github.com/jacoco/jacoco
+org.jacoco.tests;JaCoCo;;https://github.com/jacoco/jacoco
+org.jacoco.test;JaCoCo;;https://github.com/jacoco/jacoco
+org.jacoco.cli;JaCoCo;;https://github.com/jacoco/jacoco
+org.jacoco.build;JaCoCo;;https://github.com/jacoco/jacoco
+org.jacoco.ant;JaCoCo;;https://github.com/jacoco/jacoco
+
+micrometer;Micrometer Application Metrics;;https://github.com/micrometer-metrics/micrometer
+micrometer-commons;Micrometer Application Metrics;;https://github.com/micrometer-metrics/micrometer
+micrometer-core;Micrometer Application Metrics;;https://github.com/micrometer-metrics/micrometer
+micrometer-jakarta9;Micrometer Application Metrics;;https://github.com/micrometer-metrics/micrometer
+micrometer-observation;Micrometer Application Metrics;;https://github.com/micrometer-metrics/micrometer
+micrometer-registry-prometheus;Micrometer Application Metrics;;https://github.com/micrometer-metrics/micrometer
+micrometer-tracing;Micrometer Tracing Facade;;https://github.com/micrometer-metrics/tracing
+micrometer-tracing-bridge-otel;Micrometer Tracing Facade;;https://github.com/micrometer-metrics/tracing
+
+kotlin-stdlib;Kotlin;;https://github.com/JetBrains/kotlin
+kotlin-stdlib-common;Kotlin;;https://github.com/JetBrains/kotlin
+kotlin-stdlib-jdk7;Kotlin;;https://github.com/JetBrains/kotlin
+kotlin-stdlib-jdk8;Kotlin;;https://github.com/JetBrains/kotlin
+
+ASM;ASM;;https://gitlab.ow2.org/asm/asm
+asm-commons;ASM;;https://gitlab.ow2.org/asm/asm
+asm-tree;ASM;;https://gitlab.ow2.org/asm/asm
+
+aws-java-sdk-kms;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-accessanalyzer;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-account;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-acm;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-acmpca;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-alexaforbusiness;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-amplify;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-amplifybackend;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-amplifyuibuilder;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-api-gateway;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-apigatewaymanagementapi;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-apigatewayv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appconfig;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appconfigdata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appfabric;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appflow;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appintegrations;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-applicationautoscaling;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-applicationcostprofiler;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-applicationinsights;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appmesh;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appregistry;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-apprunner;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appstream;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-appsync;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-arczonalshift;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-artifact;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-athena;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-auditmanager;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-augmentedairuntime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-autoscaling;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-autoscalingplans;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-b2bi;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-backup;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-backupgateway;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-backupstorage;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-batch;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-bcmdataexports;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-bedrock;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-bedrockagent;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-bedrockagentruntime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-bedrockruntime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-billingconductor;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-bom;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-braket;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-budgets;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-bundle;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-chatbot;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-chime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-chimesdkidentity;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-chimesdkmediapipelines;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-chimesdkmeetings;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-chimesdkmessaging;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-chimesdkvoice;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cleanrooms;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cleanroomsml;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloud9;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudcontrolapi;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-clouddirectory;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudformation;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudfront;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudhsm;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudhsmv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudsearch;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudtrail;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudtraildata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudwatch;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudwatchevidently;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudwatchmetrics;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cloudwatchrum;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-code-generator;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codeartifact;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codebuild;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codecommit;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codeconnections;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codedeploy;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codegen-maven-plugin;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codeguruprofiler;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codegurureviewer;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codegurusecurity;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codepipeline;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codestar;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codestarconnections;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-codestarnotifications;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cognitoidentity;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cognitoidp;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-cognitosync;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-comprehend;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-comprehendmedical;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-computeoptimizer;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-config;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-connect;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-connectcampaign;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-connectcases;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-connectcontactlens;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-connectparticipant;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-connectwisdom;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-controltower;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-core;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-costandusagereport;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-costexplorer;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-costoptimizationhub;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-customerprofiles;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-dataexchange;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-datapipeline;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-datasync;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-datazoneexternal;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-dax;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-detective;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-devicefarm;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-devopsguru;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-directconnect;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-directory;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-discovery;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-dlm;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-dms;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-docdb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-docdbelastic;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-drs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-dynamodb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ebs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ec2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ec2instanceconnect;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ecr;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ecrpublic;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ecs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-efs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-eks;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-eksauth;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-elasticache;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-elasticbeanstalk;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-elasticinference;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-elasticloadbalancing;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-elasticloadbalancingv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-elasticsearch;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-elastictranscoder;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-emr;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-emrcontainers;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-emrserverless;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-entityresolution;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-eventbridge;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-events;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-finspace;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-finspacedata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-fis;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-fms;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-forecast;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-forecastquery;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-frauddetector;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-freetier;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-fsx;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-gamelift;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-glacier;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-globalaccelerator;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-glue;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-gluedatabrew;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-greengrass;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-greengrassv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-groundstation;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-guardduty;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-health;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-healthlake;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-honeycode;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iam;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iamrolesanywhere;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-identitystore;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-imagebuilder;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-importexport;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-inspector;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-inspector2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-inspectorscan;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-internetmonitor;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iot;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iot1clickdevices;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iot1clickprojects;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotanalytics;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotdeviceadvisor;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotevents;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ioteventsdata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotfleethub;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotfleetwise;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotjobsdataplane;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotsecuretunneling;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotsitewise;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotthingsgraph;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iottwinmaker;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-iotwireless;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ivs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ivschat;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ivsrealtime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kafka;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kafkaconnect;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kendra;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kendraranking;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-keyspaces;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kinesis;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kinesisanalyticsv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kinesisvideo;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kinesisvideosignalingchannels;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kinesisvideowebrtcstorage;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-kms;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lakeformation;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lambda;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-launchwizard;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lex;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lexmodelbuilding;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lexmodelsv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lexruntimev2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-licensemanager;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-licensemanagerlinuxsubscriptions;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-licensemanagerusersubscriptions;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lightsail;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-location;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-logs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lookoutequipment;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lookoutforvision;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-lookoutmetrics;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-machinelearning;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-macie2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mainframemodernization;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-managedblockchain;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-managedblockchainquery;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-managedgrafana;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-marketplaceagreement;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-marketplacecatalog;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-marketplacecommerceanalytics;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-marketplacedeployment;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-marketplaceentitlement;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-marketplacemeteringservice;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mechanicalturkrequester;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediaconnect;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediaconvert;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-medialive;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediapackage;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediapackagev2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediapackagevod;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediastore;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediastoredata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mediatailor;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-medicalimaging;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-memorydb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mgn;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-migrationhub;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-migrationhubconfig;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-migrationhuborchestrator;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-migrationhubrefactorspaces;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-migrationhubstrategyrecommendations;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mobile;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-models;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mq;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-mwaa;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-neptune;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-neptunedata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-networkfirewall;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-networkmanager;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-networkmonitor;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-nimblestudio;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-oam;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-omics;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-opensdk;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-opensearch;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-opensearchserverless;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-opsworks;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-opsworkscm;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-organizations;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-osgi;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-osis;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-outposts;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-panorama;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-paymentcryptography;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-paymentcryptographydata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pcaconnectorad;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-personalize;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-personalizeevents;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-personalizeruntime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pi;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pinpoint;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pinpointemail;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pinpointsmsvoice;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pinpointsmsvoicev2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pipes;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-polly;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-pricing;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-private5g;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-prometheus;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-proton;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-qbusiness;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-qconnect;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-qldb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-qldbsession;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-quicksight;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ram;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-rds;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-rdsdata;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-recyclebin;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-redshift;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-redshiftdataapi;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-redshiftserverless;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-rekognition;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-repostspace;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-resiliencehub;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-resourceexplorer2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-resourcegroups;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-resourcegroupstaggingapi;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-robomaker;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-route53;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-route53recoverycluster;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-route53recoverycontrolconfig;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-route53recoveryreadiness;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-route53resolver;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-s3;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-s3control;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-s3outposts;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sagemaker;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sagemakeredgemanager;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sagemakerfeaturestoreruntime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sagemakergeospatial;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sagemakermetrics;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sagemakerruntime;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-savingsplans;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-scheduler;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-schemas;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-secretsmanager;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-securityhub;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-securitylake;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-serverlessapplicationrepository;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-servermigration;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-servicecatalog;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-servicediscovery;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-servicequotas;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ses;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sesv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-shield;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-signer;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-simpledb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-simpleworkflow;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-simspaceweaver;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-snowball;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-snowdevicemanagement;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sns;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sqs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ssm;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ssmcontacts;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ssmincidents;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ssmsap;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sso;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ssoadmin;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-ssooidc;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-stepfunctions;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-storagegateway;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-sts;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-supplychain;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-support;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-supportapp;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-synthetics;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-test-utils;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-textract;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-timestreaminfluxdb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-timestreamquery;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-timestreamwrite;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-tnb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-transcribe;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-transfer;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-translate;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-trustedadvisor;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-verifiedpermissions;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-voiceid;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-vpclattice;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-waf;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-wafv2;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-wellarchitected;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-workdocs;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-worklink;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-workmail;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-workmailmessageflow;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-workspaces;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-workspacesthinclient;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-workspacesweb;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk-xray;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+aws-java-sdk;;;https://github.com/aws/aws-sdk-java
+jmespath-java;AWS SDK for Java;;https://github.com/aws/aws-sdk-java
+
+Byte Buddy;Byte Buddy;;https://github.com/raphw/byte-buddy
+byte-buddy-agent;Byte Buddy;;https://github.com/raphw/byte-buddy
+byte-buddy-benchmark;Byte Buddy;;https://github.com/raphw/byte-buddy
+byte-buddy-dep;Byte Buddy;;https://github.com/raphw/byte-buddy
+byte-buddy-gradle-plugin;Byte Buddy;;https://github.com/raphw/byte-buddy
+byte-buddy-maven-plugin;Byte Buddy;;https://github.com/raphw/byte-buddy
+byte-buddy;Byte Buddy;;https://github.com/raphw/byte-buddy
+
+httpcore5;Apache HttpComponents Core;;https://github.com/apache/httpcomponents-core
+httpcore5-h2;Apache HttpComponents Core;;https://github.com/apache/httpcomponents-core
+httpcore5-reactive;Apache HttpComponents Core;;https://github.com/apache/httpcomponents-core
+httpcore5-testing;Apache HttpComponents Core;;https://github.com/apache/httpcomponents-core
+
+Netty;Netty Project;;https://github.com/netty/netty
+netty-resolver-dns;Netty Project;;https://github.com/netty/netty
+netty-resolver-dns-classes-macos;Netty Project;;https://github.com/netty/netty
+netyy-resolver-dns-native-macos;Netty Project;;https://github.com/netty/netty
+netty-transport-blockhound-tests;Netty Project;;https://github.com/netty/netty
+netty-transport-classes-epoll;Netty Project;;https://github.com/netty/netty
+netty-transport-classes-kqueue;Netty Project;;https://github.com/netty/netty
+netty-transport-native-epoll;Netty Project;;https://github.com/netty/netty
+netty-transport-native-kqueue;Netty Project;;https://github.com/netty/netty
+netty-transport-native-unix-common-tests;Netty Project;;https://github.com/netty/netty
+netty-transport-native-unix-common;Netty Project;;https://github.com/netty/netty
+netty-transport-rxtx;Netty Project;;https://github.com/netty/netty
+netty-transport-sctp;Netty Project;;https://github.com/netty/netty
+netty-4transport-udt;Netty Project;;https://github.com/netty/netty
+netty-transport;Netty Project;;https://github.com/netty/netty
+netty-codec-dns;Netty Project;;https://github.com/netty/netty
+netty-codec-haproxy;Netty Project;;https://github.com/netty/netty
+netty-codec-http;Netty Project;;https://github.com/netty/netty
+netty-codec-http2;Netty Project;;https://github.com/netty/netty
+netty-codec-memcache;Netty Project;;https://github.com/netty/netty
+netty-codec-mqtt;Netty Project;;https://github.com/netty/netty
+netty-codec-redis;Netty Project;;https://github.com/netty/netty
+netty-codec-smtp;Netty Project;;https://github.com/netty/netty
+netty-codec-socks;Netty Project;;https://github.com/netty/netty
+netty-codec-stomp;Netty Project;;https://github.com/netty/netty
+netty-codec-xml;Netty Project;;https://github.com/netty/netty
+netty-codec;Netty Project;;https://github.com/netty/netty
 
 @nestjs/common;Nest;;https://github.com/nestjs/nest
 @nestjs/core;Nest;;https://github.com/nestjs/nest
