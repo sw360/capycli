@@ -10,6 +10,8 @@
 * Have an updated granularity list.
 * New feature that adds a flag `force error` to `project prerequisites` to exit the application
   with an error code in case of a failed prerequisites check.
+* The flag `force error` is also available for `project getlicenseinfo` and results in an error
+  code if a CLI file is missing.
 
 ## 2.2.1 (2024-03-08)
 
