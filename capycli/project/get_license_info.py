@@ -24,6 +24,9 @@ LOG = capycli.get_logger(__name__)
 
 
 class GetLicenseInfo(capycli.common.script_base.ScriptBase):
+    def __init__(self) -> None:
+        self.has_error = False
+
     """
     Get license info on all project components.
     """
@@ -131,6 +134,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
                 release = self.client.get_release_by_url(href)
                 if not release:
                     print_red("  ERROR: unable to access release")
+                    self.has_error = True
                     continue
 
                 component_name = release["name"]
@@ -166,6 +170,10 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
 
                     complist.append(comp)
 
+                if len(cli_files) == 0:
+                    print_red("        No CLI file exist for this component!")
+                    self.has_error = True
+
             complist.sort(key=lambda s: s["ComponentName"].lower())
 
             rdm_info["Components"] = complist
@@ -188,6 +196,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
   -ncli, --no-overwrite-cli      do not overwrite existing CLI files
   -nconf, --no-overwrite-config  do not overwrite an existing configuration file
   -all                           add all available CLI files of a component
+  --forceerror                   force an error exit code in case of missing information
         """)
 
         print()
@@ -260,3 +269,6 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             self.write_result(rdm_info, args.outputfile, args.nconf)
 
         print_text("\ndone.")
+
+        if args.force_error and self.has_error:
+            sys.exit(ResultCode.RESULT_LICENSE_INFO_ERROR)

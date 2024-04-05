@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -98,7 +98,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         return False
 
-    def check_project_prerequisites(self, id: str, sbom: Optional[Bom]) -> None:
+    def check_project_prerequisites(self, id: str, sbom: Optional[Bom]) -> bool:
         if not self.client:
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
@@ -113,16 +113,19 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             print_red("Error retrieving project details")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
+        has_errors = False
         print_text("  Project name: " + project["name"] + ", " + project["version"])
         print_text("  Clearing state: " + project.get("clearingState", "UNKNOWN"))
 
         if not project.get("projectOwner", None):
             print_yellow("  No project owner specified!")
+            has_errors = True
         else:
             print_green("  Project owner: " + project["projectOwner"])
 
         if not project.get("projectResponsible", None):
             print_yellow("  No project responsible specified!")
+            has_errors = True
         else:
             print_green(
                 "  Project responsible: "
@@ -157,6 +160,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                 release = self.client.get_release_by_url(href)
                 if not release:
                     print_red("Error accessign release " + href)
+                    has_errors = True
                     continue
 
                 state = self.get_clearing_state(project, href)
@@ -185,6 +189,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                                     cx_comp, CycloneDxSupport.CDX_PROP_SW360ID) == release_id]
                     if len(bom_item) == 0:
                         print_red("      Item not in specified SBOM!")
+                        has_errors = True
                     else:
                         assert len(bom_item) == 1
                         bom_sha1 = CycloneDxSupport.get_source_file_hash(bom_item[0])
@@ -213,6 +218,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                 if len(source) != 1:
                     if state == "OPEN":
                         print(Fore.LIGHTRED_EX, end="")
+                        has_errors = True
                     else:
                         print(Fore.LIGHTYELLOW_EX, end="")
                 else:
@@ -250,6 +256,8 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         else:
             print_text("    No linked releases")
 
+        return has_errors
+
     def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
@@ -280,6 +288,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             print("    -t SW360_TOKEN,         use this token for access to SW360")
             print("    -oa, --oauth2           this is an oauth2 token")
             print("    -url SW360_URL          use this URL for access to SW360")
+            print("    --forceerror            force an error exit code in case of prerequisite errors")
             return
 
         if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
@@ -313,7 +322,8 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             # find_project() is part of script_base.py
             pid = self.find_project(name, version)
             if pid:
-                self.check_project_prerequisites(pid, sbom)
+                if (self.check_project_prerequisites(pid, sbom) and args.force_error):
+                    sys.exit(ResultCode.RESULT_PREREQUISITE_ERROR)
             else:
                 print_yellow("  No matching project found")
         else:
