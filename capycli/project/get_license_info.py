@@ -171,6 +171,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
                     complist.append(comp)
 
                 if len(cli_files) == 0:
+                    print_red("        No CLI file exist for this component!")
                     self.has_error = True
 
             complist.sort(key=lambda s: s["ComponentName"].lower())
