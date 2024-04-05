@@ -138,6 +138,7 @@ Options:
   -if INPUTFORMAT                                   Specify input file format
   -of OUTPUTFORMAT                                  Specify output file format
   -X DEBUG                                          Enable debug output
+  --forceerror FORCE_ERROR                          force an error exit code in case of visual errors
 ```
 
 ## Use Cases

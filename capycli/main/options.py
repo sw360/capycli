@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -391,6 +391,14 @@ class CommandlineSupport():
             "-X",
             dest="debug", action="store_true",
             help="Enable debug output")
+
+        # used by CheckPrerequisites
+        self.parser.add_argument(
+            "--forceerror",
+            dest="force_error",
+            action="store_true",
+            help="force an error exit code in case of visual errors",
+        )
 
     def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:
         """

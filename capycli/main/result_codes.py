@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright 2023 Siemens
+# Copyright 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -39,3 +39,4 @@ class ResultCode(object):
     RESULT_PROJECT_NOT_FOUND = 94
     RESULT_ERROR_ACCESSING_SW360 = 95
     RESULT_FILTER_ERROR = 96
+    RESULT_PREREQUISITE_ERROR = 97

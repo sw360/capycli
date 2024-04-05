@@ -5,6 +5,12 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## 2.3.0
+
+* Have an updated granularity list.
+* New feature that adds a flag `force error` to `project prerequisites` to exit the application
+  with an error code in case of a failed prerequisites check.
+
 ## 2.2.1 (2024-03-08)
 
 * Update dependencies, especially use sw360, version 1.4.1. to fix a problem in `project update`.
