@@ -147,7 +147,7 @@ class LegacySupport():
         if sourceFileUrl:
             ext_ref = ExternalReference(
                 reference_type=ExternalReferenceType.DISTRIBUTION,
-                comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                comment=CaPyCliBom.SOURCE_FILE_COMMENT,
                 url=XsUri(sourceFileUrl))
             hash = item.get("SourceFileHash", "")
             if hash:
@@ -160,7 +160,7 @@ class LegacySupport():
             if sourceUrl:
                 ext_ref = ExternalReference(
                     reference_type=ExternalReferenceType.DISTRIBUTION,
-                    comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
                     url=XsUri(sourceUrl))
                 hash = item.get("SourceFileHash", "")
                 if hash:
