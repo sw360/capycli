@@ -28,10 +28,10 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
     def get_clearing_state(self, project: Dict[str, Any], href: str) -> str:
         """Returns the clearing state of the given component/release"""
-        rel = project["linkedReleases"]
+        rel = project.get("linkedReleases", [])
         for key in rel:
             if key["release"] == href:
-                return key["mainlineState"]
+                return key.get("mainlineState", "")
 
         return ""
 
@@ -46,7 +46,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         att = [
             entry
             for entry in release["_embedded"]["sw360:attachments"]
-            if entry["attachmentType"] in ("SOURCE", "SOURCE_SELF")
+            if entry.get("attachmentType", "") in ("SOURCE", "SOURCE_SELF")
         ]
         return att
 
@@ -121,7 +121,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             print_yellow("  No project owner specified!")
             has_errors = True
         else:
-            print_green("  Project owner: " + project["projectOwner"])
+            print_green("  Project owner: " + project.get("projectOwner", "UNKNOWN"))
 
         if not project.get("projectResponsible", None):
             print_yellow("  No project responsible specified!")
@@ -141,7 +141,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         if not project.get("tag", None):
             print_yellow("  No tag specified!")
         else:
-            print_green("  Tag: " + project["tag"])
+            print_green("  Tag: " + project.get("tag", "UNKNOWN"))
 
         if "sw360:projects" in project["_embedded"]:
             linked_projects = project["_embedded"]["sw360:projects"]
@@ -196,14 +196,14 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
                 source = self.get_source_code(release)
                 for source_info in source:
-                    source_name = source_info["filename"]
+                    source_name = source_info.get("filename", "")
                     if "-SOURCES.JAR" in source_name.upper():
                         print_yellow(
                             "      Source " +
                             source_name +
                             " seems to be from Maven!")
                     if bom_sha1:
-                        if bom_sha1 != source_info["sha1"]:
+                        if bom_sha1 != source_info.get("sha1", ""):
                             print_red(
                                 "      SHA1 for source " +
                                 source_name +

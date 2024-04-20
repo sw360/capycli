@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2022-2023 Siemens
+# Copyright (c) 2022-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -29,9 +29,9 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
 
         print_text("  Project name: " + result["Name"] + ", " + result["Version"])
         if "ProjectResponsible" in result:
-            print("  Project responsible: " + result["ProjectResponsible"])
-        print_text("  Project owner: " + result["ProjectOwner"])
-        print_text("  Clearing state: " + result["ClearingState"])
+            print("  Project responsible: " + result.get("ProjectResponsible", "Unknown"))
+        print_text("  Project owner: " + result.get("ProjectOwner", "Unknown"))
+        print_text("  Clearing state: " + result.get("ClearingState", "Unknown"))
 
         if len(result["Projects"]) > 0:
             print("\n  Linked projects: ")
@@ -92,10 +92,10 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
 
         result["Name"] = self.project["name"]
         result["Version"] = self.project["version"]
-        result["ProjectOwner"] = self.project["projectOwner"]
-        result["ProjectResponsible"] = self.project["projectResponsible"]
-        result["SecurityResponsibles"] = self.project["securityResponsibles"]
-        result["BusinessUnit"] = self.project["businessUnit"]
+        result["ProjectOwner"] = self.project.get("projectOwner", "Unknown")
+        result["ProjectResponsible"] = self.project.get("projectResponsible", "Unknown")
+        result["SecurityResponsibles"] = self.project.get("securityResponsibles", [])
+        result["BusinessUnit"] = self.project.get("businessUnit", "Unknown")
         result["Tag"] = self.project["tag"]
         if "clearingState" in self.project:
             result["ClearingState"] = self.project["clearingState"]

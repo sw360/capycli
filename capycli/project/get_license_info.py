@@ -51,7 +51,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
             attachment = self.client.get_attachment_by_url(att_href)
             if not attachment:
                 continue
-            if not attachment["attachmentType"] == "COMPONENT_LICENSE_INFO_XML":
+            if not attachment.get("attachmentType", "") == "COMPONENT_LICENSE_INFO_XML":
                 continue
 
             release_id = self.client.get_id_from_href(release["_links"]["self"]["href"])
@@ -151,12 +151,12 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
                 for cli_file in cli_files:
                     comp = {}
                     comp["ComponentName"] = component_name
-                    comp["CliFile"] = cli_file["filename"]
-                    comp["CreatedBy"] = cli_file["createdBy"]
-                    comp["CreatedOn"] = cli_file["createdOn"]
-                    comp["CheckedBy"] = cli_file["checkedBy"]
-                    comp["CheckedTeam"] = cli_file["checkedTeam"]
-                    comp["CheckStatus"] = cli_file["checkStatus"]
+                    comp["CliFile"] = cli_file.get("filename", "")
+                    comp["CreatedBy"] = cli_file.get("createdBy", "")
+                    comp["CreatedOn"] = cli_file.get("createdOn", "")
+                    comp["CheckedBy"] = cli_file.get("checkedBy", "")
+                    comp["CheckedTeam"] = cli_file.get("checkedTeam", "")
+                    comp["CheckStatus"] = cli_file.get("checkStatus", "")
 
                     count += 1
                     if count > 1:
