@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -142,8 +142,8 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
             return
 
         print_text("  Project name: " + project["name"] + ", " + project["version"])
-        print_text("  Project owner: " + project["projectOwner"])
-        print_text("  Clearing state: " + project["clearingState"])
+        print_text("  Project owner: " + project.get("projectOwner", "???"))
+        print_text("  Clearing state: " + project.get("clearingState", "???"))
         if self.nodelete:
             print_text("  Temp folder", tempfolder, "will not get deleted.")
 

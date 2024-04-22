@@ -130,7 +130,13 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
 
         # 2022-07-01: SW360 changed "sw360:vulnerabilityDToes" to "sw360:vulnerabilityDTOes" - arrgghhh
         if "sw360:vulnerabilityDTOes" not in vuls["_embedded"]:
-            return report
+            if "sw360:vulnerabilityDTes" not in vuls["_embedded"]:
+                vuls["_embedded"]["sw360:vulnerabilityDTOes"] = vuls["_embedded"]["sw360:vulnerabilityDTes"]
+            elif "sw360:vulnerabilities" not in vuls["_embedded"]:
+                vuls["_embedded"]["sw360:vulnerabilityDTOes"] = vuls["_embedded"]["sw360:vulnerabilities"]
+
+            if "sw360:vulnerabilityDTOes" not in vuls["_embedded"]:
+                return report
 
         report["Vulnerabilities"] = vuls["_embedded"]["sw360:vulnerabilityDTOes"]
 

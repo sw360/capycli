@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -28,10 +28,10 @@ class ShowProject(capycli.common.script_base.ScriptBase):
         if not proj:
             return ""
 
-        rel = proj["linkedReleases"]
+        rel = proj.get("linkedReleases", [])
         for key in rel:
-            if key["release"] == href:
-                return key["mainlineState"]
+            if key.get("release", "") == href:
+                return key.get("mainlineState", "???")
 
         return ""
 
@@ -42,8 +42,8 @@ class ShowProject(capycli.common.script_base.ScriptBase):
         print_text("  Project name: " + result["Name"] + ", " + result["Version"])
         if "ProjectResponsible" in result:
             print_text("  Project responsible: " + result["ProjectResponsible"])
-        print_text("  Project owner: " + result["ProjectOwner"])
-        print_text("  Clearing state: " + result["ClearingState"])
+        print_text("  Project owner: " + result.get("ProjectOwner", "???"))
+        print_text("  Clearing state: " + result.get("ClearingState", "???"))
 
         if len(result["Projects"]) > 0:
             print_text("\n  Linked projects: ")
@@ -138,8 +138,8 @@ class ShowProject(capycli.common.script_base.ScriptBase):
                         sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
                     # capycli.common.json_support.print_json(release_details)
-                    rel_item["ClearingState"] = release_details["clearingState"]
-                    rel_item["ReleaseMainlineState"] = release_details.get("mainlineState", "")
+                    rel_item["ClearingState"] = release_details.get("clearingState", "???")
+                    rel_item["ReleaseMainlineState"] = release_details.get("mainlineState", "???")
                     rel_item["SourceAvailable"] = "False"
                     if "externalIds" in release_details:
                         rel_item["ExternalIds"] = release_details["externalIds"]

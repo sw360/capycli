@@ -453,8 +453,8 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
         """Reads all CLI files"""
         cli_files: List[CliFile] = []
         unique_components = []
-        for file in config["Components"]:
-            component_name = file["ComponentName"]
+        for file in config.get("Components", []):
+            component_name = file.get("ComponentName", "")
             if component_name not in unique_components:
                 unique_components.append(component_name)
             else:

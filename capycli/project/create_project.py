@@ -180,7 +180,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 filename = os.path.basename(attachment['file'])
                 upload = True
                 for project_attachment in project_attachments:
-                    if project_attachment['filename'] == filename:
+                    if project_attachment.get('filename', '') == filename:
                         print_yellow(
                             "  Attachment file " + filename +
                             " already exists! Please check manually")
