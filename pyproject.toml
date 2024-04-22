@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "capycli"
-version = "2.3.0"
+version = "2.4.0"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 authors = ["Thomas Graf <thomas.graf@siemens.com>"]
 license = "MIT"
@@ -42,9 +42,9 @@ packageurl-python = ">0.8, <1.0"
 pyjwt = "^1.7.1"
 openpyxl = "^3.0.3"
 requirements-parser = "0.5.0"
-sw360 = "^1.4.0"
+sw360 = "^1.5.0"
 wheel = "^0.38.4"
-cli-support = "2.0.0"
+cli-support = "2.0.1"
 chardet = "5.2.0"
 cyclonedx-python-lib = ">3.1.1"
 cyclonedx-bom = "^3.11.0"

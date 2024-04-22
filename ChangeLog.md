@@ -5,6 +5,13 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## 2.4.0 (2024-04-22)
+
+* CaPyCLI is more resilient when accessing SW360.
+* Dependency updates:
+  * idna 3.6 => 3.7 to fix a security vulnerability
+  * sw360 1.4.1 -> 1.5.0 to have  an improved session handling for all api requests.
+
 ## 2.3.0 (2024-04-05)
 
 * Have an updated granularity list.
