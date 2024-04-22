@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -299,7 +299,7 @@ class TestCheckBomItemStatus(TestBase):
             responses.GET,
             url=self.MYURL + "resource/api/releases/05c30bf89a512463260b57e84d99b38f",
             body='{"name": "python", "version": "3.8"}',
-            status=500,  # internal server error
+            status=592,  # 500 => 592 = MaxRetryError, due to new sw360 session handling
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
@@ -419,7 +419,7 @@ class TestCheckBomItemStatus(TestBase):
                    }
                 } ]
                 }}''',
-            status=500,
+            status=592,  # 500 => 592 = MaxRetryError, due to new sw360 session handling
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )

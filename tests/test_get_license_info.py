@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -197,7 +197,7 @@ class TestGetLicenseInfo(TestBase):
                     "sw360:releases": []
                 }
             },
-            status=500,
+            status=592,  # 500 => 592 = MaxRetryError, due to new sw360 session handling
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
