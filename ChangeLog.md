@@ -5,6 +5,11 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* Fixed an error when creating an SBOM from a project on SW360 when this project
+  contains a component with more than on package-url.
+
 ## 2.4.0 (2024-04-22)
 
 * CaPyCLI is more resilient when accessing SW360.

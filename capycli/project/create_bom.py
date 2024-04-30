@@ -72,7 +72,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                 if len(purls) > 1:
                     print_yellow("      Multiple purls added for", release["name"], release["version"])
                     print_yellow("      You must remove all but one in your SBOM!")
-                purl = " ".join(purls)
+                purl = " ".join(purls).strip()
 
                 if purl:
                     rel_item = Component(name=release["name"], version=release["version"],
