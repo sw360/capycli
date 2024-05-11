@@ -487,6 +487,12 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 continue
 
             source_url = None
+
+            # skip source URL check for debian components as github url s are invalid for Debian.
+            if component.bom_ref.value.startswith("pkg:deb/debian/"):
+                print_red("No source code check for debian components!")
+                continue
+
             language = ""
             for val in component.properties:
                 if val.name == "siemens:primaryLanguage":
@@ -546,7 +552,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 source_url = self.find_source_url_recursive_by_sw360(component)
 
             # deeper search on github
-            if not source_url and not component.bom_ref.value.startswith("pkg:deb/debian/"):
+            if not source_url:
                 if self.verbose:
                     print("    No Source code URL available - try to find on github:")
                 source_url = self.find_github_url(component)
