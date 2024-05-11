@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -35,7 +35,7 @@ def run_project_command(args: Any) -> None:
         # display `project` related help
         print("project - project related sub-commands")
         print("    Find              find a project by name")
-        print("    Prerequisites     checks whether all prerequisites for a successfull")
+        print("    Prerequisites     checks whether all prerequisites for a successful")
         print("                      software clearing are fulfilled")
         print("    Show              show project details")
         print("    Licenses          show licenses of all cleared compponents")
@@ -62,7 +62,7 @@ def run_project_command(args: Any) -> None:
         return
 
     if subcommand == "prerequisites":
-        """Checks whether all prerequisites for a successfull software clearing are fulfilled."""
+        """Checks whether all prerequisites for a successful software clearing are fulfilled."""
         app3 = capycli.project.check_prerequisites.CheckPrerequisites()
         app3.run(args)
         return

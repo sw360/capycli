@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
@@ -10,7 +10,7 @@ to use for which purpose and what is the right order of commands.
 
 ## General Idea
 
-The general idea of the clearing support worflow looks like this:
+The general idea of the clearing support workflow looks like this:
 
 ![workflow](images/workflow.svg)
 
@@ -64,7 +64,7 @@ the SBOM find too many components, for example when they also list development d
 test frameworks, components for mocking, etc.  
 The command `CaPyCLI bom granularity` may help you to find out where a tool provides too many details
 in a SBOM. As OSS software license compliance focuses on the source code, we should list component on
-thei granularity level.
+the granularity level.
 
 ![step_granularity](images/step_granularity.svg)
 

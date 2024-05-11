@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2022-2023 Siemens
+# Copyright (c) 2022-2024 Siemens
 # All Rights Reserved.
 # Author: rayk.bajohr@siemens.com
 #
@@ -137,7 +137,7 @@ class ComparableVersion:
             return self.version.__ne__(other.version)
 
     def __le__(self, other: ComparableVersion) -> bool:
-        """descries less than or equal to (<=)"""
+        """describes less than or equal to (<=)"""
         try:
             return self.compare(other) <= 0
         except IncompatibleVersionError:

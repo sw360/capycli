@@ -462,7 +462,7 @@ class CapycliTestBomCreate(CapycliTestBase):
 
     @responses.activate
     def test_create_release_SourceUrl(self) -> None:
-        """Create relase from BOM SourceFileUrl, no download
+        """Create release from BOM SourceFileUrl, no download
         """
         responses.add(
             responses.POST,

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2020-2023 Siemens
+# Copyright (c) 2020-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -223,7 +223,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
           mvn dependency:list
 
         :return a list of the local Python packages
-        :rtype list of package item dictionaries, as retuned by pip
+        :rtype list of package item dictionaries, as returned by pip
         """
         if raw_file:
             parsed_sources = self.extract_urls(raw_file, self.SOURCES_REGEX)

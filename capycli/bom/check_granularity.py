@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2023 Siemens
+# Copyright (c) 2021-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -51,7 +51,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
     @staticmethod
     def get_granularity_list(download_url: str) -> None:
         '''This will only download granularity file from a public repository.
-        Make sure to give the raw version of the granularity file seperated by ;'''
+        Make sure to give the raw version of the granularity file separated by ;'''
         response = requests.get(download_url)
         response.raise_for_status()
         with open('granularity_list.csv', 'wb') as f1:
@@ -229,7 +229,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
             print("optional arguments:")
             print("    -h, --help            show this help message and exit")
             print("    -i INPUTFILE          SBOM file to read from (JSON)")
-            print("    -o OUTPUTFILE         write updated to this file (optinal)")
+            print("    -o OUTPUTFILE         write updated to this file (optional)")
             print("    -v                    be verbose")
             print("    -rg                   read the granularity list file from the URL specified")
             print("    -lg                   read the granularity list file from local")

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2023 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -93,7 +93,7 @@ class Application(object):
 
     def emit_exit_code(self, system_exit_exception: Optional[SystemExit]) -> None:
         if system_exit_exception is None:
-            # successfull
+            # successful
             if self.options and self.options.ex:  # type: ignore  # code is used!
                 print("Exit code = 0")  # type: ignore  # code is used!
             # no need to do sys.exit(0) here - 0 is the default exit code

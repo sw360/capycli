@@ -110,7 +110,7 @@ class ShowLicenses(capycli.common.script_base.ScriptBase):
             clifile.read_from_file(cli_filename)
         except OSError as ex:
             print_red("    Error reading CLI file: " + cli_filename)
-            print_red("    Error '{0}' occured. Arguments {1}.".format(ex.errno, ex.args))
+            print_red("    Error '{0}' occurred. Arguments {1}.".format(ex.errno, ex.args))
 
         license_list = []
         for lic in clifile.licenses:

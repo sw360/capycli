@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -153,7 +153,7 @@ class MappingToExcelXlsx(capycli.common.script_base.ScriptBase):
         try:
             wb.save(outputfile)
         except Exception as ex:
-            print_red("Error wirting Excel sheet: " + repr(ex))
+            print_red("Error writing Excel sheet: " + repr(ex))
             sys.exit(ResultCode.RESULT_ERROR_WRITING_FILE)
 
     def run(self, args: Any) -> None:

@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
@@ -517,7 +517,7 @@ CaPyCli - Show project details
     RabbitMQ, 3.8.2 = OPEN
 ```
 
-#### Checks whether all prerequisites for a successfull software clearing are fulfilled
+#### Checks whether all prerequisites for a successful software clearing are fulfilled
 
 This will perform a number of sanity checks for the linked releases in a
 project.
@@ -537,7 +537,7 @@ capycli project prerequisites -name "tr-card" -version "1.0"
 Result:
 
 ```sh
-CaPyCli - Checks whether all prerequisites for a successfull software clearing are fulfilled
+CaPyCli - Checks whether all prerequisites for a successful software clearing are fulfilled
   Searching for projects
   Project name: TR-Card, 1.0
   Clearing state: CLOSED
@@ -695,7 +695,7 @@ Creating items...
   JSONStream, 1.3.5
     Component JSONStream exists.
     Release has been created, id = 797a6d197e97091e22700c34e4032831
-An error occured during component/release creation!
+An error occurred during component/release creation!
 Exit code = 1
 ```
 

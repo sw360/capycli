@@ -5,8 +5,8 @@
 
 # Dependency Detection
 
-This is a collection of information about determing the dependencies of a projects,
-or determing the SBOM, the bill of material for a project.
+This is a collection of information about determining the dependencies of a projects,
+or determining the SBOM, the bill of material for a project.
 
 ## Nuget/C#/.Net
 
@@ -30,7 +30,7 @@ Examples:
 * License (`license` or `licenseUrl` (deprecated), optional)
 * Copyright (`copyright`, optional)
 * Release Notes (`releaseNotes`, optional)
-* Titel = user  friendly name of the package (`title`, optional)
+* Title = user  friendly name of the package (`title`, optional)
 * Dependencies (optional)
 
 There is no reliable information about the source code. A heuristic would be to look
@@ -46,7 +46,7 @@ There is no support to download the source code.
 
 ### CycloneDX
 
-CycloneDX (https://github.com/CycloneDX/cyclonedx-dotnet) searches recursivly all Visual Studio
+CycloneDX (https://github.com/CycloneDX/cyclonedx-dotnet) searches recursively all Visual Studio
 solution or project files for package references. The meta data of the packages is retrieved from
 the nuspec file on the NuGet packages. The NuGet packages are found in the global NuGet cache
 folder.
@@ -59,7 +59,7 @@ a list of packages that should get ignored.
 
 (some magic)
 
-CC Automation uses the NuGet API to retrive meta data about the packages.
+CC Automation uses the NuGet API to retrieve meta data about the packages.
 This meta information also can contain repository meta data like the
 repository URL and the commit id. Only if this information is available,
 the source code URL can then be created like this:
@@ -190,7 +190,7 @@ If the URL exists, then the following properties may get extracted:
 
 ## Other Languages / Software Eco Systems
 
-People are wokring on support for Debian packages and Ruby, but it may still take some time...
+People are working on support for Debian packages and Ruby, but it may still take some time...
 
 ---
 
@@ -211,7 +211,7 @@ If the URL exists, then we are fine; otherwise a human have to look up the sourc
 
 ## FAQ
 
-* **Q:** Why does CaPyCLI provided ony limited support for dependency detection?  
+* **Q:** Why does CaPyCLI provided only limited support for dependency detection?  
   **A:** At beginning most people where happy with a very simple automation that
   just created components and releases on SW360. All other meta has been entered manually.
   At the end all is inner source - if you need something, fell free to implement it ;-)

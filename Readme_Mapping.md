@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
@@ -17,9 +17,9 @@ The current approach is checking the following properties in this order:
 5. check for name and **any** version
 6. look for similar names
 
-CaPyCLI creates as result of the SOM mapping an extended SBOM file. This SBOM file
+CaPyCLI creates as result of the SBOM mapping an extended SBOM file. This SBOM file
 contains the original entries and **all** matching entries. The `Result` value
-informs about the mappping result:
+informs about the mapping result:
 
 * **`INVALID` (0)** => Invalid SBOM entry, could not get processed
 * **`FULL_MATCH_BY_ID` (1)** => Full match by identifier
@@ -246,7 +246,7 @@ that have been found on SW360.
   * sw360id = 95a05a6fff469a1aebe03c0233002fb0
 
 => The output SBOM of `bom map` contains exactly **six** entries.  
-   These are the component that could not get matched and potential candiates.  
+   These are the component that could not get matched and potential candidates.  
    **Manual intervention is needed: the user needs to decide whether to use one of the existing  
    releases of Tethys.Logging or to force CaPyCLI to create release 1.4.3 which does not
    yet exist.**  

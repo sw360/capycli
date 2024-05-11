@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -697,7 +697,7 @@ class TestCreateProject(TestBase):
         out = self.capture_stdout(sut.run, args)
         self.assertTrue(self.INPUTFILE in out)
 
-    # test invalid entry in project_config ("inner source" instaed of INNER_SOURCE)
+    # test invalid entry in project_config ("inner source" instead of INNER_SOURCE)
 
     # test unknown/invalid release id
 

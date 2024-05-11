@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -105,7 +105,7 @@ class ConsoleHandler(logging.Handler):
 
 class ColorFormatter(logging.Formatter):
     """
-    A logging formatter for color cosole output.
+    A logging formatter for color console output.
     Critical messages and errors are displayed in red.
     Warnings are displayed in yellow.
     Infos are displayed in white.
