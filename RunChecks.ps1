@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: MIT
 # ------------------------------------------------
 
+# 2024-05-11, T. Graf
+
 Write-Host "flake8 ..."
 poetry run flake8
 
@@ -17,6 +19,9 @@ poetry run isort .
 
 Write-Host "mypy ..."
 poetry run mypy .
+
+Write-Host "codespell ..."
+poetry run codespell .
 
 Write-Host "Done."
 

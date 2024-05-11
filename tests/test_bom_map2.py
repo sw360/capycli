@@ -503,7 +503,7 @@ class CapycliTestBomMap(CapycliTestBase):
                             "type": "component",
                             "name": "colorama",
                             "componentType": "OSS",
-                            "visbility": "EVERYONE",
+                            "visibility": "EVERYONE",
                             "externalIds": {
                                 "package-url": "pkg:pypi/colorama"
                             },
@@ -721,7 +721,7 @@ class CapycliTestBomMap(CapycliTestBase):
                             "type": "component",
                             "name": "colorama",
                             "componentType": "OSS",
-                            "visbility": "EVERYONE",
+                            "visibility": "EVERYONE",
                             "externalIds": {
                                 "package-url": "pkg:pypi/colorama"
                             },
@@ -1071,7 +1071,7 @@ class CapycliTestBomMap(CapycliTestBase):
                             "type": "component",
                             "name": "colorama",
                             "componentType": "OSS",
-                            "visbility": "EVERYONE",
+                            "visibility": "EVERYONE",
                             "externalIds": {
                                 "package-url": "pkg:pypi/colorama"
                             },
@@ -1101,7 +1101,7 @@ class CapycliTestBomMap(CapycliTestBase):
             {
                 "name": "colorama",
                 "componentType": "OSS",
-                "visbility": "EVERYONE",
+                "visibility": "EVERYONE",
                 "externalIds": {
                     "package-url": "pkg:pypi/colorama"
                 },

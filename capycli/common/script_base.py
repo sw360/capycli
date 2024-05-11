@@ -97,7 +97,7 @@ class ScriptBase:
             print_yellow("  Unable to analyze token:" + repr(ex))
 
     def get_error_message(self, swex: SW360Error) -> str:
-        """Display a usefull error message for a SW360Error exception"""
+        """Display a useful error message for a SW360Error exception"""
         if swex.response is None:
             return repr(swex)
         elif swex.response.status_code == requests.codes["forbidden"]:

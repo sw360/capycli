@@ -287,7 +287,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 print_red("Neither project name nor id specified!")
                 sys.exit(ResultCode.RESULT_COMMAND_ERROR)
             if not args.version:
-                print_red("Neiter project version nor id specified!")
+                print_red("Neither project version nor id specified!")
                 sys.exit(ResultCode.RESULT_COMMAND_ERROR)
             if not args.source:
                 print_red("No project information file specified!")

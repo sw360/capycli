@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2023 Siemens
+# Copyright (c) 2021-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -37,7 +37,7 @@ class DiffType(str, Enum):
     # New component.
     NEW = "NEW"
 
-    # Obolete component.
+    # Obsolete component.
     OBSOLETE = "OBSOLETE"
 
     # A minor update, i.e. x.y.z => x.y.z+1 or x.y.z => x.y+1.zz

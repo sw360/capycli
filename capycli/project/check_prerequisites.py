@@ -24,7 +24,7 @@ LOG = get_logger(__name__)
 
 
 class CheckPrerequisites(capycli.common.script_base.ScriptBase):
-    """Checks whether all prerequisites for a successfull software clearing are fulfilled."""
+    """Checks whether all prerequisites for a successful software clearing are fulfilled."""
 
     def get_clearing_state(self, project: Dict[str, Any], href: str) -> str:
         """Returns the clearing state of the given component/release"""
@@ -271,13 +271,13 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         print_text(
             "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
-            " - Checks whether all prerequisites for a successfull software " +
+            " - Checks whether all prerequisites for a successful software " +
             "clearing are fulfilled\n")
 
         if args.help:
             print("Usage: CaPyCli project prerequisites [-i INPUTFILE] -id ID [-name NAME] [-v VERSION] [-url URL]")
             print("")
-            print("Checks whether all prerequisites for a successfull software clearing are fulfilled")
+            print("Checks whether all prerequisites for a successful software clearing are fulfilled")
             print("")
             print("Options:")
             print("    -h, --help              show this help message and exit")

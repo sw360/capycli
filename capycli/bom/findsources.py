@@ -94,7 +94,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         except Exception as ex:
             print(
                 Fore.LIGHTYELLOW_EX +
-                "      Error acccessing GitHub: " + repr(ex) +
+                "      Error accessing GitHub: " + repr(ex) +
                 Style.RESET_ALL)
 
             return {}

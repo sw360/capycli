@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
@@ -178,7 +178,7 @@ to a licensing infringement!**
 
 Example: checker-qual-2.8.1
 
-This is an example to show why source code from maven is not really useable for Siemens license scanning.
+This is an example to show why source code from maven is not really usable for Siemens license scanning.
 
 * The source file checker-qual-2.8.1-sources.jar is from maven
   (https://mvnrepository.com/artifact/org.checkerframework/checker-qual/2.8.1).

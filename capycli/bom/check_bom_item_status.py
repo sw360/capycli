@@ -147,7 +147,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
                     if not rel:
                         print_red("Error accessing release " + href)
                         continue
-                    cs = rel.get("clearingState", "(unkown clearing state)")
+                    cs = rel.get("clearingState", "(unknown clearing state)")
                     if cs == "APPROVED":
                         print(Fore.LIGHTGREEN_EX, end="", flush=True)
                     print(

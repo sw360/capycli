@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -54,7 +54,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         :param input_file: the requirements file.
         :type input_file: string
         :return a list of the local Python packages
-        :rtype list of package item dictionaries, as retuned by pip
+        :rtype list of package item dictionaries, as returned by pip
         """
         rawdata = open(input_file, 'rb').read()
         result = chardet.detect(rawdata)
@@ -69,7 +69,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         :param requirements_file: the requirements file.
         :type requirements_file: string.
         :return a list of the local Python packages.
-        :rtype list of package item dictionaries, as retuned by pip.
+        :rtype list of package item dictionaries, as returned by pip.
         """
         package_list: List[Dict[str, str]] = []
         for req in requirements.parse(requirements_file):
@@ -236,7 +236,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         Convert package list to SBOM.
 
         :param package_list: list of packages to convert
-        :type package_list: list of package item dictionaries, as retuned by pip.
+        :type package_list: list of package item dictionaries, as returned by pip.
         :return the bill or material
         :rtype list of bom item dictionaries
         """
@@ -268,7 +268,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         Print the package list.
 
         :param package_list: list of packages to convert
-        :type package_list: list of package item dictionaries, as retuned by pip.
+        :type package_list: list of package item dictionaries, as returned by pip.
         """
 
         print_text("\nPackages:")

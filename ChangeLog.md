@@ -68,7 +68,7 @@
 ## 2.0.0.dev (2023-05-19)
 
 * breaking changes
-  * new command `bom convert` to import and export SBOM in mutiple formats.
+  * new command `bom convert` to import and export SBOM in multiple formats.
     This new command replaces `bom fromCSV`, `bom FromFlatFist`, `bom FromSbom`,
     `bom ToHtml` and `bom ToSbom`.
   * `bom sort` is discontinued, CycloneDX SBOMs are always sorted by component name.
@@ -209,7 +209,7 @@ endpoint to get all releases with one call it now takes only 1.3 minutes.
 ## 1.5.0 (2021-12-20)
 
 * New parameter `-package-source` to specify a custom package manager.
-  The parameter is very helpfull if your are in an environment where you cannot access
+  The parameter is very helpful if your are in an environment where you cannot access
   the internet, for example when running CI/CD on code.siemens.com.
   Package metadata can get retrieved for example from BT-Artifactory:
   * NPM: https://devops.bt.siemens.com/artifactory/api/npm/npm-all/
@@ -223,7 +223,7 @@ endpoint to get all releases with one call it now takes only 1.3 minutes.
 * `getdependencies javascript` has an improved method to determine source files.
 * `getdependencies MavenList` has improved parsing of Maven output.
 * `project create` can now use all data in projectinfo.json that conforms with the REST API
-  specification. It is now for example also possible to add attachemnt during project creation.
+  specification. It is now for example also possible to add attachment during project creation.
 * New option ```-cx``` to support the CycloneDX SBOM format for the commands
   * `bom diff`
 * Unit tests for `bom diff` added.
@@ -267,7 +267,7 @@ endpoint to get all releases with one call it now takes only 1.3 minutes.
 
 ## 1.3 (2021-11-15)
 
-* `bom create` with `--dbx` option will re-use existing SW360 releases with
+* `bom create` with `--dbx` option will reuse existing SW360 releases with
   "similar" Debian versions. It will ignore epoch prefix ("2:") and ".debian"
   suffix, so BOM entry "2:5.2.1-1.debian" will match SW360 release "5.2.1-1".
 * `bom create` only downloads missing sources if ```--download``` is specified
@@ -351,7 +351,7 @@ endpoint to get all releases with one call it now takes only 1.3 minutes.
 * all errors result in exit code = 1.
 * new option `-source` for command `bom createcomponents` to specify
   a folder where to find/store source code files.
-* `bom createcomponents`: source code files will onl get downloaded if they
+* `bom createcomponents`: source code files will only get downloaded if they
   do not yet exist locally.
 * fix: correct handling of components without releases.
 

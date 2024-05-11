@@ -87,7 +87,7 @@ Commands and Sub-Commands
 
     project
         Find              find a project by name
-        Prerequisites     checks whether all prerequisites for a successfull
+        Prerequisites     checks whether all prerequisites for a successful
                           software clearing are fulfilled
         Show              show project details
         Licenses          show licenses of all cleared compponents
@@ -232,7 +232,7 @@ on SW360. It is a simple JSON format. CaPyCli reads or writes exactly the
 information that is needed.
 Conversion support from or to our SBOM format is available.
 For converting CycloneDX (XML) to JSON or for converting SPDX SBOMs, we like
-to refer you to the oepn source tools from [CycloneDX](https://cyclonedx.org/).
+to refer you to the open source tools from [CycloneDX](https://cyclonedx.org/).
 
 ## Mapping a SBOM to SW360
 

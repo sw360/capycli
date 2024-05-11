@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -84,7 +84,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         return partsBomItem
 
     def similar_name_match(self, component: Component, release: Dict[str, Any]) -> bool:
-        """Determine whether there is a relase with a similar name. Similar means
+        """Determine whether there is a release with a similar name. Similar means
         a combination of name words..."""
         SIMILARITY_THRESHOLD = 2
         separators = {"-", "@", "_"}
@@ -893,7 +893,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             capycli.common.file_support.create_backup(ComponentCacheManagement.CACHE_ALL_RELEASES)
 
             if args.refresh_cache:
-                print_text("  Running forced component cache refesh...")
+                print_text("  Running forced component cache refresh...")
                 self.releases = self.refresh_component_cache(
                     cachefile, True, args.sw360_token, oauth2=args.oauth2, sw360_url=args.sw360_url)
 

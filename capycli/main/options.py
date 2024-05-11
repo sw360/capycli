@@ -60,7 +60,7 @@ class CommandlineSupport():
 
     project
         Find              find a project by name
-        Prerequisites     checks whether all prerequisites for a successfull
+        Prerequisites     checks whether all prerequisites for a successful
                           software clearing are fulfilled
         Show              show project details
         Licenses          show licenses of all cleared compponents

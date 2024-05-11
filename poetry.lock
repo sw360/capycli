@@ -200,6 +200,24 @@ files = [
 ]
 
 [[package]]
+name = "codespell"
+version = "2.2.6"
+description = "Codespell"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "codespell-2.2.6-py3-none-any.whl", hash = "sha256:9ee9a3e5df0990604013ac2a9f22fa8e57669c827124a2e961fe8a1da4cacc07"},
+    {file = "codespell-2.2.6.tar.gz", hash = "sha256:a8c65d8eb3faa03deabab6b3bbe798bea72e1799c7e9e955d57eca4096abcff9"},
+]
+
+[package.extras]
+dev = ["Pygments", "build", "chardet", "pre-commit", "pytest", "pytest-cov", "pytest-dependency", "ruff", "tomli", "twine"]
+hard-encoding-detection = ["chardet"]
+toml = ["tomli"]
+types = ["chardet (>=5.1.0)", "mypy", "pytest", "pytest-cov", "pytest-dependency"]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -1511,4 +1529,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8" # drop support for 3.6 and 3.7 because of wheel and cli-support
-content-hash = "5ee759dd92739758a63d3bddebd21d1fb4a3d2776149be576d19eeab661da125"
+content-hash = "832e34fd58e0484812a2d581a24a8b92a7b6855970935525ef9f77c461e39d3e"

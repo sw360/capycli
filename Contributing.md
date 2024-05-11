@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2023 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
@@ -92,7 +92,7 @@ can then be uploaded or installed locally using ```pip```.
 
 To display console output for ordinary usage of a command line script or program
 use `print()` or our own variants `print_red()` for errors, `print_yellow()` for
-warnings and `print_green()` for (highlighted) positive mesages.
+warnings and `print_green()` for (highlighted) positive messages.
 
 Events that occur during normal operation of a program (e.g. for status monitoring
 or fault investigation) can use `logging.info()`. Problems in nested classes shall

@@ -366,7 +366,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             filename = str(CycloneDxSupport.get_ext_ref_binary_file(cx_comp))
             filehash = str(CycloneDxSupport.get_binary_file_hash(cx_comp))
 
-        # Note that we retreive the SHA1 has from the CycloneDX data.
+        # Note that we retrieve the SHA1 has from the CycloneDX data.
         # But there is no guarantee that this *IS* really a SHA1 hash!
 
         if (filename is None or filename == "") and url:
@@ -638,7 +638,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             CycloneDxSupport.remove_property(cx_comp, CycloneDxSupport.CDX_PROP_MAPRESULT)
 
         if not ok:
-            print_red("An error occured during component/release creation!")
+            print_red("An error occurred during component/release creation!")
             sys.exit(ResultCode.RESULT_ERROR_CREATING_ITEM)
 
     def run(self, args: Any) -> None:
