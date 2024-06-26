@@ -2491,8 +2491,8 @@ class CapycliTestBomMap(CapycliTestBase):
         match["Language"] = "C#"
         match["ComponentId"] = "123"
         match["SourceUrl"] = "http://123"
-        match["SourceFile"] = "123.zip"
-        match["BinaryFile"] = "123.dll"
+        match["SourceFile"] = "123%1.zip"
+        match["BinaryFile"] = "123%.dll"
         match["ProjectSite"] = "http://somewhere"
         match["Sw360Id"] = "007"
         match["ComponentId"] = "0815"
@@ -2501,8 +2501,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("2", updated.version)
         self.assertEqual("C#", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
         self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
-        self.assertEqual("123.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
-        self.assertEqual("123.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("123%251.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
+        self.assertEqual("123%25.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
         self.assertEqual("http://somewhere", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("007", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
 
@@ -2548,8 +2548,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("2", updated.version)
         self.assertEqual("C#", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
         self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
-        self.assertEqual("123.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
-        self.assertEqual("123.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("123%251.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
+        self.assertEqual("123%25.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
         self.assertEqual("http://somewhere", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("007", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
         self.assertEqual("0815", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_COMPONENT_ID))

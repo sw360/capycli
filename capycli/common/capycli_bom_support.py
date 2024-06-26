@@ -10,7 +10,6 @@ import json
 import os
 import pathlib
 import uuid
-import re
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, Iterable, List, Optional, Union
@@ -356,14 +355,9 @@ class CycloneDxSupport():
     @staticmethod
     def set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str,
                     hash_algo: str = "", hash: str = "") -> None:
-
-        if re.search(XsUri._INVALID_URI_REGEX, str(value)):
-          cleaned_uri = re.sub(XsUri._INVALID_URI_REGEX, ':', str(value))
-        else:
-            cleaned_uri = str(value)
         ext_ref = ExternalReference(
             reference_type=type,
-            url=XsUri(cleaned_uri),
+            url=XsUri(value),
             comment=comment)
 
         if hash_algo and hash:

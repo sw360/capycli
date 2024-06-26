@@ -12,6 +12,7 @@ import os
 import pathlib
 import re
 import sys
+import urllib
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -682,6 +683,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         value_match = match.get("SourceFile", "")
         if value_match:
+            value_match = urllib.parse.quote(value_match)
             ext_ref_src_file = CycloneDxSupport.get_ext_ref(
                 component,
                 ExternalReferenceType.DISTRIBUTION,
@@ -697,6 +699,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         value_match = match.get("BinaryFile", "")
         if value_match:
+            value_match = urllib.parse.quote(value_match)
             ext_ref_bin_file = CycloneDxSupport.get_ext_ref(
                 component,
                 ExternalReferenceType.DISTRIBUTION,
