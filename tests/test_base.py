@@ -64,6 +64,7 @@ class AppArguments():
         self.local_granularity_list: str = ""
         self.github_token: str = ""
         self.force_error: bool = False
+        self.project_mainline_state = ""
 
 
 class TestBasePytest:

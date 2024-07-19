@@ -187,7 +187,7 @@ class TestFindSources(TestBase):
         self.assertTrue("Using anonymous GitHub access" in out)
         self.assertTrue("8 components read from SBOM" in out)
         self.assertTrue("1 source files were already available" in out)
-        self.assertTrue("6 source file URLs were found" in out)
+        self.assertTrue("5 source file URLs were found" in out)
 
         sbom = CaPyCliBom.read_sbom(args.outputfile)
         self.assertIsNotNone(sbom)
@@ -195,7 +195,8 @@ class TestFindSources(TestBase):
         self.assertEqual("colorama", sbom.components[0].name)
         self.assertEqual("0.4.6", sbom.components[0].version)
         self.assertEqual(
-            "https://github.com/tartley/colorama/archive/refs/tags/0.4.6.zip",
+            # "https://github.com/tartley/colorama/archive/refs/tags/0.4.6.zip",
+            "https://pypi.org/project/colorama/#files",
             str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])))
 
         self.assertEqual("into-stream", sbom.components[1].name)

@@ -302,7 +302,7 @@ class CommandlineSupport():
         self.parser.add_argument(
             "-old-version",
             dest="old_version",
-            help="previous version "
+            help="previous version"
         )
 
         self.parser.add_argument(
@@ -398,6 +398,13 @@ class CommandlineSupport():
             dest="force_error",
             action="store_true",
             help="force an error exit code in case of visual errors",
+        )
+
+        self.parser.add_argument(
+            "-pms",
+            "--project-mainline-state",
+            dest="project_mainline_state",
+            help="project mainline state for releases in a newly created project",
         )
 
     def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:

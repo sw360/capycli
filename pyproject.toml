@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "capycli"
-version = "2.4.0"
+version = "2.5.0"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 authors = ["Thomas Graf <thomas.graf@siemens.com>"]
 license = "MIT"
@@ -108,5 +108,5 @@ warn_unused_ignores         = true
 no_implicit_reexport        = true
 
 [tool.codespell]
-skip = "./htmlcov/*,./_internal_tests_/*,./__internal__/*,./tests/fixtures/*,*.svg,./capycli/data/granularity_list.csv"
+skip = "./htmlcov/*,./_internal_tests_/*,./__internal__/*,./tests/fixtures/*,*.svg,./capycli/data/granularity_list.csv,./ComponentCache.*"
 ignore-words-list = "manuel"

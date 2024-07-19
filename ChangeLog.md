@@ -5,10 +5,14 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.5.0 (2024-07-19)
 
 * Fixed an error when creating an SBOM from a project on SW360 when this project
-  contains a component with more than on package-url.
+  contains a component with more than one package-url.
+* Fixed an issues when getting invalid package-urls.
+* New flag `-pms` or `--project-mainline-state` to specify which project mainline state
+  should be used for releases of a new project created by `project create`.
+* Dependency updates.
 
 ## 2.4.0 (2024-04-22)
 

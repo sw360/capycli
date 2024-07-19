@@ -31,6 +31,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
     def __init__(self, onlyUpdateProject: bool = False) -> None:
         self.onlyUpdateProject = onlyUpdateProject
+        self.project_mainline_state: str = ""
 
     def bom_to_release_list(self, sbom: Bom) -> List[str]:
         """Creates a list with linked releases"""
@@ -144,6 +145,11 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         """Creates a list with linked releases for a NEW project"""
         linkedReleases: Dict[str, Any] = {}
 
+        target_state = "SPECIFIC"
+        if self.project_mainline_state:
+            target_state = self.project_mainline_state
+
+        print_text(f"  New project releases will have state {target_state}")
         for cx_comp in sbom.components:
             rid = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
             if not rid:
@@ -153,7 +159,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 continue
 
             linkedRelease: Dict[str, Any] = {}
-            linkedRelease["mainlineState"] = "SPECIFIC"
+            linkedRelease["mainlineState"] = target_state
             linkedRelease["releaseRelation"] = "DYNAMICALLY_LINKED"
             linkedRelease["setMainlineState"] = True
             linkedRelease["setReleaseRelation"] = True
@@ -267,15 +273,16 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print("usage: CaPyCli project create -i bom.json -o bom_created.json [-source <folder>]")
             print("")
             print("optional arguments:")
-            print("    -i INPUTFILE,            bom file to read from  (JSON)")
-            print("    -t SW360_TOKEN,          use this token for access to SW360")
-            print("    -oa, --oauth2            this is an oauth2 token")
-            print("    -url SW360_URL           use this URL for access to SW360")
-            print("    -name NAME, --name NAME  name of the project")
-            print("    -version VERSION,        version of the project")
-            print("    -id PROJECT_ID           SW360 id of the project, supersedes name and version parameters")
-            print("    -old-version             ")
-            print("    -source projectinfo.json additional information about the project to be created")
+            print("    -i INPUTFILE,             bom file to read from  (JSON)")
+            print("    -t SW360_TOKEN,           use this token for access to SW360")
+            print("    -oa, --oauth2             this is an oauth2 token")
+            print("    -url SW360_URL            use this URL for access to SW360")
+            print("    -name NAME, --name NAME   name of the project")
+            print("    -version VERSION,         version of the project")
+            print("    -id PROJECT_ID            SW360 id of the project, supersedes name and version parameters")
+            print("    -old-version              previous version")
+            print("    -source projectinfo.json  additional information about the project to be created")
+            print("    -pms                      project mainline state for releases in a newly created project")
             return
 
         if not args.inputfile:
@@ -345,6 +352,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         if info and '_embedded' in info and 'sw360:attachments' in info['_embedded']:
             attachments = info['_embedded']['sw360:attachments']
             info.pop('_embedded')
+
+        self.project_mainline_state = args.project_mainline_state
 
         if self.project_id:
             print("Updating project...")
