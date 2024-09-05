@@ -200,6 +200,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
         Find metadata for a single component.
         """
         version = ""
+        ext_ref = ""
         if bomitem.version:
             version = bomitem.version
         info = self.find_package_info(
