@@ -489,7 +489,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             source_url = None
 
             # skip source URL check for debian components as github url s are invalid for Debian.
-            if component.bom_ref.value.startswith("pkg:deb/debian/"):
+            if str(component.purl).startswith("pkg:deb/debian/") or str(component.bom_ref).startswith("pkg:deb/debian"):
                 print_red("No source code check for debian components!")
                 continue
 
