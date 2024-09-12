@@ -157,7 +157,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
             CycloneDxSupport.update_or_set_ext_ref(
                 component_new,
                 ExternalReferenceType.VCS,
-                None,
+                "",
                 source_url_bak
             )
 
