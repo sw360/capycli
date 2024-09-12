@@ -109,4 +109,4 @@ no_implicit_reexport        = true
 
 [tool.codespell]
 skip = "./htmlcov/*,./_internal_tests_/*,./__internal__/*,./tests/fixtures/*,*.svg,./capycli/data/granularity_list.csv,./ComponentCache.*"
-ignore-words-list = "manuel"
+ignore-words-list = "manuel, assertIn"

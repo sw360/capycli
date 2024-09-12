@@ -187,7 +187,7 @@ class TestFindSources(TestBase):
         self.assertTrue("Using anonymous GitHub access" in out)
         self.assertTrue("8 components read from SBOM" in out)
         self.assertTrue("1 source files were already available" in out)
-        # seems to be a prolem at 2024-07-19...
+        # seems to be a problem at 2024-07-19...
         # self.assertTrue("5 source file URLs were found" in out)
 
         sbom = CaPyCliBom.read_sbom(args.outputfile)
@@ -195,7 +195,7 @@ class TestFindSources(TestBase):
         self.assertEqual(8, len(sbom.components))
         self.assertEqual("colorama", sbom.components[0].name)
         self.assertEqual("0.4.6", sbom.components[0].version)
-        # seems to be a prolem at 2024-07-19...
+        # seems to be a problem at 2024-07-19...
         # self.assertEqual(
         # older python versions "https://github.com/tartley/colorama/archive/refs/tags/0.4.6.zip",
         # newer python versions "https://pypi.org/project/colorama/#files",
