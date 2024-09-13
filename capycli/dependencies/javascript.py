@@ -251,8 +251,8 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 CaPyCliBom.BINARY_FILE_COMMENT)
             if ext_ref2:
                 hash = info.get("dist", "").get("integrity", "")
-                if ext_ref and hash:
-                    ext_ref.hashes.add(HashType(
+                if hash:
+                    ext_ref2.hashes.add(HashType(
                         algorithm=HashAlgorithm.SHA_1,
                         hash_value=hash))
 
