@@ -5,6 +5,12 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* fix: urls coming from granularity file are repository urls and not source code
+  download urls.
+* fix wrong variable to correct `bom findsources`.
+
 ## 2.5.0 (2024-07-19)
 
 * Fixed an error when creating an SBOM from a project on SW360 when this project
