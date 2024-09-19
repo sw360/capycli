@@ -59,3 +59,7 @@ jobs:
         # ignore_files: examples/ignore/*
         # ignore_path: examples/.markdownlintignore
         # rules: examples/rules/custom.js
+
+    - name: Run mypy
+      run: |
+        poetry run mypy .
