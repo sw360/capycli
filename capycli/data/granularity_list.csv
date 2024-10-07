@@ -98,6 +98,7 @@ tomcat-websocket;Apache Tomcat;;
 @babel/helper-simple-access;babel;;https://github.com/babel/babel
 @babel/helper-skip-transparent-expression-wrappers;babel;;https://github.com/babel/babel
 @babel/helper-split-export-declaration;babel;;https://github.com/babel/babel
+@babel/helper-string-parser;babel;;https://github.com/babel/babel
 @babel/helper-transform-fixture-test-runner;babel;;https://github.com/babel/babel
 @babel/helper-validator-identifier;babel;;https://github.com/babel/babel
 @babel/helper-validator-option;babel;;https://github.com/babel/babel
@@ -135,6 +136,9 @@ tomcat-websocket;Apache Tomcat;;
 @babel/plugin-proposal-unicode-property-regex;babel;;https://github.com/babel/babel
 @babel/plugin-proposal-unicode-sets-regex;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-async-do-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-async-generators;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-bigint;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-class-properties;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-decimal;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-decorators;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-destructuring-private;babel;;https://github.com/babel/babel
@@ -144,12 +148,20 @@ tomcat-websocket;Apache Tomcat;;
 @babel/plugin-syntax-function-bind;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-function-sent;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-import-assertions;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-import-meta;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-json-strings;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-jsx;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-logical-assignment-operators;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-module-blocks;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-nullish-coalescing-operator;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-object-rest-spread;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-optional-chaining;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-optional-catch-binding;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-partial-application;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-pipeline-operator;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-record-and-tuple;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-throw-expressions;babel;;https://github.com/babel/babel
+@babel/plugin-syntax-top-level-await;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-typescript;babel;;https://github.com/babel/babel
 @babel/plugin-syntax-unicode-sets-regex;babel;;https://github.com/babel/babel
 @babel/plugin-transform-arrow-functions;babel;;https://github.com/babel/babel
@@ -245,7 +257,6 @@ tomcat-websocket;Apache Tomcat;;
 @babel/plugin-proposal-private-property-in-object;babel;;https://github.com/babel/babel
 @babel/helper-create-regexp-features-plugin;babel;;https://github.com/babel/babel
 @babel/plugin-transform-named-capturing-groups-regex;babel;;https://github.com/babel/babel
-@babel/compat-data;babel;;https://github.com/babel/babel
 
 @angular/cdk;angular/components;;https://github.com/angular/components
 @angular/google-maps;angular/components;;https://github.com/angular/components
@@ -1620,10 +1631,10 @@ infinispan-server-hotrod;Infinispan;;https://github.com/infinispan/infinispan
 infinispan-tasks;Infinispan;;https://github.com/infinispan/infinispan
 infinispan-tasks-api;Infinispan;;https://github.com/infinispan/infinispan
 
-jansi-freebsd32;Jansi;;https://github.com/fusesource/jansi	
-jansi-freebsd64;Jansi;;https://github.com/fusesource/jansi	
-jansi-linux32;Jansi;;https://github.com/fusesource/jansi	
-jansi-linux64;Jansi;;https://github.com/fusesource/jansi	
+jansi-freebsd32;Jansi;;https://github.com/fusesource/jansi
+jansi-freebsd64;Jansi;;https://github.com/fusesource/jansi
+jansi-linux32;Jansi;;https://github.com/fusesource/jansi
+jansi-linux64;Jansi;;https://github.com/fusesource/jansi
 jansi-native;Jansi;;https://github.com/fusesource/jansi
 jansi-osx;Jansi;;https://github.com/fusesource/jansi
 jansi-windows32;Jansi;;https://github.com/fusesource/jansi
@@ -1646,40 +1657,40 @@ resteasy-client-api;Resteasy;;https://github.com/resteasy/resteasy
 resteasy-client-microprofile;Resteasy;;https://github.com/resteasy/resteasy
 resteasy-client-microprofile-base;Resteasy;;https://github.com/resteasy/resteasy
 
-smallrye-common-annotation;Smallrye Common;;https://github.com/smallrye/smallrye-common		
-smallrye-common-classloader;Smallrye Common;;https://github.com/smallrye/smallrye-common		
-smallrye-common-constraint;Smallrye Common;;https://github.com/smallrye/smallrye-common	
-smallrye-common-cpu;Smallrye Common;;https://github.com/smallrye/smallrye-common			
-smallrye-common-expression;Smallrye Common;;https://github.com/smallrye/smallrye-common		
-smallrye-common-function;Smallrye Common;;https://github.com/smallrye/smallrye-common		
-smallrye-common-io;Smallrye Common;;https://github.com/smallrye/smallrye-common		
+smallrye-common-annotation;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-classloader;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-constraint;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-cpu;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-expression;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-function;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-io;Smallrye Common;;https://github.com/smallrye/smallrye-common
 smallrye-common-net;Smallrye Common;;https://github.com/smallrye/smallrye-common
-smallrye-common-os;Smallrye Common;;https://github.com/smallrye/smallrye-common		
-smallrye-common-ref;Smallrye Common;;https://github.com/smallrye/smallrye-common	
-smallrye-common-version;Smallrye Common;;https://github.com/smallrye/smallrye-common					
-smallrye-common-vertx-context;Smallrye Common;;https://github.com/smallrye/smallrye-common	
-		
+smallrye-common-os;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-ref;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-version;Smallrye Common;;https://github.com/smallrye/smallrye-common
+smallrye-common-vertx-context;Smallrye Common;;https://github.com/smallrye/smallrye-common
+
 smallrye-config-common;Smallrye Config;;https://github.com/smallrye/smallrye-config
 smallrye-config-core;Smallrye Config;;https://github.com/smallrye/smallrye-config
 smallrye-config-source-yaml;Smallrye Config;;https://github.com/smallrye/smallrye-config
 
-smallrye-context-propagation;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
-smallrye-context-propagation-api;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
-smallrye-context-propagation-jta;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
-smallrye-context-propagation-storage;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation		
-	
-smallrye-health;Smallrye Health;;https://github.com/smallrye/smallrye-health		
-smallrye-health-api;Smallrye Health;;https://github.com/smallrye/smallrye-health		
-smallrye-health-provided-checks;Smallrye Health;;https://github.com/smallrye/smallrye-health		
-smallrye-health-ui;Smallrye Health;;https://github.com/smallrye/smallrye-health		
+smallrye-context-propagation;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation
+smallrye-context-propagation-api;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation
+smallrye-context-propagation-jta;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation
+smallrye-context-propagation-storage;Smallrye Context Propagation;;https://github.com/smallrye/smallrye-context-propagation
 
-smallrye-mutiny-vertx-auth-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
-smallrye-mutiny-vertx-bridge-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
-smallrye-mutiny-vertx-core;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
-smallrye-mutiny-vertx-runtime;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
-smallrye-mutiny-vertx-web;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
-smallrye-mutiny-vertx-web-client;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny		
-smallrye-mutiny-vertx-web-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny			
+smallrye-health;Smallrye Health;;https://github.com/smallrye/smallrye-health
+smallrye-health-api;Smallrye Health;;https://github.com/smallrye/smallrye-health
+smallrye-health-provided-checks;Smallrye Health;;https://github.com/smallrye/smallrye-health
+smallrye-health-ui;Smallrye Health;;https://github.com/smallrye/smallrye-health
+
+smallrye-mutiny-vertx-auth-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny
+smallrye-mutiny-vertx-bridge-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny
+smallrye-mutiny-vertx-core;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny
+smallrye-mutiny-vertx-runtime;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny
+smallrye-mutiny-vertx-web;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny
+smallrye-mutiny-vertx-web-client;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny
+smallrye-mutiny-vertx-web-common;Smallrye Mutiny Vertx;;https://github.com/smallrye/smallrye-mutiny
 
 smallrye-reactive-converter-api;Smallrye Reactive Converters;;https://github.com/smallrye/smallrye-reactive-converters
 smallrye-reactive-converter-mutiny;Smallrye Reactive Converters;;https://github.com/smallrye/smallrye-reactive-converters
@@ -3899,6 +3910,7 @@ netty-codec;Netty Project;;https://github.com/netty/netty
 @aws-sdk/client-workspaces;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
 @aws-sdk/client-xray;aws-sdk-js-v3;;https://github.com/aws/aws-sdk-js-v3
 
+amazon-cognito-identity-js;aws-amplify;;https://github.com/aws-amplify/amplify-js
 @aws-amplify/amazon-cognito-identity-js;aws-amplify;;https://github.com/aws-amplify/amplify-js
 @aws-amplify/analytics;aws-amplify;;https://github.com/aws-amplify/amplify-js
 @aws-amplify/api;aws-amplify;;https://github.com/aws-amplify/amplify-js
@@ -3919,3 +3931,52 @@ netty-codec;Netty Project;;https://github.com/netty/netty
 @aws-amplify/pushnotification;aws-amplify;;https://github.com/aws-amplify/amplify-js
 @aws-amplify/rtn-push-notification;aws-amplify;;https://github.com/aws-amplify/amplify-js
 @aws-amplify/storage;aws-amplify;;https://github.com/aws-amplify/amplify-js
+
+create-nx-plugin;nrwl/nx;;https://github.com/nrwl/nx
+create-nx-workspace;nrwl/nx;;https://github.com/nrwl/nx
+nx;nrwl/nx;;https://github.com/nrwl/nx
+@nx/angular;nrwl/nx;;https://github.com/nrwl/nx
+@nx/cypress;nrwl/nx;;https://github.com/nrwl/nx
+@nx/detox;nrwl/nx;;https://github.com/nrwl/nx
+@nx/devkit;nrwl/nx;;https://github.com/nrwl/nx
+@nx/esbuild;nrwl/nx;;https://github.com/nrwl/nx
+@nx/eslint-plugin;nrwl/nx;;https://github.com/nrwl/nx
+@nx/expo;nrwl/nx;;https://github.com/nrwl/nx
+@nx/express;nrwl/nx;;https://github.com/nrwl/nx
+@nx/jest;nrwl/nx;;https://github.com/nrwl/nx
+@nx/js;nrwl/nx;;https://github.com/nrwl/nx
+@nx/linter;nrwl/nx;;https://github.com/nrwl/nx
+@nx/nest;nrwl/nx;;https://github.com/nrwl/nx
+@nx/next;nrwl/nx;;https://github.com/nrwl/nx
+@nx/node;nrwl/nx;;https://github.com/nrwl/nx
+@nx/playwright;nrwl/nx;;https://github.com/nrwl/nx
+@nx/plugin;nrwl/nx;;https://github.com/nrwl/nx
+@nx/react;nrwl/nx;;https://github.com/nrwl/nx
+@nx/react-native;nrwl/nx;;https://github.com/nrwl/nx
+@nx/rollup;nrwl/nx;;https://github.com/nrwl/nx
+@nx/storybook;nrwl/nx;;https://github.com/nrwl/nx
+@nx/vite;nrwl/nx;;https://github.com/nrwl/nx
+@nx/web;nrwl/nx;;https://github.com/nrwl/nx
+@nx/webpack;nrwl/nx;;https://github.com/nrwl/nx
+@nx/workspace;nrwl/nx;;https://github.com/nrwl/nx
+
+@nrwl/angular;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/cli;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/cypress;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/detox;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/devkit;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/eslint-plugin-nx;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/express;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/jest;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/js;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/linter;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/nest;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/next;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/node;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/nx-plugin;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/react;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/react-native;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/storybook;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/tao;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/web;nrwl/nx;;https://github.com/nrwl/nx
+@nrwl/workspace;nrwl/nx;;https://github.com/nrwl/nx
