@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from packageurl import PackageURL
 
 import capycli.common.json_support
 import capycli.common.script_base
@@ -139,7 +140,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
         if "RepositoryType" in filterentry:
             rtype = filterentry.get("RepositoryType", "")
         if rtype and ("RepositoryId" in filterentry) and filterentry.get("RepositoryId", ""):
-            component.purl = filterentry.get("RepositoryId", "")
+            component.purl = PackageURL.from_string(filterentry.get("RepositoryId", ""))
 
         if ("Sw360Id" in filterentry) and filterentry.get("Sw360Id", ""):
             CycloneDxSupport.update_or_set_property(

@@ -178,7 +178,7 @@ class TestGetDependenciesJavascript(TestBase):
         self.assertEqual(1, len(enhanced.components))
         self.assertEqual("zone.js", enhanced.components[0].name)
         self.assertEqual("Zones for JavaScript", enhanced.components[0].description)
-        val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])
+        val = str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0]))
         self.assertEqual("", val)
 
         self.delete_file("test_package_lock_1.json")
@@ -202,7 +202,7 @@ class TestGetDependenciesJavascript(TestBase):
         self.assertEqual(1, len(enhanced.components))
         self.assertEqual("rxjs", enhanced.components[0].name)
         self.assertEqual("Reactive Extensions for modern JavaScript", enhanced.components[0].description)
-        val = CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])
+        val = str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0]))
         self.assertEqual("https://github.com/reactivex/rxjs/archive/refs/tags/7.8.0.zip", val)
 
         self.delete_file("test_package_lock_3.json")
