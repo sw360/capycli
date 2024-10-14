@@ -359,11 +359,9 @@ class TestBomFilter(TestBase):
         sut = capycli.bom.filter_bom.FilterBom()
 
         inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
-        outputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.OUTPUTFILE)
         filterfile = os.path.join(os.path.dirname(__file__), "fixtures", self.FILTERFILE)
 
         # clean any existing test files
-        self.delete_file(outputfile)
         self.delete_file(filterfile)
 
         self.assertTrue(os.path.exists(inputfile), "Filter input file not found!")
@@ -390,20 +388,9 @@ class TestBomFilter(TestBase):
 
         capycli.common.json_support.write_json_to_file(filter, filterfile)
 
-        # create argparse command line argument object
-        args = AppArguments()
-        args.command = []
-        args.command.append("bom")
-        args.command.append("filter")
-        args.inputfile = inputfile
-        args.outputfile = outputfile
-        args.filterfile = filterfile
-        args.verbose = True
+        bom = CaPyCliBom.read_sbom(inputfile)
+        bom = sut.filter_bom(bom, filterfile)
 
-        sut.run(args)
-        self.assertTrue(os.path.exists(outputfile), "Filter output file not created!")
-
-        bom = CaPyCliBom.read_sbom(outputfile)
         self.assertEqual(4, len(bom.components))
         self.assertEqual(component["Name"], bom.components[2].name)
         self.assertEqual(component["Version"], bom.components[2].version)
@@ -418,7 +405,6 @@ class TestBomFilter(TestBase):
             CycloneDxSupport.get_property_value(bom.components[2], CycloneDxSupport.CDX_PROP_SW360ID))
 
         # clean test files
-        self.delete_file(outputfile)
         self.delete_file(filterfile)
 
 
