@@ -14,6 +14,7 @@ import capycli.common.json_support
 import capycli.common.script_base
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
+from cyclonedx.model import XsUri
 from tests.test_base import AppArguments, TestBase
 
 
@@ -392,6 +393,9 @@ class TestBomFilter(TestBase):
         bom = sut.filter_bom(bom, filterfile)
 
         self.assertEqual(4, len(bom.components))
+        for comp in bom.components:
+            for ext_ref in comp.external_references:
+                self.assertIsInstance(ext_ref.url, XsUri)
         self.assertEqual(component["Name"], bom.components[2].name)
         self.assertEqual(component["Version"], bom.components[2].version)
         self.assertEqual(component["RepositoryId"], bom.components[2].purl.to_string())

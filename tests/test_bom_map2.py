@@ -10,7 +10,7 @@ import os
 from typing import Any, Dict
 
 import responses
-from cyclonedx.model import ExternalReferenceType
+from cyclonedx.model import ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -2500,6 +2500,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("b", updated.name)
         self.assertEqual("2", updated.version)
         self.assertEqual("C#", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
+        for ext_ref in updated.external_references:
+            self.assertIsInstance(ext_ref.url, XsUri)
         self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
         self.assertEqual("123%251.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
         self.assertEqual("123%25.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
@@ -2524,6 +2526,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("2", updated.version)
         self.assertEqual("Java", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
         self.assertEqual("http://456", str(CycloneDxSupport.get_ext_ref_source_url(comp)))
+        for ext_ref in updated.external_references:
+            self.assertIsInstance(ext_ref.url, XsUri)
         self.assertEqual("456.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
         self.assertEqual("456.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
         self.assertEqual("http://somewhereelse", str(CycloneDxSupport.get_ext_ref_website(updated)))
@@ -2547,6 +2551,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertEqual("b", updated.name)
         self.assertEqual("2", updated.version)
         self.assertEqual("C#", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_LANGUAGE))
+        for ext_ref in updated.external_references:
+            self.assertIsInstance(ext_ref.url, XsUri)
         self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
         self.assertEqual("123%251.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
         self.assertEqual("123%25.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))

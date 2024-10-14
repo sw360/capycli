@@ -376,7 +376,7 @@ class CycloneDxSupport():
                 break
 
         if ext_ref:
-            ext_ref.url = value
+            ext_ref.url = XsUri(value)
         else:
             CycloneDxSupport.set_ext_ref(comp, type, comment, value)
 
