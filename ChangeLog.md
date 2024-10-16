@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.5.1 (2024-10-16)
 
 * fix: urls coming from granularity file are repository urls and not source code
   download urls.
