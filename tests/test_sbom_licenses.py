@@ -315,7 +315,6 @@ class TestSbomLicenseVariants(TestBase):
         self.assertIsNone(lchoice.expression)
         if lchoice.license:  # only because of mypy
             self.assertEqual("Unknown", lchoice.license.name)
-            self.assertIsNone(lchoice.license.text)
             if lchoice.license.text:  # only because of mypy
                 self.assertIsNotNone(lchoice.license.text)
                 self.assertEqual("base64", lchoice.license.text.encoding)
@@ -393,7 +392,6 @@ class TestSbomLicenseVariants(TestBase):
             self.assertIsNotNone(lchoice.license.name)
             self.assertEqual("Apache Software License, 2.0", lchoice.license.name)
             self.assertIsNone(lchoice.license.id)
-            self.assertIsNone(lchoice.license.text)
             if lchoice.license.text:  # only because of mypy
                 self.assertEqual("This is some text - not CycloneDX spec >= 1.2 compliant",
                                  lchoice.license.text.content)
@@ -404,4 +402,8 @@ class TestSbomLicenseVariants(TestBase):
 if __name__ == "__main__":
     APP = TestSbomLicenseVariants()
     APP.setUp()
+    APP.test_license_expression()
+    APP.test_license_id()
+    APP.test_license_name()
+    APP.test_license_text()
     APP.test_license_text_not_valid_cyclonedx()
