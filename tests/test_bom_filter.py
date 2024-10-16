@@ -9,12 +9,13 @@
 import os
 from typing import Any, Dict, List
 
+from cyclonedx.model import XsUri
+
 import capycli.bom.filter_bom
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
-from cyclonedx.model import XsUri
 from tests.test_base import AppArguments, TestBase
 
 

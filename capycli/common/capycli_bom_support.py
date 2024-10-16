@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -160,7 +160,23 @@ class SbomJsonParser(BaseParser):
             return None
 
         text = param.get("text", None)
-        license_text = AttachedText(content=text) if text else None
+        if text:
+            if isinstance(text, dict):
+                content_type = text.get("contentType", "text/plain")
+                encoding = text.get("encoding", "base64")
+                content = text.get("content", "")
+                license_text = AttachedText(content_type=content_type,
+                                            encoding=encoding,
+                                            content=content)
+            else:
+                # This is some text - not CycloneDX spec >= 1.2 compliant
+                license_text = AttachedText(content=text)
+        else:
+            license_text = None
+
+        # NOTE: CycloneDX spec 1.4:
+        # "If SPDX does not define the license used, this field may be used to provide the license name"
+        # The CycloneDX python lib just ignores the name if id (=SPDX) has been specified!
         return License(
             spdx_license_id=param.get("id", None),
             license_name=param.get("name", None),
