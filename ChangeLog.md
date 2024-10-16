@@ -11,6 +11,7 @@
   download urls.
 * fix wrong variable to correct `bom findsources`.
 * fix loading of SBOMs that support different kinds of licenses.
+* run unit tests also for Python 3.12 and 3.13.
 
 ## 2.5.0 (2024-07-19)
 
