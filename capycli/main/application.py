@@ -15,13 +15,13 @@ from typing import Any, List, Optional
 import capycli
 from capycli.bom import handle_bom
 from capycli.common.print import print_red
+from capycli.config import handle_config
 from capycli.dependencies import handle_dependencies
 from capycli.main import options
 from capycli.main.result_codes import ResultCode
 from capycli.mapping import handle_mapping
 from capycli.moverview import handle_moverview
 from capycli.project import handle_project
-from capycli.config import handle_config
 
 LOG = capycli.get_logger(__name__)
 
