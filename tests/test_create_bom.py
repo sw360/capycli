@@ -13,7 +13,7 @@ import pytest
 import responses
 from cyclonedx.model import ExternalReferenceType
 
-from capycli.common.capycli_bom_support import CaPyCliBom
+from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_bom import CreateBom
 from tests.test_base import AppArguments, TestBasePytest
@@ -153,10 +153,10 @@ class TestCreateBom(TestBasePytest):
         cdx_components = sut.create_project_bom(self.get_project_for_test())
         captured = capsys.readouterr()
 
-        assert "Multiple purls added" in captured.out
-        assert cdx_components[0].purl is not None
-        if cdx_components[0].purl:
-            assert cdx_components[0].purl.to_string() == "pkg:deb/debian/cli-support%401.3-1%20pkg:pypi/cli-support@1.3"
+        assert "Stored them in property purl_list" in captured.out
+        assert cdx_components[0].purl is None
+        purl_raw = CycloneDxSupport.get_property(cdx_components[0], "purl_list").value
+        assert purl_raw == "pkg:deb/debian/cli-support@1.3-1 pkg:pypi/cli-support@1.3"
 
     @responses.activate
     def test_project_by_id(self) -> None:
