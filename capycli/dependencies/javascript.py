@@ -55,7 +55,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             url = dep.get("resolved", "")
             if url:
                 ext_ref = ExternalReference(
-                    reference_type=ExternalReferenceType.DISTRIBUTION,
+                    type=ExternalReferenceType.DISTRIBUTION,
                     comment=CaPyCliBom.BINARY_URL_COMMENT,
                     url=XsUri(url))
                 cxcomp.external_references.add(ext_ref)
@@ -63,7 +63,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             url = dep.get("resolved", "").split('/')[-1]
             if url:
                 ext_ref = ExternalReference(
-                    reference_type=ExternalReferenceType.DISTRIBUTION,
+                    type=ExternalReferenceType.DISTRIBUTION,
                     comment=CaPyCliBom.BINARY_FILE_COMMENT,
                     url=XsUri(url))
                 # the encoding of the hashes in package-lock.json is incompatible to
@@ -124,7 +124,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 url = dep.get("resolved", "")
                 if url:
                     ext_ref = ExternalReference(
-                        reference_type=ExternalReferenceType.DISTRIBUTION,
+                        type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.BINARY_URL_COMMENT,
                         url=XsUri(url))
                     cxcomp.external_references.add(ext_ref)
@@ -132,7 +132,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 url = dep.get("resolved", "").split('/')[-1]
                 if url:
                     ext_ref = ExternalReference(
-                        reference_type=ExternalReferenceType.DISTRIBUTION,
+                        type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.BINARY_FILE_COMMENT,
                         url=XsUri(url))
 
@@ -217,7 +217,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
         val = info.get("homepage", "")
         if val:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.WEBSITE,
+                type=ExternalReferenceType.WEBSITE,
                 url=XsUri(val))
             bomitem.external_references.add(ext_ref)
 
@@ -230,7 +230,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             url = url.replace('git+ssh://git@/', '')
             url = url.replace('ssh://git@', '')
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
                 url=XsUri(url))
             bomitem.external_references.add(ext_ref)
@@ -253,8 +253,8 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 hash = info.get("dist", "").get("integrity", "")
                 if hash:
                     ext_ref2.hashes.add(HashType(
-                        algorithm=HashAlgorithm.SHA_1,
-                        hash_value=hash))
+                        alg=HashAlgorithm.SHA_1,
+                        content=hash))
 
         return bomitem
 

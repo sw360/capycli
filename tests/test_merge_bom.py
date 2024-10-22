@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -182,10 +182,10 @@ class TestMergeBom(TestBase):
         bom = CaPyCliBom.read_sbom(outputfile)
 
         self.assertEqual(2, len(bom.metadata.tools))
-        self.assertEqual("Siemens AG", bom.metadata.tools[0].vendor)
-        self.assertEqual("CaPyCLI", bom.metadata.tools[0].name)
-        self.assertEqual("Siemens AG", bom.metadata.tools[1].vendor)
-        self.assertEqual("standard-bom", bom.metadata.tools[1].name)
+        self.assertEqual("Siemens AG", bom.metadata.tools.tools[0].vendor)
+        self.assertEqual("CaPyCLI", bom.metadata.tools.tools[0].name)
+        self.assertEqual("Siemens AG", bom.metadata.tools.tools[1].vendor)
+        self.assertEqual("standard-bom", bom.metadata.tools.tools[1].name)
 
         self.assertEqual(1, len(bom.metadata.licenses))
 
@@ -208,3 +208,8 @@ class TestMergeBom(TestBase):
         self.assertEqual(1, len(bom.components[1].properties))
 
         self.delete_file(outputfile)
+
+
+if __name__ == '__main__':
+    APP = TestMergeBom()
+    APP.test_merge_bom1()

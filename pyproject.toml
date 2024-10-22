@@ -38,17 +38,16 @@ python = "^3.8" # drop support for 3.6 and 3.7 because of wheel and cli-support
 colorama = "^0.4.3"
 requests = "^2.31.0" # fix CVE-2023-32681 
 semver = "3.0.2"
-packageurl-python = ">0.8, <1.0"
+packageurl-python = "^0.15.6"
 pyjwt = "^1.7.1"
 openpyxl = "^3.0.3"
-requirements-parser = "0.5.0"
+requirements-parser = "0.11.0"
 sw360 = "^1.5.0"
 wheel = "^0.38.4"
 cli-support = "2.0.1"
 chardet = "5.2.0"
-cyclonedx-python-lib = ">3.1.1"
-cyclonedx-bom = "^3.11.0"
-tomli = "^2.0.1"
+cyclonedx-python-lib = "^8.0.0"
+tomli = "^2.0.2"
 dateparser = "^1.1.8"
 urllib3 = "*"
 importlib-resources = "^5.12.0"
@@ -78,7 +77,10 @@ build-backend = "poetry.masonry.api"
 [tool.pytest.ini_options]
 filterwarnings = [
     # note the use of single quote below to denote "raw" strings in TOML
-    'ignore:pkg_resources is deprecated as an API:DeprecationWarning'
+    "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
+    "ignore:Both `id` and `name` have been supplied - `name` will be ignored!",
+    #"ignore:UserWarning: The Component this BOM is describing None",
+    "ignore:DeprecationWarning:"
 ]
 
 [tool.mypy]

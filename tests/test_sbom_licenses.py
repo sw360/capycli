@@ -6,11 +6,13 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from cyclonedx.model import LicenseChoice, XsUri
+import pytest
+
+from cyclonedx.model import XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from cyclonedx.factory.license import LicenseExpression
 
-from capycli.common.capycli_bom_support import SbomJsonParser
 from tests.test_base import TestBase
 
 
@@ -65,9 +67,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        parser = SbomJsonParser(SBOM)
-        bom = Bom.from_parser(parser=parser)
-
+        bom = Bom.from_json(SBOM)
         self.assertIsNotNone(bom)
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
@@ -77,10 +77,9 @@ class TestSbomLicenseVariants(TestBase):
         self.assertEqual("1.0.13", comp.version)
         self.assertEqual(1, len(comp.hashes))
         self.assertEqual(1, len(comp.licenses))
-        lchoice: LicenseChoice = comp.licenses[0]
-        self.assertIsNone(lchoice.license)
-        self.assertIsNotNone(lchoice.expression)
-        self.assertEqual("(MIT OR Apache-2.0) AND Unicode-DFS-2016", lchoice.expression)
+        lic_expr: LicenseExpression = comp.licenses[0]
+        self.assertIsNotNone(lic_expr)
+        self.assertEqual("(MIT OR Apache-2.0) AND Unicode-DFS-2016", lic_expr.value)
 
     def test_license_id(self) -> None:
         SBOM = {
@@ -136,13 +135,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        parser = SbomJsonParser(SBOM)
-        bom = Bom.from_parser(parser=parser)
-        bom.metadata.tools = parser.get_tools()
-        bom.metadata.licenses = parser.get_metadata_licenses()
-        bom.metadata.properties = parser.get_metadata_properties()
-
-        self.assertIsNotNone(bom)
+        bom = Bom.from_json(SBOM)
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
         self.assertEqual(1, len(bom.components))
@@ -151,20 +144,14 @@ class TestSbomLicenseVariants(TestBase):
         self.assertEqual("0.17.8", comp.version)
         self.assertEqual(1, len(comp.hashes))
         self.assertEqual(1, len(comp.licenses))
-        lchoice: LicenseChoice = comp.licenses[0]
-        self.assertIsNotNone(lchoice.license)
-        self.assertIsNone(lchoice.expression)
-        if lchoice.license:  # only because of mypy
-            self.assertIsNotNone(lchoice.license.id)
-            self.assertEqual("Apache-2.0", lchoice.license.id)
-            self.assertTrue(isinstance(lchoice.license.url, XsUri))
-            self.assertEqual("https://www.apache.org/licenses/LICENSE-2.0.txt", str(lchoice.license.url))
-            # NOTE: CycloneDX spec 1.4:
-            # "If SPDX does not define the license used, this field may be used to provide the license name"
-            # The CycloneDX python lib just ignores the name if id (=SPDX) has been specified!
-            # NOT: self.assertEqual("Apache Software License, 2.0", lchoice.license.name)
-            # BUT:
-            self.assertIsNone(lchoice.expression)
+        license = comp.licenses[0]
+        self.assertIsNotNone(license)
+        self.assertIsNotNone(license.id)
+        self.assertEqual("Apache-2.0", license.id)
+        self.assertTrue(isinstance(license.url, XsUri))
+        self.assertEqual("https://www.apache.org/licenses/LICENSE-2.0.txt", str(license.url))
+        self.assertIsNone(license.name)
+        self.assertIsNone(license.text)
 
     def test_license_name(self) -> None:
         SBOM = {
@@ -219,9 +206,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        parser = SbomJsonParser(SBOM)
-        bom = Bom.from_parser(parser=parser)
-
+        bom = Bom.from_json(SBOM)
         self.assertIsNotNone(bom)
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
@@ -231,16 +216,13 @@ class TestSbomLicenseVariants(TestBase):
         self.assertEqual("0.17.8", comp.version)
         self.assertEqual(1, len(comp.hashes))
         self.assertEqual(1, len(comp.licenses))
-        lchoice: LicenseChoice = comp.licenses[0]
-        self.assertIsNotNone(lchoice.license)
-        self.assertIsNone(lchoice.expression)
-        if lchoice.license:  # only because of mypy
-            self.assertIsNotNone(lchoice.license.name)
-            self.assertEqual("Apache Software License, 2.0", lchoice.license.name)
-            self.assertIsNone(lchoice.license.id)
-            self.assertTrue(isinstance(lchoice.license.url, XsUri))
-            self.assertEqual("https://www.apache.org/licenses/LICENSE-2.0.txt", str(lchoice.license.url))
-        self.assertIsNone(lchoice.expression)
+        license = comp.licenses[0]
+        self.assertIsNotNone(license)
+        self.assertIsNotNone(license.name)
+        self.assertEqual("Apache Software License, 2.0", license.name)
+        self.assertIsNone(license.id)
+        self.assertTrue(isinstance(license.url, XsUri))
+        self.assertEqual("https://www.apache.org/licenses/LICENSE-2.0.txt", str(license.url))
 
     def test_license_text(self) -> None:
         SBOM = {
@@ -298,9 +280,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        parser = SbomJsonParser(SBOM)
-        bom = Bom.from_parser(parser=parser)
-
+        bom = Bom.from_json(SBOM)
         self.assertIsNotNone(bom)
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
@@ -310,15 +290,12 @@ class TestSbomLicenseVariants(TestBase):
         self.assertEqual("0.17.8", comp.version)
         self.assertEqual(1, len(comp.hashes))
         self.assertEqual(1, len(comp.licenses))
-        lchoice: LicenseChoice = comp.licenses[0]
-        self.assertIsNotNone(lchoice.license)
-        self.assertIsNone(lchoice.expression)
-        if lchoice.license:  # only because of mypy
-            self.assertEqual("Unknown", lchoice.license.name)
-            if lchoice.license.text:  # only because of mypy
-                self.assertIsNotNone(lchoice.license.text)
-                self.assertEqual("base64", lchoice.license.text.encoding)
-                self.assertTrue(lchoice.license.text.content.startswith("Tm90ZSB0aGF0IGl"))
+        license = comp.licenses[0]
+        self.assertIsNotNone(license)
+        self.assertEqual("Unknown", license.name)
+        self.assertIsNotNone(license.text)
+        self.assertEqual("base64", license.text.encoding)
+        self.assertTrue(license.text.content.startswith("Tm90ZSB0aGF0IGl"))
 
     def test_license_text_not_valid_cyclonedx(self) -> None:
         SBOM = {
@@ -373,30 +350,11 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        parser = SbomJsonParser(SBOM)
-        bom = Bom.from_parser(parser=parser)
+        with pytest.raises(Exception) as ex:
+            Bom.from_json(SBOM)
+            self.assertFalse("Exception not thrown!")
 
-        self.assertIsNotNone(bom)
-        self.assertIsNotNone(bom.metadata)
-        self.assertIsNotNone(bom.components)
-        self.assertEqual(1, len(bom.components))
-        comp: Component = bom.components[0]
-        self.assertEqual("ring", comp.name)
-        self.assertEqual("0.17.8", comp.version)
-        self.assertEqual(1, len(comp.hashes))
-        self.assertEqual(1, len(comp.licenses))
-        lchoice: LicenseChoice = comp.licenses[0]
-        self.assertIsNotNone(lchoice.license)
-        self.assertIsNone(lchoice.expression)
-        if lchoice.license:  # only because of mypy
-            self.assertIsNotNone(lchoice.license.name)
-            self.assertEqual("Apache Software License, 2.0", lchoice.license.name)
-            self.assertIsNone(lchoice.license.id)
-            if lchoice.license.text:  # only because of mypy
-                self.assertEqual("This is some text - not CycloneDX spec >= 1.2 compliant",
-                                 lchoice.license.text.content)
-                self.assertEqual("text/plain", lchoice.license.text.content_type)
-                self.assertEqual(None, lchoice.license.text.encoding)
+        self.assertEqual("AttributeError", ex.typename)
 
 
 if __name__ == "__main__":

@@ -7,14 +7,14 @@
 # -------------------------------------------------------------------------------
 
 import json
-from typing import NamedTuple
+from typing import List, NamedTuple
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 
 from capycli import LOG
-from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, ParserMode, SbomJsonParser
+from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 
 # ------------------------------------------------------------
 # Expected File Format
@@ -67,28 +67,28 @@ class LegacyCx(CaPyCliBom):
         prop = CycloneDxSupport.get_property(component, "source-file")
         if prop:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_FILE_COMMENT,
                 url=XsUri(prop.value))
             prop2 = CycloneDxSupport.get_property(component, "source-file-hash")
             if prop2:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=prop2.value))
+                    alg=HashAlgorithm.SHA_1,
+                    content=prop2.value))
             component.external_references.add(ext_ref)
             component.properties.remove(prop)
 
         prop = CycloneDxSupport.get_property(component, "source-file-url")
         if prop:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
                 url=XsUri(prop.value))
             prop2 = CycloneDxSupport.get_property(component, "source-file-hash")
             if prop2:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=prop2.value))
+                    alg=HashAlgorithm.SHA_1,
+                    content=prop2.value))
             component.external_references.add(ext_ref)
             component.properties.remove(prop)
 
@@ -99,28 +99,28 @@ class LegacyCx(CaPyCliBom):
         prop = CycloneDxSupport.get_property(component, "binary-file-url")
         if prop:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_URL_COMMENT,
                 url=XsUri(prop.value))
             prop2 = CycloneDxSupport.get_property(component, "binary-file-hash")
             if prop2:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=prop2.value))
+                    alg=HashAlgorithm.SHA_1,
+                    content=prop2.value))
             component.external_references.add(ext_ref)
             component.properties.remove(prop)
 
         prop = CycloneDxSupport.get_property(component, "binary-file")
         if prop:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
                 url=XsUri(prop.value))
             prop2 = CycloneDxSupport.get_property(component, "binary-file-hash")
             if prop2:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=prop2.value))
+                    alg=HashAlgorithm.SHA_1,
+                    content=prop2.value))
             component.external_references.add(ext_ref)
             component.properties.remove(prop)
 
@@ -132,8 +132,17 @@ class LegacyCx(CaPyCliBom):
 
     @classmethod
     def _convert_bom(cls, bom: Bom) -> Bom:
+        new_components: List[Component] = []
         for component in bom.components:
-            component = cls._convert_component(component)
+            new_component = cls._convert_component(component)
+            new_components.append(new_component)
+
+        bom.components.clear()
+        bom.dependencies.clear()
+        for component in new_components:
+            bom.components.add(component)
+            if bom.metadata.component:
+                bom.register_dependency(bom.metadata.component, bom.metadata.component)
 
         return bom
 
@@ -141,11 +150,17 @@ class LegacyCx(CaPyCliBom):
     def read_sbom(cls, inputfile: str) -> Bom:
         LOG.debug(f"Reading from file {inputfile}")
         with open(inputfile) as fin:
-            content = json.load(fin)
+            string_content = fin.read()
 
-            parser = SbomJsonParser(content, ParserMode.LEGACY_CX)
-            bom = Bom.from_parser(parser=parser)
-            LegacyCx._init_mapping()
-            bom2 = LegacyCx._convert_bom(bom)
+        # the only difference between Legacy CX and real CycloneDX is,
+        # that properties have a "key" field instead of a "name" filed.
+        # => we just replace those and then we can process it like
+        # normal CycloneDX data.
+        fixed = string_content.replace('"key"', '"name"')
 
-        return bom2
+        content = json.loads(fixed)
+        bom: Bom = Bom.from_json(content)
+        LegacyCx._init_mapping()
+        LegacyCx._convert_bom(bom)
+
+        return bom

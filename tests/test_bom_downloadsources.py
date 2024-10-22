@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -288,4 +288,4 @@ class TestBomDownloadsources(TestBase):
 
 if __name__ == "__main__":
     lib = TestBomDownloadsources()
-    lib.test_simple_bom_no_url()
+    lib.test_simple_bom()

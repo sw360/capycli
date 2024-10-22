@@ -2671,4 +2671,4 @@ class CapycliTestBomMap(CapycliTestBase):
 if __name__ == "__main__":
     APP = CapycliTestBomMap()
     APP.setUp()
-    APP.test_map_bom_item_nocache_purl_nocomponent()
+    APP.test_mapping_require_result_not_found()

@@ -214,4 +214,4 @@ class TestBomConvert(TestBase):
 
 if __name__ == '__main__':
     APP = TestBomConvert()
-    APP.test_convert_legacy_to_legacy()
+    APP.test_no_output_format()

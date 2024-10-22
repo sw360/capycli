@@ -112,15 +112,15 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                     component, ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
                 if not ext_ref:
                     ext_ref = ExternalReference(
-                        reference_type=ExternalReferenceType.DISTRIBUTION,
+                        type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.SOURCE_FILE_COMMENT,
                         url=XsUri(path))
                     new = True
                 else:
                     ext_ref.url = XsUri(path)
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=sha1))
+                    alg=HashAlgorithm.SHA_1,
+                    content=sha1))
                 if new:
                     component.external_references.add(ext_ref)
 

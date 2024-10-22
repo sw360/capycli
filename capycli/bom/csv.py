@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -67,6 +67,6 @@ class CsvSupport():
                 description = ""
                 if cx_comp.description:
                     description = cx_comp.description
-                fout.write(f"{name};{version};{description}\n")
+                fout.write(f"{name};{version};{description}\n")  # noqa
 
         LOG.debug("done")

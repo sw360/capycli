@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -82,3 +82,8 @@ class TestLegacy(TestBase):
         self.assert_default_test_bom(cx_components2)
 
         TestLegacy.delete_file(filename_out)
+
+
+if __name__ == '__main__':
+    APP = TestLegacy()
+    APP.test_read()

@@ -20,7 +20,6 @@ from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
-from sortedcontainers import SortedSet
 
 import capycli.common.json_support
 import capycli.common.script_base
@@ -210,7 +209,12 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
             new_comp_list.append(new_component)
 
         reduced = self.merge_duplicates(new_comp_list)
-        sbom.components = SortedSet(reduced)
+        sbom.components.clear()
+        sbom.dependencies.clear()
+        for c in reduced:
+            sbom.components.add(c)
+            if sbom.metadata.component:
+                sbom.register_dependency(sbom.metadata.component, [c])
         return sbom
 
     def run(self, args: Any) -> None:

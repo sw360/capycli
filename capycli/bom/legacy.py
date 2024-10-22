@@ -10,6 +10,7 @@ from typing import Any, Dict, List
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.component import Component
+from cyclonedx.model.bom_ref import BomRef
 from packageurl import PackageURL
 from sortedcontainers import SortedSet
 
@@ -86,7 +87,7 @@ class LegacySupport():
                 name=item.get("Name", "").strip(),
                 version=item.get("Version", "").strip(),
                 purl=purl,
-                bom_ref=purl.to_string(),
+                bom_ref=BomRef(purl.to_string()),
                 description=item.get("Description", "").strip())
 
         website = item.get("ProjectSite", "")
@@ -94,7 +95,7 @@ class LegacySupport():
             website = item.get("Homepage", "")
         if website:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.WEBSITE,
+                type=ExternalReferenceType.WEBSITE,
                 url=XsUri(website))
             cxcomp.external_references.add(ext_ref)
 
@@ -146,40 +147,40 @@ class LegacySupport():
         sourceFileUrl = item.get("SourceFileUrl", "")
         if sourceFileUrl:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_FILE_COMMENT,
                 url=XsUri(sourceFileUrl))
             hash = item.get("SourceFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=hash))
+                    alg=HashAlgorithm.SHA_1,
+                    content=hash))
             cxcomp.external_references.add(ext_ref)
         else:
             sourceUrl = item.get("SourceUrl", "")
             if sourceUrl:
                 ext_ref = ExternalReference(
-                    reference_type=ExternalReferenceType.DISTRIBUTION,
+                    type=ExternalReferenceType.DISTRIBUTION,
                     comment=CaPyCliBom.SOURCE_URL_COMMENT,
                     url=XsUri(sourceUrl))
                 hash = item.get("SourceFileHash", "")
                 if hash:
                     ext_ref.hashes.add(HashType(
-                        algorithm=HashAlgorithm.SHA_1,
-                        hash_value=hash))
+                        alg=HashAlgorithm.SHA_1,
+                        content=hash))
                 cxcomp.external_references.add(ext_ref)
 
         sourceFile = item.get("SourceFile", "")
         if sourceFile:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment="source archive (local copy)",
                 url=XsUri(sourceFile))
             hash = item.get("SourceFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=hash))
+                    alg=HashAlgorithm.SHA_1,
+                    content=hash))
             cxcomp.external_references.add(ext_ref)
 
         # no way to map SourceFileHash, because we do not know the type of hash
@@ -201,14 +202,14 @@ class LegacySupport():
         binaryFile = item.get("BinaryFile", "")
         if binaryFile:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
                 url=XsUri(binaryFile))
             hash = item.get("BinaryFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=hash))
+                    alg=HashAlgorithm.SHA_1,
+                    content=hash))
             cxcomp.external_references.add(ext_ref)
 
         # no way to map BinaryFileHash, because we do not know the type of hash
@@ -216,20 +217,20 @@ class LegacySupport():
         binaryFileUrl = item.get("BinaryFileUrl", "")
         if binaryFileUrl:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_URL_COMMENT,
                 url=XsUri(binaryFileUrl))
             hash = item.get("BinaryFileHash", "")
             if hash:
                 ext_ref.hashes.add(HashType(
-                    algorithm=HashAlgorithm.SHA_1,
-                    hash_value=hash))
+                    alg=HashAlgorithm.SHA_1,
+                    content=hash))
             cxcomp.external_references.add(ext_ref)
 
         repositoryUrl = item.get("RepositoryUrl", "")
         if repositoryUrl:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.VCS,
+                type=ExternalReferenceType.VCS,
                 url=XsUri(repositoryUrl))
             cxcomp.external_references.add(ext_ref)
 
