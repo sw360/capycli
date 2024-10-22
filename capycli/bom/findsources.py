@@ -502,7 +502,22 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 if self.verbose:
                     print("    No Source code URL available",
                           "try to find from sw360 component or releases")
-                source_url = self.find_source_url_on_release(component)
+                try:
+                    source_url = self.find_source_url_on_release(component)
+                except SW360Error as swex:
+                    if swex.response is None:
+                        print_red("  Unknown error: " + swex.message)
+                    elif swex.response.status_code == requests.codes['not_found']:
+                        print(
+                            Fore.LIGHTYELLOW_EX + "  Release not found " + component.name +
+                            ", " + component.version + Style.RESET_ALL)
+                    else:
+                        print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
+                        print("  " + component.name + ", " + component.version)
+                        print("  Status Code: " + str(swex.response.status_code))
+                        if swex.message:
+                            print("    Message: " + swex.message)
+                        print(Style.RESET_ALL)
 
             # then consider the package managers
             if not source_url and language.lower() == "javascript":
@@ -619,7 +634,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         self.verbose = args.verbose
         self.github_name = args.name
         self.github_token = args.github_token
-        if not self.sw360_url:
+        if args.sw360_url:
             self.sw360_url = args.sw360_url
 
         if self.sw360_url:
