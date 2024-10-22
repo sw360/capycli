@@ -5,6 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* make `findsources` more resilient against SW360 issues.
+
 ## 2.5.1 (2024-10-16)
 
 * fix: urls coming from granularity file are repository urls and not source code
