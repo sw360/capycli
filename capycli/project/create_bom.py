@@ -69,16 +69,15 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                     purl = self.get_external_id("purl", release_details)
 
                 purls = PurlUtils.parse_purls_from_external_id(purl)
-                if len(purls) > 1:
-                    print_yellow("      Multiple purls added for", release["name"], release["version"])
-                    print_yellow("      You must remove all but one in your SBOM!")
-                purl = " ".join(purls).strip()
-
-                if purl:
-                    rel_item = Component(name=release["name"], version=release["version"],
-                                         purl=PackageURL.from_string(purl), bom_ref=purl)
-                else:
+                if len(purls) != 1:
                     rel_item = Component(name=release["name"], version=release["version"])
+                    if len(purls) > 1:
+                        print_yellow("      Multiple purls for", release["name"], release["version"])
+                        print_yellow("      Stored them in property purl_list in your SBOM!")
+                        CycloneDxSupport.set_property(rel_item, "purl_list", " ".join(purls))
+                elif len(purls) == 1:
+                    rel_item = Component(name=release["name"], version=release["version"],
+                                         purl=PackageURL.from_string(purls[0]), bom_ref=purls[0])
 
                 for key, property in (("clearingState", CycloneDxSupport.CDX_PROP_CLEARING_STATE),
                                       ("mainlineState", CycloneDxSupport.CDX_PROP_REL_STATE)):

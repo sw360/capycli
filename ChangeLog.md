@@ -8,6 +8,8 @@
 ## NEXT
 
 * make `findsources` more resilient against SW360 issues.
+* `project createbom` now stores multiple purls in the property "purl_list" instead of
+  trying to encode them in a strange way in the "purl" field.
 
 ## 2.5.1 (2024-10-16)
 
