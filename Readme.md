@@ -141,6 +141,12 @@ Options:
   --forceerror FORCE_ERROR                          force an error exit code in case of visual errors
 ```
 
+**Note about `--forceexit` and `--forceerror`**:  
+These options are not available for all commands. At the moment
+
+* `--forceexit` applies only to the `project vulnerabilities` command.
+* `--forceerror` applies only to the `project prerequisites` command.
+
 ## Use Cases
 
 Over the time we implemented more and more commands with more and more parameters.  
