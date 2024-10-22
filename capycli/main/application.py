@@ -21,6 +21,7 @@ from capycli.main.result_codes import ResultCode
 from capycli.mapping import handle_mapping
 from capycli.moverview import handle_moverview
 from capycli.project import handle_project
+from capycli.config import handle_config
 
 LOG = capycli.get_logger(__name__)
 
@@ -144,6 +145,8 @@ class Application(object):
             handle_moverview.run_moverview_command(self.options)
         elif command == "project":
             handle_project.run_project_command(self.options)
+        elif command == "config":
+            handle_config.run_config_command(self.options)
         else:
             print_red("Unknown command: " + command)
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)

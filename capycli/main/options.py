@@ -438,10 +438,22 @@ class CommandlineSupport():
 
         return {}
 
+    def update_config(self, config_current: Dict[str, Any], config_new: Dict[str, Any]) -> Dict[str, Any]:
+        """Merge newer confi settings into an exisitng config."""
+        for key in config_new:
+            config_current[key] = config_new[key]
+
+        return config_current
+
     def process_commandline(self, argv: Any) -> Any:
         """Reads the command line arguments"""
         args = self.parser.parse_args(argv)
-        cfg = self.read_config()
+        home = os.path.expanduser("~")
+        user_cfg_path = os.path.join(home, self.CONFIG_FILE_NAME)
+        cfg = self.read_config(user_cfg_path)
+
+        cfg_local = self.read_config()
+        cfg = self.update_config(cfg, cfg_local)
 
         if cfg:
             for key in cfg:
