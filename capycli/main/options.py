@@ -439,7 +439,7 @@ class CommandlineSupport():
         return {}
 
     def update_config(self, config_current: Dict[str, Any], config_new: Dict[str, Any]) -> Dict[str, Any]:
-        """Merge newer confi settings into an exisitng config."""
+        """Merge newer config settings into an existing config."""
         for key in config_new:
             config_current[key] = config_new[key]
 
