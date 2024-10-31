@@ -368,7 +368,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             filename = str(CycloneDxSupport.get_ext_ref_binary_file(cx_comp))
             filehash = str(CycloneDxSupport.get_binary_file_hash(cx_comp))
 
-        if filename.endswith('.git'):
+        if filename is not None and filename.endswith('.git'):
             print_red("    WARNING: resetting filename to prevent uploading .git file")
             filename = None
 
