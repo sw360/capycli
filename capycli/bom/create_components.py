@@ -301,10 +301,6 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                     "differs from BOM URL", data["sourceCodeDownloadurl"])
                 if data["sourceCodeDownloadurl"].endswith(('zip', 'tgz', 'tar.gz', 'tar')):
                     update_data["sourceCodeDownloadurl"] = data["sourceCodeDownloadurl"]
-                    print_yellow(
-                        "        Moderation: updating source code URL to", update_data["sourceCodeDownloadurl"])
-                # print_yellow(
-                    # "        Proceeding with uploading correct attachment")
 
         if "binaryDownloadurl" in data and data["binaryDownloadurl"]:
             if not release_data.get("binaryDownloadurl", ""):
@@ -409,7 +405,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                     if attachment["filename"].endswith('.git'):
                         source_attachment_exists = False
                         print_yellow(
-                            "        Existing attachment has .git extension. Upload new archive attachment ", filename)
+                            "    WARNING: existing attachment has .git extension. Upload new archive attachment ", filename)
                 elif filehash and attachment["sha1"] != filehash:
                     print_yellow(
                         "    WARNING: different hash for source attachment", filename,
