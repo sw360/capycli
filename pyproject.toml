@@ -79,8 +79,10 @@ filterwarnings = [
     # note the use of single quote below to denote "raw" strings in TOML
     "ignore:pkg_resources is deprecated as an API:DeprecationWarning",
     "ignore:Both `id` and `name` have been supplied - `name` will be ignored!",
-    #"ignore:UserWarning: The Component this BOM is describing None",
-    "ignore:DeprecationWarning:"
+    # cyclonedx-python-lib - UserWarning: The Component this BOM is describing None...
+    "ignore::UserWarning",
+    # cyclonedx-python-lib - DeprecationWarning: `@.tools` is deprecated from CycloneDX v1.5 onwards
+    "ignore::DeprecationWarning"
 ]
 
 [tool.mypy]
