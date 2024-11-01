@@ -9,20 +9,16 @@
 import json
 import os
 import pathlib
-import uuid
-from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, Iterable, List, Optional, Union  # , TYPE_CHECKING
+from typing import Any, List, Optional, Union
 
-from cyclonedx.factory.license import DisjunctiveLicense, LicenseFactory
-from cyclonedx.model import AttachedText, ExternalReferenceType, HashAlgorithm, XsUri
+from cyclonedx.factory.license import LicenseFactory
+from cyclonedx.model import ExternalReferenceType, HashAlgorithm, XsUri
 from cyclonedx.model.bom import Bom
-from cyclonedx.model.component import Component, ComponentType, ExternalReference, HashType, Property
+from cyclonedx.model.component import (Component, ExternalReference, HashType, Property)  # type: ignore
 from cyclonedx.model.contact import OrganizationalEntity
 from cyclonedx.model.tool import ToolRepository
 from cyclonedx.output.json import JsonV1Dot6
-from dateutil import parser as dateparser
-from packageurl import PackageURL
 from sortedcontainers import SortedSet
 
 import capycli.common.script_base
@@ -41,267 +37,6 @@ class ParserMode(Enum):
     SBOM = 1
     # Legacy-cx format
     LEGACY_CX = 2
-
-
-# class SbomJsonParser(BaseParser):
-class SbomJsonParser():
-    """Parser to read a CycloneDX SBOM from a JSON file."""
-    def __init__(self, json_content: Dict[str, Any], mode: ParserMode = ParserMode.SBOM):
-        self.components: List[Component] = []
-
-        LOG.debug("Processing CycloneDX data...")
-        self.parser_mode: ParserMode = mode
-        # self.metadata: Optional[BomMetaData] = self.read_metadata(json_content.get("metadata"))
-        serial_number: str = json_content.get("serialNumber", "")
-        self.serial_number: Optional[uuid.UUID] = uuid.UUID(serial_number) \
-            if self.is_valid_serial_number(serial_number) \
-            else None
-        components = json_content.get("components", [])
-        if components:
-            for component_entry in components:
-                component = self.read_component(component_entry)
-                if component:
-                    self.components.append(component)
-        self.external_references = self.read_external_references(
-            json_content.get("externalReferences", []))
-
-        LOG.debug("...done.")
-
-    def get_project(self) -> Optional[Component]:
-        """BasesParser not not (always) return a value for
-        self.metadata.component. Therefore we have an extra function."""
-        if not self.metadata:
-            return None
-
-        return self.metadata.component
-
-    def link_dependencies_to_project(self, bom: Bom) -> None:
-        if not bom.metadata:
-            return
-
-        if not bom.metadata.component:
-            return
-
-        for component in self._components:
-            if not component:
-                continue
-
-            bom.metadata.component.dependencies.add(component.bom_ref)
-
-    def get_tools(self) -> ToolRepository:
-        """Get the list of tools read by the parser."""
-        if not self.metadata:
-            return ToolRepository()
-
-        return self.metadata.tools
-
-    def get_metadata_licenses(self) -> SortedSet:
-        """Get the metadata licenses read by the parser."""
-        if not self.metadata:
-            return SortedSet()
-
-        return self.metadata.licenses
-
-    def get_metadata_properties(self) -> SortedSet:
-        """Get the list of metadata properties read by the parser."""
-        if not self.metadata:
-            return SortedSet()
-
-        return self.metadata.properties
-
-    def is_valid_serial_number(self, serial_number: str) -> bool:
-        if not serial_number:
-            return False
-
-        return not (serial_number is None or "urn:uuid:None" == serial_number)
-
-    def read_tools(self, param: Iterable[Dict[str, Any]]) -> ToolRepository:
-        tools = ToolRepository()
-
-        if not param:
-            return tools
-
-        LOG.debug("CycloneDX: reading tools")
-        for tool in param:
-            pass
-            # tools.add(Tool(
-            #      vendor=tool.get("vendor"),
-            #    name=tool.get("name"),
-            #  version=tool.get("version"),
-            #    external_references=self.read_external_references(
-            #        tool.get("externalReferences", None))
-            # ))
-        return tools
-
-    def read_timestamp(self, param: str) -> Optional[datetime]:
-        if not param:
-            return None
-
-        try:
-            timestamp = dateparser.isoparse(param)
-            return timestamp
-        except ValueError:
-            return None
-
-    def read_url(self, param: str) -> Optional[XsUri]:
-        if not param:
-            return None
-
-        return XsUri(uri=param)
-
-    def read_license(self, param: Dict[str, Any]) -> Optional[DisjunctiveLicense]:
-        if not param:
-            return None
-
-        license_factory = LicenseFactory()
-        text = param.get("text", None)
-        if text:
-            if isinstance(text, dict):
-                content_type = text.get("contentType", "text/plain")
-                encoding = text.get("encoding", "base64")
-                content = text.get("content", "")
-                license_text = AttachedText(content_type=content_type,
-                                            encoding=encoding,
-                                            content=content)
-            else:
-                # This is some text - not CycloneDX spec >= 1.2 compliant
-                license_text = AttachedText(content=text)
-        else:
-            license_text = None
-
-        # NOTE: CycloneDX spec 1.4:
-        # "If SPDX does not define the license used, this field may be used to provide the license name"
-        # The CycloneDX python lib just ignores the name if id (=SPDX) has been specified!
-        # return License(
-        #    spdx_license_id=param.get("id", None),
-        #    license_name=param.get("name", None),
-        #    license_text=license_text,
-        #    license_url=self.read_url(param.get("url", None)),
-        # )
-
-        license_url = self.read_url(param.get("url", None))
-        spdx_license_id = param.get("id", None)
-        if spdx_license_id:
-            return license_factory.make_with_id(spdx_license_id, url=license_url, text=license_text)
-
-        license_name = param.get("name", None)
-        if license_name:
-            return license_factory.make_with_name(license_name, url=license_url, text=license_text)
-
-    def read_licenses(self, param: Iterable[Dict[str, Any]]) -> Optional[Iterable[DisjunctiveLicense]]:
-        if not param:
-            return None
-
-        license_factory = LicenseFactory()
-        licenses = []
-        for entry in param:
-            lic = self.read_license(entry.get("license", None))
-            if lic:
-                licenses.append(lic)
-                continue
-            exp = entry.get("expression", None)
-            if exp:
-                licenses.append(license_factory.make_with_expression(exp))
-        return licenses
-
-    """
-        def read_metadata(self, param: Optional[Any]) -> Optional[BomMetaData]:
-        if param is None:
-            return None
-
-        LOG.debug("CycloneDX: reading metadata")
-        licenses = self.read_licenses(param.get("licenses", None))
-        metadata = BomMetaData(
-            component=self.read_component(param.get("component", None)),
-            properties=self.read_properties(param.get("properties", None)),
-            licenses=licenses
-        )
-        if param.get("timestamp", None) is not None:
-            timestamp = self.read_timestamp(param.get("timestamp"))
-            if timestamp:
-                metadata.timestamp = timestamp
-        metadata.tools = self.read_tools(param.get("tools", None))
-        return metadata """
-
-    def read_hash_algorithm(self, param: Any) -> HashAlgorithm:
-        return HashAlgorithm(param)
-
-    def read_hashes(self, hashes: Iterable[Dict[str, Any]]) -> Optional[Iterable[HashType]]:
-        if not hashes:
-            return None
-
-        hash_types = []
-        for entry in hashes:
-            if entry["alg"]:
-                hash_types.append(HashType(
-                    alg=self.read_hash_algorithm(entry["alg"]),
-                    content=entry["content"]))
-        return hash_types
-
-    def read_properties(self, values: Iterable[Dict[str, Any]]) -> Optional[Iterable[Property]]:
-        if not values:
-            return None
-
-        LOG.debug("CycloneDX: reading properties")
-        properties = []
-        for entry in values:
-            if self.parser_mode == ParserMode.LEGACY_CX:
-                # legacy-cx
-                properties.append(Property(name=entry["key"], value=entry["value"]))
-            else:
-                properties.append(Property(name=entry["name"], value=entry["value"]))
-
-        return properties
-
-    def read_external_reference_type(self, value: Any) -> ExternalReferenceType:
-        return ExternalReferenceType(value)
-
-    def read_external_references(self, values: Iterable[Dict[str, Any]]) -> Optional[Iterable[ExternalReference]]:
-        if not values:
-            return None
-
-        ex_refs = []
-        for entry in values:
-            if entry.get("type"):
-                ex_refs.append(ExternalReference(
-                    type=self.read_external_reference_type(entry.get("type")),
-                    url=XsUri(entry.get("url", "")),
-                    comment=entry.get("comment"),
-                    hashes=self.read_hashes(entry.get("hashes", []))
-                ))
-        return ex_refs
-
-    def read_component(self, entry: Dict[str, Any]) -> Optional[Component]:
-        if not entry:
-            return None
-
-        name = entry.get("name", None)
-        version = entry.get("version")
-        LOG.debug(f"CycloneDX: reading component {name}, {version}")
-        purl_str = entry.get("purl", "")
-        # purl: PackageURL
-        if purl_str:
-            purl = PackageURL.from_string(purl_str)
-        else:
-            purl = None
-        return Component(
-            name=name,
-            version=version,
-            group=entry.get("group"),
-            author=entry.get("author"),
-            description=entry.get("description"),
-            copyright=entry.get("copyright"),
-            bom_ref=entry.get("bom-ref"),
-            purl=purl,
-            type=self.read_component_type(entry.get("type", None)),
-            hashes=self.read_hashes(entry.get("hashes", None)),
-            properties=self.read_properties(entry.get("properties", None)),
-            external_references=self.read_external_references(entry.get("externalReferences", None)),
-            licenses=self.read_licenses(entry.get("licenses", None))
-        )
-
-    def read_component_type(self, type_str: str) -> ComponentType:
-        return ComponentType(type_str)
 
 
 class CycloneDxSupport():
@@ -608,11 +343,6 @@ class SbomWriter():
                 if tool.name == "cyclonedx-python-lib":
                     sbom.metadata.tools.tools.remove(tool)
                     break
-        else:  # Iterable[Tool]
-            for tool in sbom.metadata.tools.tools:
-                if tool.name == "cyclonedx-python-lib":
-                    sbom.metadata.tools.remove(tool)
-                    break
 
     @classmethod
     def remove_empty_properties(cls, component: Component) -> None:
@@ -696,33 +426,6 @@ class CaPyCliBom():
             bom = Bom.from_json(  # type: ignore[attr-defined]
                 json_data)
             return bom
-
-    @classmethod
-    def read_sbom_OLD(cls, inputfile: str) -> Bom:
-        LOG.debug(f"Reading from file {inputfile}")
-        with open(inputfile) as fin:
-            try:
-                content = json.load(fin)
-            except Exception as exp:
-                raise CaPyCliException("Invalid JSON file: " + str(exp))
-
-            try:
-                parser = SbomJsonParser(content)
-                bom = Bom.from_parser(parser=parser)
-
-                # it seems that some of the information available in the JSON file has been
-                # correctly **read** by our parser, but `Bom.from_parser` does not handle
-                # it correctly. Therefore:
-                if not bom.metadata.component:
-                    bom.metadata.component = parser.get_project()
-                    parser.link_dependencies_to_project(bom)
-                bom.metadata.tools = parser.get_tools()
-                bom.metadata.licenses = parser.get_metadata_licenses()
-                bom.metadata.properties = parser.get_metadata_properties()
-            except Exception as exp:
-                raise CaPyCliException("Invalid CaPyCLI file: " + str(exp))
-
-        return bom
 
     @classmethod
     def write_sbom(cls, sbom: Bom, outputfile: str) -> None:

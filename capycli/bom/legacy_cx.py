@@ -142,7 +142,7 @@ class LegacyCx(CaPyCliBom):
         for component in new_components:
             bom.components.add(component)
             if bom.metadata.component:
-                bom.register_dependency(bom.metadata.component, bom.metadata.component)
+                bom.register_dependency(bom.metadata.component, [component])
 
         return bom
 
@@ -159,7 +159,7 @@ class LegacyCx(CaPyCliBom):
         fixed = string_content.replace('"key"', '"name"')
 
         content = json.loads(fixed)
-        bom: Bom = Bom.from_json(content)
+        bom: Bom = Bom.from_json(content)  # type: ignore
         LegacyCx._init_mapping()
         LegacyCx._convert_bom(bom)
 

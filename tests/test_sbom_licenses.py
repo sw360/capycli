@@ -7,7 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import pytest
-from cyclonedx.factory.license import LicenseExpression
+from cyclonedx.factory.license import LicenseExpression  # type: ignore
 from cyclonedx.model import XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -66,7 +66,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        bom = Bom.from_json(SBOM)
+        bom = Bom.from_json(SBOM)  # type: ignore
         self.assertIsNotNone(bom)
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
@@ -134,7 +134,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        bom = Bom.from_json(SBOM)
+        bom = Bom.from_json(SBOM)  # type: ignore
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
         self.assertEqual(1, len(bom.components))
@@ -205,7 +205,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        bom = Bom.from_json(SBOM)
+        bom = Bom.from_json(SBOM)  # type: ignore
         self.assertIsNotNone(bom)
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
@@ -279,7 +279,7 @@ class TestSbomLicenseVariants(TestBase):
             ]
         }
 
-        bom = Bom.from_json(SBOM)
+        bom = Bom.from_json(SBOM)  # type: ignore
         self.assertIsNotNone(bom)
         self.assertIsNotNone(bom.metadata)
         self.assertIsNotNone(bom.components)
@@ -350,7 +350,7 @@ class TestSbomLicenseVariants(TestBase):
         }
 
         with pytest.raises(Exception) as ex:
-            Bom.from_json(SBOM)
+            Bom.from_json(SBOM)  # type: ignore
             self.assertFalse("Exception not thrown!")
 
         self.assertEqual("AttributeError", ex.typename)
