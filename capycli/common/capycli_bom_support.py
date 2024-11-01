@@ -13,7 +13,7 @@ from enum import Enum
 from typing import Any, List, Optional, Union
 
 from cyclonedx.factory.license import LicenseFactory
-from cyclonedx.model import ExternalReferenceType, HashAlgorithm, XsUri, ExternalReference, HashType, Property
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.contact import OrganizationalEntity
@@ -271,7 +271,7 @@ class SbomCreator():
         components.add(tc1)
 
     @staticmethod
-    def add_standard_bom_standard(sbom: Bom):
+    def add_standard_bom_standard(sbom: Bom) -> None:
         """Add the Siemens Standard BOM definition."""
         std_comp = Standard(
             name="Standard BOM",
@@ -307,7 +307,7 @@ class SbomCreator():
             sbom.metadata.licenses.add(license_factory.make_with_id("CC0-1.0"))
 
         if "addprofile" in kwargs and kwargs["addprofile"]:
-            SbomCreator.add_profile(sbom, "capycli")
+            SbomCreator.add_profile(sbom, "clearing")
 
         if not sbom.metadata.tools:
             sbom.metadata.tools = ToolRepository()
@@ -438,7 +438,7 @@ class CaPyCliBom():
         LOG.debug(f"Writing to file {outputfile}")
         try:
             # always add/update profile
-            SbomCreator.add_profile(sbom, "capycli")
+            SbomCreator.add_profile(sbom, "clearing")
             SbomWriter.write_to_json(sbom, outputfile, pretty_print=True)
         except Exception as exp:
             raise CaPyCliException("Error writing CaPyCLI file: " + str(exp))
