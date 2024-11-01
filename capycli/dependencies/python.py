@@ -17,10 +17,10 @@ import chardet
 import requests
 import requirements
 import tomli
+from cyclonedx.factory.license import LicenseFactory
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
-from cyclonedx.factory.license import LicenseFactory
 from packageurl import PackageURL
 
 import capycli.common.json_support

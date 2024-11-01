@@ -9,8 +9,8 @@
 from typing import Any, Dict, List
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, Property, XsUri
-from cyclonedx.model.component import Component
 from cyclonedx.model.bom_ref import BomRef
+from cyclonedx.model.component import Component
 from packageurl import PackageURL
 from sortedcontainers import SortedSet
 

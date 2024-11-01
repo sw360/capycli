@@ -13,13 +13,14 @@ import uuid
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, Iterable, List, Optional, Union  # , TYPE_CHECKING
-from cyclonedx.model import AttachedText, XsUri, ExternalReferenceType, HashAlgorithm
+
+from cyclonedx.factory.license import DisjunctiveLicense, LicenseFactory
+from cyclonedx.model import AttachedText, ExternalReferenceType, HashAlgorithm, XsUri
 from cyclonedx.model.bom import Bom
-from cyclonedx.model.component import Component, ComponentType, ExternalReference, Property, HashType
-from cyclonedx.output.json import JsonV1Dot6
-from cyclonedx.factory.license import LicenseFactory, DisjunctiveLicense
-from cyclonedx.model.tool import ToolRepository
+from cyclonedx.model.component import Component, ComponentType, ExternalReference, HashType, Property
 from cyclonedx.model.contact import OrganizationalEntity
+from cyclonedx.model.tool import ToolRepository
+from cyclonedx.output.json import JsonV1Dot6
 from dateutil import parser as dateparser
 from packageurl import PackageURL
 from sortedcontainers import SortedSet
