@@ -15,7 +15,7 @@ from typing import Any, List, Optional, Union
 from cyclonedx.factory.license import LicenseFactory
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm, XsUri
 from cyclonedx.model.bom import Bom
-from cyclonedx.model.component import (Component, ExternalReference, HashType, Property)  # type: ignore
+from cyclonedx.model.component import Component, ExternalReference, HashType, Property  # type: ignore
 from cyclonedx.model.contact import OrganizationalEntity
 from cyclonedx.model.tool import ToolRepository
 from cyclonedx.output.json import JsonV1Dot6
