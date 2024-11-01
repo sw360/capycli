@@ -1073,7 +1073,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             new_bom = self.create_updated_bom(sbom, result)
             try:
                 # set Siemens Standard BOM version
-                new_bom.metadata.tools.components.add(SbomCreator.get_standard_bom_tool())
+                SbomCreator.add_standard_bom_standard(new_bom)
                 SbomWriter.write_to_json(new_bom, args.outputfile, True)
             except Exception as ex:
                 print_red("Error writing updated SBOM file: " + repr(ex))

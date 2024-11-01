@@ -13,10 +13,11 @@ from enum import Enum
 from typing import Any, List, Optional, Union
 
 from cyclonedx.factory.license import LicenseFactory
-from cyclonedx.model import ExternalReferenceType, HashAlgorithm, XsUri
+from cyclonedx.model import ExternalReferenceType, HashAlgorithm, XsUri, ExternalReference, HashType, Property
 from cyclonedx.model.bom import Bom
-from cyclonedx.model.component import Component, ExternalReference, HashType, Property  # type: ignore
+from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.contact import OrganizationalEntity
+from cyclonedx.model.definition import Definitions, Standard
 from cyclonedx.model.tool import ToolRepository
 from cyclonedx.output.json import JsonV1Dot6
 from sortedcontainers import SortedSet
@@ -245,25 +246,12 @@ class SbomCreator():
         pass
 
     @staticmethod
-    def get_standard_bom_tool() -> Component:
-        """Get Standard BOM version as component."""
-        component = Component(
-            name="standard-bom",
-            version="3.0.0",
-            supplier=OrganizationalEntity(name="Siemens AG"),
-            external_references=[ExternalReference(
-                type=ExternalReferenceType.WEBSITE,
-                url=XsUri("https://code.siemens.com/sbom/standard-bom"))]
-        )
-
-        return component
-
-    @staticmethod
     def get_capycli_tool(version: str = "") -> Component:
         """Get CaPyCLI as tool."""
         component = Component(
             name="CaPyCLI",
             supplier=OrganizationalEntity(name="Siemens AG"),
+            type=ComponentType.APPLICATION
         )
         if version:
             component.version = version
@@ -279,11 +267,28 @@ class SbomCreator():
 
     @staticmethod
     def add_tools(components: SortedSet) -> None:
-        tc1 = SbomCreator.get_standard_bom_tool()
+        tc1 = SbomCreator.get_capycli_tool()
         components.add(tc1)
 
-        tc2 = SbomCreator.get_capycli_tool()
-        components.add(tc2)
+    @staticmethod
+    def add_standard_bom_standard(sbom: Bom):
+        """Add the Siemens Standard BOM definition."""
+        std_comp = Standard(
+            name="Standard BOM",
+            version="3.0.0",
+            bom_ref="standard-bom",
+            description="The Standard for Software Bills of Materials in Siemens",
+            owner="Siemens AG",
+            external_references=[ExternalReference(
+                type=ExternalReferenceType.WEBSITE,
+                url=XsUri("https://sbom.siemens.io/")
+            )]
+        )
+
+        if not sbom.definitions:
+            sbom.definitions = Definitions(standards=[std_comp])
+        else:
+            sbom.definitions.standards.add(std_comp)
 
     @staticmethod
     def add_profile(sbom: Bom, profile: str) -> None:
@@ -309,6 +314,7 @@ class SbomCreator():
 
         if "addtools" in kwargs and kwargs["addtools"]:
             SbomCreator.add_tools(sbom.metadata.tools.components)
+            SbomCreator.add_standard_bom_standard(sbom)
 
         if "name" in kwargs or "version" in kwargs or "description" in kwargs:
             _name = str(kwargs.get("name", ""))
