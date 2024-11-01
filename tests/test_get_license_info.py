@@ -10,7 +10,6 @@ import os
 import shutil
 
 import pytest
-
 import responses
 
 from capycli.common.json_support import load_json_file

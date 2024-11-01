@@ -6,9 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-import responses
-
 import pytest
+import responses
 
 from capycli.main.result_codes import ResultCode
 from capycli.project.find_project import FindProject
