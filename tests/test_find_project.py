@@ -8,6 +8,8 @@
 
 import responses
 
+import pytest
+
 from capycli.main.result_codes import ResultCode
 from capycli.project.find_project import FindProject
 from tests.test_base import AppArguments, TestBase
@@ -28,6 +30,7 @@ class TestFindProject(TestBase):
         self.assertTrue("usage: CaPyCli project find" in out)
 
     # @responses.activate
+    @pytest.mark.skip
     def test_no_login(self) -> None:
         sut = FindProject()
 

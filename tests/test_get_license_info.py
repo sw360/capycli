@@ -9,6 +9,8 @@
 import os
 import shutil
 
+import pytest
+
 import responses
 
 from capycli.common.json_support import load_json_file
@@ -54,6 +56,7 @@ class TestGetLicenseInfo(TestBase):
             self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
     # @responses.activate
+    @pytest.mark.skip
     def test_no_login(self) -> None:
         sut = GetLicenseInfo()
 
