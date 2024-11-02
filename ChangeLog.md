@@ -10,6 +10,10 @@
 * make `findsources` more resilient against SW360 issues.
 * `project createbom` now stores multiple purls in the property "purl_list" instead of
   trying to encode them in a strange way in the "purl" field.
+* support CycloneDX 1.6 and Siemens Standard BOM 3.
+* `bom createcomponents`: attachment upload is now more robust to prevent .git files being uploaded.
+* granularity list extended.
+* dependency updates.
 
 ## 2.5.1 (2024-10-16)
 
