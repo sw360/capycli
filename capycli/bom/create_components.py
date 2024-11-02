@@ -405,7 +405,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                     if attachment["filename"].endswith('.git'):
                         source_attachment_exists = False
                         print_yellow(
-                            "    WARNING: existing attachment has .git extension. Upload new archive attachment ", filename)
+                            "    WARNING: existing attachment has .git extension."
+                            + " Upload new archive attachment ", filename)
                 elif filehash and attachment["sha1"] != filehash:
                     print_yellow(
                         "    WARNING: different hash for source attachment", filename,
