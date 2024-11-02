@@ -62,3 +62,8 @@ class TestLegacyCx(TestBase):
         filename = os.path.join(os.path.dirname(__file__), "fixtures", TestLegacyCx.INPUTFILE1)
         sbom = LegacyCx.read_sbom(filename)
         self.assert_components(sbom.components)
+
+
+if __name__ == '__main__':
+    APP = TestLegacyCx()
+    APP.test_read()

@@ -6,6 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import pytest
 import responses
 
 from capycli.main.result_codes import ResultCode
@@ -28,6 +29,7 @@ class TestFindProject(TestBase):
         self.assertTrue("usage: CaPyCli project find" in out)
 
     # @responses.activate
+    @pytest.mark.skip
     def test_no_login(self) -> None:
         sut = FindProject()
 

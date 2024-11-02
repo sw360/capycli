@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -255,9 +255,13 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
             print()
 
+        root_component = bom.metadata.component
         bom.components.clear()
+        bom.dependencies.clear()
         for c in list_temp:
             bom.components.add(c)
+            if root_component:
+                bom.register_dependency(root_component, [c])
 
         return bom
 

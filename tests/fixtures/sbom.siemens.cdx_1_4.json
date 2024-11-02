@@ -59,10 +59,10 @@
   "components": [
 	{
       "type": "library",
-      "bom-ref": "pkg:pypi/colorama@0.4.6",
+      "bom-ref": "pkg:pypi/colorama@0.4.3",
       "name": "colorama",
-      "version": "0.4.6",
-	    "description": "console coloring for Python",
+      "version": "0.4.3",
+	  "description": "console coloring for Python",
       "licenses": [
         {
           "license": {
@@ -70,14 +70,14 @@
           }
         }
       ],
-      "purl": "pkg:pypi/colorama@0.4.6",
+      "purl": "pkg:pypi/colorama@0.4.3",
       "externalReferences": [
         {
           "url": "https://pypi.org/project/colorama/#files",
           "type": "website"
         },
         {
-          "url": "file:colorama-0.4.6.tar.gz",
+          "url": "file:colorama-0.4.3.tar.gz",
           "type": "distribution",
           "comment": "source archive (local copy)",
           "hashes": [
@@ -93,11 +93,7 @@
           "name": "siemens:primaryLanguage",
           "value": "Python"
         },
-        {
-          "name": "siemens:sw360Id",
-          "value": "9a2373710bd44769a2560dd31280901d"
-        },
-		    {
+		{
           "name": "capycli:clearingState",
           "value": "OPEN"
         },
@@ -145,10 +141,6 @@
         {
           "name": "siemens:primaryLanguage",
           "value": "Python"
-        },
-        {
-          "name": "siemens:sw360Id",
-          "value": "05c30bf89a512463260b57e84d99b38f"
         }
       ]
     },
@@ -186,18 +178,14 @@
         {
           "name": "siemens:primaryLanguage",
           "value": "Python"
-        },
-        {
-          "name": "siemens:sw360Id",
-          "value": "fa0d21eb17574ba9ae17e5c9b432558e"
         }
       ]
     },
     {
       "type": "library",
-      "bom-ref": "pkg:pypi/wheel@0.38.4",
+      "bom-ref": "pkg:pypi/wheel@0.34.2",
       "name": "wheel",
-      "version": "0.38.4",
+      "version": "0.34.2",
       "licenses": [
         {
           "license": {
@@ -205,14 +193,14 @@
           }
         }
       ],
-      "purl": "pkg:pypi/wheel@0.38.4",
+      "purl": "pkg:pypi/wheel@0.34.2",
       "externalReferences": [
         {
           "url": "https://github.com/pypa/wheel/archive/refs/tags/0.34.2.zip",
           "type": "website"
         },
         {
-          "url": "file:wheel-0.38.4.zip",
+          "url": "file:wheel-0.34.2.zip",
           "type": "distribution",
           "comment": "source archive (local copy)",
           "hashes": [
@@ -227,10 +215,6 @@
         {
           "name": "siemens:primaryLanguage",
           "value": "Python"
-        },
-        {
-          "name": "siemens:sw360Id",
-          "value": "e0995819173d4ac8b1a4da3548935976"
         }
       ]
     }
@@ -249,7 +233,7 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:pypi/wheel@0.38.4",
+      "ref": "pkg:pypi/wheel@0.34.2",
       "dependsOn": []
     },
     {
@@ -258,7 +242,7 @@
         "pkg:pypi/colorama@0.4.6",
         "pkg:pypi/python@3.8",
         "pkg:pypi/tomli@2.0.1",
-        "pkg:pypi/wheel@0.38.4"
+        "pkg:pypi/wheel@0.34.2"
       ]
     }
   ]

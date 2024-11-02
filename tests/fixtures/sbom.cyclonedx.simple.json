@@ -102,7 +102,7 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:pypi/wheel@0.38.4",
+            "ref": "pkg:pypi/wheel@0.34.2",
             "dependsOn": []
         }
     ]

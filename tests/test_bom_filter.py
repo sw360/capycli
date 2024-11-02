@@ -415,4 +415,4 @@ class TestBomFilter(TestBase):
 
 if __name__ == "__main__":
     lib = TestBomFilter()
-    lib.test_remove_single_item_by_purl()
+    lib.test_add_item_with_include()

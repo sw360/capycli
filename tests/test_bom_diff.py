@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2023 Siemens
+# Copyright (c) 2021-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -311,3 +311,8 @@ class TestBomDiff(TestBase):
 
         self.delete_file(args.outputfile)
         self.delete_file(args.write_mapresult)
+
+
+if __name__ == '__main__':
+    APP = TestBomDiff()
+    APP.test_app_bom_different_with_fileoutput2()

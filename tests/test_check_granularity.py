@@ -186,3 +186,8 @@ component_name;replacement_name;comment;source_url
         self.assertEqual(responses.calls[0].request.url, 'http://wrongurl.com/granularity.csv')
         self.assertEqual(check_granularity.granularity_list[1].component, '@angular/animations/browser/testing')
         self.assertEqual(check_granularity.granularity_list[1].source_url, 'https://github.com/angular/angular')
+
+
+if __name__ == '__main__':
+    APP = TestCheckGranularity()
+    APP.test_real_bom2()

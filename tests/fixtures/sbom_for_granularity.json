@@ -30,6 +30,19 @@
         ]
       }
     ],
+	"component": {
+      "type": "application",
+      "bom-ref": "31219cb6-66d6-4034-bb90-18fa30284a58",
+      "name": "CaPyCLI",
+      "version": "1.9.0",
+      "description": "Software clearing for CaPyCLI, the clearing automation scripts for Python",
+      "properties": [
+        {
+          "name": "siemens:sw360_id",
+          "value": "34ef5c5452014c52aa9ce4bc180624d8"
+        }
+      ]
+    },
     "licenses": [
       {
         "license": {
@@ -58,7 +71,6 @@
       "name": "@angular/router",
       "version": "15.2.6",
 	  "description": "Python package for providing Mozilla's CA Bundle.",
-	  "purl": "pkg:npm/angular/router@15.2.6",
       "licenses": [
         {
           "license": {
@@ -155,6 +167,14 @@
     {
       "ref": "pkg:pypi/certifi@2022.12.7",
       "dependsOn": []
+    },
+	{
+      "ref": "31219cb6-66d6-4034-bb90-18fa30284a58",
+      "dependsOn": [
+        "pkg:npm/angular/animations@15.2.6",
+        "pkg:npm/angular/router@15.2.6",
+        "pkg:pypi/certifi@2022.12.7"
+      ]
     }
   ]
 }

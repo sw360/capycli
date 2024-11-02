@@ -4,7 +4,7 @@
   "serialNumber": "urn:uuid:b34cfeb8-d823-4113-8ede-4dfe8148d44e",
   "version": 1,
   "metadata": {
-    "timestamp": "20XXX23-03-14T09:43:59.957050+00:00",
+    "timestamp": "2023-03-14T09:43:59.957050+00:00",
     "component": {
       "type": "application",
       "bom-ref": "31219cb6-66d6-4034-bb90-18fa30284a58",

@@ -338,7 +338,7 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:pypi/wheel@0.34.2",
+      "ref": "pkg:pypi/wheel@0.38.4",
       "dependsOn": []
     },
     {
@@ -347,7 +347,7 @@
         "pkg:pypi/colorama@0.4.6",
         "pkg:pypi/python@3.8",
         "pkg:pypi/tomli@2.0.1",
-        "pkg:pypi/wheel@0.34.2"
+        "pkg:pypi/wheel@0.38.4"
       ]
     }
   ]

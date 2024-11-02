@@ -98,6 +98,9 @@ class ConsoleHandler(logging.Handler):
                 print(msg)
             else:
                 # info, debug, all other
+                # suppress all cyclonedx serialize log output
+                if record.name == "serializable":
+                    return
                 print(msg)
         except Exception:
             self.handleError(record)

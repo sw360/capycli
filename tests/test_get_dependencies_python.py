@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -214,7 +214,7 @@ class TestGetDependenciesPython(TestBase):
 
         self.assertEqual(1, len(sbom.components[0].licenses))
         lic = sbom.components[0].licenses[0]
-        self.assertEqual("LGPL", lic.license.name)
+        self.assertEqual("LGPL", lic.name)
 
         self.assertEqual(
             "https://files.pythonhosted.org/packages/bc/a9/01ffebf/chardet-3.0.4-py2.py3-none-any.whl",
@@ -383,7 +383,7 @@ class TestGetDependenciesPython(TestBase):
         actual = sut.determine_file_type(".gitignore")
         self.assertEqual(InputFileType.REQUIREMENTS, actual)
 
-    def test_process_poetry_lock_v2(self) -> None:
+    def test_process_poetry_1_4_0_lock(self) -> None:
         self.delete_file(self.OUTPUTFILE2)
 
         sut = GetPythonDependencies()
@@ -393,7 +393,7 @@ class TestGetDependenciesPython(TestBase):
         args.command = []
         args.command.append("getdependencies")
         args.command.append("python")
-        args.inputfile = self.INPUTFILE
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE)
         args.outputfile = self.OUTPUTFILE2
         args.verbose = True
         args.debug = True
@@ -404,7 +404,7 @@ class TestGetDependenciesPython(TestBase):
         self.assertTrue("Checking meta-data:" in out)
         self.assertTrue("cli-support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
-        self.assertTrue("38 components items written to file." in out)
+        self.assertTrue("34 components items written to file." in out)
 
         # ensure that dev dependencies are NOT listed
         self.assertTrue("flake8" not in out)
@@ -414,7 +414,39 @@ class TestGetDependenciesPython(TestBase):
 
         self.delete_file(self.OUTPUTFILE2)
 
+    def test_process_poetry_1_8_3_lock(self) -> None:
+        # IMPORTANT: in this file there are no longer "category" values
+        self.delete_file(self.OUTPUTFILE2)
+
+        sut = GetPythonDependencies()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("getdependencies")
+        args.command.append("python")
+        args.inputfile = self.INPUTFILE  # this is current version of this project!
+        args.outputfile = self.OUTPUTFILE2
+        args.verbose = True
+        args.debug = True
+        args.search_meta_data = False
+
+        out = self.capture_stdout(sut.run, args)
+        # self.dump_textfile(out, "DUMP.TXT")
+        self.assertTrue("Checking meta-data:" in out)
+        self.assertTrue("cli-support" in out)
+        self.assertTrue(self.OUTPUTFILE2 in out)
+        self.assertTrue("66 components items written to file." in out)
+
+        # dev dependencies are *unfortunately* listed
+        self.assertTrue("flake8" in out)
+        self.assertTrue("responses" in out)
+
+        self.assertTrue(os.path.isfile(self.OUTPUTFILE2))
+
+        self.delete_file(self.OUTPUTFILE2)
+
 
 if __name__ == "__main__":
     APP = TestGetDependenciesPython()
-    APP.test_process_poetry_lock_v2()
+    APP.test_process_poetry_1_8_3_lock()

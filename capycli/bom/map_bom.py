@@ -719,7 +719,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 component, ExternalReferenceType.WEBSITE, "")
             if not ext_ref:
                 ext_ref = ExternalReference(
-                    reference_type=ExternalReferenceType.WEBSITE,
+                    type=ExternalReferenceType.WEBSITE,
                     url=XsUri(value_match))
                 component.external_references.add(ext_ref)
             elif str(ext_ref.url) == "":
@@ -746,6 +746,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         # clear all existing components
         newbom.components.clear()
+        newbom.dependencies.clear()
 
         for item in result:
             newitem = None
@@ -756,6 +757,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 newitem = Component(name="???", version="???")
                 CycloneDxSupport.update_or_set_property(newitem, CycloneDxSupport.CDX_PROP_MAPRESULT, item.result)
                 newbom.components.add(newitem)
+                if newbom.metadata.component:
+                    newbom.register_dependency(newbom.metadata.component, [newitem])
             elif (item.result == MapResult.NO_MATCH
                   or not self.is_good_match(item.result)):
 
@@ -1070,7 +1073,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             new_bom = self.create_updated_bom(sbom, result)
             try:
                 # set Siemens Standard BOM version
-                new_bom.metadata.tools.add(SbomCreator.get_standard_bom_tool())
+                SbomCreator.add_standard_bom_standard(new_bom)
                 SbomWriter.write_to_json(new_bom, args.outputfile, True)
             except Exception as ex:
                 print_red("Error writing updated SBOM file: " + repr(ex))

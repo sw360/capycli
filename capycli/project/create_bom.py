@@ -151,7 +151,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
         creator = SbomCreator()
         sbom = creator.create(cdx_components, addlicense=True, addprofile=True, addtools=True,
                               name=project.get("name", ""), version=project.get("version", ""),
-                              description=project.get("description", ""), addprojectdependencies=True)
+                              description=project.get("description", ""))
 
         return sbom
 

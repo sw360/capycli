@@ -65,7 +65,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         if src_url:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
                 url=XsUri(src_url))
             cx_comp.external_references.add(ext_ref)
@@ -84,7 +84,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         if bin_url:
             ext_ref = ExternalReference(
-                reference_type=ExternalReferenceType.DISTRIBUTION,
+                type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_URL_COMMENT,
                 url=XsUri(bin_url))
             cx_comp.external_references.add(ext_ref)

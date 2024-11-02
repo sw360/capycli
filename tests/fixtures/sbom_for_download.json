@@ -102,10 +102,6 @@
     {
       "ref": "pkg:pypi/certifi@2022.12.7",
       "dependsOn": []
-    },
-    {
-      "ref": "pkg:pypi/certifi@2022.12.999",
-      "dependsOn": []
     }
   ]
 }

@@ -17,7 +17,8 @@ import chardet
 import requests
 import requirements
 import tomli
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, License, LicenseChoice, Property, XsUri
+from cyclonedx.factory.license import LicenseFactory
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -170,16 +171,15 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             homepage = meta["info"].get("home_page", "")
             if homepage:
                 ext_ref = ExternalReference(
-                    reference_type=ExternalReferenceType.WEBSITE,
+                    type=ExternalReferenceType.WEBSITE,
                     url=XsUri(homepage))
                 LOG.debug("  got website/homepage")
                 cxcomp.external_references.add(ext_ref)
 
             data = meta["info"].get("license", "")
             if data:
-                license = License(license_name=data)
-                license_choice = LicenseChoice(license_=license)
-                cxcomp.licenses.add(license_choice)
+                license_factory = LicenseFactory()
+                cxcomp.licenses.add(license_factory.make_with_name(data))
                 LOG.debug("  got license")
 
             data = meta["info"].get("summary", "")
@@ -190,26 +190,26 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             data = meta["info"].get("package_url", "")
             if data:
                 ext_ref = ExternalReference(
-                    reference_type=ExternalReferenceType.DISTRIBUTION,
+                    type=ExternalReferenceType.DISTRIBUTION,
                     comment="PyPi URL",
                     url=XsUri(data))
                 cxcomp.external_references.add(ext_ref)
                 LOG.debug("  got package url")
 
             if "urls" in meta:
-                # there can be multiple etries, for wheel, source, etc.
+                # there can be multiple entries, for wheel, source, etc.
                 for item in meta["urls"]:
                     if "packagetype" in item:
                         if item["packagetype"] == "bdist_wheel":
                             ext_ref = ExternalReference(
-                                reference_type=ExternalReferenceType.DISTRIBUTION,
+                                type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
                                 url=XsUri(item["filename"]))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got binary file")
 
                             ext_ref = ExternalReference(
-                                reference_type=ExternalReferenceType.DISTRIBUTION,
+                                type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.BINARY_URL_COMMENT,
                                 url=XsUri(item["url"]))
                             cxcomp.external_references.add(ext_ref)
@@ -217,14 +217,14 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
                         if item["packagetype"] == "sdist":
                             ext_ref = ExternalReference(
-                                reference_type=ExternalReferenceType.DISTRIBUTION,
+                                type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.SOURCE_FILE_COMMENT,
                                 url=XsUri(item["filename"]))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file")
 
                             ext_ref = ExternalReference(
-                                reference_type=ExternalReferenceType.DISTRIBUTION,
+                                type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
                                 url=XsUri(item["url"]))
                             cxcomp.external_references.add(ext_ref)
@@ -367,7 +367,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                     LOG.debug(f"    Processing file_metadata: {file_metadata}")
                     try:
                         cxcomp.external_references.add(ExternalReference(
-                            reference_type=ExternalReferenceType.DISTRIBUTION,
+                            type=ExternalReferenceType.DISTRIBUTION,
                             url=XsUri(cxcomp.get_pypi_url()),
                             # comment=f'Distribution file: {file_metadata["file"]}',
                             comment=CaPyCliBom.BINARY_URL_COMMENT,

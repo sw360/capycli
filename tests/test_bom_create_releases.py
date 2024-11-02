@@ -1003,12 +1003,12 @@ class CapycliTestBomCreate(CapycliTestBase):
             "_links": {"self": {"href": SW360_BASE_URL + "releases/06a6e7"}}}
         item = Component(name="")
         extref = ExternalReference(
-            reference_type=ExternalReferenceType.DISTRIBUTION,
+            type=ExternalReferenceType.DISTRIBUTION,
             comment=CaPyCliBom.SOURCE_FILE_COMMENT,
             url=XsUri("adduser-3.118.zip"))
         extref.hashes.add(HashType(
-            algorithm=HashAlgorithm.SHA_1,
-            hash_value="456"))
+            alg=HashAlgorithm.SHA_1,
+            content="456"))
         item.external_references.add(extref)
         self.app.update_release(item, release_data)
         captured = self.capsys.readouterr()  # type: ignore
