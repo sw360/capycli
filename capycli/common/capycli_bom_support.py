@@ -299,7 +299,7 @@ class SbomCreator():
         sbom.metadata.properties.add(prop)
 
     @staticmethod
-    def create(bom: Union[List[Component], SortedSet], **kwargs: bool) -> Bom:
+    def create(bom: Union[List[Component], SortedSet], **kwargs: Any) -> Bom:
         sbom = Bom()
 
         if "addlicense" in kwargs and kwargs["addlicense"]:
