@@ -14,6 +14,8 @@
 * `bom createcomponents`: attachment upload is now more robust to prevent .git files being uploaded.
 * granularity list extended.
 * dependency updates.
+* `getdependencies python` can now detect and ignore dev dependencies also for new versions
+  of the `poetry.lock` file. This is doe by using also the information of the `pyproject.toml` file.
 
 ## 2.5.1 (2024-10-16)
 

@@ -402,7 +402,7 @@ class TestGetDependenciesPython(TestBase):
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue("Checking meta-data:" in out)
-        self.assertTrue("cli-support" in out)
+        self.assertTrue("cli_support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
         self.assertTrue("34 components items written to file." in out)
 
@@ -434,9 +434,9 @@ class TestGetDependenciesPython(TestBase):
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue("Checking meta-data:" in out)
-        self.assertTrue("cli-support" in out)
+        self.assertTrue("cli_support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
-        self.assertTrue("66 components items written to file." in out)
+        self.assertTrue("37 components items written to file." in out)
 
         # dev dependencies are *unfortunately* listed
         self.assertTrue("flake8" in out)

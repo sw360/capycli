@@ -9,8 +9,10 @@
 import logging
 import os
 import sys
+from dataclasses import dataclass
 from enum import Enum
 from io import TextIOWrapper
+from re import compile
 from typing import Any, Dict, List, Optional
 
 import chardet
@@ -34,10 +36,28 @@ LOG = get_logger(__name__)
 
 
 class InputFileType(str, Enum):
-    # Python requirements file ("reqquirements.txt"), default
+    # Python requirements file ("requirements.txt"), default
     REQUIREMENTS = "requirements"
     # Poetry lock file ("poetry.lock")
     POETRY_LOCK = "poetry.lock"
+
+
+@dataclass
+class FileEntry:
+    """File info of a lock file entry."""
+    file: str
+    hash: str
+
+
+@dataclass
+class LockFileEntry:
+    """Represents the relevant data of a poetry.lock entry."""
+    name: str
+    version: str
+    description: str
+    dependencies: List[str]
+    files: List[FileEntry]
+    added: bool
 
 
 class GetPythonDependencies(capycli.common.script_base.ScriptBase):
@@ -47,6 +67,17 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
     def __init__(self) -> None:
         self.verbose = False
+
+    @staticmethod
+    def normalize_packagename(name: str) -> str:
+        """
+        Normalize package names.
+        Also applies to names of package extras.
+
+        see https://packaging.python.org/en/latest/specifications/name-normalization/#name-normalization
+        """
+        _NORMALIZE_MATCHER = compile(r"[-_.]+")
+        return _NORMALIZE_MATCHER.sub("_", name.lower())
 
     def requirements_to_package_list(self, input_file: str) -> List[Dict[str, str]]:
         """
@@ -243,10 +274,12 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         creator = SbomCreator()
         sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         for package in package_list:
-            purl = self.generate_purl(package["name"], package["version"])
+            name = GetPythonDependencies.normalize_packagename(package.get("name", "").strip())
+            version = package.get("version", "").strip()
+            purl = self.generate_purl(name, version)
             cxcomp = Component(
-                name=package.get("name", "").strip(),
-                version=package.get("version", "").strip(),
+                name=name,
+                version=version,
                 purl=PackageURL.from_string(purl),
                 bom_ref=purl,
                 description=package.get("Description", "").strip())
@@ -302,9 +335,9 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         LOG.debug("Use default type: requirements file")
         return InputFileType.REQUIREMENTS
 
-    def read_poetry_lock_file(self, filename: str) -> Dict[str, Any]:
+    def read_toml_file(self, filename: str, err_hint: str = "") -> Dict[str, Any]:
         """
-        Ready a poetry.lock file, a TOML file.
+        Ready a TOML file.
 
         Args:
             filename (str): the filename
@@ -314,42 +347,138 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         """
         try:
             with open(filename, "rb") as f:
-                poetry_lock = tomli.load(f)
+                tomli_data = tomli.load(f)
 
-            return poetry_lock
+            return tomli_data
         except Exception as ex:
-            LOG.debug("Does not look like a poetry.lock file: " + repr(ex))
+            LOG.debug(f"Does not look like a {err_hint} file: " + repr(ex))
 
         return {}
 
-    def sbom_from_poetry_lock_file(self, filename: str, search_meta_data: bool, package_source: str = "") -> Bom:
-        poetry_lock = self.read_poetry_lock_file(filename)
-        poetry_lock_metadata = poetry_lock['metadata']
+    def read_poetry_lock_file(self, filename: str) -> Dict[str, Any]:
+        """
+        Ready a poetry.lock file, a TOML file.
+        """
+        return self.read_toml_file(filename, "poetry.lock")
+
+    def read_pyproject_file(self, filename: str) -> Dict[str, Any]:
+        """
+        Ready a pyproject.toml file, a TOML file.
+        """
+        return self.read_toml_file(filename, "pyproject.toml")
+
+    def get_all_lock_file_entries(self, lock_filename: str) -> List[LockFileEntry]:
+        """Extract information about *all* dependencies from the lock file."""
+        poetry_lock = self.read_poetry_lock_file(lock_filename)
+        poetry_lock_metadata = poetry_lock["metadata"]
+        entry_list: List[LockFileEntry] = []
         try:
             poetry_lock_version = tuple(int(p) for p in str(poetry_lock_metadata["lock-version"]).split("."))
         except Exception:
             poetry_lock_version = (0,)
         LOG.debug(f"poetry_lock_version: {poetry_lock_version}")
 
-        creator = SbomCreator()
-        sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         for package in poetry_lock["package"]:
-            name = package.get("name", "").strip()
+            name = GetPythonDependencies.normalize_packagename(package.get("name", "").strip())
             version = package.get("version", "").strip()
-            LOG.debug(f"  Processing package: {name}, {version}")
+            description = package.get("description", "").strip()
+            LOG.debug(f"  Processing raw package: {name}, {version}")
 
-            cat = package.get("category")
-            if cat == "dev":
-                LOG.debug("  Ignoring development dependency")
+            if package.get("category", "") == "dev":
+                LOG.debug("  Ignoring dev dependency " + name)
                 continue
 
-            purl = PackageURL(type="pypi", name=name, version=version)
+            entry = LockFileEntry(name, version, description, [], [], False)
+            package_files = package["files"] \
+                if poetry_lock_version >= (2,) \
+                else poetry_lock_metadata["files"][package["name"]]
+            for file_metadata in package_files:
+                entry.files.append(FileEntry(
+                    file_metadata["file"],
+                    file_metadata["hash"]))
+
+            for dep in package.get("dependencies", []):
+                dep_name = GetPythonDependencies.normalize_packagename(dep)
+                LOG.debug(f"    Dependency: {dep_name}")
+                entry.dependencies.append(dep_name)
+
+            entry_list.append(entry)
+
+        return entry_list
+
+    def find_lock_entry(self, name: str, entries: List[LockFileEntry]) -> Optional[LockFileEntry]:
+        for entry in entries:
+            if name == entry.name:
+                return entry
+
+        return None
+
+    def add_entry(self,
+                  entry: LockFileEntry,
+                  entry_list: List[LockFileEntry],
+                  all_entries: List[LockFileEntry]) -> None:
+        """Adds an entry and all its dependencies to the final list."""
+        if entry.added:
+            return
+
+        entry_list.append(entry)
+        entry.added = True
+        for dep2 in entry.dependencies:
+            dep_entry = self.find_lock_entry(dep2, all_entries)
+            if dep_entry:
+                self.add_entry(dep_entry, entry_list, all_entries)
+            else:
+                LOG.warning(f"Dependency {dep2} not found!")
+
+    def get_lock_file_entries_for_sbom(self,
+                                       pyproject_file: str,
+                                       all_entries: List[LockFileEntry]) -> List[LockFileEntry]:
+        """Filter lock file entries to get rid of dev dependencies."""
+        entry_list: List[LockFileEntry] = []
+        pyproject_info = self.read_pyproject_file(pyproject_file)
+        if not pyproject_info:
+            # file not found or not readable
+            # => return all dependencies
+            return all_entries
+
+        cfg = pyproject_info["tool"]["poetry"]
+        # get only real dependencies
+        dependencies = cfg.get("dependencies", [])
+        for dep in dependencies:
+            dep_name = GetPythonDependencies.normalize_packagename(dep)
+            if dep_name.lower() == "python":
+                # ignore python (version) 'dependency'
+                continue
+            entry = self.find_lock_entry(dep_name, all_entries)
+            if entry:
+                self.add_entry(entry, entry_list, all_entries)
+            else:
+                LOG.warning(f"Dependency {dep_name} not found!")
+
+        # are there other groups of dependencies?
+        dep_groups = cfg.get("group")
+        for group in dep_groups:
+            print_yellow("Ignoring dependency group " + group)
+            for dep in dep_groups[group].get("dependencies", []):
+                print_yellow("  Ignoring dependency " + dep)
+
+        return entry_list
+
+    def sbom_from_poetry_lock_file(self, filename: str, search_meta_data: bool, package_source: str = "") -> Bom:
+        folder = os.path.dirname(filename)
+        pyproject_file = os.path.join(folder, "pyproject.toml")
+        creator = SbomCreator()
+        sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
+        entry_list_all = self.get_all_lock_file_entries(filename)
+        entry_list = self.get_lock_file_entries_for_sbom(pyproject_file, entry_list_all)
+        for package in entry_list:
+            purl = PackageURL(type="pypi", name=package.name, version=package.version)
             cxcomp = Component(
-                name=name,
-                version=version,
+                name=package.name,
+                version=package.version,
                 purl=purl,
                 bom_ref=purl.to_string(),
-                description=package.get("description", "").strip())
+                description=package.description)
 
             prop = Property(
                 name=CycloneDxSupport.CDX_PROP_LANGUAGE,
@@ -359,19 +488,16 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             if search_meta_data:
                 self.add_meta_data_to_bomitem(cxcomp, package_source)
             else:
-                package_files = package['files'] \
-                    if poetry_lock_version >= (2,) \
-                    else poetry_lock_metadata['files'][package['name']]
                 LOG.debug("  Processing package_files")
-                for file_metadata in package_files:
+                for file_metadata in package.files:
                     LOG.debug(f"    Processing file_metadata: {file_metadata}")
                     try:
                         cxcomp.external_references.add(ExternalReference(
                             type=ExternalReferenceType.DISTRIBUTION,
                             url=XsUri(cxcomp.get_pypi_url()),
-                            # comment=f'Distribution file: {file_metadata["file"]}',
+                            # comment=f'Distribution file: {file_metadata.file}',
                             comment=CaPyCliBom.BINARY_URL_COMMENT,
-                            hashes=[HashType.from_composite_str(file_metadata['hash'])]
+                            hashes=[HashType.from_composite_str(file_metadata.hash)]
                         ))
                     except Exception as ex:
                         # IGNORE
