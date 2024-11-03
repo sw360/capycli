@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.6.0.dev1
 
 * make `findsources` more resilient against SW360 issues.
 * `project createbom` now stores multiple purls in the property "purl_list" instead of
