@@ -15,7 +15,8 @@
 * granularity list extended.
 * dependency updates.
 * `getdependencies python` can now detect and ignore dev dependencies also for new versions
-  of the `poetry.lock` file. This is doe by using also the information of the `pyproject.toml` file.
+  of the `poetry.lock` file. This is done by using also the information of the `pyproject.toml` file.
+* add documentation for SBOM filtering.
 
 ## 2.5.1 (2024-10-16)
 
