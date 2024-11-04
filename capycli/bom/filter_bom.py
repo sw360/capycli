@@ -20,7 +20,7 @@ import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.bom.legacy import LegacySupport
-from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
+from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator, SbomWriter
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -320,6 +320,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
 
         print_text("Writing new SBOM to " + args.outputfile)
         try:
+            SbomCreator.add_standard_bom_standard(sbom)
             SbomWriter.write_to_json(sbom, args.outputfile, True)
         except Exception as ex:
             print_red("Error writing updated SBOM file: " + repr(ex))
