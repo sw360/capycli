@@ -834,7 +834,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
             item2, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "new_url")
+            CaPyCliBom.SOURCE_URL_COMMENT, "https://some.new/file.tar.gz")
         self.app.update_release(item2, release_data)
         captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
