@@ -11,7 +11,9 @@ import sys
 from typing import Any, Optional
 
 from cyclonedx.model.bom import Bom
+from cyclonedx.model.bom_ref import BomRef
 from cyclonedx.model.component import Component
+from cyclonedx.model.dependency import Dependency
 
 import capycli.common.script_base
 from capycli.common.capycli_bom_support import CaPyCliBom, SbomWriter
@@ -81,11 +83,35 @@ class MergeBom(capycli.common.script_base.ScriptBase):
 
         return None
 
+    def find_dependency(self, bom_ref: BomRef, bom: Bom) -> Optional[Component]:
+        """Find a certain dependency (component) by bom_ref in the given bom."""
+        component: Component
+        for component in bom.components:
+            if component.bom_ref == bom_ref:
+                return component
+
+        return None
+
     def merge_boms(self, bom_old: Bom, bom_new: Bom) -> Bom:
+        """Merges two SBOMs."""
+
+        # step 1: merge components
+        component_new: Component
         for component_new in bom_new.components:
             found = self.find_in_bom(bom_old, component_new)
             if not found:
                 bom_old.components.add(component_new)
+
+        # step 2: reconstruct dependencies
+        dep: Dependency
+        for dep in bom_new.dependencies:
+            cr = self.find_dependency(dep.ref, bom_new)
+            if not cr:
+                continue
+            for d in dep.dependencies:
+                cd = self.find_dependency(d.ref, bom_new)
+                if cd:
+                    bom_old.register_dependency(cr, [cd])
 
         return bom_old
 
