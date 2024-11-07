@@ -5,6 +5,11 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* `bom merge` improved: the dependencies are reconstructed, i.e. all dependencies
+  that existed in the SBOMs before the merge should also exist after the merge.
+
 ## 2.6.0.dev1
 
 * make `findsources` more resilient against SW360 issues.
