@@ -46,9 +46,10 @@ class CommandlineSupport():
         CreateComponents  create new components and releases on SW360 (use with care!)
         DownloadSources   download source files from the URL specified in the SBOM
         Granularity       check a bill of material for potential component granularity issues
-        Diff              compare two bills of material.
-        Merge             merge two bills of material.
-        Findsources       determine the source code for SBOM items.
+        Diff              compare two bills of material
+        Merge             merge two bills of material
+        Findsources       determine the source code for SBOM items
+        Validate          validate an SBOM
 
     mapping
         ToHtml            create a HTML page showing the mapping result
@@ -63,7 +64,7 @@ class CommandlineSupport():
         Prerequisites     checks whether all prerequisites for a successful
                           software clearing are fulfilled
         Show              show project details
-        Licenses          show licenses of all cleared compponents
+        Licenses          show licenses of all cleared components
         Create            create or update a project on SW360
         Update            update an exiting project, preserving linked releases
         GetLicenseInfo    get license info of all project components
@@ -106,6 +107,7 @@ class CommandlineSupport():
         input_formats.append(BomFormat.LEGACY_CX)
         input_formats.append(BomFormat.SBOM)
         input_formats.append(BomFormat.CAPYCLI)
+        input_formats.append(BomFormat.XML)
 
         output_formats = []
         output_formats.append(BomFormat.CAPYCLI)
@@ -114,6 +116,7 @@ class CommandlineSupport():
         output_formats.append(BomFormat.CSV)
         output_formats.append(BomFormat.LEGACY)
         output_formats.append(BomFormat.HTML)
+        output_formats.append(BomFormat.XML)
 
         map_modes = []
         map_modes.append(MapMode.ALL)
