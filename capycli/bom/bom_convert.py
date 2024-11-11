@@ -18,16 +18,15 @@ from sortedcontainers import SortedSet
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
+from capycli.bom.csv import CsvSupport
+from capycli.bom.html import HtmlConversionSupport
+from capycli.bom.legacy import LegacySupport
+from capycli.bom.legacy_cx import LegacyCx
+from capycli.bom.plaintext import PlainTextSupport
 from capycli.common.capycli_bom_support import CaPyCliBom
-from capycli.common.print import print_red, print_text
+from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.exceptions import CaPyCliException
 from capycli.main.result_codes import ResultCode
-
-from .csv import CsvSupport
-from .html import HtmlConversionSupport
-from .legacy import LegacySupport
-from .legacy_cx import LegacyCx
-from .plaintext import PlainTextSupport
 
 LOG = get_logger(__name__)
 
@@ -47,6 +46,8 @@ class BomFormat(str, Enum):
     LEGACY_CX = "legacy-cx"
     # HTML
     HTML = "html"
+    # CycloneDX XML
+    XML = "xml"
 
 
 class BomConvert(capycli.common.script_base.ScriptBase):
@@ -72,6 +73,11 @@ class BomConvert(capycli.common.script_base.ScriptBase):
                 print_text(f"  {len(cdx_components)} components read from file {inputfile}")
             elif (inputformat == BomFormat.CAPYCLI) or (inputformat == BomFormat.SBOM):
                 sbom = CaPyCliBom.read_sbom(inputfile)
+                cdx_components = sbom.components
+                project = sbom.metadata.component
+                print_text(f"  {len(cdx_components)} components read from file {inputfile}")
+            elif (inputformat == BomFormat.XML):
+                sbom = CaPyCliBom.read_sbom_xml(inputfile)
                 cdx_components = sbom.components
                 project = sbom.metadata.component
                 print_text(f"  {len(cdx_components)} components read from file {inputfile}")
@@ -106,6 +112,12 @@ class BomConvert(capycli.common.script_base.ScriptBase):
                 else:
                     CaPyCliBom.write_simple_sbom(cdx_components, outputfile)
                     print_text(f"  {len(cdx_components)} components written to file {outputfile}")
+            elif outputformat == BomFormat.XML:
+                if sbom:
+                    CaPyCliBom.write_sbom_xml(sbom, outputfile)
+                    print_text(f"  {len(sbom.components)} components written to file {outputfile}")
+                else:
+                    print_yellow("  This command only works for CycloneDX SBOM input files!")
             elif outputformat == BomFormat.LEGACY:
                 LegacySupport.write_cdx_components_as_legacy(cdx_components, outputfile)
                 print_text(f"  {len(cdx_components)} components written to file {outputfile}")
@@ -139,15 +151,15 @@ class BomConvert(capycli.common.script_base.ScriptBase):
 
     def display_help(self) -> None:
         """Display (local) help."""
-        print("usage: CaPyCli bom convert [-h] [-i INPUTFILE] [-if {capycli,text,csv,legacy,legacy-cx}]")
-        print("                           [-o OUTPUTFILE] [-of {capycli,text,csv,legacy,legacy-cx,html}]")
+        print("usage: CaPyCli bom convert [-h] [-i INPUTFILE] [-if {capycli,sbom,text,csv,legacy,legacy-cx,xml}]")
+        print("                           [-o OUTPUTFILE] [-of {capycli,text,csv,legacy,legacy-cx,html,xml}]")
         print("")
         print("optional arguments:")
         print("    -h, --help            Show this help message and exit")
         print("    -i INPUTFILE          Input BOM filename (JSON)")
         print("    -o OUTPUTFILE         Output BOM filename")
-        print("    -if INPUTFORMAT       Specify input file format: capycli|sbom|text|csv|legacy|legacy-cx")
-        print("    -of OUTPUTFORMAT      Specify output file format: capycli|text|csv|legacy|html")
+        print("    -if INPUTFORMAT       Input file format: capycli|sbom|text|csv|legacy|legacy-cx|xml")
+        print("    -of OUTPUTFORMAT      Output file format: capycli|text|csv|legacy|html|xml")
 
     def run(self, args: Any) -> None:
         """Main method()"""

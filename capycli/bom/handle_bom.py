@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-24 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -10,6 +10,7 @@ import sys
 from typing import Any
 
 import capycli.bom.bom_convert
+import capycli.bom.bom_validate
 import capycli.bom.check_bom
 import capycli.bom.check_bom_item_status
 import capycli.bom.check_granularity
@@ -46,9 +47,10 @@ def run_bom_command(args: Any) -> None:
         print("    CreateComponents  create new components and releases on SW360 (use with care!)")
         print("    DownloadSources   download source files from the URL specified in the SBOM")
         print("    Granularity       check a bill of material for potential component granularity issues")
-        print("    Diff              compare two bills of material.")
-        print("    Merge             merge two bills of material.")
-        print("    Findsources       determine the source code for SBOM items.")
+        print("    Diff              compare two bills of material")
+        print("    Merge             merge two bills of material")
+        print("    Findsources       determine the source code for SBOM items")
+        print("    Validate          validate an SBOM")
         return
 
     subcommand = args.command[1].lower()
@@ -129,6 +131,12 @@ def run_bom_command(args: Any) -> None:
         """Convert SBOM formats."""
         app13 = capycli.bom.bom_convert.BomConvert()
         app13.run(args)
+        return
+
+    if subcommand == "validate":
+        """Validate an SBOM."""
+        app14 = capycli.bom.bom_validate.BomValidate()
+        app14.run(args)
         return
 
     print_red("Unknown sub-command: ")

@@ -181,7 +181,7 @@ class TestMergeBom(TestBase):
 
         bom = CaPyCliBom.read_sbom(outputfile)
 
-        self.assertEqual(2, len(bom.metadata.tools))
+        self.assertEqual(3, len(bom.metadata.tools))
         self.assertEqual("Siemens AG", bom.metadata.tools.tools[0].vendor)
         self.assertEqual("CaPyCLI", bom.metadata.tools.tools[0].name)
         self.assertEqual("Siemens AG", bom.metadata.tools.tools[1].vendor)

@@ -19,6 +19,7 @@ from tests.test_base import AppArguments, TestBase
 class TestGetDependenciesPython(TestBase):
     INPUTFILE = "poetry.lock"
     INPUTFILE2 = "sbom_with_sw360.json"
+    INPUTFILE3 = "poetry2.lock"
     OUTPUTFILE1 = "test_requirements.txt"
     OUTPUTFILE2 = "output.json"
 
@@ -404,11 +405,11 @@ class TestGetDependenciesPython(TestBase):
         self.assertTrue("Checking meta-data:" in out)
         self.assertTrue("cli_support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
-        self.assertTrue("34 components items written to file." in out)
+        self.assertTrue("30 components items written to file." in out)
 
         # ensure that dev dependencies are NOT listed
-        self.assertTrue("flake8" not in out)
-        self.assertTrue("responses" not in out)
+        self.assertTrue("Ignoring dependency flake8" in out)
+        self.assertTrue("Ignoring dependency responses" in out)
 
         self.assertTrue(os.path.isfile(self.OUTPUTFILE2))
 
@@ -425,7 +426,7 @@ class TestGetDependenciesPython(TestBase):
         args.command = []
         args.command.append("getdependencies")
         args.command.append("python")
-        args.inputfile = self.INPUTFILE  # this is current version of this project!
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE3)
         args.outputfile = self.OUTPUTFILE2
         args.verbose = True
         args.debug = True
@@ -436,7 +437,9 @@ class TestGetDependenciesPython(TestBase):
         self.assertTrue("Checking meta-data:" in out)
         self.assertTrue("cli_support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
-        self.assertTrue("37 components items written to file." in out)
+        # for the real version 2.6.0 source code it would be 39 components,
+        # but for the test the umber is different
+        self.assertTrue("43 components items written to file." in out)
 
         # dev dependencies are *unfortunately* listed
         self.assertTrue("flake8" in out)
@@ -449,4 +452,4 @@ class TestGetDependenciesPython(TestBase):
 
 if __name__ == "__main__":
     APP = TestGetDependenciesPython()
-    APP.test_process_poetry_1_8_3_lock()
+    APP.test_process_poetry_1_4_0_lock()
