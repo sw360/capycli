@@ -10,6 +10,7 @@ import sys
 from typing import Any
 
 import capycli.bom.bom_convert
+import capycli.bom.bom_validate
 import capycli.bom.check_bom
 import capycli.bom.check_bom_item_status
 import capycli.bom.check_granularity
@@ -21,7 +22,6 @@ import capycli.bom.findsources
 import capycli.bom.map_bom
 import capycli.bom.merge_bom
 import capycli.bom.show_bom
-import capycli.bom.bom_validate
 from capycli.common.print import print_red
 from capycli.main.result_codes import ResultCode
 

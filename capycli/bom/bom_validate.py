@@ -8,16 +8,15 @@
 
 import os
 import sys
-
 from typing import Any
 
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom
+from capycli.common.print import print_text
 from capycli.main.exceptions import CaPyCliException
 from capycli.main.result_codes import ResultCode
-from capycli.common.print import print_text
 
 LOG = get_logger(__name__)
 

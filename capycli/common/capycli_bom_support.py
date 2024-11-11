@@ -30,7 +30,6 @@ if TYPE_CHECKING:
     from cyclonedx.output.xml import Xml as XmlOutputter
 
 from defusedxml import ElementTree as SafeElementTree  # type:ignore[import-untyped]
-
 from sortedcontainers import SortedSet
 
 import capycli.common.script_base
