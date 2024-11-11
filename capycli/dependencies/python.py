@@ -310,7 +310,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         print()
 
-    def determine_file_type(self, filename: str) -> InputFileType:
+    def determine_file_type(self, full_filename: str) -> InputFileType:
         """
         Try to guess the input file type from the filename.
 
@@ -320,13 +320,14 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         Returns:
             An InputFileType value.
         """
-        filename = os.path.basename(filename).lower()
+        filename = os.path.basename(full_filename).lower()
         if filename == "requirements.txt":
             LOG.debug("Guessing requirements file")
             return InputFileType.REQUIREMENTS
 
-        if filename == "poetry.lock":
-            data = self.read_poetry_lock_file(filename)
+        if (filename == "poetry.lock") or (filename == "poetry2.lock"):
+            # "poetry2.lock is only for unit test
+            data = self.read_poetry_lock_file(full_filename)
             if data:
                 LOG.debug("Guessing poetry.lock file")
                 return InputFileType.POETRY_LOCK
