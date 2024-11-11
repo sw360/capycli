@@ -76,7 +76,6 @@ class BomConvert(capycli.common.script_base.ScriptBase):
                 cdx_components = sbom.components
                 project = sbom.metadata.component
                 print_text(f"  {len(cdx_components)} components read from file {inputfile}")
-                CaPyCliBom.validate_sbom(inputfile)
             elif (inputformat == BomFormat.XML):
                 sbom = CaPyCliBom.read_sbom_xml(inputfile)
                 cdx_components = sbom.components
