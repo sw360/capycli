@@ -669,6 +669,64 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert captured.err == ""
 
     @responses.activate
+    def test_upload_file_prevent_git_source_upload(self) -> None:
+        """Prevent uploading SOURCE, SOURCE_SELF file with .git file type
+        """
+        responses.add(
+            responses.GET, 'https://github.com/babel/babel.git',
+            body="content")
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("babel.git")])
+
+        self.app.download = True
+        item = Component(
+            name="activemodel",
+            version="5.2.1"
+        )
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel.git")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.SOURCE_FILE_COMMENT, "babel.git")
+
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "WARNING: resetting filename to prevent uploading .git file" in captured.out
+        assert captured.err == ""
+
+    @responses.activate
+    def test_upload_file_allow_git_binary_upload(self) -> None:
+        """Allow uploading BINARY file with .git file type
+        """
+        responses.add(
+            responses.GET, 'https://github.com/babel/babel.git',
+            body="content")
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("babel.git")])
+
+        self.app.download = True
+        item = Component(
+            name="activemodel",
+            version="5.2.1"
+        )
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.BINARY_URL_COMMENT, "https://github.com/babel/babel.git")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.BINARY_FILE_COMMENT, "babel.git")
+
+        self.app.upload_file(item, {}, "06a6e7", "BINARY", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "WARNING: resetting filename to prevent uploading .git file" not in captured.out
+        assert captured.err == ""
+
+    @responses.activate
     def test_upload_binary_file_local(self) -> None:
         """Upload local file
         """
@@ -783,6 +841,7 @@ class CapycliTestBomCreate(CapycliTestBase):
         self.app.update_release(item2, release_data)
         captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
+        assert len(responses.calls) == 0  # assure data in SW360 is not changed
 
         # no existing URL, set new URL
         responses.add(

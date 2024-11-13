@@ -299,8 +299,6 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                 print_yellow(
                     "    WARNING: SW360 source URL", release_data["sourceCodeDownloadurl"],
                     "differs from BOM URL", data["sourceCodeDownloadurl"])
-                if data["sourceCodeDownloadurl"].endswith(('zip', 'tgz', 'tar.gz', 'tar')):
-                    update_data["sourceCodeDownloadurl"] = data["sourceCodeDownloadurl"]
 
         if "binaryDownloadurl" in data and data["binaryDownloadurl"]:
             if not release_data.get("binaryDownloadurl", ""):
@@ -363,14 +361,14 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             filename = str(CycloneDxSupport.get_ext_ref_source_file(cx_comp))
             filehash = str(CycloneDxSupport.get_source_file_hash(cx_comp))
 
+            if filename is not None and filename.endswith('.git'):
+                print_red("    WARNING: resetting filename to prevent uploading .git file")
+                filename = None
+
         if filetype in ["BINARY", "BINARY_SELF"]:
             url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
             filename = str(CycloneDxSupport.get_ext_ref_binary_file(cx_comp))
             filehash = str(CycloneDxSupport.get_binary_file_hash(cx_comp))
-
-        if filename is not None and filename.endswith('.git'):
-            print_red("    WARNING: resetting filename to prevent uploading .git file")
-            filename = None
 
         # Note that we retrieve the SHA1 has from the CycloneDX data.
         # But there is no guarantee that this *IS* really a SHA1 hash!
