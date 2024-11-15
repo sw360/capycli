@@ -161,68 +161,33 @@ class FindSources(capycli.common.script_base.ScriptBase):
             tags.extend(tmp)
         return tags
 
-    def github_api_request(self, url, **kwargs):
-        """Non static method to query GitHub. Also using slightly
-           different headers.
-           ToDo: not relevant to the topic at hand
-        """
-        headers = {'Accept': 'application/vnd.github+json',
-                   'Authorization': f'Bearer {self.github_token}',
-                   'X-GitHub-Api-Version': '2022-11-28',
-                  }
-        if self.github_name:
-            headers["Username"] = self.github_name
-        method = kwargs.get('method', 'GET')
-        handle_429 = bool(kwargs.get('handle_429', False))
-        req_kwargs = {}
-        # extend the tuple to enable more request.request kwargs
-        for key in ('allow_redirects',
-                ):
-            if key in kwargs:
-                req_kwargs[key] = kwargs[key]
-        try:
-            res = requests.request(method, url, headers=headers, **req_kwargs)
-            if res.status_code == 429 and handle_429 is True\
-            or 'rate limit exceeded' in res.reason \
-            or "API rate limit exceeded" in res.json().get("message"):
-                print(f"{Fore.LIGHTYELLOW_EX}"
-                       "      Github API rate limit exceeded"
-                       " - wait 60s and retry ... "
-                      f"{Style.RESET_ALL}")
-                time.sleep(60)
-                return self.github_api_request(url, **kwargs)
-        except Exception as ex:
-            print(
-                Fore.LIGHTYELLOW_EX +
-                "      Error accessing GitHub: " + repr(ex) +
-                Style.RESET_ALL)
-            res = requests.Response()
-        return res
-
     def _get_github_repo(self, github_ref):
         """Fetch GitHub API object identified by @github_ref.
+           This method interpretes @github_ref and fetches the
+           referenced project's API object from GitHub.
            @github_ref could be a simple "<owner>/<repo>" string or any
-           kind of the plethora of links that refer to a project on
-           GitHub. This method interpretes @github_ref and fetches the
-           referenced project's data from GitHub.
+           from the plethora of links that refer to a project on
+           GitHub.
+           By using urlparse() we save ourselves a little bit of work
+           with trailing queries and fragments, but any @github_ref with
+           colons where the first colon is not part of '://' will not
+           yield viable results,
+           e.g. 'api.github.com:443/repos/sw360/capycli'.
         """
         url = 'api.github.com/repos/'
         gh_ref = urlparse(github_ref, scheme='no_scheme_provided')
         if gh_ref.scheme == 'no_scheme_provided':
             # interprete @github_ref as OWNER/REPO
             url += gh_ref.path
+        elif not gh_ref.netloc.endswith('github.com'):
+            raise ValueError(f'{github_ref} is not an expected @github_ref!')
+        elif gh_ref.path.startswith('/repos'):
+            url += gh_ref.path[6:]
         else:
-            # there is an actual <scheme>:// in @github_ref
-            if not gh_ref.netloc.endswith('github.com'):
-                raise ValueError(f'{github_ref} is not an expected @github_ref!')
-            if gh_ref.path.startswith('/repos'):
-                url += gh_ref.path[6:]
-            else:
-                url += gh_ref.path
+            url += gh_ref.path
         if url.endswith('.git'):
             url = url[0:-4]
-        url = url.replace('//', '/')  # this is why add https:// late
-        url = f'https://{url}'
+        url = 'https://' + url.replace('//', '/')
         repo = {}
         while 'tags_url' not in repo and 'github.com' in url:
             repo = self.github_request(url, self.github_name, self.github_token)
@@ -232,183 +197,165 @@ class FindSources(capycli.common.script_base.ScriptBase):
         return repo
 
     def _get_link(self, link, which='next'):
-        """Helper to read link-Header from GitHub API responses."""
+        """Helper to read link-Header from GitHub API responses.
+           Each URL in the Link-header is labelled with a relation,
+           usually, first, last, prev or next. We use this method to
+           retrieve the URL by its relation's name.
+        """
         for match in self.github_header_link_regex.findall(link):
-            try:
-                rel = match[2] + match[3] + match[4]  # two of these will be empty
-                if rel == which:
-                    return match[0]
-            except IndexError:
-                print(f'_get_link unable to match! |{link}|   |{which}|')
-                print(match)
-                print(self.github_header_link_regex.findall(link))
-
-        return None
+            if which in match[2:5]:
+                return match[0]
+        raise KeyError(f'No link to {which}-page in response!')
 
     def _get_link_page(self, link, which='next'):
-        """Helper to only get page number from link-Header."""
-        url = urlparse(self._get_link(link, which))
+        """Helper to only get the referenced page number a link-header-URL."""
         try:
+            url = urlparse(self._get_link(link, which))
             return parse_qs(url.query)['page'][0]
-        except KeyError:  # no page in query
+        except KeyError:  # GitHub gave us only one results page
             return 1
 
     @staticmethod
-    def trailing_zeroes(data):
+    def _trailing_zeroes(data):
         """Count length of klongest all 0 suffix in @data"""
-        cnt = 0
-        for letter in reversed(data):
-            if letter == '0':
-                cnt += 1
-            else:
-                break
-        return cnt
+        for cnt, letter in enumerate(reversed(data)):
+            if letter != '0':
+                return cnt
+        return 0
+
+    def _render_github_source_url(self, repo, ref):
+        """From API knowledge, create a download link.
+           There are quite a few indirections involved, when downloading
+           source code from GitHub. With this method we build what we
+           think is a good download link for long term storage.
+        """
+        url = repo['archive_url'].replace('{/ref}', '{ref}', 1)
+        url = url.format(archive_format='zipball', ref='/'+ref)
+
+        res = self.github_request(url, self.github_name, self.github_token,
+                                return_response=True, allow_redirects=False)
+        if res.status_code != 302:  # if this is ever true, we must not assume
+            res.raise_for_status()  # our approach is still sensible
+        return url.replace(
+                    "https://api.github.com/repos", "https://github.com"
+                ).replace(
+                    "zipball/refs/tags", "archive/refs/tags"
+                ) + '.zip'
 
     def version_to_github_tag(self, version, github_ref, version_prefix=None):
         """Heuristics to find a tag in GitHub that corresponds to
            @version in the project identified by @github_ref.
 
            First we must normalize @github_ref, because we are unsure
-           what is actually passed as this paramter. Using urlparse()
-           we save ourselves a little bit of work with trailing
-           queries and fragments, but any @github_ref with colons where
-           the first colon is not part of '://' will not yield viable
-           results, e.g. 'api.github.com:443/repos/sw360/capycli'.
+           what is actually passed as this paramter.
 
-           Then we start guessing tags.
+           The first check for each retrieved tag is the original
+           get_matching_tag() and all the guessing happens afterwards.
+           This has the effect that if our guessing does not yield any
+           viable results, this algo implicitly falls back to checking
+           every tag with get_matching_tag(), which is the behaviour of
+           the previous implementation.
+
+           If get_matching_tag() did not yield a positive result, we
+           start guessing tags:
            We only care about such tags that produce a non empty match
            with self.version_regex, because only these would ever yield
-           accepted compare() results in get_matching_tag(). Every such
-           tag can be read as a fixed prefix, a substring as matched by
-           self.version_regex followed by a suffix. Usually, prefix
-           will be "v" and the suffix will be empty, but sometimes tags
-           are more elaborate.
-           We expect the only the regex-matchable part of a tag changes
+           accepted compare() results in get_matching_tag().
+           Every such tag can be read as a fixed prefix, followed by a
+           substring as matched by self.version_regex, followed by a
+           fixed suffix. Usually, the prefix will be "v" and the suffix
+           will be empty, but sometimes tags are more elaborate.
+           We expect only the regex-matchable part of a tag changes
            from version to version, while the prefix and the suffix are
            static.
            Given a tag with a static prefix, a static suffix and a
            self.version_regex-matchable substring, we can generate
-           tag names from semantic versions, by reverseing the logic
-           implemented in to_semver_string().
+           tag names from semantic versions, by reversing the logic
+           in to_semver_string().
            Comparing the original matchable substring, to the result of
            to_semver_string() we should be able to generate similar
            matchable substrings from @version.
         """
-        matching_tag = ''
         semcmp = self.to_semver_string(version).split('.')
         repo = self._get_github_repo(github_ref)
         print(f"version_to_github_tag: {github_ref} -> {repo['tags_url']}")
-
 
         url = repo['tags_url'] +'?per_page=100'
         res = self.github_request(url, self.github_name,
                 self.github_token, return_response=True)
         pages = self._get_link_page(res.headers.get('link', ''), 'last')
-        try:
-            for _ in range(pages):
-                #  note: in res.json() we already have the first page
-                tags = [tag['name'] for tag in res.json()]
-                prefix = None
-                suffix = None
-                for tag in tags:
-                    # ex: tag['name'] = foo01_02_03bar
+        prefix, suffix = None, None  # tag parts not relevant to versioning
+        for _ in range(pages):  # we prefer this over "while True"
+            # note: in res.json() we already have the first results page
+            tags = {tag['name']:tag for tag in res.json()}
+            for tag in tags:
+                matching_tag = self.get_matching_tag([tags[tag]], version, url)
+                if len(matching_tag) > 0:  # we found what we believe is
+                    return matching_tag    # the correct tag
+                # if we have seen this _prefix and _suffix,
+                # we already tried to guess the tag and failed
+                # no need to try again
+                best_guess = self.version_regex.search(tag)
+                best_guess = tag if best_guess is None else best_guess.group(0)
+                _prefix, _suffix = tag.split(best_guess, 1)
+                if prefix == _prefix and suffix == _suffix:
+                    continue
+                prefix, suffix = _prefix, _suffix
+
+                # reverse engineer a best_guess from @version
+                engineered_guess = []
+                remainder = best_guess
+                semtag = self.to_semver_string(tag).split('.')
+                # IIRC to_semver_string() can return versions with more
+                # than 3 components
+                for tag_ver, param_ver in zip(semtag, semcmp):
                     try:
-                        best_guess = self.version_regex.search(tag).group(0)
-                    except AttributeError as err:
-                        print(f'AttributeError {err}')
-                        print(f'    tag: {tag}')
-                        best_guess = tag
-                    # ex => best_guess = 01_02_03
-                    _prefix, _suffix = tag.split(best_guess, 1)
-                    # ex => _prefix = foo, _suffix = bar
-                    if prefix == _prefix and suffix == _suffix:
-                        continue
-                    prefix, suffix = _prefix, _suffix
+                        chunk, remainder = remainder.split(tag_ver, 1)
+                        leading_zeroes = self._trailing_zeroes(chunk)
+                        delta_digits = len(param_ver) - len(tag_ver)
+                        if leading_zeroes > 0 \
+                        and leading_zeroes - delta_digits > 0:
+                            chunk = chunk[:-leading_zeroes]\
+                                  + '0' * (leading_zeroes - delta_digits)
+                        engineered_guess.append(chunk)
+                        engineered_guess.append(param_ver)
+                    except ValueError as err:
+                        # sometimes there are wonky tags that are not
+                        # even meant to be a release
+                        pass
 
-                    semtag = self.to_semver_string(tag).split('.')
-                    # ex => semtag = ['1', '2', '3']
-
-                    # reverse engineer version string in tag
-                    # ex => semcmp = ['4', '5', '6']
-                    ver_str_parts = []
-                    remainder = best_guess
-                    # if i read that correctly to_semver_string() can return
-                    # versions with more than 3 components
-                    for tag_ver, param_ver in zip(semtag, semcmp):
-                        try:
-                            chunk, remainder = remainder.split(tag_ver, 1)
-                            leading_zeroes = self.trailing_zeroes(chunk)
-                            delta_digits = len(param_ver) - len(tag_ver)
-                            if leading_zeroes > 0 \
-                            and leading_zeroes - delta_digits > 0:
-                                chunk = chunk[:-leading_zeroes]\
-                                      + '0' * (leading_zeroes - delta_digits)
-                            ver_str_parts.append(chunk)
-                            ver_str_parts.append(param_ver)
-                            # ex => ver_str_parts = ['0', '4', '_0', '5', '_0', '6']
-                        except ValueError as err:
-                            # sometimes there are wonky tags that are not
-                            # even meant to be a release
-                            # print(f'ValueError {err}')
-                            # print(f'    best_guess: {best_guess}')
-                            # print(f'    remainder: {remainder}')
-                            # print('    ', semtag, semcmp)
-                            # print('    ', tag_ver, param_ver)
-                            # print('    ', ver_str_parts)
-                            pass
-
-                    guesses = {  # avoid generating duplicates
-                        prefix + ''.join(ver_str_parts) + suffix,  # ex => foo04_05_06bar
-                        prefix + ''.join(ver_str_parts),
-                        'v' + ''.join(ver_str_parts),
-                        ''.join(ver_str_parts),
-                        prefix + '.'.join(semcmp) + suffix,
-                        prefix + '.'.join(semcmp),
-                        'v' + '.'.join(semcmp),
-                        '.'.join(semcmp),
-                    }
-                    for guess in guesses:
-                        print(f'version_to_github_tag: {tag} {guess} ', end='')
-                        if guess in tags:
-                            print('found on current page')
-                            matching_tag = guess
-                            raise StopIteration()
-                        url = repo['git_refs_url'].replace('{/sha}', '{sha}', 1)
-                        url = url.format(sha='/tags/' + guess)
-                        res = self.github_request(url, self.github_name,
-                                self.github_token, return_response=True)
-                        if res.status_code == 200:
-                            print('is a valid tag')
-                            matching_tag = guess
-                            raise StopIteration()
-                        print(':-(')
-
-                try:
-                    url = self._get_link(res.headers['link'], 'next')
-                    if url is None:
-                        raise StopIteration()
-                except KeyError as err:
-                    raise StopIteration() from err
+                guesses = {  # set to void generating duplicates
+                    prefix + ''.join(engineered_guess) + suffix,
+                    prefix + ''.join(engineered_guess),
+                    'v' + ''.join(engineered_guess),
+                    ''.join(engineered_guess),
+                    prefix + '.'.join(semcmp) + suffix,
+                    prefix + '.'.join(semcmp),
+                    'v' + '.'.join(semcmp),
+                    '.'.join(semcmp),
+                }
+                for guess in guesses:
+                    print(f'version_to_github_tag: {tag} {guess} ', end='')
+                    if guess in tags:
+                        print('found on current page')
+                        return self._render_github_source_url(repo, guess)
+                    url = repo['git_refs_url'].replace('{/sha}', '{sha}', 1)
+                    url = url.format(sha='/tags/' + guess)
+                    res = self.github_request(url, self.github_name,
+                            self.github_token, return_response=True)
+                    if res.status_code == 200:
+                        print('is a valid tag')
+                        return self._render_github_source_url(repo, guess)
+                    print(':-(')
+            try:
+                url = self._get_link(res.headers['link'], 'next')
                 res = self.github_request(url, self.github_name,
                         self.github_token, return_response=True)
                 print('version_to_github_tag: next page!')
-        except StopIteration:
-            pass
-
-        if matching_tag == '':
-            print_yellow("      No matching tag for version " + version + " found ")
-            return ""
-
-        url = repo['archive_url'].replace('{/ref}', '{ref}', 1)
-        url = url.format(archive_format='tarball', ref='/'+matching_tag)
-        res = self.github_request(url, self.github_name, self.github_token,
-                                return_response=True, allow_redirects=False)
-        try:
-            return res.headers['location']
-        except KeyError:
-            print(f'No location in response! {url} {res.status_code}')
-            print(res.headers)
-        return ""  # fail
+            except KeyError as err:  # no more result pages
+                break
+        print_yellow("      No matching tag for version " + version + " found")
+        return ""
 
 
 
