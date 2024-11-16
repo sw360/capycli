@@ -6,10 +6,12 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import json
 import os
 from typing import Any, Dict, List
 from unittest.mock import MagicMock, patch
 
+import requests
 import responses
 
 import capycli.common.json_support
@@ -87,6 +89,7 @@ class TestFindSources(TestBase):
 
     def mock_github_request_side_effect(self, url: str, username: str = "", token: str = "") -> Any:
         # Define different mock responses based on the URL
+        print(f'\nmock_github_request({url})')
         if url == 'https://api.github.com/repos/tartley/colorama/tags?per_page=100&page=1':
             return [
                 {
@@ -328,13 +331,26 @@ class TestFindSources(TestBase):
     @patch('capycli.bom.findsources.FindSources.get_matching_tag')
     def test_find_golang_url_github(self, mock_get_github_info: Any, mock_get_matching_tag: Any) -> None:
         # Mocking a GitHub scenario
+        tags_first_page = requests.Response()
+        tags_first_page._content = json.dumps(
+            [{'name': f'unittest_v1.0.1_unittest'}]
+            ).encode()
         mock_get_github_info.return_value = 'https://pkg.go.dev/github.com/opencontainers/runc'
         mock_get_matching_tag.return_value = 'https://github.com/opencontainers/runc/archive/refs/tags/v1.0.1.zip'
+        mock_github_request.side_effect = (
+            {'tags_url': 'https://api.github.com/repos/opencontainers/runc/tags'},
+            tags_first_page,
+            )
         find_sources = FindSources()
         component = MagicMock()
         component.name = 'github.com/opencontainers/runc'
         component.version = 'v1.0.1'
-        source_url = find_sources.find_golang_url(component)
+        with patch.object(find_sources, 'github_request') as call:
+            call.side_effect = (
+                {'tags_url': 'https://api.github.com/repos/opencontainers/runc/tags'},
+                tags_first_page,
+                )
+            source_url = find_sources.find_golang_url(component)
 
         self.assertEqual(source_url, 'https://pkg.go.dev/github.com/opencontainers/runc')
 
