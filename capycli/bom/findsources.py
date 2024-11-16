@@ -190,27 +190,19 @@ class FindSources(capycli.common.script_base.ScriptBase):
         url = 'https://' + url.replace('//', '/')
         repo = {}
         while 'tags_url' not in repo and 'github.com' in url:
+            print('DEBUG running github_request')
+            print(f'DEBUG self.github_request({url}, {self.github_name}, {self.github_token})')
             repo = self.github_request(url, self.github_name, self.github_token)
+            print(f'DEBUG repo {repo}')
             url = url.rsplit('/', 1)[0]  # remove last path segment
         if 'tags_url' not in repo:
             raise ValueError(f"Unable to make @github_ref {github_ref} work!")
         return repo
 
-    def _get_link(self, link, which='next'):
-        """Helper to read link-Header from GitHub API responses.
-           Each URL in the Link-header is labelled with a relation,
-           usually, first, last, prev or next. We use this method to
-           retrieve the URL by its relation's name.
-        """
-        for match in self.github_header_link_regex.findall(link):
-            if which in match[2:5]:
-                return match[0]
-        raise KeyError(f'No link to {which}-page in response!')
-
-    def _get_link_page(self, link, which='next'):
+    def _get_link_page(self, res, which='next'):
         """Helper to only get the referenced page number a link-header-URL."""
         try:
-            url = urlparse(self._get_link(link, which))
+            url = urlparse(res.links[which]['url'])
             return parse_qs(url.query)['page'][0]
         except KeyError:  # GitHub gave us only one results page
             return 1
@@ -283,7 +275,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         url = repo['tags_url'] +'?per_page=100'
         res = self.github_request(url, self.github_name,
                 self.github_token, return_response=True)
-        pages = self._get_link_page(res.headers.get('link', ''), 'last')
+        pages = self._get_link_page(res)
         prefix, suffix = None, None  # tag parts not relevant to versioning
         for _ in range(pages):  # we prefer this over "while True"
             # note: in res.json() we already have the first results page
@@ -348,7 +340,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                         return self._render_github_source_url(repo, guess)
                     print(':-(')
             try:
-                url = self._get_link(res.headers['link'], 'next')
+                url = res.links['next']['url']
                 res = self.github_request(url, self.github_name,
                         self.github_token, return_response=True)
                 print('version_to_github_tag: next page!')
