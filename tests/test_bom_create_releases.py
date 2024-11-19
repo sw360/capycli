@@ -675,9 +675,6 @@ class CapycliTestBomCreate(CapycliTestBase):
         responses.add(
             responses.GET, 'https://github.com/babel/babel.git',
             body="content")
-        responses.add(
-            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
-            match=[upload_matcher("babel.git")])
 
         self.app.download = True
         item = Component(
@@ -693,7 +690,7 @@ class CapycliTestBomCreate(CapycliTestBase):
 
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
         captured = self.capsys.readouterr()  # type: ignore
-        assert len(responses.calls) == 2
+        assert len(responses.calls) == 0
         assert "WARNING: resetting filename to prevent uploading .git file" in captured.out
         assert captured.err == ""
 

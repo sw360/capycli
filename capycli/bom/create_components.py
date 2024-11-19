@@ -361,10 +361,6 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             filename = str(CycloneDxSupport.get_ext_ref_source_file(cx_comp))
             filehash = str(CycloneDxSupport.get_source_file_hash(cx_comp))
 
-            if filename is not None and filename.endswith('.git'):
-                print_red("    WARNING: resetting filename to prevent uploading .git file")
-                filename = None
-
         if filetype in ["BINARY", "BINARY_SELF"]:
             url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
             filename = str(CycloneDxSupport.get_ext_ref_binary_file(cx_comp))
@@ -377,6 +373,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             filename_parsed = urlparse(url)
             if filename_parsed:
                 filename = os.path.basename(filename_parsed.path)
+
+        if filetype in ["SOURCE", "SOURCE_SELF"] and filename is not None and filename.endswith('.git'):
+            print_red("    WARNING: resetting filename to prevent uploading .git file")
+            filename = None
 
         if not filename:
             print_red("    Unable to identify filename from url!")
