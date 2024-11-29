@@ -417,19 +417,65 @@ class TestFindSources(TestBase):
         repo_url = find_sources.get_pkg_go_repo_url('some/package')
         self.assertEqual(repo_url, 'https://pkg.go.dev/some/package')
 
-    @patch('capycli.bom.findsources.FindSources.get_github_info')
+    @patch('capycli.bom.findsources.FindSources.get_matching_source_url')
+    @patch('capycli.bom.findsources.FindSources.get_pkg_go_repo_url')
     @patch('capycli.bom.findsources.FindSources.get_matching_tag')
-    def test_find_golang_url_github(self, mock_get_github_info: Any, mock_get_matching_tag: Any) -> None:
+    @patch('capycli.bom.findsources.FindSources.get_github_info')
+    def test_find_golang_url_github(self,
+            mock_get_github_info: Any,
+            mock_get_matching_tag: Any,
+            mock_get_pkg_go_repo_url: Any,
+            mock_get_matching_source_url: Any,
+        ) -> None:
         # Mocking a GitHub scenario
-        mock_get_github_info.return_value = 'https://pkg.go.dev/github.com/opencontainers/runc'
-        mock_get_matching_tag.return_value = 'https://github.com/opencontainers/runc/archive/refs/tags/v1.0.1.zip'
+        runc = { # real data as of 2024-11-18
+            'html_url': 'https://github.com/opencontainers/runc',
+            'zipball_url': 'https://github.com/opencontainers/runc/archive/refs/tags/v1.0.1.zip',
+        }
+        mock_get_github_info.return_value = []
+        mock_get_matching_tag.return_value = runc['zipball_url']
+        mock_get_pkg_go_repo_url.return_value = runc['html_url']
+        mock_get_matching_source_url.return_value = runc['zipball_url']
         find_sources = FindSources()
         component = MagicMock()
         component.name = 'github.com/opencontainers/runc'
         component.version = 'v1.0.1'
-        source_url = find_sources.find_golang_url(component)
 
-        self.assertEqual(source_url, 'https://pkg.go.dev/github.com/opencontainers/runc')
+        # semantic versioning, sunshine and rainbows
+        source_url = find_sources.find_golang_url(component)
+        self.assertEqual(source_url, runc['zipball_url'])
+
+        # version with +incompatible
+        with patch.object(component, 'version', new='v1.0.1+incompatible'):
+            source_url = find_sources.find_golang_url(component)
+            self.assertEqual(source_url, runc['zipball_url'])
+
+        # '-'-separated version with commit id
+        with patch.object(component, 'version', new='foo-bar-ThisIsACommitId'):
+            source_url = find_sources.find_golang_url(component)
+            self.assertEqual(source_url,
+                runc['html_url'] + '/archive/ThisIsACommitId.zip')
+
+        # component name w/o github.com
+        # with patch.object(component, 'name', new='opencontainers/runc'):
+        #    no point in testing because in this case get_pkg_go_repo_url
+        #    would return an empty string and we would never reach the
+        #    corresponding test in find_golang_url()
+        #    There is test_find_golang_url_non_github() ...
+
+        # missing data for remaining tests:
+        # - opencontainers/runc/<version_prefix>
+        # - component.name.startswith('gopkg.in')
+        # - component.name.startswith('https://github.com')
+        # I think these would also fail at find_golang_url()
+
+        # WARNING it would seem when patch()-ing a MagicMock the change
+        #         is not (always) reversed properly. Therefore this test
+        #         goes last!
+        # not published on pkg.go.dev
+        with patch.object(mock_get_pkg_go_repo_url, 'return_value', new=''):
+            source_url = find_sources.find_golang_url(component)
+            self.assertEqual(source_url, '')
 
     def test_find_golang_url_non_github(self) -> None:
         # Mocking a non-GitHub scenario

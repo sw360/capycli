@@ -200,27 +200,14 @@ class FindSources(capycli.common.script_base.ScriptBase):
     @staticmethod
     def get_github_info(repository_url: str, username: str = "",
                         token: str = "") -> get_github_info_type:
+        """This method used to iterate through all resource pages of
+           GitHub's /tags API, collect the results, then return a huge
+           list with all results.
+           Removed because this approach does not scale well and we did
+           encounter projects with tens of thousands of tags.
         """
-        Query tag infos from GitHub.
-
-        In the good case a list of tags entries (= dictionaries) is returned.
-        In the bad case a JSON error message is returned.
-        """
-        length_per_page = 100
-        page = 1
-        tags: List[Dict[str, Any]] = []
-        tag_url = "https://api.github.com/repos/" + repository_url + "/tags"
-        query = "?per_page=%s&page=%s" % (length_per_page, page)
-        tmp = FindSources.github_request(tag_url + query, username, token)
-        if not isinstance(tmp, list):
-            return tags
-        tags.extend(tmp)
-        while len(tmp) == length_per_page:
-            page += 1
-            query = "?per_page=%s&page=%s" % (length_per_page, page)
-            tmp = FindSources.github_request(tag_url + query, username, token)
-            tags.extend(tmp)
-        return tags
+        raise NotImplementedError(
+            "Removed with introduction of get_matchting_source_tag!")
 
     def _get_github_repo(self, github_ref: str) -> Dict[str, Any]:
         """Fetch GitHub API object identified by @github_ref.
@@ -378,7 +365,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         if len(name_match):
             for match in name_match:
                 tag_info = self.github_request(match["tags_url"], self.github_name, self.github_token)
-                source_url = self.get_matching_tag(tag_info, component.version or "", match["html_url"])
+                source_url = self.get_matching_source_url(component.version, match["tags_url"])
                 if len(name_match) == 1:
                     return source_url
                 elif source_url:
@@ -445,10 +432,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
                 if repository_name.startswith("https://github.com/"):
                     repository_name = repository_name[len("https://github.com/"):]
-                tag_info = self.get_github_info(repository_name, self.github_name, self.github_token)
-                tag_info_checked = self.check_for_github_error(tag_info)
-                source_url = self.get_matching_tag(tag_info_checked, component_version,
-                                                   repository_name, version_prefix or "")
+                source_url = self.get_matching_source_url(component_version, repository_name, version_prefix)
 
         # component["RepositoryUrl"] = repository_name
         return source_url
@@ -468,26 +452,15 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         if self.verbose:
             print_text("      repo_name:", repo_name)
-
-        tag_info = self.get_github_info(repo_name, self.github_name, self.github_token)
-        tag_info_checked = self.check_for_github_error(tag_info)
-        return self.get_matching_tag(tag_info_checked, version, github_url)
+        return self.get_matching_source_url(version, repo_name)
 
     def check_for_github_error(self, tag_info: get_github_info_type) -> List[Dict[str, Any]]:
-        if isinstance(tag_info, list):
-            # assume valid answer
-            return tag_info
-
-        # check for 'rate limit exceeded' message
-        if "message" in tag_info:
-            if tag_info["message"].startswith("API rate limit exceeded"):
-                print_red("GitHub API rate limit exceeded - aborting!")
-                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
-            if tag_info["message"].startswith("Bad credentials"):
-                print_red("Invalid GitHub credential provided - aborting!")
-                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
-
-        return []
+        """This method was introduced to check the output of
+           get_github_info() for errors.
+           Removed, becasue get_github_info was removed.
+        """
+        raise NotImplementedError(
+            "Removed with introduction of get_matchting_source_tag!")
 
     def get_matching_tag(self, tag_info: List[Dict[str, Any]], version: str, github_url: str,
                          version_prefix: str = "") -> str:
