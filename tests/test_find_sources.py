@@ -507,6 +507,204 @@ class TestFindSources(TestBase):
             findsources.get_source_url_from_release(mock_release_id)
         mock_client.get_release.assert_called_once_with(mock_release_id)
 
+    @patch('capycli.bom.findsources.FindSources.get_pkg_go_repo_url')
+    @patch('capycli.bom.findsources.FindSources.github_request')
+    def test_get_matching_source_url(self,
+            mock_github_request: Any,
+            mock_get_pkg_go_repo_url: Any,
+        ) -> None:
+        """various get_matching_source_url() invocations.
+
+           from find_github_url
+               self.get_matching_source_url(component.version, match["tags_url"])
+               -> run tests with tags_url
+           from find_golang_url (with lengthy parameter preparation)
+               self.get_matching_source_url(component_version, repository_name)
+               -> run tests with project.name
+           from get_github_source_url (w/ repo_name from get_repo_name())
+                self.get_matching_source_url(version, repo_name)
+        """
+        experienced_problems = {
+        'emotion-js/emotion': [
+            {
+                "name": "vundefined",
+                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/vundefined",
+                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/vundefined",
+                "commit": {
+                    "sha": "c6309a0b50bc8368721c01538175934327ffb400",
+                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/c6309a0b50bc8368721c01538175934327ffb400"
+                },
+                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Z1bmRlZmluZWQ="
+            },
+            {
+                "name": "v10.0.6",
+                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/v10.0.6",
+                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/v10.0.6",
+                "commit": {
+                    "sha": "ab535a8c7a0dcbbb6af310634eb3cee4bc2f8e2c",
+                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/ab535a8c7a0dcbbb6af310634eb3cee4bc2f8e2c"
+                },
+                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3YxMC4wLjY="
+            },
+            {
+                "name": "@emotion/babel-plugin@11.9.5",
+                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/@emotion/babel-plugin@11.9.5",
+                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/@emotion/babel-plugin@11.9.5",
+                "commit": {
+                  "sha": "2e6a7aa7ce8384df528661e260924e49779f60d7",
+                  "url": "https://api.github.com/repos/emotion-js/emotion/commits/2e6a7aa7ce8384df528661e260924e49779f60d7"
+                },
+                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL0BlbW90aW9uL2JhYmVsLXBsdWdpbkAxMS45LjU="
+            },
+            {
+                "name": "@emotion/babel-plugin@11.9.2",
+                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/@emotion/babel-plugin@11.9.2",
+                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/@emotion/babel-plugin@11.9.2",
+                "commit": {
+                  "sha": "888377a1579ce73beb20e981d443e75209a4441f",
+                  "url": "https://api.github.com/repos/emotion-js/emotion/commits/888377a1579ce73beb20e981d443e75209a4441f"
+                },
+            },
+            {
+                "name": "test-utils@0.3.2",
+                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/test-utils@0.3.2",
+                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/test-utils@0.3.2",
+                "commit": {
+                    "sha": "493e045b88e614db0bce352e08833d8dee431ffa",
+                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/493e045b88e614db0bce352e08833d8dee431ffa"
+                },
+                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Rlc3QtdXRpbHNAMC4zLjI="
+            },
+            {
+                "name": "test-utils@0.3.1",
+                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/test-utils@0.3.1",
+                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/test-utils@0.3.1",
+                "commit": {
+                    "sha": "f05b183c54cc23117d3b5033e5f136b4f1e930e2",
+                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/f05b183c54cc23117d3b5033e5f136b4f1e930e2"
+                },
+                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Rlc3QtdXRpbHNAMC4zLjE="
+            },
+
+        ]}
+
+        out = FindSources()  # Object Under Test
+        mock_github_request.side_effect = self.mock_github_request_side_effect
+
+        # from find_github_url; find existing tags in our test data
+        for project in self.github_projects.values():
+            try:
+                tag_name = project.data[0]['name']
+            except (IndexError, KeyError, TypeError):
+                # expect negative results
+                res = out.get_matching_source_url(tag_name, project.tags_url)
+                self.assertEqual(res, '')
+            else:
+                res = out.get_matching_source_url(tag_name, project.tags_url)
+                # assertions based on _render_github_source_url()
+                self.assertTrue(res.startswith('https://github.com'), (tag_name, project.tags_url, res))
+                self.assertIn('archive/refs/tags', res)
+                self.assertTrue(res.endswith('.zip'))
+
+        # from find_github_url; forge an entry with a forged tag we will guess
+        for project in self.github_projects.values():
+            try:
+                tag_name = project.data[0]['name']
+            except (IndexError, KeyError, TypeError):
+                continue  #  not viable test data
+            split_semver = out.to_semver_string(tag_name).split('.')
+            pos = tag_name.index(split_semver[0])
+            pos = tag_name.index(split_semver[1], pos)
+            forged_tag = tag_name[0:pos] \
+                       + str(int(split_semver[1]) + len(project.data)) \
+                       + tag_name[pos+len(split_semver[1]):]
+            # print('unittest', tag_name, forged_tag)
+            forged_entry = {}
+            for key, value in project.data[0].items():
+                if isinstance(value, str):
+                    value = value.replace(tag_name, forged_tag)
+                forged_entry[key] = value
+            project.data.append(forged_entry)
+            # most importantly, the entry with the forged tag is not the
+            # first entry and therefore get_matching_source_url will try
+            # at least once to guess the forged_tag
+            res = out.get_matching_source_url(forged_tag, project.tags_url)
+            # assertions based on _render_github_source_url()
+            self.assertTrue(res.startswith('https://github.com'))
+            self.assertIn('archive/refs/tags', res)
+            self.assertTrue(res.endswith('.zip'))
+
+        # from find_golang_url; find existing tags in our test data
+        # (will not test guessing again b/c it only depends on the tag)
+        for project in self.github_projects.values():
+            try:
+                tag_name = project.data[0]['name']
+            except (IndexError, KeyError, TypeError):
+                # expect negative results
+                res = out.get_matching_source_url(tag_name, project.name)
+                self.assertEqual(res, '')
+            else:
+                res = out.get_matching_source_url(tag_name, project.name)
+                # assertions based on _render_github_source_url()
+                self.assertTrue(res.startswith('https://github.com'))
+                self.assertIn('archive/refs/tags', res)
+                self.assertTrue(res.endswith('.zip'))
+        # from get_github_source_url; find existing tags in our test data
+        for project in self.github_projects.values():
+            try:
+                tag_name = project.data[0]['name']
+            except (IndexError, KeyError, TypeError):
+                # expect negative results
+                res = out.get_matching_source_url(tag_name, project.git_url)
+                self.assertEqual(res, '')
+            else:
+                res = out.get_matching_source_url(tag_name, project.name)
+                # assertions based on _render_github_source_url()
+                self.assertTrue(res.startswith('https://github.com'))
+                self.assertIn('archive/refs/tags', res)
+                self.assertTrue(res.endswith('.zip'))
+
+        # for coverage ...
+        # provoke continue because we guessed this pattern before
+        # this must come after we added forged entry
+        for project in self.github_projects.values():
+            try:
+                tag_name = project.data[0]['name']
+            except (IndexError, KeyError, TypeError):
+                continue  #  not viable test data
+            split_semver = out.to_semver_string(tag_name).split('.')
+            pos = tag_name.index(split_semver[0])
+            pos = tag_name.index(split_semver[1], pos)
+            forged_tag = tag_name[0:pos] \
+                       + str(int(split_semver[1]) + 2 * len(project.data)) \
+                       + tag_name[pos+len(split_semver[1]):]
+            res = out.get_matching_source_url(forged_tag, project.tags_url)
+            self.assertEqual(res, '')
+
+        # not sure if instead of testing this we should remove the code
+        res = out.get_matching_source_url('0.0', 'https://gitlab.com/unit/test')
+        self.assertEqual(res, '')
+
+        # encountered real world challenges
+        ## Emotion
+        ## the issue is they have tags like 'vundefined'
+        emotion = 'emotion-js/emotion'
+        gh_emotion = MockProject(emotion, experienced_problems[emotion])
+        self.github_projects[emotion] = gh_emotion
+        res = out.get_matching_source_url('0.3.1', gh_emotion.tags_url)
+        self.assertEqual(res, 'https://github.com/emotion-js/emotion/archive/refs/tags/test-utils@0.3.1.zip')
+        res = out.get_matching_source_url('11.9.5', gh_emotion.tags_url)
+        self.assertEqual(res, 'https://github.com/emotion-js/emotion/archive/refs/tags/@emotion/babel-plugin@11.9.5.zip')
+        res = out.get_matching_source_url('vundefined', gh_emotion.tags_url)
+        self.assertTrue(res.startswith('https://github.com'))
+        self.assertIn('archive/refs/tags', res)
+        self.assertTrue(res.endswith('.zip'))
+        # the following is an immediate artifact of IMHO problematic
+        # get_matching_tag() behaviour, which should be addressed eventually
+        res = out.get_matching_source_url('xoxo', gh_emotion.tags_url)
+        self.assertNotIn('xoxo', res)
+        self.assertIn('vundefined', res)
+
 
 if __name__ == "__main__":
     APP = TestFindSources()
