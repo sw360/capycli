@@ -6,10 +6,13 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import json
 import os
 from typing import Any, Dict, List
 from unittest.mock import MagicMock, patch
+from urllib.parse import urlparse
 
+import requests
 import responses
 
 import capycli.common.json_support
@@ -19,11 +22,170 @@ from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
 
+class MockProject:
+    API_PREFIX = 'https://api.github.com/repos'
+
+    def __init__(self, name: str, data: Any) -> None:
+        self.name = name
+        self.data = data
+
+    @property
+    def url(self) -> str:
+        return self.API_PREFIX + '/' + self.name
+
+    @property
+    def html_url(self) -> str:
+        return 'https://github.com/' + self.name
+
+    @property
+    def git_url(self) -> str:
+        return 'git://github.com/' + self.name + '.git'
+
+    @property
+    def tags_url(self) -> str:
+        return self.url + '/tags'
+
+    @property
+    def archive_url(self) -> str:
+        return self.url + '/{archive_format}{/ref}'
+
+    @property
+    def git_refs_url(self) -> str:
+        return self.url + '/git/refs{/sha}'
+
+    @property
+    def api_object(self) -> Dict[str, Any]:
+        """Limited to the values we access ..."""
+        return {
+            'full_name': self.name,
+            'tags_url': self.tags_url,
+            'archive_url': self.archive_url,
+            'git_refs_url': self.git_refs_url,
+        }
+
+    def _as_response(self, data: Any) -> requests.Response:
+        # if isinstance(data, requests.Response):
+        #    return data
+        ret = requests.Response()
+        ret.status_code = 200
+        ret._content = json.dumps(data).encode()
+        return ret
+
+
+    def mock_github_request(self, url: str, username: str = "",
+            token: str = "", return_response: bool = False,
+            allow_redirects: bool = True
+        ) -> Any:
+        _url = urlparse(url)
+        result: Any = ''
+        if isinstance(self.data, dict) and 'message' in self.data:
+            result = self.data  # means error
+        elif _url.path.endswith(self.name):
+            result = self.api_object
+        elif _url.path.endswith('/tags'):
+            result = self.data
+        elif '/git/refs/tags/' in _url.path:
+            prefix = _url.path.partition('/git/refs/tags/')[2]
+            result = [{
+                'ref': f'refs/tags/{item["name"]}',
+                'url': item['zipball_url'].replace('/zipball/refs/tags/',
+                                                   '/git/refs/tags/', 1),
+                }
+                for item in self.data
+                if item.get('name','').startswith(prefix)]
+        elif '/zipball/refs/tags/' in _url.path:
+            result = ''
+        try:
+            return self._as_response(result) if return_response else result
+        except UnboundLocalError as err:
+            # you are probably trying to mock a use case we can't mock yet
+            raise ValueError(url) from err
+
+GITHUB_PROJECTS = (
+    ('tartley/colorama', [
+        {
+            'name': '0.4.6',
+            'zipball_url': 'https://api.github.com/repos/tartley/colorama/zipball/refs/tags/0.4.6',
+            'tarball_url': 'https://api.github.com/repos/tartley/colorama/tarball/refs/tags/0.4.6',
+            'commit': {
+                'sha': '3de9f013df4b470069d03d250224062e8cf15c49',
+                'url': 'https://api.github.com/repos/tartley/colorama/commits/3de9f013df4b470069d03d250224062e8cf15c49'},  # noqa
+            'node_id': 'MDM6UmVmMTg4OTIyMDk6cmVmcy90YWdzLzAuNC42'}]),
+    ('sindresorhus/into-stream', [
+        {
+            'name': 'v6.0.0',
+            'zipball_url': 'https://api.github.com/repos/sindresorhus/into-stream/zipball/refs/tags/v6.0.0',
+            'tarball_url': 'https://api.github.com/repos/sindresorhus/into-stream/tarball/refs/tags/v6.0.0',
+            'commit': {
+                'sha': '4e07b9f4f84e59de83f2d6b246d945b3f2362ded',
+                'url': 'https://api.github.com/repos/sindresorhus/into-stream/commits/4e07b9f4f84e59de83f2d6b246d945b3f2362ded'},  # noqa
+            'node_id': 'MDM6UmVmMzY1MzMwNDQ6cmVmcy90YWdzL3Y2LjAuMA=='}]),
+    ('python/cpython', [
+        {
+            'name': 'v3.8.0',
+            'zipball_url': 'https://api.github.com/repos/python/cpython/zipball/refs/tags/v3.8.0',
+            'tarball_url': 'https://api.github.com/repos/python/cpython/tarball/refs/tags/v3.8.0',
+            'commit': {
+                'sha': 'fa919fdf2583bdfead1df00e842f24f30b2a34bf',
+                'url': 'https://api.github.com/repos/python/cpython/commits/fa919fdf2583bdfead1df00e842f24f30b2a34bf'},  # noqa
+            'node_id': 'MDM6UmVmODE1OTg5NjE6cmVmcy90YWdzL3YzLjguMA=='}]),
+    ('pypa/something',
+        {
+            'message': 'Not Found',
+            'documentation_url': 'https://docs.github.com/rest/repos/repos#list-repository-tags'}),
+    ('avoidwork/tiny-lru', [
+        {
+            'name': '11.0.1',
+            'zipball_url': 'https://api.github.com/repos/avoidwork/tiny-lru/zipball/refs/tags/11.0.1',
+            'tarball_url': 'https://api.github.com/repos/avoidwork/tiny-lru/tarball/refs/tags/11.0.1',
+            'commit': {
+                'sha': 'a698b7ba6b7b981ee3ab39e3d7903aa1e984777b',
+                'url': 'https://api.github.com/repos/avoidwork/tiny-lru/commits/a698b7ba6b7b981ee3ab39e3d7903aa1e984777b'},  # noqa
+            'node_id': 'MDM6UmVmMTE2ODQxMjU6cmVmcy90YWdzLzExLjAuMQ=='}]),
+    ('pypa/wheel', [
+        {
+            'name': '0.38.4',
+            'zipball_url': 'https://api.github.com/repos/pypa/wheel/zipball/refs/tags/0.38.4',
+            'tarball_url': 'https://api.github.com/repos/pypa/wheel/tarball/refs/tags/0.38.4',
+            'commit': {
+                'sha': '814c2efe8e40051039c5a6de6945e04ecdd162ee',
+                'url': 'https://api.github.com/repos/pypa/wheel/commits/814c2efe8e40051039c5a6de6945e04ecdd162ee'},  # noqa
+            'node_id': 'MDM6UmVmOTgzNDY4ODU6cmVmcy90YWdzLzAuMzguNA=='}]),
+    ('jeremyfa/yaml.js', [
+        {
+            'name': 'v0.3.0',
+            'zipball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/zipball/refs/tags/v0.3.0',
+            'tarball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/tarball/refs/tags/v0.3.0',
+            'commit': {
+                'sha': '51a74dc0c39d78af7c64e12eafef2711f31abb27',
+                'url': 'https://api.github.com/repos/jeremyfa/yaml.js/commits/51a74dc0c39d78af7c64e12eafef2711f31abb27'},  # noqa
+            'node_id': 'MDM6UmVmMTAyMzYzODpyZWZzL3RhZ3MvdjAuMy4w'}]),
+    ('unittest/no-tags',
+        ('it is hard to have a mock that succeeds on project access but'
+        ' fails on tag access, so we have this unrealistic example instead')),
+    ('autresphere/ASMediaFocusManager', [
+        {
+            "name": "0.6",
+            "zipball_url": "https://api.github.com/repos/autresphere/ASMediaFocusManager/zipball/refs/tags/0.6",
+            "tarball_url": "https://api.github.com/repos/autresphere/ASMediaFocusManager/tarball/refs/tags/0.6",
+            "commit": {
+                "sha": "2e884ed20bc99bd316eb06f17136e3db0e713682",
+                "url": "https://api.github.com/repos/autresphere/ASMediaFocusManager/commits/2e884ed20bc99bd316eb06f17136e3db0e713682"
+            },
+            "node_id": "MDM6UmVmNzU2MTYyNzpyZWZzL3RhZ3MvMC42"}]),
+)
 
 class TestFindSources(TestBase):
     INPUT_BAD = "plaintext.txt"
     INPUTFILE = "sbom_for_find_sources.json"
     OUTPUTFILE = "output.json"
+
+    github_projects: Dict[str, MockProject] = {}
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.github_projects = {
+            name: MockProject(name, data) for name, data in GITHUB_PROJECTS}
 
     def test_show_help(self) -> None:
         sut = FindSources()
@@ -85,84 +247,15 @@ class TestFindSources(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_ERROR_READING_BOM, ex.code)
 
-    def mock_github_request_side_effect(self, url: str, username: str = "", token: str = "") -> Any:
+    def mock_github_request_side_effect(self, url: str, username: str = "", token: str = "", return_response: bool = False, allow_redirects: bool = True) -> Any:
         # Define different mock responses based on the URL
-        if url == 'https://api.github.com/repos/tartley/colorama/tags?per_page=100&page=1':
-            return [
-                {
-                    'name': '0.4.6',
-                    'zipball_url': 'https://api.github.com/repos/tartley/colorama/zipball/refs/tags/0.4.6',
-                    'tarball_url': 'https://api.github.com/repos/tartley/colorama/tarball/refs/tags/0.4.6',
-                    'commit': {
-                        'sha': '3de9f013df4b470069d03d250224062e8cf15c49',
-                        'url': 'https://api.github.com/repos/tartley/colorama/commits/3de9f013df4b470069d03d250224062e8cf15c49'},  # noqa
-                    'node_id': 'MDM6UmVmMTg4OTIyMDk6cmVmcy90YWdzLzAuNC42'}]
-        elif url == 'https://api.github.com/repos/sindresorhus/into-stream/tags?per_page=100&page=1':
-            return [
-                {
-                    'name': 'v6.0.0',
-                    'zipball_url': 'https://api.github.com/repos/sindresorhus/into-stream/zipball/refs/tags/v6.0.0',
-                    'tarball_url': 'https://api.github.com/repos/sindresorhus/into-stream/tarball/refs/tags/v6.0.0',
-                    'commit': {
-                        'sha': '4e07b9f4f84e59de83f2d6b246d945b3f2362ded',
-                        'url': 'https://api.github.com/repos/sindresorhus/into-stream/commits/4e07b9f4f84e59de83f2d6b246d945b3f2362ded'},  # noqa
-                    'node_id': 'MDM6UmVmMzY1MzMwNDQ6cmVmcy90YWdzL3Y2LjAuMA=='}]
-        elif url == 'https://api.github.com/repos/python/cpython/tags?per_page=100&page=1':
-            return [
-                {
-                    'name': 'v3.8.0',
-                    'zipball_url': 'https://api.github.com/repos/python/cpython/zipball/refs/tags/v3.8.0',
-                    'tarball_url': 'https://api.github.com/repos/python/cpython/tarball/refs/tags/v3.8.0',
-                    'commit': {
-                        'sha': 'fa919fdf2583bdfead1df00e842f24f30b2a34bf',
-                        'url': 'https://api.github.com/repos/python/cpython/commits/fa919fdf2583bdfead1df00e842f24f30b2a34bf'},  # noqa
-                    'node_id': 'MDM6UmVmODE1OTg5NjE6cmVmcy90YWdzL3YzLjguMA=='}]
-        elif url == 'https://api.github.com/repos/pypa/something/tags?per_page=100&page=1':
-            return {
-                'message': 'Not Found',
-                'documentation_url': 'https://docs.github.com/rest/repos/repos#list-repository-tags'}
-        elif url == 'https://api.github.com/search/repositories?q=something language:':
+        for name, mock in self.github_projects.items():
+            if name in url:
+                return mock.mock_github_request(
+                    url, username, token, return_response, allow_redirects)
+
+        if url == 'https://api.github.com/search/repositories?q=something language:':
             return {'total_count': 0}
-        elif url == 'https://api.github.com/repos/avoidwork/tiny-lru/tags?per_page=100&page=1':
-            return [
-                {
-                    'name': '11.0.1',
-                    'zipball_url': 'https://api.github.com/repos/avoidwork/tiny-lru/zipball/refs/tags/11.0.1',
-                    'tarball_url': 'https://api.github.com/repos/avoidwork/tiny-lru/tarball/refs/tags/11.0.1',
-                    'commit': {
-                        'sha': 'a698b7ba6b7b981ee3ab39e3d7903aa1e984777b',
-                        'url': 'https://api.github.com/repos/avoidwork/tiny-lru/commits/a698b7ba6b7b981ee3ab39e3d7903aa1e984777b'},  # noqa
-                    'node_id': 'MDM6UmVmMTE2ODQxMjU6cmVmcy90YWdzLzExLjAuMQ=='}]
-        elif url == 'https://api.github.com/repos/pypa/wheel/tags?per_page=100&page=1':
-            return [
-                {
-                    'name': '0.38.4',
-                    'zipball_url': 'https://api.github.com/repos/pypa/wheel/zipball/refs/tags/0.38.4',
-                    'tarball_url': 'https://api.github.com/repos/pypa/wheel/tarball/refs/tags/0.38.4',
-                    'commit': {
-                        'sha': '814c2efe8e40051039c5a6de6945e04ecdd162ee',
-                        'url': 'https://api.github.com/repos/pypa/wheel/commits/814c2efe8e40051039c5a6de6945e04ecdd162ee'},  # noqa
-                    'node_id': 'MDM6UmVmOTgzNDY4ODU6cmVmcy90YWdzLzAuMzguNA=='}]
-        elif url == 'https://api.github.com/repos/jeremyfa/yaml.js/tags?per_page=100&page=1':
-            return [
-                {
-                    'name': 'v0.3.0',
-                    'zipball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/zipball/refs/tags/v0.3.0',
-                    'tarball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/tarball/refs/tags/v0.3.0',
-                    'commit': {
-                        'sha': '51a74dc0c39d78af7c64e12eafef2711f31abb27',
-                        'url': 'https://api.github.com/repos/jeremyfa/yaml.js/commits/51a74dc0c39d78af7c64e12eafef2711f31abb27'},  # noqa
-                    'node_id': 'MDM6UmVmMTAyMzYzODpyZWZzL3RhZ3MvdjAuMy4w'}]
-        elif url == 'https://api.github.com/repos/jeremyfa/yaml.js/tags?per_page=100&page=1':
-            return [
-                {
-                    'name': 'v0.3.0',
-                    'zipball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/zipball/refs/tags/v0.3.0',
-                    'tarball_url': 'https://api.github.com/repos/jeremyfa/yaml.js/tarball/refs/tags/v0.3.0',
-                    'commit': {
-                        'sha': '51a74dc0c39d78af7c64e12eafef2711f31abb27',
-                        'url': 'https://api.github.com/repos/jeremyfa/yaml.js/commits/51a74dc0c39d78af7c64e12eafef2711f31abb27'},  # noqa
-                    'node_id': 'MDM6UmVmMTAyMzYzODpyZWZzL3RhZ3MvdjAuMy4w'}]
         else:
             return []
 
@@ -274,7 +367,7 @@ class TestFindSources(TestBase):
         sut = FindSources()
         param_list = [('We don\'t know', '0.0.0'), ('pre_pr_153572', '0.0.0'), ('1_27_1_1', '1.27.1.1'),
                       ('2.6.3', '2.6.3'), ('2.0.0.RELEASE', '2.0.0'), ('1.29', '1.29.0'), ('1.06', '1.6.0'),
-                      ('1_27_1', '1.27.1'), ('v1.1.1', '1.1.1'), ('v1.1.1.RELEASE', '1.1.1'), ('0.4.M3', '0.4.0'),
+                      ('1_27_1', '1.27.1'), ('_1_27_1', '1.27.1'), ('v1.1.1', '1.1.1'), ('v1.1.1.RELEASE', '1.1.1'), ('0.4.M3', '0.4.0'),
                       ('V1_9_9_1', '1.9.9.1')]
         for version, expected in param_list:
             with self.subTest("Convert input version to semver", version=version, expected=expected):
@@ -317,7 +410,7 @@ class TestFindSources(TestBase):
         repo_url = find_sources.get_pkg_go_repo_url('example/package')
         self.assertEqual(repo_url, 'https://github.com/example/repo/1.0.0')
 
-    @patch('requests.get', side_effect=Exception('Some error'))
+    @patch('requests.get', side_effect=Exception('@patch-ed Error by unittest!'))
     def test_get_pkg_go_repo_url_error(self, mock_requests_get: Any) -> None:
         # Mocking an exception during the request
         find_sources = FindSources()

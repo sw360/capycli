@@ -11,7 +11,9 @@ import os
 import re
 import sys
 import time
-from typing import Any, Dict, List, Tuple
+from collections.abc import Iterable
+from typing import Any, Dict, List, Tuple, Set
+from urllib.parse import urlparse, parse_qs
 
 import requests
 import semver
@@ -38,7 +40,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
     def __init__(self) -> None:
         self.verbose: bool = False
-        self.version_regex = re.compile(r"[\d+\.|_]+[\d+]")
+        self.version_regex = re.compile(r"(\d+[._])+\d+")
         self.github_project_name_regex = re.compile(r"^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$")
         self.github_name: str = ""
         self.github_token: str = ""
@@ -70,34 +72,49 @@ class FindSources(capycli.common.script_base.ScriptBase):
         return False
 
     @staticmethod
-    def github_request(url: str, username: str = "", token: str = "") -> Any:
+    def github_request(url: str, username: str = "", token: str = "",
+                       return_response: bool = False,
+                       allow_redirects: bool = True,  # default in requests
+            ) -> Any:
         try:
             headers = {}
             if token:
                 headers["Authorization"] = "token " + token
             if username:
                 headers["Username"] = username
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, allow_redirects=allow_redirects)
             if not response.ok:
-                if response.status_code == 429 or \
-                        'rate limit exceeded' in response.reason or \
-                        "API rate limit exceeded" in response.json().get("message"):
+                if response.status_code == 429 \
+                or 'rate limit exceeded' in response.reason \
+                or 'API rate limit exceeded' in response.json().get('message', ''):
                     print(
                         Fore.LIGHTYELLOW_EX +
                         "      Github API rate limit exceeded - wait 60s and retry ... " +
                         Style.RESET_ALL)
                     time.sleep(60)
-                    return FindSources.github_request(url, username, token)
+                    return FindSources.github_request(url, username, token, return_response=return_response)
+            elif response.json().get('message', '').startswith("Bad credentials"):
+                print_red("Invalid GitHub credential provided - aborting!")
+                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
 
-            return response.json()
+        except requests.exceptions.ConnectionError as ex:
+            print(
+                Fore.LIGHTYELLOW_EX +
+                f"      Connection issues accessing {url} " + repr(ex) +
+                "\n      Retrying in 60 seconds!" +
+                Style.RESET_ALL)
+            time.sleep(60)
+            return FindSources.github_request(url, username, token, return_response=return_response)
 
         except Exception as ex:
             print(
                 Fore.LIGHTYELLOW_EX +
                 "      Error accessing GitHub: " + repr(ex) +
                 Style.RESET_ALL)
-
-            return {}
+            response = requests.Response()
+            response._content = \
+                '{' + f'"exception": "{repr(ex)}"' + '}'.encode()
+        return response if return_response else response.json()
 
     @staticmethod
     def get_repositories(name: str, language: str, username: str = "", token: str = "") -> Any:
@@ -369,7 +386,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 if release_details:
                     source_url = release_details.get("sourceCodeDownloadurl", "")
                     if self.verbose:
-                        print("getting source url from get from sw360 for release_id " + release_id)
+                        print("    getting source url from get from sw360 for release_id " + release_id)
                     if source_url != "":
                         return source_url
                     break
