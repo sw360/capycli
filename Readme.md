@@ -90,7 +90,7 @@ Commands and Sub-Commands
         Prerequisites     checks whether all prerequisites for a successful
                           software clearing are fulfilled
         Show              show project details
-        Licenses          show licenses of all cleared compponents
+        Licenses          show licenses of all cleared components
         Create            create or update a project on SW360
         Update            update an exiting project, preserving linked releases
         GetLicenseInfo    get license info of all project components
@@ -145,7 +145,7 @@ Options:
 These options are not available for all commands. At the moment
 
 * `--forceexit` applies only to the `project vulnerabilities` command.
-* `--forceerror` applies only to the `project prerequisites` command.
+* `--forceerror` applies only to the `project prerequisites` and `project getlicenseinfo` commands.
 
 ## Use Cases
 
