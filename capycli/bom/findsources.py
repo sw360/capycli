@@ -161,7 +161,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 Style.RESET_ALL)
             response = requests.Response()
             response._content = \
-                '{' + f'"exception": "{repr(ex)}"' + '}'.encode()
+                b'{' + f'"exception": "{repr(ex)}"'.encode() + b'}'
         return response if return_response else response.json()
 
     @staticmethod
@@ -290,7 +290,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             except (TypeError, KeyError, AttributeError) as err:
                 # res.json() did not give us an iterable of things where
                 # 'name' is a viable index, for instance an error message
-                tags = ()
+                tags = []
 
             new_prefixes = self.tag_cache.filter_and_cache(
                 repo['full_name'], version,  # cache key
