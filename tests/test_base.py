@@ -99,7 +99,7 @@ class TestBasePytest:
         try:
             func(*args, **kwargs)
         except Exception as err:
-           error = err
+            error = err
         finally:
             # get output
             sys.stderr.seek(0)       # jump to the start
@@ -127,7 +127,7 @@ class TestBasePytest:
         try:
             func(*args, **kwargs)
         except Exception as err:
-           error = err
+            error = err
         finally:
             # get output
             sys.stdout.seek(0)       # jump to the start

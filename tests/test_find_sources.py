@@ -22,6 +22,7 @@ from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
 
+
 class MockProject:
     API_PREFIX = 'https://api.github.com/repos'
 
@@ -71,11 +72,9 @@ class MockProject:
         ret._content = json.dumps(data).encode()
         return ret
 
-
     def mock_github_request(self, url: str, username: str = "",
-            token: str = "", return_response: bool = False,
-            allow_redirects: bool = True
-        ) -> Any:
+                            token: str = "", return_response: bool = False,
+                            allow_redirects: bool = True) -> Any:
         _url = urlparse(url)
         result: Any = ''
         if isinstance(self.data, dict) and 'message' in self.data:
@@ -86,13 +85,11 @@ class MockProject:
             result = self.data
         elif '/git/refs/tags/' in _url.path:
             prefix = _url.path.partition('/git/refs/tags/')[2]
-            result = [{
-                'ref': f'refs/tags/{item["name"]}',
-                'url': item['zipball_url'].replace('/zipball/refs/tags/',
-                                                   '/git/refs/tags/', 1),
-                }
-                for item in self.data
-                if item.get('name','').startswith(prefix)]
+            result = [{'ref': f'refs/tags/{item["name"]}',
+                       'url': item['zipball_url'].replace('/zipball/refs/tags/',
+                                                          '/git/refs/tags/', 1),
+                       } for item in self.data
+                      if item.get('name', '').startswith(prefix)]
         elif '/zipball/refs/tags/' in _url.path:
             result = ''
         try:
@@ -100,6 +97,7 @@ class MockProject:
         except UnboundLocalError as err:
             # you are probably trying to mock a use case we can't mock yet
             raise ValueError(url) from err
+
 
 GITHUB_PROJECTS = (
     ('tartley/colorama', [
@@ -160,9 +158,8 @@ GITHUB_PROJECTS = (
                 'sha': '51a74dc0c39d78af7c64e12eafef2711f31abb27',
                 'url': 'https://api.github.com/repos/jeremyfa/yaml.js/commits/51a74dc0c39d78af7c64e12eafef2711f31abb27'},  # noqa
             'node_id': 'MDM6UmVmMTAyMzYzODpyZWZzL3RhZ3MvdjAuMy4w'}]),
-    ('unittest/no-tags',
-        ('it is hard to have a mock that succeeds on project access but'
-        ' fails on tag access, so we have this unrealistic example instead')),
+    ('unittest/no-tags', ('it is hard to have a mock that succeeds on project access but'
+                          ' fails on tag access, so we have this unrealistic example instead')),
     ('autresphere/ASMediaFocusManager', [
         {
             "name": "0.6",
@@ -170,10 +167,12 @@ GITHUB_PROJECTS = (
             "tarball_url": "https://api.github.com/repos/autresphere/ASMediaFocusManager/tarball/refs/tags/0.6",
             "commit": {
                 "sha": "2e884ed20bc99bd316eb06f17136e3db0e713682",
-                "url": "https://api.github.com/repos/autresphere/ASMediaFocusManager/commits/2e884ed20bc99bd316eb06f17136e3db0e713682"
+                "url": ("https://api.github.com/repos/"
+                        "autresphere/ASMediaFocusManager/commits/2e884ed20bc99bd316eb06f17136e3db0e713682")
             },
             "node_id": "MDM6UmVmNzU2MTYyNzpyZWZzL3RhZ3MvMC42"}]),
 )
+
 
 class TestFindSources(TestBase):
     INPUT_BAD = "plaintext.txt"
@@ -247,7 +246,8 @@ class TestFindSources(TestBase):
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_ERROR_READING_BOM, ex.code)
 
-    def mock_github_request_side_effect(self, url: str, username: str = "", token: str = "", return_response: bool = False, allow_redirects: bool = True) -> Any:
+    def mock_github_request_side_effect(self, url: str, username: str = "", token: str = "",
+                                        return_response: bool = False, allow_redirects: bool = True) -> Any:
         # Define different mock responses based on the URL
         for name, mock in self.github_projects.items():
             if name in url:
@@ -367,8 +367,8 @@ class TestFindSources(TestBase):
         sut = FindSources()
         param_list = [('We don\'t know', '0.0.0'), ('pre_pr_153572', '0.0.0'), ('1_27_1_1', '1.27.1.1'),
                       ('2.6.3', '2.6.3'), ('2.0.0.RELEASE', '2.0.0'), ('1.29', '1.29.0'), ('1.06', '1.6.0'),
-                      ('1_27_1', '1.27.1'), ('_1_27_1', '1.27.1'), ('v1.1.1', '1.1.1'), ('v1.1.1.RELEASE', '1.1.1'), ('0.4.M3', '0.4.0'),
-                      ('V1_9_9_1', '1.9.9.1')]
+                      ('1_27_1', '1.27.1'), ('_1_27_1', '1.27.1'), ('v1.1.1', '1.1.1'), ('v1.1.1.RELEASE', '1.1.1'),
+                      ('0.4.M3', '0.4.0'), ('V1_9_9_1', '1.9.9.1')]
         for version, expected in param_list:
             with self.subTest("Convert input version to semver", version=version, expected=expected):
                 actual = sut.to_semver_string(version)
@@ -422,13 +422,13 @@ class TestFindSources(TestBase):
     @patch('capycli.bom.findsources.FindSources.get_matching_tag')
     @patch('capycli.bom.findsources.FindSources.get_github_info')
     def test_find_golang_url_github(self,
-            mock_get_github_info: Any,
-            mock_get_matching_tag: Any,
-            mock_get_pkg_go_repo_url: Any,
-            mock_get_matching_source_url: Any,
-        ) -> None:
+                                    mock_get_github_info: Any,
+                                    mock_get_matching_tag: Any,
+                                    mock_get_pkg_go_repo_url: Any,
+                                    mock_get_matching_source_url: Any,
+                                    ) -> None:
         # Mocking a GitHub scenario
-        runc = { # real data as of 2024-11-18
+        runc = {  # real data as of 2024-11-18
             'html_url': 'https://github.com/opencontainers/runc',
             'zipball_url': 'https://github.com/opencontainers/runc/archive/refs/tags/v1.0.1.zip',
         }
@@ -454,7 +454,7 @@ class TestFindSources(TestBase):
         with patch.object(component, 'version', new='foo-bar-ThisIsACommitId'):
             source_url = find_sources.find_golang_url(component)
             self.assertEqual(source_url,
-                runc['html_url'] + '/archive/ThisIsACommitId.zip')
+                             runc['html_url'] + '/archive/ThisIsACommitId.zip')
 
         # component name w/o github.com
         # with patch.object(component, 'name', new='opencontainers/runc'):
@@ -556,9 +556,9 @@ class TestFindSources(TestBase):
     @patch('capycli.bom.findsources.FindSources.get_pkg_go_repo_url')
     @patch('capycli.bom.findsources.FindSources.github_request')
     def test_get_matching_source_url(self,
-            mock_github_request: Any,
-            mock_get_pkg_go_repo_url: Any,
-        ) -> None:
+                                     mock_github_request: Any,
+                                     mock_get_pkg_go_repo_url: Any,
+                                     ) -> None:
         """various get_matching_source_url() invocations.
 
            from find_github_url
@@ -571,68 +571,78 @@ class TestFindSources(TestBase):
                 self.get_matching_source_url(version, repo_name)
         """
         experienced_problems = {
-        'emotion-js/emotion': [
-            {
-                "name": "vundefined",
-                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/vundefined",
-                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/vundefined",
-                "commit": {
-                    "sha": "c6309a0b50bc8368721c01538175934327ffb400",
-                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/c6309a0b50bc8368721c01538175934327ffb400"
+            'emotion-js/emotion': [
+                {
+                    "name": "vundefined",
+                    "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/vundefined",
+                    "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/vundefined",
+                    "commit": {
+                        "sha": "c6309a0b50bc8368721c01538175934327ffb400",
+                        "url": ("https://api.github.com/repos/"
+                                "emotion-js/emotion/commits/c6309a0b50bc8368721c01538175934327ffb400")
+                    },
+                    "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Z1bmRlZmluZWQ="
                 },
-                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Z1bmRlZmluZWQ="
-            },
-            {
-                "name": "v10.0.6",
-                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/v10.0.6",
-                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/v10.0.6",
-                "commit": {
-                    "sha": "ab535a8c7a0dcbbb6af310634eb3cee4bc2f8e2c",
-                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/ab535a8c7a0dcbbb6af310634eb3cee4bc2f8e2c"
+                {
+                    "name": "v10.0.6",
+                    "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/v10.0.6",
+                    "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/v10.0.6",
+                    "commit": {
+                        "sha": "ab535a8c7a0dcbbb6af310634eb3cee4bc2f8e2c",
+                        "url": ("https://api.github.com/repos/"
+                                "emotion-js/emotion/commits/ab535a8c7a0dcbbb6af310634eb3cee4bc2f8e2c")
+                    },
+                    "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3YxMC4wLjY="
                 },
-                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3YxMC4wLjY="
-            },
-            {
-                "name": "@emotion/babel-plugin@11.9.5",
-                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/@emotion/babel-plugin@11.9.5",
-                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/@emotion/babel-plugin@11.9.5",
-                "commit": {
-                  "sha": "2e6a7aa7ce8384df528661e260924e49779f60d7",
-                  "url": "https://api.github.com/repos/emotion-js/emotion/commits/2e6a7aa7ce8384df528661e260924e49779f60d7"
+                {
+                    "name": "@emotion/babel-plugin@11.9.5",
+                    "zipball_url": ("https://api.github.com/repos/"
+                                    "emotion-js/emotion/zipball/refs/tags/@emotion/babel-plugin@11.9.5"),
+                    "tarball_url": ("https://api.github.com/repos/"
+                                    "emotion-js/emotion/tarball/refs/tags/@emotion/babel-plugin@11.9.5"),
+                    "commit": {
+                        "sha": "2e6a7aa7ce8384df528661e260924e49779f60d7",
+                        "url": ("https://api.github.com/repos/"
+                                "emotion-js/emotion/commits/2e6a7aa7ce8384df528661e260924e49779f60d7")
+                    },
+                    "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL0BlbW90aW9uL2JhYmVsLXBsdWdpbkAxMS45LjU="
                 },
-                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL0BlbW90aW9uL2JhYmVsLXBsdWdpbkAxMS45LjU="
-            },
-            {
-                "name": "@emotion/babel-plugin@11.9.2",
-                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/@emotion/babel-plugin@11.9.2",
-                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/@emotion/babel-plugin@11.9.2",
-                "commit": {
-                  "sha": "888377a1579ce73beb20e981d443e75209a4441f",
-                  "url": "https://api.github.com/repos/emotion-js/emotion/commits/888377a1579ce73beb20e981d443e75209a4441f"
+                {
+                    "name": "@emotion/babel-plugin@11.9.2",
+                    "zipball_url": ("https://api.github.com/repos/"
+                                    "emotion-js/emotion/zipball/refs/tags/@emotion/babel-plugin@11.9.2"),
+                    "tarball_url": ("https://api.github.com/repos/"
+                                    "emotion-js/emotion/tarball/refs/tags/@emotion/babel-plugin@11.9.2"),
+                    "commit": {
+                        "sha": "888377a1579ce73beb20e981d443e75209a4441f",
+                        "url": ("https://api.github.com/"
+                                "repos/emotion-js/emotion/commits/888377a1579ce73beb20e981d443e75209a4441f")
+                    },
                 },
-            },
-            {
-                "name": "test-utils@0.3.2",
-                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/test-utils@0.3.2",
-                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/test-utils@0.3.2",
-                "commit": {
-                    "sha": "493e045b88e614db0bce352e08833d8dee431ffa",
-                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/493e045b88e614db0bce352e08833d8dee431ffa"
+                {
+                    "name": "test-utils@0.3.2",
+                    "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/test-utils@0.3.2",
+                    "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/test-utils@0.3.2",
+                    "commit": {
+                        "sha": "493e045b88e614db0bce352e08833d8dee431ffa",
+                        "url": ("https://api.github.com/repos/"
+                                "emotion-js/emotion/commits/493e045b88e614db0bce352e08833d8dee431ffa")
+                    },
+                    "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Rlc3QtdXRpbHNAMC4zLjI="
                 },
-                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Rlc3QtdXRpbHNAMC4zLjI="
-            },
-            {
-                "name": "test-utils@0.3.1",
-                "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/test-utils@0.3.1",
-                "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/test-utils@0.3.1",
-                "commit": {
-                    "sha": "f05b183c54cc23117d3b5033e5f136b4f1e930e2",
-                    "url": "https://api.github.com/repos/emotion-js/emotion/commits/f05b183c54cc23117d3b5033e5f136b4f1e930e2"
+                {
+                    "name": "test-utils@0.3.1",
+                    "zipball_url": "https://api.github.com/repos/emotion-js/emotion/zipball/refs/tags/test-utils@0.3.1",
+                    "tarball_url": "https://api.github.com/repos/emotion-js/emotion/tarball/refs/tags/test-utils@0.3.1",
+                    "commit": {
+                        "sha": "f05b183c54cc23117d3b5033e5f136b4f1e930e2",
+                        "url": ("https://api.github.com/repos/"
+                                "emotion-js/emotion/commits/f05b183c54cc23117d3b5033e5f136b4f1e930e2")
+                    },
+                    "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Rlc3QtdXRpbHNAMC4zLjE="
                 },
-                "node_id": "MDM6UmVmOTI1NzA1MzY6cmVmcy90YWdzL3Rlc3QtdXRpbHNAMC4zLjE="
-            },
 
-        ]}
+            ]}
 
         out = FindSources()  # Object Under Test
         mock_github_request.side_effect = self.mock_github_request_side_effect
@@ -657,13 +667,13 @@ class TestFindSources(TestBase):
             try:
                 tag_name = project.data[0]['name']
             except (IndexError, KeyError, TypeError):
-                continue  #  not viable test data
+                continue  # not viable test data
             split_semver = out.to_semver_string(tag_name).split('.')
             pos = tag_name.index(split_semver[0])
             pos = tag_name.index(split_semver[1], pos)
             forged_tag = tag_name[0:pos] \
-                       + str(int(split_semver[1]) + len(project.data)) \
-                       + tag_name[pos+len(split_semver[1]):]
+                + str(int(split_semver[1]) + len(project.data)) \
+                + tag_name[pos + len(split_semver[1]):]
             # print('unittest', tag_name, forged_tag)
             forged_entry = {}
             for key, value in project.data[0].items():
@@ -717,13 +727,13 @@ class TestFindSources(TestBase):
             try:
                 tag_name = project.data[0]['name']
             except (IndexError, KeyError, TypeError):
-                continue  #  not viable test data
+                continue  # not viable test data
             split_semver = out.to_semver_string(tag_name).split('.')
             pos = tag_name.index(split_semver[0])
             pos = tag_name.index(split_semver[1], pos)
             forged_tag = tag_name[0:pos] \
-                       + str(int(split_semver[1]) + 2 * len(project.data)) \
-                       + tag_name[pos+len(split_semver[1]):]
+                + str(int(split_semver[1]) + 2 * len(project.data)) \
+                + tag_name[pos + len(split_semver[1]):]
             res = out.get_matching_source_url(forged_tag, project.tags_url)
             self.assertEqual(res, '')
 
@@ -732,15 +742,16 @@ class TestFindSources(TestBase):
         self.assertEqual(res, '')
 
         # encountered real world challenges
-        ## Emotion
-        ## the issue is they have tags like 'vundefined'
+        # Emotion
+        # the issue is they have tags like 'vundefined'
         emotion = 'emotion-js/emotion'
         gh_emotion = MockProject(emotion, experienced_problems[emotion])
         self.github_projects[emotion] = gh_emotion
         res = out.get_matching_source_url('0.3.1', gh_emotion.tags_url)
         self.assertEqual(res, 'https://github.com/emotion-js/emotion/archive/refs/tags/test-utils@0.3.1.zip')
         res = out.get_matching_source_url('11.9.5', gh_emotion.tags_url)
-        self.assertEqual(res, 'https://github.com/emotion-js/emotion/archive/refs/tags/@emotion/babel-plugin@11.9.5.zip')
+        self.assertEqual(res,
+                         'https://github.com/emotion-js/emotion/archive/refs/tags/@emotion/babel-plugin@11.9.5.zip')
         res = out.get_matching_source_url('vundefined', gh_emotion.tags_url)
         self.assertTrue(res.startswith('https://github.com'))
         self.assertIn('archive/refs/tags', res)
