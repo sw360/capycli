@@ -145,7 +145,11 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         except AttributeError as err:
             # response.json() did not return a dictionary
-            if not err.name == 'get':
+            if hasattr(err, 'name'):
+                name = err.name
+            else:  # Python prior to 3.10
+                name = err.args[0].split("'")[3]
+            if not name == 'get':
                 raise
 
         except requests.exceptions.JSONDecodeError:
