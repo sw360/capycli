@@ -630,7 +630,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
     @staticmethod
     def find_source_url_by_language(component: Component) -> str:
-        capycli.dependencies.javascript.GetJavascriptDependencies().try_find_component_metadata(component, "")
+        capycli.dependencies.javascript.GetJavascriptDependencies().try_find_component_metadata(component, "")  # type: ignore
         return CycloneDxSupport.get_ext_ref_source_url(component)
 
     def find_sources(self, bom: Bom) -> Tuple[int, int]:

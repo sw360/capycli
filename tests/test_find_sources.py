@@ -763,7 +763,7 @@ class TestFindSources(TestBase):
         self.assertNotIn('xoxo', res)
         self.assertIn('vundefined', res)
 
-    @_recorder.record(file_path='unauthenticated_github_request.yml')
+    @_recorder.record(file_path='unauthenticated_github_request.yml')  # type: ignore
     def create_recording_for_test_github_request(self) -> None:
         out = FindSources()  # Object Under Test
 
@@ -774,33 +774,33 @@ class TestFindSources(TestBase):
                   'return_response': True,
                   'allow_redirects': True,
                   }
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.json(), {})
         # unauthenticated /user -> 401
         kwargs['url'] = 'https://api.github.com/user'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 401)
         # unauthenticated /repos/sw360/capycli
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 200)
         self.assertTrue(hasattr(res, 'json'))
         self.assertIn('tags_url', res.json())
         # ... get payload only; not sure if this makes any sense with responses
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertIn('tags_url', res)
         # disallow redirects; not sure if this makes any sense with responses
         kwargs['return_response'] = True
         kwargs['allow_redirects'] = False
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli/tarball/refs/tags/v2.5.1'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertTrue(300 < res.status_code < 400)
         # usually unwise combination of settings
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
 
-    @_recorder.record(file_path='authenticated_github_request.yml')
+    @_recorder.record(file_path='authenticated_github_request.yml')  # type: ignore
     def create_other_recording_for_test_github_request(self) -> None:
         """Make sure you have the environment variable GITHUB_TOKEN
            set to a valid personal token. Otherwise you will not be
@@ -814,32 +814,32 @@ class TestFindSources(TestBase):
                   'return_response': True,
                   'allow_redirects': True,
                   }
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.json(), {})
         # authenticated /user -> 200
         kwargs['url'] = 'https://api.github.com/user'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 200)
         self.assertIn('login', res.json())
         # unauthenticated /repos/sw360/capycli
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 200)
         self.assertTrue(hasattr(res, 'json'))
         self.assertIn('tags_url', res.json())
         # ... get payload only; not sure if this makes any sense with responses
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertIn('tags_url', res)
         # disallow redirects; not sure if this makes any sense with responses
         kwargs['return_response'] = True
         kwargs['allow_redirects'] = False
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli/tarball/refs/tags/v2.5.1'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertTrue(300 < res.status_code < 400)
         # usually unwise combination of settings
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
 
     @responses.activate
     def test_github_request_unauthenticated(self) -> None:
@@ -852,31 +852,31 @@ class TestFindSources(TestBase):
                   'return_response': True,
                   'allow_redirects': True,
                   }
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.json(), {})
         # unauthenticated /user -> 401
         kwargs['url'] = 'https://api.github.com/user'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 401)
         # unauthenticated /repos/sw360/capycli
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 200)
         self.assertTrue(hasattr(res, 'json'))
         self.assertIn('tags_url', res.json())
         # ... get payload only; not sure if this makes any sense with responses
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertIn('tags_url', res)
         # disallow redirects; not sure if this makes any sense with responses
         kwargs['return_response'] = True
         kwargs['allow_redirects'] = False
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli/tarball/refs/tags/v2.5.1'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertTrue(300 < res.status_code < 400)
         # usually unwise combination of settings
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         # recursive call
         kwargs['username'] = 'UnitTest'
         kwargs['token'] = 'SomeToken'
@@ -890,14 +890,14 @@ class TestFindSources(TestBase):
 
         with patch('sys.exit') as ultimate_failure:
             with patch('time.sleep'):
-                res = out.github_request(**kwargs)
+                res = out.github_request(**kwargs)  # type: ignore
                 ultimate_failure.assert_called_once()
 
         # get a list response
         kwargs['username'] = ''
         kwargs['token'] = ''
         responses.get(kwargs['url'], status=200, body='[{"name": "foo"}]')
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res, [{'name': 'foo'}])
         # raise connection error for coverage
         with patch('requests.get', side_effect=[
@@ -905,7 +905,7 @@ class TestFindSources(TestBase):
             Exception('last except block'),
         ]) as conn_err:
             with patch('time.sleep'):
-                res = out.github_request(**kwargs)
+                res = out.github_request(**kwargs)  # type: ignore
                 self.assertEqual(conn_err.call_count, 2)
 
     @responses.activate
@@ -919,32 +919,32 @@ class TestFindSources(TestBase):
                   'return_response': True,
                   'allow_redirects': True,
                   }
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.json(), {})
         # authenticated /user -> 200
         kwargs['url'] = 'https://api.github.com/user'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 200)
         self.assertIn('login', res.json())
         # unauthenticated /repos/sw360/capycli
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertEqual(res.status_code, 200)
         self.assertTrue(hasattr(res, 'json'))
         self.assertIn('tags_url', res.json())
         # ... get payload only; not sure if this makes any sense with responses
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertIn('tags_url', res)
         # disallow redirects; not sure if this makes any sense with responses
         kwargs['return_response'] = True
         kwargs['allow_redirects'] = False
         kwargs['url'] = 'https://api.github.com/repos/sw360/capycli/tarball/refs/tags/v2.5.1'
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
         self.assertTrue(300 < res.status_code < 400)
         # usually unwise combination of settings
         kwargs['return_response'] = False
-        res = out.github_request(**kwargs)
+        res = out.github_request(**kwargs)  # type: ignore
 
 
 if __name__ == "__main__":
