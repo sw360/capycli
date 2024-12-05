@@ -12,8 +12,8 @@ import re
 import sys
 import time
 from collections.abc import Iterable
-from typing import Any, Dict, List, Tuple, Set
-from urllib.parse import urlparse, parse_qs
+from typing import Any, Dict, List, Set, Tuple
+from urllib.parse import parse_qs, urlparse
 
 import requests
 import semver
@@ -130,19 +130,26 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 headers["Username"] = username
             response = requests.get(url, headers=headers,
                                     allow_redirects=allow_redirects)
-            if not response.ok:
-                if response.status_code == 429 \
-                        or 'rate limit exceeded' in response.reason \
-                        or 'API rate limit exceeded' in response.json().get('message', ''):
-                    print(
-                        Fore.LIGHTYELLOW_EX +
-                        "      Github API rate limit exceeded - wait 60s and retry ... " +
-                        Style.RESET_ALL)
-                    time.sleep(60)
-                    return FindSources.github_request(url, username, token, return_response=return_response)
-            elif response.json().get('message', '').startswith("Bad credentials"):
+            if response.status_code == 429 \
+                    or 'rate limit exceeded' in response.reason \
+                    or 'API rate limit exceeded' in response.json().get('message', ''):
+                print(
+                    Fore.LIGHTYELLOW_EX +
+                    "      Github API rate limit exceeded - wait 60s and retry ... " +
+                    Style.RESET_ALL)
+                time.sleep(60)
+                return FindSources.github_request(url, username, token, return_response=return_response)
+            if response.json().get('message', '').startswith("Bad credentials"):
                 print_red("Invalid GitHub credential provided - aborting!")
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
+
+        except AttributeError as err:
+            # response.json() did not return a dictionary
+            if not err.name == 'get':
+                raise
+
+        except requests.exceptions.JSONDecodeError:
+            response._content = b'{}'
 
         except requests.exceptions.ConnectionError as ex:
             print(
