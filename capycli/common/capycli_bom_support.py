@@ -193,6 +193,7 @@ class CycloneDxSupport():
 
         return ""
 
+
     @staticmethod
     def get_ext_ref_source_url(comp: Component) -> Any:
         for ext_ref in comp.external_references:
