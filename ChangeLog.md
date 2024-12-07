@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.6.0
 
 * `bom merge` improved: the dependencies are reconstructed, i.e. all dependencies
   that existed in the SBOMs before the merge should also exist after the merge.
@@ -15,6 +15,7 @@
 * `bom findsources`: programming language can be `golang` or `go`.
 * support for the new CyCloneDX 1.6 external reference type `source-distribution`
   when trying to find the source code for a component.
+* Dependency updates.
 
 ## 2.6.0.dev1
 
