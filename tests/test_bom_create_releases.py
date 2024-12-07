@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2023 Siemens
+# Copyright (c) 2021-2024 Siemens
 # All Rights Reserved.
 # Author: gernot.hillier@siemens.com, thomas.graf@siemens.com
 #
@@ -703,7 +703,7 @@ class CapycliTestBomCreate(CapycliTestBase):
             body="content")
         responses.add(
             responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
-            match=[upload_matcher("babel.git")])
+            match=[upload_matcher("babel.git", "BINARY")])
 
         self.app.download = True
         item = Component(
@@ -1171,4 +1171,4 @@ class CapycliTestBomCreate(CapycliTestBase):
 if __name__ == '__main__':
     APP = CapycliTestBomCreate()
     APP.setUp()
-    APP.test_update_release_attachment()
+    APP.test_upload_file_allow_git_binary_upload()

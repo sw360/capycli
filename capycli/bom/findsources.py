@@ -524,7 +524,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 if self.verbose:
                     print("    No Source code URL available - try to find with language:")
                 source_url = self.find_source_url_by_language(component)
-            if not source_url and language.lower() == "golang":
+            if not source_url and (language.lower() == "golang" or language.lower() == "go"):
                 if self.verbose:
                     print("    No Source code URL available - try to find on pkg.go.dev:")
                 source_url = self.find_golang_url(component)
