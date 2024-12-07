@@ -13,6 +13,8 @@
 * new command `bom validate` to do a simple validation whether a given SBOM
   complies with the CycloneDX spec version 1.4, 1.5 or 1.6.
 * `bom findsources`: programming language can be `golang` or `go`.
+* support for the new CyCloneDX 1.6 external reference type `source-distribution`
+  when trying to find the source code for a component.
 
 ## 2.6.0.dev1
 
