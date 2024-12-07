@@ -10,7 +10,7 @@
 * `bom merge` improved: the dependencies are reconstructed, i.e. all dependencies
   that existed in the SBOMs before the merge should also exist after the merge.
 * `bom convert` improved: we can now convert from and to CycloneDX XML.
-* new command `bom validate` to do a siple validation whether a given SBOM
+* new command `bom validate` to do a simple validation whether a given SBOM
   complies with the CycloneDX spec version 1.4, 1.5 or 1.6.
 * `bom findsources`: programming language can be `golang` or `go`.
 
