@@ -200,6 +200,10 @@ class CycloneDxSupport():
                     and (ext_ref.comment == CaPyCliBom.SOURCE_URL_COMMENT):
                 return ext_ref.url
 
+            # new for CyCloneDX 1.6
+            if (ext_ref.type == ExternalReferenceType.SOURCE_DISTRIBUTION):
+                return ext_ref.url
+
         return ""
 
     @staticmethod
