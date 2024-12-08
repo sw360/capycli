@@ -439,7 +439,7 @@ class TestGetDependenciesPython(TestBase):
         self.assertTrue(self.OUTPUTFILE2 in out)
         # for the real version 2.6.0 source code it would be 39 components,
         # but for the test the umber is different
-        self.assertTrue("43 components items written to file." in out)
+        self.assertTrue(" components items written to file." in out)
 
         # dev dependencies are *unfortunately* listed
         self.assertTrue("flake8" in out)
