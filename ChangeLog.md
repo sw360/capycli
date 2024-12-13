@@ -5,6 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* fix for `bom findsources` for some JavaScript SBOMs.
+
 ## 2.6.0
 
 * `bom merge` improved: the dependencies are reconstructed, i.e. all dependencies
