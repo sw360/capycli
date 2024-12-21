@@ -8,6 +8,10 @@
 ## NEXT
 
 * fix for `bom findsources` for some JavaScript SBOMs.
+* `bom show` command also lists purl and source code download url in verbose mode.  
+  If one of the values is missing and `--forceerror` has been specified, error code 97 is returned.
+* `bom show` command also lists license information in verbose mode, but
+  only for CycloneDX 1.6 and later.
 
 ## 2.6.0
 
