@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2024 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -94,16 +94,16 @@ class TestCheckBom(TestBase):
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("colorama, 0.4.6" in out)
-        self.assertTrue("package-url:pkg:pypi/colorama@0.4.6" in out)
+        self.assertTrue("package-url: pkg:pypi/colorama@0.4.6" in out)
         self.assertTrue("SW360 id:9a2373710bd44769a2560dd31280901d" in out)
         self.assertTrue("python, 3.8" in out)
-        self.assertTrue("package-url:pkg:pypi/python@3.8" in out)
+        self.assertTrue("package-url: pkg:pypi/python@3.8" in out)
         self.assertTrue("SW360 id:05c30bf89a512463260b57e84d99b38f" in out)
         self.assertTrue("tomli, 2.0.1" in out)
-        self.assertTrue("package-url:pkg:pypi/tomli@2.0.1" in out)
+        self.assertTrue("package-url: pkg:pypi/tomli@2.0.1" in out)
         self.assertTrue("SW360 id:fa0d21eb17574ba9ae17e5c9b432558e" in out)
         self.assertTrue("wheel, 0.38.4" in out)
-        self.assertTrue("package-url:pkg:pypi/wheel@0.38.4" in out)
+        self.assertTrue("package-url: pkg:pypi/wheel@0.38.4" in out)
         self.assertTrue("SW360 id:e0995819173d4ac8b1a4da3548935976" in out)
 
 
