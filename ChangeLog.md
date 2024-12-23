@@ -12,6 +12,8 @@
   If one of the values is missing and `--forceerror` has been specified, error code 97 is returned.
 * `bom show` command also lists license information in verbose mode, but
   only for CycloneDX 1.6 and later.
+* `bom validate` now also uses `-v` and `--forceerror` and uses the same `bom show` functionality
+  to check for missing purl or source code url.
 
 ## 2.6.0
 

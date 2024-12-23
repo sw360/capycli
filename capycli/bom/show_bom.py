@@ -106,8 +106,8 @@ class ShowBom(capycli.common.script_base.ScriptBase):
             print("optional arguments:")
             print("-h, --help            show this help message and exit")
             print("-i INPUTFILE          input file to read from (JSON)")
-            print("-v                    be verbose")
-            print("--forceerror          force an error exit code in case of prerequisite errors")
+            print("-v                    be verbose (show more details about purl, download URL, and license)")
+            print("--forceerror          force an error exit code in case of prerequisite errors or warnings")
             return
 
         if not args.inputfile:

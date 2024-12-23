@@ -549,7 +549,7 @@ class CaPyCliBom():
         return SchemaVersion.V1_6
 
     @classmethod
-    def validate_sbom(cls, inputfile: str, spec_version: str) -> bool:
+    def validate_sbom(cls, inputfile: str, spec_version: str, show_success: bool = True) -> bool:
         """Validate the given SBOM file against the given CycloneDX spec. version."""
         LOG.debug(f"Validating SBOM from file {inputfile}")
         with open(inputfile) as fin:
@@ -564,7 +564,8 @@ class CaPyCliBom():
                 if validation_errors:
                     raise CaPyCliException("JSON validation error: " + repr(validation_errors))
 
-                print_green("JSON file successfully validated.")
+                if show_success:
+                    print_green("JSON file successfully validated.")
                 return True
             except MissingOptionalDependencyException as error:
                 print_yellow('JSON-validation was skipped due to', error)
