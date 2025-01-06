@@ -403,11 +403,19 @@ class CommandlineSupport():
             help="force an error exit code in case of visual errors",
         )
 
+        # used by CreateProject
         self.parser.add_argument(
             "-pms",
             "--project-mainline-state",
             dest="project_mainline_state",
             help="project mainline state for releases in a newly created project",
+        )
+
+        # used by CreateProject
+        self.parser.add_argument(
+            "--copy_from",
+            dest="copy_from",
+            help="copy the project with the given id and the update it",
         )
 
     def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:

@@ -14,6 +14,10 @@
   only for CycloneDX 1.6 and later.
 * `bom validate` now also uses `-v` and `--forceerror` and uses the same `bom show` functionality
   to check for missing purl or source code url.
+* until version 2.6.0, `project create` always set the Project Mainline State of a project release either
+  to SPECIFIC of to the value given by `-pms`. Now **existing** Project Mainline States are kept.
+* `project create` has a new parameter `--copy_from` which allows to first create a copy of the given
+  project and then update the releases based on the contents of the given SBOM.
 
 ## 2.6.0
 
