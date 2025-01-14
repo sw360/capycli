@@ -178,7 +178,7 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        # TODO see #25: assert len(res.releases) == 1
+        # TODO see #118: assert len(res.releases) == 1
 
         component_matches = {"_embedded": {"sw360:components": [
             {"name": "Mail",
