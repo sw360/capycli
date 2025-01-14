@@ -375,9 +375,13 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
             # Sorted alternatives in descending version order
             # Please note: the release list sometimes contain just the href but no version
-            rel_list = sorted(rel_list,
-                              key=lambda x: "version" in x and ComparableVersion(
-                                  x.get("version", "")), reverse=True)  # type: ignore
+            try:
+                rel_list = sorted(rel_list,
+                                  key=lambda x: "version" in x and ComparableVersion(
+                                      x.get("version", "")), reverse=True)  # type: ignore
+            except ValueError:
+                pass  # we can live with an unsorted list
+
             for relref in rel_list:
                 href = relref["_links"]["self"]["href"]
                 real_release = self.client.get_release_by_url(href)
@@ -779,7 +783,11 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 newbom.components.add(newitem)
 
             # Sorted alternatives in descending version order
-            item.releases = sorted(item.releases, key=lambda x: ComparableVersion(x['Version']), reverse=True)
+            try:
+                item.releases = sorted(item.releases, key=lambda x: ComparableVersion(x['Version']), reverse=True)
+            except ValueError:
+                pass  # we can live with an unsorted list
+
             for match_item in item.releases:
                 if self.is_good_match(match_item["MapResult"]):
                     newitem = self.update_bom_item(item.component, match_item)

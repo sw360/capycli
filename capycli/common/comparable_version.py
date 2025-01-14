@@ -31,6 +31,7 @@ class ComparableVersion:
             self.parts = self.parse(version)
         except Exception:
             LOG.warning("Unable to parse version %s", version)
+            raise  # pass on to caller as object is useless without self.parts
 
     @staticmethod
     def parse(version: str) -> List[Tuple[bool, int | str]]:
