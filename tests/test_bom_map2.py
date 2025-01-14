@@ -191,6 +191,38 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
         assert len(res.releases) == 1
 
+    @responses.activate
+    def test_map_bom_item_nocache_invalid_version(self) -> None:
+        bomitem = Component(
+            name="mail",
+            version="1.4")
+        component_matches = {"_embedded": {"sw360:components": [
+            {"name": "mail",
+             "_links": {"self": {"href": SW360_BASE_URL + 'components/b001'}}}]}}
+        component_data1 = {"_embedded": {"sw360:releases": [
+            {"version": "1.4",
+             "_links": {"self": {"href": SW360_BASE_URL + 'releases/1111'}}},
+            {"version": "1.0._ME-2",
+             "_links": {"self": {"href": SW360_BASE_URL + 'releases/1112'}}}]}}
+        release_data1 = {"name": "mail", "version": "1.4", "_links": {
+            "self": {"href": SW360_BASE_URL + 'releases/1111'},
+            "sw360:component": {"href": SW360_BASE_URL + "components/b001"}}}
+        release_data2 = {"name": "Mail", "version": "1.0._ME-2", "_links": {
+            "self": {"href": SW360_BASE_URL + 'releases/1112'},
+            "sw360:component": {"href": SW360_BASE_URL + "components/b002"}}}
+        responses.add(responses.GET, SW360_BASE_URL + 'components?name=mail',
+                      json=component_matches)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/b001',
+                      json=component_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1111',
+                      json=release_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1112',
+                      json=release_data2)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
     # ----------------- map_bom_item_no_cache purl cases --------------------
 
     @responses.activate

@@ -18,6 +18,7 @@
   to SPECIFIC of to the value given by `-pms`. Now **existing** Project Mainline States are kept.
 * `project create` has a new parameter `--copy_from` which allows to first create a copy of the given
   project and then update the releases based on the contents of the given SBOM.
+* fix for `bom map` loosing SBOM items when it tries to map to invalid SW360 releases
 
 ## 2.6.0
 
