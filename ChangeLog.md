@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.7.0
 
 * fix for `bom findsources` for some JavaScript SBOMs.
 * `bom show` command also lists purl and source code download url in verbose mode.  
