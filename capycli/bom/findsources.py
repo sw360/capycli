@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 from colorama import Fore, Style
 
 # from packageurl import PackageURL
-from cyclonedx.model import ExternalReferenceType
+from cyclonedx.model import ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from sw360 import SW360Error
@@ -636,7 +636,11 @@ class FindSources(capycli.common.script_base.ScriptBase):
     def find_source_url_by_language(component: Component) -> str:
         if hasattr(capycli, 'dependencies'):
             capycli.dependencies.javascript.GetJavascriptDependencies().try_find_component_metadata(component, "")
-        return CycloneDxSupport.get_ext_ref_source_url(component)
+        url = CycloneDxSupport.get_ext_ref_source_url(component)
+        if isinstance(url, XsUri):
+            return url._uri
+        else:
+            return url
 
     def find_sources(self, bom: Bom) -> Tuple[int, int]:
         """Go through the list of SBOM items and try to determine the source code."""
