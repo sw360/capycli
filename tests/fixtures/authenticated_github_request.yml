@@ -1,0 +1,123 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: "\n\n\n\n\n\n\n<!DOCTYPE html>\n<html\n  lang=\"en\"\n  data-color-mode=\"\
+      dark\" data-dark-theme=\"dark\"\n  data-color-mode=\"light\" data-light-theme=\"\
+      light\" data-dark-theme=\"dark\"\n  data-a11y-animated-images=\"system\" data-a11y-link-underlines=\"\
+      true\"\n  \n  >\n\n\n\n  <head>\n    <meta charset=\"utf-8\">\n  <link rel=\"\
+      dns-prefetch\" href=\"https://github.githubassets.com\">\n  <link rel=\"dns-prefetch\"\
+      \ href=\"https://avatars.githubusercontent.com\">\n  <link rel=\"dns-prefetch\"\
+      \ href=\"https://github-cloud.s3.amazonaws.com\">\n  <link rel=\"dns-prefetch\"\
+      \ href=\"https://user-images.githubusercontent.com/\">\n  <link rel=\"preconnect\"\
+      \ href=\"https://github.githubassets.com\" crossorigin>\n  <link rel=\"preconnect\"\
+      \ href=\"https://avatars.githubusercontent.com\">\n\n  \n    <link rel=\"preload\"\
+      \ href=\"https://github.githubassets.com/assets/global-banner-disable-f988792be49f.js\"\
+      \ as=\"script\" crossorigin>\n\n  <link rel=\"preload\" href=\"https://github.githubassets.com/assets/mona-sans-d1bf285e9b9b.woff2\"\
+      \ as=\"font\" type=\"font/woff2\" crossorigin>\n\n\n  <link crossorigin=\"anonymous\"\
+      \ media=\"all\" rel=\"stylesheet\" href=\"https://github.githubassets.com/assets/light-3e154969b9f9.css\"\
+      \ /><link crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" href=\"\
+      https://github.githubassets.com/assets/dark-9c5b7a476542.css\" /><link data-color-theme=\"\
+      light\" crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" data-href=\"\
+      https://github.githubassets.com/assets/light-3e154969b9f9.css\" /><link data-color-theme=\"\
+      dark\" crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" data-href=\"\
+      https://github.githubassets.com/assets/dark-9c5b7a476542.css\" /><link data-color-theme=\"\
+      dark_dimmed\" crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" data-href=\"\
+      https://github.githubassets.com/assets/dark_dimmed-afda8eb0fb33.css\" /><link\
+      \ data-color-theme=\"dark_high_contrast\" crossorigin=\"anonymous\" media=\"\
+      all\" rel=\"stylesheet\" data-href=\"https://github.githubassets.com/assets/dark_high_contrast-2494e44ccdc5.css\"\
+      \ /><link data-color-theme=\"dark_colorblind\" crossorigin=\"anonymous\" media=\"\
+      all\" rel=\"stylesheet\" data-href=\"https://github.githubassets.com/assets/dark_colorblind-56fff47acadc.css\"\
+      \ /><link data-color-theme=\"light_colorblind\" crossorigin=\"anonymous\" media=\"\
+      all\" rel=\"stylesheet\" data-href=\"https://github.githubassets.com/assets/light_colorblind-71cd4cc132ec.css\"\
+      \ /><link data-color-theme=\"light_high_contrast\" crossorigin=\"anonymous\"\
+      \ media=\"all\" rel=\"stylesheet\" data-href=\"https://github.githubassets.com/assets/light_high_contrast-fd5499848985.css\"\
+      \ /><link data-color-theme=\"light_tritanopia\" crossorigin=\"anonymous\" media=\"\
+      all\" rel=\"stylesheet\" data-href=\"https://github.githubassets.com/assets/light_tritanopia-31d17ba3e139.css\"\
+      \ /><link data-color-theme=\"dark_tritanopia\" crossorigin=\"anonymous\" media=\"\
+      all\" rel=\"stylesheet\" data-href=\"https://github.githubassets.com/assets/dark_tritanopia-68d6b2c79663.css\"\
+      \ />\n\n    <link crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\"\
+      \ href=\"https://github.githubassets.com/assets/primer-primitives-4cf0d59ab51a.css\"\
+      \ />\n    <link crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" href=\"\
+      https://github.githubassets.com/assets/primer-af846850481e.css\" />\n    <link\
+      \ crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" href=\"https://github.githubassets.com/assets/global-8b10f05a77e6.css\"\
+      \ />\n    <link crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" href=\"\
+      https://github.githubassets.com/assets/github-2f6e722088eb.css\" />\n  <link\
+      \ crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" href=\"https://github.githubassets.com/assets/site-0293a3496b30.css\"\
+      \ />\n<link crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" href=\"\
+      https://github.githubassets.com/assets/landing-pages-23d9ea48e7df.css\" />\n\
+      <link crossorigin=\"anonymous\" media=\"all\" rel=\"stylesheet\" href=\"https://github.githubassets.com/assets/home-58631dd4c01b.css\"\
+      \ />\n\n  \n\n\n  <script type=\"application/json\" id=\"client-env\">{\"locale\"\
+      :\"en\",\"featureFlags\":[\"copilot_new_references_ui\",\"copilot_beta_features_opt_in\"\
+      ,\"copilot_chat_static_thread_suggestions\",\"copilot_conversational_ux_history_refs\"\
+      ,\"copilot_implicit_context\",\"copilot_smell_icebreaker_ux\",\"experimentation_azure_variant_endpoint\"\
+      ,\"failbot_handle_non_errors\",\"geojson_azure_maps\",\"ghost_pilot_confidence_truncation_25\"\
+      ,\"ghost_pilot_confidence_truncation_40\",\"hovercard_accessibility\",\"issues_react_new_timeline\"\
+      ,\"issues_react_avatar_refactor\",\"issues_react_remove_placeholders\",\"issues_react_blur_item_picker_on_close\"\
+      ,\"marketing_pages_search_explore_provider\",\"react_keyboard_shortcuts_dialog\"\
+      ,\"remove_child_patch\",\"sample_network_conn_type\",\"site_metered_billing_update\"\
+      ,\"lifecycle_label_name_updates\"]}</script>\n<title>GitHub \xB7 Build and ship software on a single, collaborative\
+      \ platform \xB7 GitHub</title>\n\n\n\n  <meta name=\"route-pattern\" content=\"\
+      /\" data-turbo-transient>\n  <meta name=\"route-controller\" content=\"dashboard\"\
+      \ data-turbo-transient>\n  <meta name=\"route-action\" content=\"index\" data-turbo-transient>\n\
+      \n    \n  <meta name=\"current-catalog-service-hash\" content=\"40dc28bd654b20f337468a532ff456ed5863889cfbb4e982b793597321d48d3f\"\
+      >\n\n\n  <meta name=\"request-id\" content=\"F5D3:2A10CB:C1F678:C7BF06:674E3515\"\
+      \ data-pjax-transient=\"true\"/><meta name=\"html-safe-nonce\" content=\"4da37fe5b97a708936fb295ff830927f55d9efe32ff948d3149ca43b4b796186\"\
+      \ data-pjax-transient=\"true\"/><meta name=\"visitor-payload\" content=\"eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJGNUQzOjJBMTBDQjpDMUY2Nzg6QzdCRjA2OjY3NEUzNTE1IiwidmlzaXRvcl9pZCI6IjU2NzQ2OTU0MDgwODI2Mjk5MDkiLCJyZWdpb25fZWRnZSI6ImZyYSIsInJlZ2lvbl9yZW5kZXIiOiJmcmEifQ==\"\
+      \ data-pjax-transient=\"true\"/><meta name=\"visitor-hmac\" content=\"8342ba219e92c7fa917175fda5a4ab6632e82ca692eecf6b796d70bb801eaee6\"\
+      \ data-pjax-transient=\"true\"/>\n\n\n\n    <meta name=\"page-subject\" content=\"\
+      GitHub\">\n\n  <meta name=\"github-keyboard-shortcuts\" content=\"dashboards,copilot\"\
+      \ data-turbo-transient=\"true\" />\n  \n\n  <meta name=\"selected-link\" value=\"\
+      /\" data-turbo-transient>\n  <link rel=\"assets\" href=\"https://github.githubassets.com/\"\
+      >\n\n    <meta name=\"google-site-verification\" content=\"Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I\"\
+      >\n\n<meta name=\"octolytics-url\" content=\"https://collector.github.com/github/collect\"\
+      \ />\n\n  \n\n  \n\n\n\n\n    <meta name=\"user-login\" content=\"\">\n\n  \n\
+      \n\n<meta name=\"theme-color\" content=\"#1e2327\">\n<meta name=\"color-scheme\"\
+      \ content=\"light dark\" />\n\n\n  <link rel=\"manifest\" href=\"/manifest.json\"\
+      \ crossOrigin=\"use-credentials\">\n\n  </head>\n\n  <body class=\"logged-out\
+      \ env-production page-responsive header-overlay header-overlay-fixed js-header-overlay-fixed\"\
+      \ style=\"word-wrap: break-word;\" data-turbo=\"false\">\n    <div data-turbo-body\
+      \ class=\"logged-out env-production page-responsive header-overlay header-overlay-fixed\
+      \ js-header-overlay-fixed\" style=\"word-wrap: break-word;\">\n      \n\n\n\
+      \ <p>Hello Unittest</p>\n  </body>\n</html>\n\n"
+    content_type: text/plain; charset=utf-8
+    method: GET
+    status: 200
+    url: https://github.com/
+- response:
+    auto_calculate_content_length: false
+    body: '{"login":"Unittest","id":47110815,"node_id":"MDQ6VXNlcjYwNjY0NTU4","avatar_url":"https://avatars.githubusercontent.com/u/47110815?v=4","gravatar_id":"","url":"https://api.github.com/users/Unittest","html_url":"https://github.com/Unittest","followers_url":"https://api.github.com/users/Unittest/followers","following_url":"https://api.github.com/users/Unittest/following{/other_user}","gists_url":"https://api.github.com/users/Unittest/gists{/gist_id}","starred_url":"https://api.github.com/users/Unittest/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Unittest/subscriptions","organizations_url":"https://api.github.com/users/Unittest/orgs","repos_url":"https://api.github.com/users/Unittest/repos","events_url":"https://api.github.com/users/Unittest/events{/privacy}","received_events_url":"https://api.github.com/users/Unittest/received_events","type":"User","user_view_type":"private","site_admin":false,"name":"Unit
+      Test","company":null,"blog":"","location":null,"email":null,"hireable":null,"bio":null,"twitter_username":null,"notification_email":null,"public_repos":0,"public_gists":0,"followers":0,"following":0,"created_at":"2024-12-01T16:52:33Z","updated_at":"2024-12-02T10:08:10Z","private_gists":0,"total_private_repos":1,"owned_private_repos":1,"disk_usage":0,"collaborators":0,"two_factor_authentication":true,"plan":{"name":"free","space":123456789,"collaborators":0,"private_repos":9001}}'
+    content_type: text/plain
+    method: GET
+    status: 200
+    url: https://api.github.com/user
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":637681495,"node_id":"R_kgDOJgI_Vw","name":"capycli","full_name":"sw360/capycli","private":false,"owner":{"login":"sw360","id":16389175,"node_id":"MDEyOk9yZ2FuaXphdGlvbjE2Mzg5MTc1","avatar_url":"https://avatars.githubusercontent.com/u/16389175?v=4","gravatar_id":"","url":"https://api.github.com/users/sw360","html_url":"https://github.com/sw360","followers_url":"https://api.github.com/users/sw360/followers","following_url":"https://api.github.com/users/sw360/following{/other_user}","gists_url":"https://api.github.com/users/sw360/gists{/gist_id}","starred_url":"https://api.github.com/users/sw360/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/sw360/subscriptions","organizations_url":"https://api.github.com/users/sw360/orgs","repos_url":"https://api.github.com/users/sw360/repos","events_url":"https://api.github.com/users/sw360/events{/privacy}","received_events_url":"https://api.github.com/users/sw360/received_events","type":"Organization","user_view_type":"public","site_admin":false},"html_url":"https://github.com/sw360/capycli","description":"CaPyCLI
+      - Python scripts for software license compliance automation with SW360","fork":false,"url":"https://api.github.com/repos/sw360/capycli","forks_url":"https://api.github.com/repos/sw360/capycli/forks","keys_url":"https://api.github.com/repos/sw360/capycli/keys{/key_id}","collaborators_url":"https://api.github.com/repos/sw360/capycli/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/sw360/capycli/teams","hooks_url":"https://api.github.com/repos/sw360/capycli/hooks","issue_events_url":"https://api.github.com/repos/sw360/capycli/issues/events{/number}","events_url":"https://api.github.com/repos/sw360/capycli/events","assignees_url":"https://api.github.com/repos/sw360/capycli/assignees{/user}","branches_url":"https://api.github.com/repos/sw360/capycli/branches{/branch}","tags_url":"https://api.github.com/repos/sw360/capycli/tags","blobs_url":"https://api.github.com/repos/sw360/capycli/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/sw360/capycli/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/sw360/capycli/git/refs{/sha}","trees_url":"https://api.github.com/repos/sw360/capycli/git/trees{/sha}","statuses_url":"https://api.github.com/repos/sw360/capycli/statuses/{sha}","languages_url":"https://api.github.com/repos/sw360/capycli/languages","stargazers_url":"https://api.github.com/repos/sw360/capycli/stargazers","contributors_url":"https://api.github.com/repos/sw360/capycli/contributors","subscribers_url":"https://api.github.com/repos/sw360/capycli/subscribers","subscription_url":"https://api.github.com/repos/sw360/capycli/subscription","commits_url":"https://api.github.com/repos/sw360/capycli/commits{/sha}","git_commits_url":"https://api.github.com/repos/sw360/capycli/git/commits{/sha}","comments_url":"https://api.github.com/repos/sw360/capycli/comments{/number}","issue_comment_url":"https://api.github.com/repos/sw360/capycli/issues/comments{/number}","contents_url":"https://api.github.com/repos/sw360/capycli/contents/{+path}","compare_url":"https://api.github.com/repos/sw360/capycli/compare/{base}...{head}","merges_url":"https://api.github.com/repos/sw360/capycli/merges","archive_url":"https://api.github.com/repos/sw360/capycli/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/sw360/capycli/downloads","issues_url":"https://api.github.com/repos/sw360/capycli/issues{/number}","pulls_url":"https://api.github.com/repos/sw360/capycli/pulls{/number}","milestones_url":"https://api.github.com/repos/sw360/capycli/milestones{/number}","notifications_url":"https://api.github.com/repos/sw360/capycli/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/sw360/capycli/labels{/name}","releases_url":"https://api.github.com/repos/sw360/capycli/releases{/id}","deployments_url":"https://api.github.com/repos/sw360/capycli/deployments","created_at":"2023-05-08T07:30:22Z","updated_at":"2024-11-30T10:59:50Z","pushed_at":"2024-11-30T22:42:40Z","git_url":"git://github.com/sw360/capycli.git","ssh_url":"git@github.com:sw360/capycli.git","clone_url":"https://github.com/sw360/capycli.git","svn_url":"https://github.com/sw360/capycli","homepage":"","size":1371,"stargazers_count":13,"watchers_count":13,"language":"Python","has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":false,"has_discussions":false,"forks_count":7,"mirror_url":null,"archived":false,"disabled":false,"open_issues_count":8,"license":{"key":"other","name":"Other","spdx_id":"NOASSERTION","url":null,"node_id":"MDc6TGljZW5zZTA="},"allow_forking":true,"is_template":false,"web_commit_signoff_required":false,"topics":["automation","clearing","cli","compliance","license","sw360"],"visibility":"public","forks":7,"open_issues":8,"watchers":13,"default_branch":"main","permissions":{"admin":false,"maintain":false,"push":true,"triage":true,"pull":true},"temp_clone_token":"","allow_squash_merge":true,"allow_merge_commit":true,"allow_rebase_merge":true,"allow_auto_merge":false,"delete_branch_on_merge":false,"allow_update_branch":false,"use_squash_pr_title_as_default":false,"squash_merge_commit_message":"COMMIT_MESSAGES","squash_merge_commit_title":"COMMIT_OR_PR_TITLE","merge_commit_message":"PR_TITLE","merge_commit_title":"MERGE_MESSAGE","custom_properties":{},"organization":{"login":"sw360","id":16389175,"node_id":"MDEyOk9yZ2FuaXphdGlvbjE2Mzg5MTc1","avatar_url":"https://avatars.githubusercontent.com/u/16389175?v=4","gravatar_id":"","url":"https://api.github.com/users/sw360","html_url":"https://github.com/sw360","followers_url":"https://api.github.com/users/sw360/followers","following_url":"https://api.github.com/users/sw360/following{/other_user}","gists_url":"https://api.github.com/users/sw360/gists{/gist_id}","starred_url":"https://api.github.com/users/sw360/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/sw360/subscriptions","organizations_url":"https://api.github.com/users/sw360/orgs","repos_url":"https://api.github.com/users/sw360/repos","events_url":"https://api.github.com/users/sw360/events{/privacy}","received_events_url":"https://api.github.com/users/sw360/received_events","type":"Organization","user_view_type":"public","site_admin":false},"network_count":7,"subscribers_count":5}'
+    content_type: text/plain
+    method: GET
+    status: 200
+    url: https://api.github.com/repos/sw360/capycli
+- response:
+    auto_calculate_content_length: false
+    body: '{"id":637681495,"node_id":"R_kgDOJgI_Vw","name":"capycli","full_name":"sw360/capycli","private":false,"owner":{"login":"sw360","id":16389175,"node_id":"MDEyOk9yZ2FuaXphdGlvbjE2Mzg5MTc1","avatar_url":"https://avatars.githubusercontent.com/u/16389175?v=4","gravatar_id":"","url":"https://api.github.com/users/sw360","html_url":"https://github.com/sw360","followers_url":"https://api.github.com/users/sw360/followers","following_url":"https://api.github.com/users/sw360/following{/other_user}","gists_url":"https://api.github.com/users/sw360/gists{/gist_id}","starred_url":"https://api.github.com/users/sw360/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/sw360/subscriptions","organizations_url":"https://api.github.com/users/sw360/orgs","repos_url":"https://api.github.com/users/sw360/repos","events_url":"https://api.github.com/users/sw360/events{/privacy}","received_events_url":"https://api.github.com/users/sw360/received_events","type":"Organization","user_view_type":"public","site_admin":false},"html_url":"https://github.com/sw360/capycli","description":"CaPyCLI
+      - Python scripts for software license compliance automation with SW360","fork":false,"url":"https://api.github.com/repos/sw360/capycli","forks_url":"https://api.github.com/repos/sw360/capycli/forks","keys_url":"https://api.github.com/repos/sw360/capycli/keys{/key_id}","collaborators_url":"https://api.github.com/repos/sw360/capycli/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/sw360/capycli/teams","hooks_url":"https://api.github.com/repos/sw360/capycli/hooks","issue_events_url":"https://api.github.com/repos/sw360/capycli/issues/events{/number}","events_url":"https://api.github.com/repos/sw360/capycli/events","assignees_url":"https://api.github.com/repos/sw360/capycli/assignees{/user}","branches_url":"https://api.github.com/repos/sw360/capycli/branches{/branch}","tags_url":"https://api.github.com/repos/sw360/capycli/tags","blobs_url":"https://api.github.com/repos/sw360/capycli/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/sw360/capycli/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/sw360/capycli/git/refs{/sha}","trees_url":"https://api.github.com/repos/sw360/capycli/git/trees{/sha}","statuses_url":"https://api.github.com/repos/sw360/capycli/statuses/{sha}","languages_url":"https://api.github.com/repos/sw360/capycli/languages","stargazers_url":"https://api.github.com/repos/sw360/capycli/stargazers","contributors_url":"https://api.github.com/repos/sw360/capycli/contributors","subscribers_url":"https://api.github.com/repos/sw360/capycli/subscribers","subscription_url":"https://api.github.com/repos/sw360/capycli/subscription","commits_url":"https://api.github.com/repos/sw360/capycli/commits{/sha}","git_commits_url":"https://api.github.com/repos/sw360/capycli/git/commits{/sha}","comments_url":"https://api.github.com/repos/sw360/capycli/comments{/number}","issue_comment_url":"https://api.github.com/repos/sw360/capycli/issues/comments{/number}","contents_url":"https://api.github.com/repos/sw360/capycli/contents/{+path}","compare_url":"https://api.github.com/repos/sw360/capycli/compare/{base}...{head}","merges_url":"https://api.github.com/repos/sw360/capycli/merges","archive_url":"https://api.github.com/repos/sw360/capycli/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/sw360/capycli/downloads","issues_url":"https://api.github.com/repos/sw360/capycli/issues{/number}","pulls_url":"https://api.github.com/repos/sw360/capycli/pulls{/number}","milestones_url":"https://api.github.com/repos/sw360/capycli/milestones{/number}","notifications_url":"https://api.github.com/repos/sw360/capycli/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/sw360/capycli/labels{/name}","releases_url":"https://api.github.com/repos/sw360/capycli/releases{/id}","deployments_url":"https://api.github.com/repos/sw360/capycli/deployments","created_at":"2023-05-08T07:30:22Z","updated_at":"2024-11-30T10:59:50Z","pushed_at":"2024-11-30T22:42:40Z","git_url":"git://github.com/sw360/capycli.git","ssh_url":"git@github.com:sw360/capycli.git","clone_url":"https://github.com/sw360/capycli.git","svn_url":"https://github.com/sw360/capycli","homepage":"","size":1371,"stargazers_count":13,"watchers_count":13,"language":"Python","has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":false,"has_discussions":false,"forks_count":7,"mirror_url":null,"archived":false,"disabled":false,"open_issues_count":8,"license":{"key":"other","name":"Other","spdx_id":"NOASSERTION","url":null,"node_id":"MDc6TGljZW5zZTA="},"allow_forking":true,"is_template":false,"web_commit_signoff_required":false,"topics":["automation","clearing","cli","compliance","license","sw360"],"visibility":"public","forks":7,"open_issues":8,"watchers":13,"default_branch":"main","permissions":{"admin":false,"maintain":false,"push":true,"triage":true,"pull":true},"temp_clone_token":"","allow_squash_merge":true,"allow_merge_commit":true,"allow_rebase_merge":true,"allow_auto_merge":false,"delete_branch_on_merge":false,"allow_update_branch":false,"use_squash_pr_title_as_default":false,"squash_merge_commit_message":"COMMIT_MESSAGES","squash_merge_commit_title":"COMMIT_OR_PR_TITLE","merge_commit_message":"PR_TITLE","merge_commit_title":"MERGE_MESSAGE","custom_properties":{},"organization":{"login":"sw360","id":16389175,"node_id":"MDEyOk9yZ2FuaXphdGlvbjE2Mzg5MTc1","avatar_url":"https://avatars.githubusercontent.com/u/16389175?v=4","gravatar_id":"","url":"https://api.github.com/users/sw360","html_url":"https://github.com/sw360","followers_url":"https://api.github.com/users/sw360/followers","following_url":"https://api.github.com/users/sw360/following{/other_user}","gists_url":"https://api.github.com/users/sw360/gists{/gist_id}","starred_url":"https://api.github.com/users/sw360/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/sw360/subscriptions","organizations_url":"https://api.github.com/users/sw360/orgs","repos_url":"https://api.github.com/users/sw360/repos","events_url":"https://api.github.com/users/sw360/events{/privacy}","received_events_url":"https://api.github.com/users/sw360/received_events","type":"Organization","user_view_type":"public","site_admin":false},"network_count":7,"subscribers_count":5}'
+    content_type: text/plain
+    method: GET
+    status: 200
+    url: https://api.github.com/repos/sw360/capycli
+- response:
+    auto_calculate_content_length: false
+    body: ''
+    content_type: text/plain
+    method: GET
+    status: 302
+    url: https://api.github.com/repos/sw360/capycli/tarball/refs/tags/v2.5.1
+- response:
+    auto_calculate_content_length: false
+    body: ''
+    content_type: text/plain
+    method: GET
+    status: 302
+    url: https://api.github.com/repos/sw360/capycli/tarball/refs/tags/v2.5.1

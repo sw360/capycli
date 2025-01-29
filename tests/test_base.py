@@ -95,17 +95,26 @@ class TestBasePytest:
         old_stderr = sys.stderr
         sys.stderr = TextIOWrapper(BytesIO(), sys.stderr.encoding)
 
-        func(*args, **kwargs)
+        error = None
 
-        # get output
-        sys.stderr.seek(0)       # jump to the start
-        out = sys.stderr.read()  # read output
+        try:
+            func(*args, **kwargs)
+        except Exception as err:
+            error = err
+        finally:
+            # get output
+            sys.stderr.seek(0)       # jump to the start
+            out = sys.stderr.read()  # read output
 
-        # restore stdout
-        sys.stderr.close()
-        sys.stderr = old_stderr
+            # restore stdout
+            sys.stderr.close()
+            sys.stderr = old_stderr
 
-        return out
+        if error is None:
+            return out
+        print(out)
+        sys.stdout.flush()
+        raise error
 
     @staticmethod
     def capture_stdout(func: Any, *args: Any, **kwargs: Any) -> str:
@@ -114,16 +123,26 @@ class TestBasePytest:
         old_stdout = sys.stdout
         sys.stdout = TextIOWrapper(BytesIO(), sys.stdout.encoding)
 
-        func(*args, **kwargs)
-        # get output
-        sys.stdout.seek(0)       # jump to the start
-        out = sys.stdout.read()  # read output
+        error = None
 
-        # restore stdout
-        sys.stdout.close()
-        sys.stdout = old_stdout
+        try:
+            func(*args, **kwargs)
+        except Exception as err:
+            error = err
+        finally:
+            # get output
+            sys.stdout.seek(0)       # jump to the start
+            out = sys.stdout.read()  # read output
 
-        return out
+            # restore stdout
+            sys.stdout.close()
+            sys.stdout = old_stdout
+
+        if error is None:
+            return out
+        print(out)
+        sys.stdout.flush()
+        raise error
 
     def add_login_response(self) -> None:
         """
