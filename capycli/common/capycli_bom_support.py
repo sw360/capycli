@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2024 Siemens
+# Copyright (c) 2023-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -124,10 +124,16 @@ class CycloneDxSupport():
     @staticmethod
     def set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str,
                     hash_algo: str = "", hash: str = "") -> None:
-        ext_ref = ExternalReference(
-            type=type,
-            url=XsUri(value),
-            comment=comment)
+        if isinstance(value, XsUri):
+            ext_ref = ExternalReference(
+                type=type,
+                url=value,
+                comment=comment)
+        else:
+            ext_ref = ExternalReference(
+                type=type,
+                url=XsUri(value),
+                comment=comment)
 
         if hash_algo and hash:
             ext_ref.hashes.add(HashType(
@@ -145,7 +151,10 @@ class CycloneDxSupport():
                 break
 
         if ext_ref:
-            ext_ref.url = XsUri(value)
+            if isinstance(value, XsUri):
+                ext_ref.url = value
+            else:
+                ext_ref.url = XsUri(value)
         else:
             CycloneDxSupport.set_ext_ref(comp, type, comment, value)
 
@@ -198,6 +207,10 @@ class CycloneDxSupport():
         for ext_ref in comp.external_references:
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
                     and (ext_ref.comment == CaPyCliBom.SOURCE_URL_COMMENT):
+                return ext_ref.url
+
+            # new for CyCloneDX 1.6
+            if (ext_ref.type == ExternalReferenceType.SOURCE_DISTRIBUTION):
                 return ext_ref.url
 
         return ""
@@ -542,7 +555,7 @@ class CaPyCliBom():
         return SchemaVersion.V1_6
 
     @classmethod
-    def validate_sbom(cls, inputfile: str, spec_version: str) -> bool:
+    def validate_sbom(cls, inputfile: str, spec_version: str, show_success: bool = True) -> bool:
         """Validate the given SBOM file against the given CycloneDX spec. version."""
         LOG.debug(f"Validating SBOM from file {inputfile}")
         with open(inputfile) as fin:
@@ -557,7 +570,8 @@ class CaPyCliBom():
                 if validation_errors:
                     raise CaPyCliException("JSON validation error: " + repr(validation_errors))
 
-                print_green("JSON file successfully validated.")
+                if show_success:
+                    print_green("JSON file successfully validated.")
                 return True
             except MissingOptionalDependencyException as error:
                 print_yellow('JSON-validation was skipped due to', error)

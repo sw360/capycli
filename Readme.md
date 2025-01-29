@@ -145,7 +145,8 @@ Options:
 These options are not available for all commands. At the moment
 
 * `--forceexit` applies only to the `project vulnerabilities` command.
-* `--forceerror` applies only to the `project prerequisites` and `project getlicenseinfo` commands.
+* `--forceerror` applies only to the commands `project prerequisites`, `project getlicenseinfo`  
+   and `bom show`.
 
 ## Use Cases
 

@@ -65,6 +65,7 @@ class AppArguments():
         self.github_token: str = ""
         self.force_error: bool = False
         self.project_mainline_state = ""
+        self.copy_from = ""
 
 
 class TestBasePytest:

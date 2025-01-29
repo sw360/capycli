@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2024 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -49,6 +49,28 @@ class CreateProject(capycli.common.script_base.ScriptBase):
 
         return linkedReleases
 
+    def get_release_project_mainline_states(self, project: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        pms: List[Dict[str, Any]] = []
+        if not project:
+            return pms
+
+        if "linkedReleases" not in project:
+            return pms
+
+        for release in project["linkedReleases"]:  # NOT ["sw360:releases"]
+            pms_release = release.get("release", "")
+            if not pms_release:
+                continue
+            pms_state = release.get("mainlineState", "OPEN")
+            pms_relation = release.get("relation", "UNKNOWN")
+            pms_entry: Dict[str, Any] = {}
+            pms_entry["release"] = pms_release
+            pms_entry["mainlineState"] = pms_state
+            pms_entry["new_relation"] = pms_relation
+            pms.append(pms_entry)
+
+        return pms
+
     def update_project(self, project_id: str, project: Optional[Dict[str, Any]],
                        sbom: Bom, project_info: Dict[str, Any]) -> None:
         """Update an existing project with the given SBOM"""
@@ -57,6 +79,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         data = self.bom_to_release_list(sbom)
+        pms = self.get_release_project_mainline_states(project)
 
         ignore_update_elements = ["name", "version"]
         # remove elements from list because they are handled separately
@@ -90,6 +113,20 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 result2 = self.client.update_project(project_info, project_id, add_subprojects=self.onlyUpdateProject)
                 if not result2:
                     print_red("  Error updating project!")
+
+            if pms and project:
+                print_text("  Restoring original project mainline states...")
+                for pms_entry in pms:
+                    update_release = False
+                    for r in project.get("linkedReleases", []):
+                        if r["release"] == pms_entry["release"]:
+                            update_release = True
+                            break
+
+                    if update_release:
+                        rid = self.client.get_id_from_href(pms_entry["release"])
+                        self.client.update_project_release_relationship(
+                            project_id, rid, pms_entry["mainlineState"], pms_entry["new_relation"], "")
 
         except SW360Error as swex:
             if swex.response is None:
@@ -277,19 +314,27 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print("    -t SW360_TOKEN,           use this token for access to SW360")
             print("    -oa, --oauth2             this is an oauth2 token")
             print("    -url SW360_URL            use this URL for access to SW360")
-            print("    -name NAME, --name NAME   name of the project")
+            print("    -name NAME                name of the project")
             print("    -version VERSION,         version of the project")
             print("    -id PROJECT_ID            SW360 id of the project, supersedes name and version parameters")
             print("    -old-version              previous version")
             print("    -source projectinfo.json  additional information about the project to be created")
             print("    -pms                      project mainline state for releases in a newly created project")
+            print("    --copy_from PROJECT_ID    copy the project with the given id and the update it")
             return
 
         if not args.inputfile:
             print_red("No input file (BOM) specified!")
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
-        if not args.id:
+        if args.copy_from:
+            if args.id:
+                print_red("--copy_from cannot get combined with -id!")
+                sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+            if not args.version:
+                print_red("No version for the new project specified!")
+                sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+        elif not args.id:
             if not args.name:
                 print_red("Neither project name nor id specified!")
                 sys.exit(ResultCode.RESULT_COMMAND_ERROR)
@@ -339,6 +384,16 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             except Exception as ex:
                 print_red("Error reading project information: " + repr(ex))
                 sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+
+        if args.copy_from:
+            print(f"Creating a copy of project {args.copy_from}...")
+            try:
+                project = self.client.duplicate_project(args.copy_from, args.version)
+                if project:
+                    args.id = self.client.get_id_from_href(project["_links"]["self"]["href"])
+            except SW360Error as swex:
+                print_red("  ERROR: unable to copy existing project:" + repr(swex))
+                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         if args.id:
             self.project_id = args.id
