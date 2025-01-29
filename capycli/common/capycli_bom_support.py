@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2024 Siemens
+# Copyright (c) 2023-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -124,10 +124,16 @@ class CycloneDxSupport():
     @staticmethod
     def set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str,
                     hash_algo: str = "", hash: str = "") -> None:
-        ext_ref = ExternalReference(
-            type=type,
-            url=XsUri(value),
-            comment=comment)
+        if isinstance(value, XsUri):
+            ext_ref = ExternalReference(
+                type=type,
+                url=value,
+                comment=comment)
+        else:
+            ext_ref = ExternalReference(
+                type=type,
+                url=XsUri(value),
+                comment=comment)
 
         if hash_algo and hash:
             ext_ref.hashes.add(HashType(
