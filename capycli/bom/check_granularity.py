@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2024 Siemens
+# Copyright (c) 2021-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -258,8 +258,8 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
         print_text("\nLoading SBOM file", args.inputfile)
         try:
             sbom = CaPyCliBom.read_sbom(args.inputfile)
-            for c in sbom.components:
-                print(c)
+            # for c in sbom.components:
+            #    print(c)
         except Exception as ex:
             print_red("Error reading SBOM: " + repr(ex))
             sys.exit(ResultCode.RESULT_ERROR_READING_BOM)
