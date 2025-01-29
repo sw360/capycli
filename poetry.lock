@@ -1384,13 +1384,13 @@ files = [
 
 [[package]]
 name = "sw360"
-version = "1.8.0"
+version = "1.8.1"
 description = "Python interface to the SW360 software component catalogue"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "sw360-1.8.0-py3-none-any.whl", hash = "sha256:7c7d83164383a5015aabefe7a701d50bdd960816a18466720f3dfe0ba1933991"},
-    {file = "sw360-1.8.0.tar.gz", hash = "sha256:713189ecc5abed3bed7fd4b51eca73eeb26dd539b8f188fc858489a96a2cc0e5"},
+    {file = "sw360-1.8.1-py3-none-any.whl", hash = "sha256:c6d01918da5d45f470ee6b3f3d05fec21d68575bb0f4c1c7252fb3289f36df04"},
+    {file = "sw360-1.8.1.tar.gz", hash = "sha256:6c78a80fe7e422fea51f20acd8adef059ea1f6444ad9e59d6a47d6727d12aa15"},
 ]
 
 [package.dependencies]
@@ -1844,4 +1844,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "fd6417ebc9aed08c08fb8e8e05775be708ab25465f4b3de39999de8ceff142d6"
+content-hash = "bebb28e00d122396bf12f1bd6ec46642f3b7d427e5376ef86a0ffe011c5e4504"

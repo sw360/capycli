@@ -4825,18 +4825,18 @@
       "version": "2.6"
     },
     {
-      "bom-ref": "pkg:pypi/sw360@1.8.0",
+      "bom-ref": "pkg:pypi/sw360@1.8.1",
       "description": "Python interface to the SW360 software component catalogue",
       "externalReferences": [
         {
           "comment": "binary (download location)",
           "type": "distribution",
-          "url": "https://files.pythonhosted.org/packages/18/72/acdd3faf52550a3beacb56957f868742b940389ecd8370e0fb5b7a7f85e2/sw360-1.8.0-py3-none-any.whl"
+          "url": "https://files.pythonhosted.org/packages/18/72/acdd3faf52550a3beacb56957f868742b940389ecd8370e0fb5b7a7f85e2/sw360-1.8.1-py3-none-any.whl"
         },
         {
           "comment": "source archive (download location)",
           "type": "distribution",
-          "url": "https://files.pythonhosted.org/packages/a3/b8/35fa74711bbd9ff86aaa232aa34e0a31e30bba18e9d4dd474801dc2e0b3c/sw360-1.8.0.tar.gz"
+          "url": "https://files.pythonhosted.org/packages/a3/b8/35fa74711bbd9ff86aaa232aa34e0a31e30bba18e9d4dd474801dc2e0b3c/sw360-1.8.1.tar.gz"
         },
         {
           "comment": "PyPi URL",
@@ -4846,12 +4846,12 @@
         {
           "comment": "relativePath",
           "type": "distribution",
-          "url": "sw360-1.8.0-py3-none-any.whl"
+          "url": "sw360-1.8.1-py3-none-any.whl"
         },
         {
           "comment": "source archive (local copy)",
           "type": "distribution",
-          "url": "sw360-1.8.0.tar.gz"
+          "url": "sw360-1.8.1.tar.gz"
         },
         {
           "type": "website",
@@ -4872,9 +4872,9 @@
           "value": "Python"
         }
       ],
-      "purl": "pkg:pypi/sw360@1.8.0",
+      "purl": "pkg:pypi/sw360@1.8.1",
       "type": "library",
-      "version": "1.8.0"
+      "version": "1.8.1"
     },
     {
       "bom-ref": "pkg:pypi/tomli@2.2.1",
@@ -5646,7 +5646,7 @@
       "ref": "pkg:pypi/soupsieve@2.6"
     },
     {
-      "ref": "pkg:pypi/sw360@1.8.0"
+      "ref": "pkg:pypi/sw360@1.8.1"
     },
     {
       "ref": "pkg:pypi/tomli@2.2.1"
@@ -5684,7 +5684,7 @@
         "value": "clearing"
       }
     ],
-    "timestamp": "2024-12-07T12:44:31.329768+00:00",
+    "timestamp": "2025-01-29T16:44:31.329768+00:00",
     "tools": {
       "components": [
         {
