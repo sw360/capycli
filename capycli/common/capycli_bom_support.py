@@ -66,6 +66,7 @@ class CycloneDxSupport():
     CDX_PROP_CLEARING_STATE = "capycli:clearingState"
     CDX_PROP_CATEGORIES = "capycli:categories"
     CDX_PROP_PROJ_STATE = "capycli:projectClearingState"
+    CDX_PROP_PROJ_RELATION = "capycli:projectRelation"
     CDX_PROP_PROFILE = "siemens:profile"
 
     @staticmethod

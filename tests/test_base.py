@@ -214,10 +214,10 @@ class TestBasePytest:
                 {
                     "createdBy": "thomas.graf@siemens.com",
                     "release": "https://my.server.com/resource/api/releases/r002",
-                    "mainlineState": "SPECIFIC",
+                    "mainlineState": "MAINLINE",
                     "comment": "Automatically updated by SCC",
                     "createdOn": "2023-03-14",
-                    "relation": "UNKNOWN"
+                    "relation": "DYNAMICALLY_LINKED"
                 }
             ],
             "_links": {

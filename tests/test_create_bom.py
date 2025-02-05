@@ -230,6 +230,16 @@ class TestCreateBom(TestBasePytest):
         assert len(ext_refs_vcs) == 1
         assert str(ext_refs_vcs[0].url) == release["repository"]["url"]
 
+        prj_ml_state = CycloneDxSupport.get_property(cx_comp, CycloneDxSupport.CDX_PROP_PROJ_STATE)
+        assert prj_ml_state.value == "MAINLINE"
+        releaseRelation = CycloneDxSupport.get_property(cx_comp, CycloneDxSupport.CDX_PROP_PROJ_RELATION)
+        assert releaseRelation.value == "DYNAMICALLY_LINKED"
+
+        prj_ml_state = CycloneDxSupport.get_property(cdx_bom.components[1], CycloneDxSupport.CDX_PROP_PROJ_STATE)
+        assert prj_ml_state.value == "SPECIFIC"
+        releaseRelation = CycloneDxSupport.get_property(cdx_bom.components[1], CycloneDxSupport.CDX_PROP_PROJ_RELATION)
+        assert releaseRelation.value == "UNKNOWN"
+
         assert cdx_bom.metadata.component is not None
         if cdx_bom.metadata.component:
             assert cdx_bom.metadata.component.name == project["name"]
