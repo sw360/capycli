@@ -8,7 +8,7 @@
 
 import logging
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
@@ -36,14 +36,13 @@ class CreateBom(capycli.common.script_base.ScriptBase):
 
         return release_details["externalIds"].get(name, "")
 
-    def get_clearing_state(self, proj: Dict[str, Any], href: str) -> str:
-        """Returns the clearing state of the given component/release"""
+    def get_linked_state(self, proj: Dict[str, Any], href: str) -> Tuple[str, str]:
+        """Returns project mainline state and relation of the given release"""
         rel = proj["linkedReleases"]
         for key in rel:
             if key["release"] == href:
-                return key["mainlineState"]
-
-        return ""
+                return (key["mainlineState"], key["relation"])
+        return ("", "")
 
     def create_project_bom(self, project: Dict[str, Any]) -> List[Component]:
         bom: List[Component] = []
@@ -112,9 +111,10 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                 print_red("    ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-            state = self.get_clearing_state(project, href)
-            if state:
-                CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_PROJ_STATE, state)
+            mainline_state, relation = self.get_linked_state(project, href)
+            if mainline_state and relation:
+                CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_PROJ_STATE, mainline_state)
+                CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_PROJ_RELATION, relation)
 
             sw360_id = self.client.get_id_from_href(href)
             CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_SW360ID, sw360_id)
