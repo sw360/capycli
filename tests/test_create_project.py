@@ -8,7 +8,7 @@
 
 import json
 import os
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, Tuple
 
 import responses
 import responses.matchers
@@ -44,7 +44,7 @@ def min_json_matcher(check: Dict[str, Any]) -> Any:
     return match
 
 
-def update_release_matcher(releases: List[str]) -> Any:
+def update_release_matcher(releases: Dict[str, Any]) -> Any:
     """
     Matches the updated releases.
 
@@ -66,10 +66,15 @@ def update_release_matcher(releases: List[str]) -> Any:
             reason = ("Number of releases does not match, got " + str(len(json_body)) +
                       " expected: " + str(len(releases)))
         else:
-            for rel in releases:
+            for rel, rel_data in releases.items():
                 if rel not in request_body:
                     result = False
                     reason = ("Release " + rel + " not found in: " + request_body)
+                if rel_data != json_body[rel]:
+                    result = False
+                    reason = ("Release[" + rel + "] = '" + str(json_body[rel]) + "' does not match expected " +
+                              str(rel_data))
+                    break
 
         return result, reason
     return match
@@ -484,7 +489,8 @@ class TestCreateProject(TestBase):
                 }
             },
             match=[
-                update_release_matcher(["a5cae39f39db4e2587a7d760f59ce3d0"])
+                update_release_matcher({"a5cae39f39db4e2587a7d760f59ce3d0": {
+                    "releaseRelation": "DYNAMICALLY_LINKED"}})
             ],
             status=201,
             content_type="application/json",
@@ -645,7 +651,10 @@ class TestCreateProject(TestBase):
                 }
             },
             match=[
-                update_release_matcher(["a5cae39f39db4e2587a7d760f59ce3d0"])
+                update_release_matcher({"a5cae39f39db4e2587a7d760f59ce3d0": {
+                    "mainlineState": "SPECIFIC",  # from project 007
+                    "releaseRelation": "DYNAMICALLY_LINKED"  # from SBOM
+                }})
             ],
             status=201,
             content_type="application/json",
@@ -791,7 +800,8 @@ class TestCreateProject(TestBase):
                 }
             },
             match=[
-                update_release_matcher(["a5cae39f39db4e2587a7d760f59ce3d0"])
+                update_release_matcher({"a5cae39f39db4e2587a7d760f59ce3d0": {
+                    "releaseRelation": "DYNAMICALLY_LINKED"}})
             ],
             status=201,
             content_type="application/json",

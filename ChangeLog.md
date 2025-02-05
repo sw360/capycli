@@ -15,6 +15,8 @@
 * `bom map` fix: In few cases with --nocache, it added mixed matches to output
   BOM, now we assure that only the best mapping results are added.
 * `project createbom` stores release relations (`CONTAINED`, `SIDE_BY_SIDE` etc.) as capycli:projectRelation
+* `project update`: optimized handling of release mainline state and release relation. Now states
+  provided in the SBOM are used and slowdowns/crashes introduced in 2.7.0 (#121) fixed again.
 
 ## 2.7.0
 
