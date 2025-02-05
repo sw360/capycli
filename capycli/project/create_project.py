@@ -353,6 +353,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_FILE_NOT_FOUND)
 
         is_update_version = False
+        project = None
 
         if args.old_version and args.old_version != "":
             print_text("Project version will be updated with version: " + args.old_version)
@@ -413,7 +414,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         if self.project_id:
             print("Updating project...")
             try:
-                project = self.client.get_project(self.project_id)
+                if project is None:
+                    project = self.client.get_project(self.project_id)
             except SW360Error as swex:
                 print_red("  ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
