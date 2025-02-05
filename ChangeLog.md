@@ -5,6 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## UNRELEASED
+
+* `project createbom` stores release relations (`CONTAINED`, `SIDE_BY_SIDE` etc.) as capycli:projectRelation
+
 ## 2.7.0
 
 * fix for `bom findsources` for some JavaScript SBOMs.
