@@ -426,9 +426,14 @@ class TestCreateProject(TestBase):
                 "visibility": "EVERYONE",
                 "_links": {
                     "self": {
-                        "href": TestBase.MYURL + "resource/api/projects/376576"
+                        "href": TestBase.MYURL + "resource/api/projects/007"
                     }
                 },
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "UNKNOWN",
+                }],
                 "_embedded": {
                     "sw360:releases": [{
                         "name": "Angular 2.3.0",
@@ -493,6 +498,173 @@ class TestCreateProject(TestBase):
         responses.add(
             responses.PATCH,
             url=self.MYURL + "resource/api/projects/007",
+            json={
+                # server returns complete project, here we only mock a part of it
+                "name": "CaPyCLI",
+                "veraion": "1.9.0",
+                "businessUnit": "SI",
+                "description": "CaPyCLI",
+                "linkedReleases": {
+                    "a5cae39f39db4e2587a7d760f59ce3d0": {
+                        "mainlineState": "SPECIFIC",
+                        "releaseRelation": "DYNAMICALLY_LINKED",
+                        "setMainlineState": True,
+                        "setReleaseRelation": True
+                    }
+                },
+                "_links": {
+                    "self": {
+                        "href": self.MYURL + "resource/api/projects/007"
+                    }
+                },
+                "_embedded": {
+                    "sw360:releases": [{
+                        "name": "Angular 2.3.0",
+                        "version": "2.3.0",
+                        "_links": {
+                            "self": {
+                                "href": "https://sw360.org/api/releases/3765276512"
+                            }
+                        }
+                    }]
+                }
+            },
+            match=[
+                min_json_matcher(
+                    {
+                        "businessUnit": "SI",
+                        "description": "CaPyCLI",
+                        "ownerGroup": "SI",
+                        "projectOwner": "thomas.graf@siemens.com",
+                        "projectResponsible": "thomas.graf@siemens.com",
+                        "projectType": "INNER_SOURCE",
+                        "tag": "SI BP DB Demo",
+                        "visibility": "EVERYONE"
+                    })
+            ],
+            status=201,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        out = self.capture_stdout(sut.run, args)
+        self.assertTrue(self.INPUTFILE in out)
+
+    @responses.activate
+    def test_project_copy_from(self) -> None:
+        """copy project 007 to 017"""
+        sut = CreateProject()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("project")
+        args.command.append("create")
+        args.sw360_token = TestBase.MYTOKEN
+        args.sw360_url = TestBase.MYURL
+        args.version = "2.0.0"
+        args.copy_from = "007"
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE)
+        args.verbose = True
+        args.debug = True
+
+        self.add_login_response()
+
+        new_project_json = {
+            "name": "CaPyCLI",
+            "version": "2.0.0",
+            "securityResponsibles": [],
+            "considerReleasesFromExternalList": False,
+            "projectType": "PRODUCT",
+            "visibility": "EVERYONE",
+            "_links": {
+                "self": {
+                    "href": TestBase.MYURL + "resource/api/projects/017"
+                }
+            },
+            "linkedReleases": [{
+                "release": "https://sw360.org/api/releases/a5cae39f39db4e2587a7d760f59ce3d0",
+                "mainlineState": "SPECIFIC",
+                "relation": "UNKNOWN",
+            }],
+            "_embedded": {
+                "sw360:releases": [{
+                    "name": "charset-normalizer",
+                    "version": "3.1.0",
+                    "_links": {
+                        "self": {
+                            "href": "https://sw360.org/api/releases/a5cae39f39db4e2587a7d760f59ce3d0",
+                        }
+                    }
+                }]
+            }
+        }
+
+        responses.add(
+            responses.POST,
+            url=self.MYURL + "resource/api/projects/duplicate/007",
+            json=new_project_json,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/projects/017",
+            json=new_project_json,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # update project releases
+        responses.add(
+            responses.POST,
+            url=self.MYURL + "resource/api/projects/017/releases",
+            json={
+                # server returns complete project, here we only mock a part of it
+                "name": "CaPyCLI",
+                "veraion": "1.9.0",
+                "businessUnit": "SI",
+                "description": "CaPyCLI",
+                "linkedReleases": {
+                    "a5cae39f39db4e2587a7d760f59ce3d0": {
+                        "mainlineState": "SPECIFIC",
+                        "releaseRelation": "DYNAMICALLY_LINKED",
+                        "setMainlineState": True,
+                        "setReleaseRelation": True
+                    }
+                },
+                "_links": {
+                    "self": {
+                        "href": self.MYURL + "resource/api/projects/007"
+                    }
+                },
+                "_embedded": {
+                    "sw360:releases": [{
+                        "name": "Angular 2.3.0",
+                        "version": "2.3.0",
+                        "_links": {
+                            "self": {
+                                "href": "https://sw360.org/api/releases/3765276512"
+                            }
+                        }
+                    }]
+                }
+            },
+            match=[
+                update_release_matcher(["a5cae39f39db4e2587a7d760f59ce3d0"])
+            ],
+            status=201,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # update project
+        responses.add(
+            responses.PATCH,
+            url=self.MYURL + "resource/api/projects/017",
             json={
                 # server returns complete project, here we only mock a part of it
                 "name": "CaPyCLI",
