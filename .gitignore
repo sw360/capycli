@@ -31,6 +31,9 @@ coverage.xml
 cli/
 Releases/
 
+# local sw360 only for internal testing
+sw360/
+
 # internal stuff
 __internal__/
 _internal_tests_/
