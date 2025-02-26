@@ -241,6 +241,13 @@ class LegacySupport():
                 value=language)
             cxcomp.properties.add(prop)
 
+        componentId = item.get("ComponentId", "")
+        if componentId:
+            prop = Property(
+                name=CycloneDxSupport.CDX_PROP_COMPONENT_ID,
+                value=componentId)
+            cxcomp.properties.add(prop)
+
         return cxcomp
 
     @classmethod
