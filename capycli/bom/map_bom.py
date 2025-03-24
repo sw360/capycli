@@ -536,11 +536,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
         # retrieve missing types later
         purl_types = set()
         for component in sbom.components:
-
-            if component.purl:
-                p = component.purl.to_string()
-                if len(p) > 8 and p.startswith("pkg:"):
-                    purl_types.add(p[4:7])
+            if component.purl and component.purl.type:
+                purl_types.add(component.purl.type)
         self.external_id_svc.build_purl_cache(purl_types, self.verbosity <= 1)
 
         mapresult: list[MapResult] = []
