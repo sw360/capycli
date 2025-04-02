@@ -8,7 +8,7 @@
 Why do we need a filter functionality for SBOMs?  
 Well, not all SBOMs are really perfect, i.e. they may not contain
 what we expected - sometimes there are too many components, sometimes
-there are to few components.
+there are too few components.
 
 ## Table of Contents
 
