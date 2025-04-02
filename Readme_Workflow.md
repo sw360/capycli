@@ -17,8 +17,8 @@ The general idea of the clearing support workflow looks like this:
 Doing all these steps without any humann interaction works only in a perfect world.
 As soon as a project get complex, it gets hard to create an accurate bill of material fully
 automatically.  
-Even if you have a SBOM, it most probably does not contain all meta-data, especially the source code cannot
-get found fully automatically. Next next hurdle is matching the SBOM to all the data that is
+Even if you have a SBOM, it most probably does not contain all meta-data, especially the source code
+cannot get found fully automatically. Next next hurdle is matching the SBOM to all the data that is
 available on SW360: if all components already exist and can be identified with the available
 meta-data, then we are lucky. Otherwise some information has to be reviewed manually.
 
