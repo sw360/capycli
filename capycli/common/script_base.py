@@ -77,7 +77,7 @@ class ScriptBase:
         print_text("  Analyzing token...")
         try:
             # alg = RS256
-            decoded = jwt.decode(token, verify=False)  # type: ignore
+            decoded = jwt.decode(token, algorithms=["HS256"], options={"verify_signature": False})  # type: ignore
             if "exp" in decoded:
                 exp_seconds = int(decoded["exp"])
                 exp = datetime.fromtimestamp(exp_seconds)

@@ -117,7 +117,7 @@ class TestScriptBase(TestBase):
                    + "cGwTWorpXOESMBZeWCip_7HQKyi-91Zwtmy_x_Z_0")
         out = self.capture_stdout(sut.analyze_token, encoded)
         self.assertTrue("Analyzing token..." in out)
-        self.assertTrue("Token will expire on" in out)
+        self.assertIn("Token will expire on", out)
 
     def test_analyze_token_fail(self) -> None:
         sut = ScriptBase()
