@@ -151,7 +151,7 @@ The `Components` section is a JSON array of objects that have
 a mandatory `component` (object) property, a mandatory `Mode` property
 (either `add` or `remove`) and an optional `comment` property.
 
-When a component is to be *removed*, it can be idintified by its `package-url`
+When a component is to be *removed*, it can be identified by its `package-url`
 (recommended) or by its `Name` and `Version`.
 
 When a component is to be *added*, the following component properties
