@@ -115,18 +115,22 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     print_red("  Error updating project!")
 
             if pms and project:
-                print_text("  Restoring original project mainline states...")
-                for pms_entry in pms:
-                    update_release = False
-                    for r in project.get("linkedReleases", []):
-                        if r["release"] == pms_entry["release"]:
-                            update_release = True
-                            break
+                print_text("  Restoring original project mainline states using batch update...")
 
-                    if update_release:
-                        rid = self.client.get_id_from_href(pms_entry["release"])
-                        self.client.update_project_release_relationship(
-                            project_id, rid, pms_entry["mainlineState"], pms_entry["new_relation"], "")
+                relationships = []
+                for pms_entry in pms:
+                    rid = self.client.get_id_from_href(pms_entry["release"])
+                    relationships.append({
+                    "releaseId": rid,
+                    "mainlineState": pms_entry["mainlineState"],
+                    "releaseRelation": pms_entry["new_relation"]
+                })
+
+            if relationships:
+                success = self.client.update_project_release_relationships_batch(project_id, relationships)
+            if not success:
+                print_red("  Failed to batch restore mainline states")
+
 
         except SW360Error as swex:
             if swex.response is None:
