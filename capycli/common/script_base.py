@@ -13,6 +13,9 @@ Base class for python scripts.
 import json
 import os
 import sys
+from capycli.common.sw360_patch import patch_sw360_for_batch_update
+patch_sw360_for_batch_update()
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
