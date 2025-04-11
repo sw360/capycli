@@ -115,18 +115,21 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     print_red("  Error updating project!")
 
             if pms and project:
-                print_text("  Restoring original project mainline states...")
-                for pms_entry in pms:
-                    update_release = False
-                    for r in project.get("linkedReleases", []):
-                        if r["release"] == pms_entry["release"]:
-                            update_release = True
-                            break
+                print_text("  Restoring original project mainline states using batch update...")
 
-                    if update_release:
-                        rid = self.client.get_id_from_href(pms_entry["release"])
-                        self.client.update_project_release_relationship(
-                            project_id, rid, pms_entry["mainlineState"], pms_entry["new_relation"], "")
+            relationships = []
+            for pms_entry in pms:
+                rid = self.client.get_id_from_href(pms_entry["release"])
+                relationships.append({
+                    "releaseId": rid,
+                    "mainlineState": pms_entry["mainlineState"],
+                    "releaseRelation": pms_entry["new_relation"]
+            })
+
+            if relationships:
+                success = self.update_project_release_relationships_batch(project_id, relationships)
+            if not success:
+                print_red("  Failed to batch restore mainline states")
 
         except SW360Error as swex:
             if swex.response is None:
@@ -290,7 +293,24 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         except Exception as ex:
             print_red("  General error creating project " + repr(ex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
+            
+    def update_project_release_relationships_batch(self, project_id: str, relationships: list[dict]) -> bool:
+    """
+    Batch update project release relationships using SW360 REST API.
+    """
+    url = f"{self.client.url}/resource/api/projects/{project_id}/releases"
+    body = {"releases": relationships}
 
+    response = self.client.session.put(url, json=body)
+
+    if response.status_code in [200, 204]:
+        print_text("  Batch release relationship update successful.")
+        return True
+    else:
+        print_red(f"  Failed to batch update: {response.status_code} - {response.text}")
+        return False
+
+    
     def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
