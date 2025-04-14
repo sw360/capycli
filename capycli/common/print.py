@@ -8,9 +8,13 @@
 
 import datetime
 from typing import Any
+import os
+from colorama import Fore, Style, init
+# Force color support in GitLab CI
+FORCE_COLOR = os.environ.get("CI") == "true" and os.environ.get("GITLAB_CI") == "true"
 
-from colorama import Fore, Style
-
+# Initialize colorama with auto-reset and force mode if in GitLab CI
+init(autoreset=True, strip=not FORCE_COLOR)
 import capycli.common
 
 
