@@ -5,10 +5,16 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## UNRELEASED
+
+* `project createbom` will not add rejected attachments to SBOM
+* `project createbom` adds CLI and report information to SBOM
+* new command `bom downloadattachments` to download CLI and report attachments
+
 ## 2.7.0
 
 * fix for `bom findsources` for some JavaScript SBOMs.
-* `bom show` command also lists purl and source code download url in verbose mode.  
+* `bom show` command also lists purl and source code download url in verbose mode.
   If one of the values is missing and `--forceerror` has been specified, error code 97 is returned.
 * `bom show` command also lists license information in verbose mode, but
   only for CycloneDX 1.6 and later.

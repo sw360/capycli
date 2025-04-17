@@ -17,6 +17,7 @@ import capycli.bom.check_granularity
 import capycli.bom.create_components
 import capycli.bom.diff_bom
 import capycli.bom.download_sources
+import capycli.bom.download_attachments
 import capycli.bom.filter_bom
 import capycli.bom.findsources
 import capycli.bom.map_bom
@@ -37,20 +38,21 @@ def run_bom_command(args: Any) -> None:
 
         # display `bom` related help
         print("bom               bill of material (BOM) specific sub-commands")
-        print("    Show              display contents of a BOM")
-        print("    Convert           Convert SBOM formats")
-        print("    Filter            apply filter file to a BOM")
-        print("    Check             check that all releases in the BOM exist on target SW360 instance")
-        print("    CheckItemStatus   show additional information about BOM items on SW360")
-        print("    Map               map a given BOM to data on SW360")
-        print("    CreateReleases    create new releases for existing components on SW360")
-        print("    CreateComponents  create new components and releases on SW360 (use with care!)")
-        print("    DownloadSources   download source files from the URL specified in the SBOM")
-        print("    Granularity       check a bill of material for potential component granularity issues")
-        print("    Diff              compare two bills of material")
-        print("    Merge             merge two bills of material")
-        print("    Findsources       determine the source code for SBOM items")
-        print("    Validate          validate an SBOM")
+        print("    Show                display contents of a BOM")
+        print("    Convert             Convert SBOM formats")
+        print("    Filter              apply filter file to a BOM")
+        print("    Check               check that all releases in the BOM exist on target SW360 instance")
+        print("    CheckItemStatus     show additional information about BOM items on SW360")
+        print("    Map                 map a given BOM to data on SW360")
+        print("    CreateReleases      create new releases for existing components on SW360")
+        print("    CreateComponents    create new components and releases on SW360 (use with care!)")
+        print("    DownloadAttachments download SW360 attachments as specified in the SBOM")
+        print("    DownloadSources     download source files from the URL specified in the SBOM")
+        print("    Granularity         check a bill of material for potential component granularity issues")
+        print("    Diff                compare two bills of material")
+        print("    Merge               merge two bills of material")
+        print("    Findsources         determine the source code for SBOM items")
+        print("    Validate            validate an SBOM")
         return
 
     subcommand = args.command[1].lower()
@@ -101,6 +103,12 @@ def run_bom_command(args: Any) -> None:
         """Download source files from the URL specified in the SBOM."""
         app8 = capycli.bom.download_sources.BomDownloadSources()
         app8.run(args)
+        return
+
+    if subcommand == "downloadattachments":
+        """Download attachments from SW360 as specified in the SBOM."""
+        app = capycli.bom.download_attachments.BomDownloadAttachments()
+        app.run(args)
         return
 
     if subcommand == "granularity":
