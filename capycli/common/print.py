@@ -5,13 +5,13 @@
 #
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
-
+import capycli.common
 import datetime
 from typing import Any
 
 from colorama import Fore, Style
 
-import capycli.common
+
 
 
 def _get_debug_prefix() -> str:
