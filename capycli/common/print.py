@@ -8,11 +8,8 @@
 
 import datetime
 from typing import Any
-
 from colorama import Fore, Style
-
 import capycli.common
-
 
 def _get_debug_prefix() -> str:
     """Returns a prefix similar to the one from logging."""
