@@ -13,7 +13,7 @@ compliance experts. The commands should help a development team to determine the
 material (SBOM) for their product, find all necessary metadata, upload all necessary
 information to SW360 to allow the software license compliance experts to do their work.
 
-There are as well command to track the status of a project on SW360 and to download
+There are as well commands to track the status of a project on SW360 and to download
 the results to build for example the customer facing license compliance documentation.
 
 ## As a developer I want to know the bill of material of my project
@@ -46,7 +46,7 @@ we only need one license scan and we only have one clearing report.
 
 Example from the Java world: imagine you are using the logging component logback-core.
 You can pull the binary from Maven. But there is no source code for logback-core.
-The open source provides only the source for the complete Logback component, see
+The open source project provides only the source for the complete Logback component, see
 https://github.com/qos-ch/logback. In the GitHub repository you can also see,
 that logback-access and logback-classic are also built from this source code.
 

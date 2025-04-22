@@ -53,7 +53,8 @@ def get_app_version() -> str:
     if not version:
         # use version information from poetry
         pkg_meta = _get_project_meta()
-        version = str(pkg_meta['version'])
+        if pkg_meta and 'version' in pkg_meta:
+            version = str(pkg_meta['version'])
 
     if not version:
         version = "0.0.0-no-version"

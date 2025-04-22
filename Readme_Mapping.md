@@ -26,7 +26,7 @@ informs about the mapping result:
 * **`FULL_MATCH_BY_HASH` (2)** => Full match by source file hash
 * **`FULL_MATCH_BY_NAME_AND_VERSION` (3)** => Full match by name and version
 * **`MATCH_BY_FILENAME` (4)** => Match by source code filename
-* **`GOOD_MATCH_FOUND`** == `MATCH_BY_FILENAME` => successfully found a sifficiently good match
+* **`GOOD_MATCH_FOUND`** == `MATCH_BY_FILENAME` => successfully found a sufficiently good match
 * **`MATCH_BY_NAME` (5)** => Component found, but no version match
 * **`SIMILAR_COMPONENT_FOUND` (6)** => Component with similar name found, no version check done
 * **`NO_MATCH` (100)** => Component was not found
@@ -256,6 +256,6 @@ that have been found on SW360.
 
 The rationale for the behavior to have the output SBOM of the mapping process contain
 **all** findings is  
-a) the user should have **the choice** to decided which component version to use  
+a) the user should have **the choice** to decide which component version to use  
 b) the user should be forced to consider **reuse** of already cleared components  
 c) it should not be needed to search manually SW360

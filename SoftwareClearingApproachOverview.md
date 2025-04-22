@@ -54,7 +54,7 @@ their job
 * you know basic functionality
 * you have checked the component for any patents or other potential intellectual property
   issues
-* you have check whether there are any security vulnerabilities
+* you have checked whether there are any security vulnerabilities
 * you have checked for any dependencies
 * updates are also a conscious decision (no automatic updates, limited exceptions are possible
   depending on component and semantic versioning concept)!

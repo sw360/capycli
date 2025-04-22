@@ -17,12 +17,12 @@ The general idea of the clearing support workflow looks like this:
 Doing all these steps without any humann interaction works only in a perfect world.
 As soon as a project get complex, it gets hard to create an accurate bill of material fully
 automatically.  
-Even if you have a SBOM, they most probably not all meta-data, especially the source code cannot
-get found fully automatically. Next next hurdle is matching the SBOM to all the data that is
+Even if you have a SBOM, it most probably does not contain all meta-data, especially the source code
+cannot get found fully automatically. Next next hurdle is matching the SBOM to all the data that is
 available on SW360: if all components already exist and can be identified with the available
 meta-data, then we are lucky. Otherwise some information has to be reviewed manually.
 
-If all component got processed - this can get checked fully automatically - we can download all
+If all components got processed - this can get checked fully automatically - we can download all
 resulting artifacts. If we have a good data quality all artifacts are unambiguous and we can use
 this data to create a Readme_OSS. Because this document is forwarded to customers, a manual review
 is mandatory.
@@ -74,9 +74,9 @@ the granularity level.
 
 Nearly none of the available tools provides links to the source code. But since the source code is
 crucial of OSS components, there is an extra command `CaPyCLI bom Findsources`. If there is any
-reference to a version control system or a website, the command try to guess the link to the source
+reference to a version control system or a website, the command tries to guess the link to the source
 code. Guessing means, that if there is a valid vcs link provided, then this link is used. But if
-the vcs link is invalid or only a website is provided, the we check whether this is a GitHub
+the vcs link is invalid or only a website is provided, then we check whether this is a GitHub
 project. If this is the case, we can build a link to the source code by the standard syntax used
 by GitHub.
 
@@ -100,7 +100,7 @@ components need to get created:
 
 Depending on the way you manage your projects, you can either choose
 
-* `CaPyCLI bom CreateReleases`, if you only want to add missing releases; or
+* `CaPyCLI bom CreateReleases`, if you only want to create missing releases; or
 * `CaPyCLI bom CreateComponents`, if you also want to create missing components.
 
 Some organizations prefer to create components only manually to ensure the right quality.
