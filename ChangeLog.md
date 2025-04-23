@@ -5,6 +5,11 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* `bom map` will now consider the PackageURL qualifiers specified in your input BOM. See
+  `Readme_Mapping.md` for details.
+
 ## 2.8.1
 
 * `bom findsources`: handle the case when a call to the GitHub API returns a
