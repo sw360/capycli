@@ -9,6 +9,7 @@
 from typing import Any, Dict, List
 
 import responses
+from packageurl import PackageURL
 
 from capycli.bom.map_bom import MapBom
 from capycli.common.purl_service import PurlService
@@ -64,10 +65,10 @@ class TestPurlService(CapycliTestBase):
         if self.app.client:
             purl_service = PurlService(self.app.client)
             purl_service.build_purl_cache()
-            assert purl_service.purl_cache["deb"]["debian"]["sed"][None] == sw360_purl_components[0]["_links"]["self"]["href"] # noqa
-            assert purl_service.purl_cache["gem"][None]["mini_portile2"][None] == sw360_purl_components[1]["_links"]["self"]["href"] # noqa
-            assert purl_service.purl_cache["deb"]["debian"]["sed"]["4.4+1~2"] == sw360_purl_releases[0]["_links"]["self"]["href"] # noqa
-            assert purl_service.purl_cache["gem"][None]["mini_portile2"]["2.4.0"] == sw360_purl_releases[1]["_links"]["self"]["href"] # noqa
+            assert purl_service.purl_cache["deb"]["debian"]["sed"][None][0]["href"] == sw360_purl_components[0]["_links"]["self"]["href"] # noqa
+            assert purl_service.purl_cache["gem"][None]["mini_portile2"][None][0]["href"] == sw360_purl_components[1]["_links"]["self"]["href"] # noqa
+            assert purl_service.purl_cache["deb"]["debian"]["sed"]["4.4+1~2"][0]["href"] == sw360_purl_releases[0]["_links"]["self"]["href"] # noqa
+            assert purl_service.purl_cache["gem"][None]["mini_portile2"]["2.4.0"][0]["href"] == sw360_purl_releases[1]["_links"]["self"]["href"] # noqa
 
         return purl_service
 
@@ -104,8 +105,49 @@ class TestPurlService(CapycliTestBase):
             purl_service = PurlService(self.app.client)
             purl_service.build_purl_cache()
 
-            assert purl_service.purl_cache["maven"]["org.springframework"]["spring-tx"][None] == SW360_BASE_URL + "components/05a6" # noqa
-            assert purl_service.purl_cache["maven"]["org.springframework"]["spring-jcl"][None] == SW360_BASE_URL + "components/05a6" # noqa
+            assert purl_service.purl_cache["maven"]["org.springframework"]["spring-tx"][None] == [{
+                "purl": PackageURL("maven", "org.springframework", "spring-tx"),
+                "href": SW360_BASE_URL + "components/05a6"}]
+            assert purl_service.purl_cache["maven"]["org.springframework"]["spring-jcl"][None] == [{
+                "purl": PackageURL("maven", "org.springframework", "spring-jcl"),
+                "href": SW360_BASE_URL + "components/05a6"}]
+
+    @responses.activate
+    def test_multiple_purls(self) -> None:
+        # add multiple purls for same release and component
+        duplicate_releases = {"_embedded": {"sw360:releases": sw360_purl_releases + [
+            {"externalIds": {"package-url": "pkg:deb/debian/sed@4.4%2B1%7E2?arch=source"},
+             "_links": {"self": {"href": SW360_BASE_URL + "releases/0623"}}},
+            {"externalIds": {"package-url": "pkg:deb/debian/sed@4.4%2B1%7E2"},
+             "_links": {"self": {"href": SW360_BASE_URL + "releases/0623"}}}]}}
+        duplicate_components = {"_embedded": {"sw360:components": sw360_purl_components + [
+            {"externalIds": {"package-url": "pkg:deb/debian/sed"},
+             "_links": {"self": {"href": SW360_BASE_URL + "components/a035"}}}]}}
+        # only duplicates => purl_cache must be completely empty
+        responses.add(responses.GET,
+                      SW360_BASE_URL + "releases/searchByExternalIds?package-url=",
+                      json=duplicate_releases)
+        responses.add(responses.GET,
+                      SW360_BASE_URL + "components/searchByExternalIds?package-url=",
+                      json=duplicate_components)
+
+        assert self.app.client is not None
+        purl_service = PurlService(self.app.client)
+        purl_service.build_purl_cache()
+
+        # returns all candidates including duplicates
+        res = purl_service.search_releases_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2")
+        assert len(res) == 3
+        # all purls point to the same release
+        res = purl_service.search_release_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2")
+        assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
+
+        # returns all candidates including duplicates
+        res = purl_service.search_components_by_external_id("package-url", "pkg:deb/debian/sed")
+        assert len(res) == 2
+        # all purls point to the same component
+        res = purl_service.search_component_by_external_id("package-url", "pkg:deb/debian/sed")
+        assert res == sw360_purl_components[0]["_links"]["self"]["href"]
 
     @responses.activate
     def test_purl_duplicates(self) -> None:
@@ -136,8 +178,19 @@ class TestPurlService(CapycliTestBase):
 
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
-        assert "deb" not in purl_service.purl_cache
-        assert "gem" not in purl_service.purl_cache
+        # returns all candidates including duplicates
+        res = purl_service.search_releases_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
+        assert len(res) == 2
+        # request single match, allows no duplicates
+        res = purl_service.search_release_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
+        assert res is None
+
+        # returns all candidates including duplicates
+        res = purl_service.search_components_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
+        assert len(res) == 2
+        # request single match, allows no duplicates
+        res = purl_service.search_component_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
+        assert res is None
 
         # duplicates + normal data => duplicates must not be in purl_cache
         duplicate_releases["_embedded"]["sw360:releases"].append(
@@ -151,14 +204,26 @@ class TestPurlService(CapycliTestBase):
                           SW360_BASE_URL + "components/searchByExternalIds?package-url=",
                           json=duplicate_components)
 
-        assert self.app.client is not None
-        if not self.app.client:
-            return
-
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
-        assert None not in purl_service.purl_cache["deb"]["debian"]["sed"]
-        assert "2.4.0" not in purl_service.purl_cache["gem"][None]["mini_portile2"]
+        res = purl_service.search_releases_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
+        assert len(res) == 2
+        res = purl_service.search_releases_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2?type=source")
+        assert len(res) == 1
+
+        res = purl_service.search_release_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
+        assert res is None
+        res = purl_service.search_release_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2?type=source")
+        assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
+
+        res = purl_service.search_components_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
+        assert len(res) == 2
+        res = purl_service.search_components_by_external_id("package-url", "pkg:gem/mini_portile2")
+        assert len(res) == 1
+        res = purl_service.search_component_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
+        assert res is None
+        res = purl_service.search_component_by_external_id("package-url", "pkg:gem/mini_portile2")
+        assert res == sw360_purl_components[1]["_links"]["self"]["href"]
 
     @responses.activate
     def test_purl_invalid(self) -> None:
@@ -211,7 +276,7 @@ class TestPurlService(CapycliTestBase):
         res = purl_service.search_component_by_external_id(
             "package-url",
             "pkg:deb/debian/mypkg")
-        assert res == ""
+        assert res is None
 
     @responses.activate
     def test_purl_search_component_via_release(self) -> None:
@@ -262,29 +327,43 @@ class TestPurlService(CapycliTestBase):
         responses.add(
             responses.GET,
             sw360_purl_releases[1]["_links"]["self"]["href"],
-            json={"_links": {"sw360:component": {"href": "myurl"}}})
+            json={"_links": {"sw360:component": {"href": SW360_BASE_URL + "components/1"}}})
         responses.add(
             responses.GET,
             SW360_BASE_URL + "releases/06dd",
-            json={"_links": {"sw360:component": {"href": "anotherurl"}}})
+            json={"_links": {"sw360:component": {"href": SW360_BASE_URL + "components/2"}}})
 
         assert self.app.client is not None
         if not self.app.client:
             return
 
         purl_service = PurlService(self.app.client)
+        # request all results
+        res = purl_service.search_components_by_external_id(
+            "package-url",
+            sw360_purl_components[1]["externalIds"]["package-url"])
+        assert len(res) == 2
+        assert res[0]["href"] == SW360_BASE_URL + "components/1"
+        assert res[0]["release_href"] == sw360_purl_releases[1]["_links"]["self"]["href"]
+        assert res[1]["href"] == SW360_BASE_URL + "components/2"
+        assert res[1]["release_href"] == SW360_BASE_URL + "releases/06dd"
+        # request single match, allows no conflicts
         res = purl_service.search_component_by_external_id(
             "package-url",
             sw360_purl_components[1]["externalIds"]["package-url"])
-        assert res == ""
+        assert res is None
 
     def test_purl_search_component_and_release(self) -> None:
         test_cache: Dict[str, Any] = {
             "maven": {
                 "org.test": {
                     "c1": {
-                        None: "self/href/c1",
-                        "1": "self/href/r1"
+                        None: [{
+                            "purl": PackageURL("maven", "org.test", "c1"),
+                            "href": "self/href/c1"}],
+                        "1": [{
+                            "purl": PackageURL("maven", "org.test", "c1", "1"),
+                            "href": "self/href/r1"}]
                     }
                 }
             }

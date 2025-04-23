@@ -53,7 +53,9 @@ class CapycliTestBomMap(CapycliTestBase):
             return
 
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
-            None: SW360_BASE_URL + "components/a035"}}}})
+            None: [{
+                "purl": PackageURL("deb", "debian", "sed"),
+                "href": SW360_BASE_URL + "components/a035"}]}}}})
         # different name in release cache
         self.app.releases = [{"Id": "1234", "ComponentId": "a035",
                               "Name": "Unix Stream EDitor", "Version": "1.0",
@@ -94,8 +96,12 @@ class CapycliTestBomMap(CapycliTestBase):
             return
 
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
-            None: SW360_BASE_URL + "components/a035",
-            "1.0~1": SW360_BASE_URL + "releases/1234"}}}})
+            None: [{
+                "purl": PackageURL("deb", "debian", "sed"),
+                "href": SW360_BASE_URL + "components/a035"}],
+            "1.0~1": [{
+                "purl": PackageURL("deb", "debian", "sed", version="1.0~1"),
+                "href": SW360_BASE_URL + "releases/1234"}]}}}})
         self.app.releases = [{"Id": "1234", "ComponentId": "a035",
                               "Name": "Unix Stream EDitor", "Version": "1.0+1",
                               "ExternalIds": {
@@ -233,7 +239,9 @@ class CapycliTestBomMap(CapycliTestBase):
             return
 
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
-            None: SW360_BASE_URL + "components/a035"}}}})
+            None: [{
+                "purl": PackageURL("deb", "debian", "sed"),
+                "href": SW360_BASE_URL + "components/a035"}]}}}})
         bomitem = Component(
             name="sed",
             version="1.0",
@@ -321,8 +329,12 @@ class CapycliTestBomMap(CapycliTestBase):
             return
 
         self.app.purl_service = PurlService(self.app.client, cache={'deb': {'debian': {'sed': {
-            None: SW360_BASE_URL + "components/a035",
-            "1.0~1": SW360_BASE_URL + "releases/1234"}}}})
+            None: [{
+                "purl": PackageURL("deb", "debian", "sed"),
+                "href": SW360_BASE_URL + "components/a035"}],
+            "1.0~1": [{
+                "purl": PackageURL("deb", "debian", "sed", version="1.0~1"),
+                "href": SW360_BASE_URL + "releases/1234"}]}}}})
         bomitem = Component(
             name="sed",
             version="1.0+1",

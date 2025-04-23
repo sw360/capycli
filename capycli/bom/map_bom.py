@@ -368,7 +368,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             if release_url is not None:
                 rel_list = [{"_links": {"self": {"href": release_url}}}]
             else:
-                comp = self.client.get_component_by_url(compref)  # type: ignore
+                comp = self.client.get_component_by_url(compref)
                 if not comp:
                     continue
                 rel_list = comp["_embedded"].get("sw360:releases", [])
@@ -846,7 +846,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             cachefile, True, token, oauth2=oauth2, url=sw360_url)
         return rel_data
 
-    def map_bom_commons(self, component: Component) -> Tuple[MapResult, str, str]:
+    def map_bom_commons(self, component: Component) -> Tuple[MapResult, Optional[str], Optional[str]]:
         """
         Common parts to map from a SBOM component to the SW360 component/release.
         :param bomitem: SBOM component

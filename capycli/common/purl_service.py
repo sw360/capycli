@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import packageurl
 from sw360 import SW360
@@ -53,35 +53,32 @@ class PurlService:
                 all_ids = all_ids + all_rids
         print_text(" Found", len(all_ids), "total purls")
 
-        duplicates = []
         for entry in all_ids:
             for purl_string in PurlUtils.parse_purls_from_external_id(entry["externalIds"]["package-url"]):
                 try:
                     purl = packageurl.PackageURL.from_string(purl_string)
                     if purl_types and purl.type not in purl_types:
                         continue
-                    successful, value = self.purl_cache.add(purl, entry["_links"]["self"]["href"])
-                    if not successful and value != entry["_links"]["self"]["href"]:
-                        if not no_warnings:
-                            print_yellow("-> Multiple entries for purl:", purl)
-                            print_yellow(
-                                self.client.url +
-                                "group/guest/components/-/component/release/detailRelease/" +
-                                self.client.get_id_from_href(value))
-                            print_yellow(
-                                self.client.url +
-                                "group/guest/components/-/component/release/detailRelease/" +
-                                self.client.get_id_from_href(entry["_links"]["self"]["href"]))
-                        duplicates.append(
-                            (purl.type, purl.namespace, purl.name, purl.version))
+                    if not no_warnings:
+                        for e in self.purl_cache.get_by_version(purl):
+                            if e["purl"] == purl:
+                                print_yellow("-> Multiple entries for purl:", purl)
+                                print_yellow(
+                                    self.client.url +
+                                    "group/guest/components/-/component/release/detailRelease/" +
+                                    self.client.get_id_from_href(e["href"]))
+                                print_yellow(
+                                    self.client.url +
+                                    "group/guest/components/-/component/release/detailRelease/" +
+                                    self.client.get_id_from_href(entry["_links"]["self"]["href"]))
+
+                    self.purl_cache.add(purl, entry["_links"]["self"]["href"])
                 except ValueError:
                     if not no_warnings:
                         print_yellow("-> Ignoring invalid purl entry in", entry["_links"]["self"]["href"])
                         print_yellow(purl_string)
 
-        self.purl_cache.remove_duplicates(duplicates)
-
-    def search_release_by_external_id(self, ext_id_name: str, ext_id_value: str) -> Any:
+    def search_releases_by_external_id(self, ext_id_name: str, ext_id_value: str) -> List[Dict[str, Any]]:
         """Get SW360 release by external id
 
         For now, this only supports searching for package urls.
@@ -90,19 +87,43 @@ class PurlService:
         :type ext_id_name: string
         :param ext_id_value: external id
         :type ext_id_value: string
+        :return: list of dictionaries with `href` and `purl` keys
         """
         if ext_id_name != "package-url":
-            return None
+            return []
 
         if not ext_id_value:
-            return None
+            return []
 
         purl = packageurl.PackageURL.from_string(ext_id_value)
         self.build_purl_cache((purl.type,))
 
         return self.purl_cache.get_by_version(purl)
 
-    def search_component_by_external_id(self, ext_id_name: str, ext_id_value: str) -> str:
+    def search_release_by_external_id(self, ext_id_name: str, ext_id_value: str) -> Optional[str]:
+        """Get exactly one SW360 release by external id
+
+        :param ext_id_name: type of external id ("package-url", "npm-id", etc.)
+        :type ext_id_name: str
+        :param ext_id_value: external id
+        :type ext_id_value: str
+        :return: href of the release or None if not found
+        """
+        result = self.search_releases_by_external_id(ext_id_name, ext_id_value)
+        unique_hrefs = {r["href"] for r in result}
+
+        if len(unique_hrefs) == 1:
+            return result[0]["href"]
+        elif len(unique_hrefs) > 1:
+            print_yellow("    No unique release match for", ext_id_value)
+            for r in result:
+                print_yellow("      Candidate", self.client.get_id_from_href(r["href"]),
+                             "has purl", r["purl"])
+            return None
+
+        return None
+
+    def search_components_by_external_id(self, ext_id_name: str, ext_id_value: str) -> List[Dict[str, Any]]:
         """
         Get SW360 component by external id
 
@@ -119,10 +140,10 @@ class PurlService:
         """
 
         if ext_id_name != "package-url":
-            return ""
+            return []
 
         if not ext_id_value:
-            return ""
+            return []
 
         purl = packageurl.PackageURL.from_string(ext_id_value)
         self.build_purl_cache((purl.type,))
@@ -130,42 +151,64 @@ class PurlService:
         purl_entries = self.purl_cache.get_by_name(purl)
         if purl_entries:
             if None in purl_entries:
-                # component entry
-                comp = purl_entries[None]
-                print_green("    Found component", comp.split("/")[-1], "via purl")
-                return comp
+                # component entries
+                return purl_entries[None]
             else:
                 # release entries
-                component_candidates = {}
-                for version, purl_entry in purl_entries.items():
-                    release = self.client.get_release_by_url(purl_entry)
-                    if not release:
-                        continue
+                component_candidates = []
+                for version, purl_list in purl_entries.items():
+                    for purl_entry in purl_list:
+                        release = self.client.get_release_by_url(purl_entry["href"])
+                        if not release:
+                            continue
 
-                    c1 = release["_links"].get("sw360:component", None)
-                    if not c1:
-                        continue
+                        c1 = release["_links"].get("sw360:component", None)
+                        if not c1 or "href" not in c1:
+                            continue
 
-                    if "href" not in c1:
-                        continue
+                        component_candidates.append({
+                            "href": c1["href"],
+                            "purl": purl_entry["purl"],
+                            "release_href": purl_entry["href"]
+                        })
+                return component_candidates
+        return []
 
-                    component = release["_links"]["sw360:component"]["href"]
-                    component_candidates[component] = version
-                if len(component_candidates) > 1:
-                    print_yellow("    Releases purls point to different components:", component_candidates)
-                    return ""
-                elif len(component_candidates) == 1:
-                    component = list(component_candidates.keys())[0]
-                    print_green(
-                        "    Found component", component.split("/")[-1],
-                        "via purl for release",
-                        component_candidates[component])
-                    return list(component_candidates.keys())[0]
+    def search_component_by_external_id(self, ext_id_name: str, ext_id_value: str) -> Optional[str]:
+        """Get exactly one SW360 component by external id
+        :param ext_id_name: type of external id ("package-url", "npm-id", etc.)
+        :type ext_id_name: str
+        :param ext_id_value: external id
+        :type ext_id_value: str
+        :return: href of the component or empty string if not found
+        """
+        component_candidates = self.search_components_by_external_id(ext_id_name, ext_id_value)
+        unique_hrefs = {c["href"] for c in component_candidates}
+
+        if len(unique_hrefs) > 1:
+            print_yellow("    No unique component match for", ext_id_value + ":")
+            for c in component_candidates:
+                if "release_href" in c:
+                    print_yellow("      Release", self.client.get_id_from_href(c["release_href"]),
+                                 "with purl", c["purl"],
+                                 "points to component", self.client.get_id_from_href(c["href"]))
+                else:
+                    print_yellow("      Candidate", self.client.get_id_from_href(c["href"]),
+                                 "has purl", c["purl"])
+        elif len(unique_hrefs) == 1:
+            c = component_candidates[0]
+            if "release_href" in component_candidates[0]:
+                print_green("    Found component", self.client.get_id_from_href(c["href"]), "via purl", c["purl"],
+                            "for release", self.client.get_id_from_href(c["release_href"]))
+            else:
+                print_green("   Found component", self.client.get_id_from_href(c["href"]), "via purl", c["purl"])
+
+            return component_candidates[0]["href"]
 
         # no match in purl cache
-        return ""
+        return None
 
-    def search_component_and_release(self, ext_id_value: str) -> Tuple[str, str]:
+    def search_component_and_release(self, ext_id_value: str) -> Tuple[Optional[str], Optional[str]]:
         """
         Get SW360 component and release at once by external id
         :param ext_id_value: external id

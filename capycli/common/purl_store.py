@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from packageurl import PackageURL
 
@@ -44,19 +44,19 @@ class PurlStore:
         """ True if self else False """
         return bool(self.purl_cache)
 
-    def add(self, purl: PackageURL, entry: Any) -> Tuple[bool, Any]:
+    def add(self, purl: PackageURL, sw360_href: str) -> List[Dict[str, Any]]:
         # Prepare cache for purl
         pc = self.purl_cache
         for key in (purl.type, purl.namespace, purl.name):
             pc.setdefault(key, {})
             pc = pc[key]
 
-        # Version already exists in the store
-        if purl.version in pc:
-            return False, pc[purl.version]
-
-        pc[purl.version] = entry
-        return True, entry
+        pc.setdefault(purl.version, [])
+        pc[purl.version].append({
+            "purl": purl,
+            "href": sw360_href
+        })
+        return pc[purl.version]
 
     def get_by_namespace(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
         if (purl.type in self.purl_cache
@@ -72,31 +72,19 @@ class PurlStore:
 
         return None
 
-    def get_by_version(self, purl: PackageURL) -> Optional[Dict]:  # type: ignore
+    def get_by_version(self, purl: PackageURL) -> List[Dict[str, Any]]:
+        """
+        Retrieve entries by version from the cache.
+
+        If qualifiers are provided in the PackageURL, only entries matching
+        all qualifiers will be returned. If no qualifiers match, the method
+        falls back to returning all entries for the specified version.
+
+        :param purl: The PackageURL object containing type, namespace, name, version, and qualifiers.
+        :return: A list of matching entries or None if no matches are found.
+        """
         entries = self.get_by_name(purl)
         if entries and purl.version in entries:
             return entries[purl.version]
 
-        return None
-
-    def remove_duplicates(self, duplicates: list) -> None:  # type: ignore
-        for d in duplicates:
-            if d[0] not in self.purl_cache:
-                continue
-            if d[1] not in self.purl_cache[d[0]]:
-                continue
-            if d[2] not in self.purl_cache[d[0]][d[1]]:
-                continue
-            if d[3] not in self.purl_cache[d[0]][d[1]][d[2]]:
-                continue
-
-            # Remove entry
-            del (self.purl_cache[d[0]][d[1]][d[2]][d[3]])
-
-            # Clean up empty entries
-            if len(self.purl_cache[d[0]][d[1]][d[2]]) == 0:
-                del (self.purl_cache[d[0]][d[1]][d[2]])
-            if len(self.purl_cache[d[0]][d[1]]) == 0:
-                del (self.purl_cache[d[0]][d[1]])
-            if len(self.purl_cache[d[0]]) == 0:
-                del (self.purl_cache[d[0]])
+        return []
