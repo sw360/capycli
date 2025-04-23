@@ -7,6 +7,8 @@
 
 ## NEXT
 
+* `bom map` will now consider the PackageURL qualifiers specified in your input BOM. See
+  `Readme_Mapping.md` for details.
 * `bom map` will provide the `purl` from SW360 in the output BOM's components
   (due to a missing code path, PURL from input BOM was copied to mapping result instead)
 

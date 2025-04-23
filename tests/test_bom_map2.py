@@ -183,9 +183,10 @@ class CapycliTestBomMap(unittest.TestCase):
         assert res.result == MapResult.FULL_MATCH_BY_ID
         assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
         assert res.input_component is not None
-        assert (
-            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID).value
-            == "a035")
+        prop = CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+        assert prop.value == "a035"
+        prop = CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID)
+        assert prop.value == "qualifiers-ignored"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
@@ -236,6 +237,84 @@ class CapycliTestBomMap(unittest.TestCase):
         else:
             assert False, "Unexpected release id"
         assert len(res.releases) == 2
+
+    @responses.activate
+    def test_map_bom_item_purl_release_w_qualifiers(self) -> None:
+        """test bom mapping: search for releases by PURL with qualifiers
+        """
+        if not self.app.client:
+            return
+
+        self.app.purl_service = PurlService(self.app.client, cache={'maven': {
+            'com.fasterxml.jackson.core': {'jackson-core': {
+                None: [{
+                    "purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core"),
+                    "href": SW360_BASE_URL + "components/a035"}],
+                "2.18.0": [
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0",
+                                        qualifiers={"classifier": "sources"}),
+                     "href": SW360_BASE_URL + "releases/1234"},
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0",
+                                        qualifiers={"classifier": "javadoc"}),
+                     "href": SW360_BASE_URL + "releases/1235"},
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0",
+                                        qualifiers={"classifier": "sources", "packaging": "jar"}),
+                     "href": SW360_BASE_URL + "releases/1236"}]}}}})
+
+        self.app.releases = [{"Id": "1234", "ComponentId": "a035",
+                              "Name": "Jackson Core", "Version": "2.18.0",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                                 "?classifier=sources"}},
+                             {"Id": "1235", "ComponentId": "a034",
+                              "Name": "com.fasterxml.jackson.core:jackson-core", "Version": "2.18.0_javadoc",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                                 "?classifier=javadoc"}},
+                             {"Id": "1236", "ComponentId": "a034",
+                              "Name": "com.fasterxml.jackson.core:jackson-core", "Version": "2.18.0_jar",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                                 "?classifier=sources&packaging=jar"}}]
+
+        bomitem = Component(
+            name="jackson-core",
+            version="2.18.0",
+            purl=PackageURL.from_string("pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                        "?classifier=sources"))
+
+        # 2 matches for classifier=sources
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_ID
+        if res.releases[0]["Sw360Id"] == "1234":
+            assert res.releases[0]["ComponentId"] == "a035"
+            assert res.releases[1]["Sw360Id"] == "1236"
+            assert res.releases[1]["ComponentId"] == "a034"
+        elif res.releases[0]["Sw360Id"] == "1236":
+            assert res.releases[0]["ComponentId"] == "a034"
+            assert res.releases[1]["Sw360Id"] == "1234"
+            assert res.releases[1]["ComponentId"] == "a035"
+        else:
+            assert False, "Unexpected release id"
+        assert len(res.releases) == 2
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID).value
+            == "qualifiers-full-match")
+
+        # bomitem has unknown qualifier -> all PURL version matches returned
+        assert bomitem.purl is not None
+        assert type(bomitem.purl.qualifiers) is dict
+        bomitem.purl.qualifiers["themorequalifiers"] = "thebetter"
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_ID
+        assert len(res.releases) == 3
+        all_results = [r["Sw360Id"] for r in res.releases]
+        assert all_results == ["1234", "1235", "1236"]
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID).value
+            == "qualifiers-ignored")
 
     @responses.activate
     def test_map_bom_item_mixed_match(self) -> None:
@@ -852,6 +931,9 @@ class CapycliTestBomMap(unittest.TestCase):
         assert (
             CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_SW360ID).value
             == "1234")
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID).value
+            == "qualifiers-ignored")
         assert len(res.releases) == 1
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
@@ -1338,6 +1420,8 @@ class CapycliTestBomMap(unittest.TestCase):
         if prop == "3765276512":
             prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
             assert prop == "678dstzd8"
+            prop = CycloneDxSupport.get_property_value(sbom.components[1], CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID)
+            assert prop == "qualifiers-ignored"
             assert sbom.components[0].name == "colorama"
             assert sbom.components[1].name == "python-colorama"
         elif prop == "1234":
