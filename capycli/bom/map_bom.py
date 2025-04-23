@@ -734,7 +734,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
         # search release and component by purl which is independent of the component cache.
         if component.purl:
             result.component_hrefs = self.external_id_svc.search_components_by_purl(component.purl)
-            result.release_hrefs = self.external_id_svc.search_releases_by_purl(component.purl)
+            r = self.external_id_svc.search_releases_by_purl(component.purl)
+            result.release_hrefs = r["hrefs"]
+            result.release_hrefs_results = r["results"]
 
         return result
 
