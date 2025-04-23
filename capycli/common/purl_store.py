@@ -85,6 +85,17 @@ class PurlStore:
         """
         entries = self.get_by_name(purl)
         if entries and purl.version in entries:
+            if purl.qualifiers:
+                assert isinstance(purl.qualifiers, dict)
+                qualifiers_items = purl.qualifiers.items()
+                results = [
+                    entry for entry in entries[purl.version]
+                    if all(entry["purl"].qualifiers.get(key) == value for key, value in qualifiers_items)
+                ]
+                if results:
+                    return results
+
+            # Fallback: Return all entries if we have no qualifier match
             return entries[purl.version]
 
         return []

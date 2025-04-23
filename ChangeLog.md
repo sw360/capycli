@@ -5,6 +5,11 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* `bom map` will now consider the PackageURL qualifiers specified in your input BOM. See
+  `Readme_Mapping.md` for details.
+
 ## 2.8.0
 
 * fix in legacy to cdx convert fix for componentId.
