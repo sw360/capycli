@@ -45,20 +45,36 @@ and version etc.
 
 ## Notes on id mapping / PackageURL mapping
 
-CaPyCli supports mapping releases by the PackageURL. As encoding of a
-PackageURL is not unique (some characters *may* use URL encoding, qualifiers
+CaPyCli supports mapping **releases** by the PackageURL. As encoding of a
+PackageURL is not unique (some characters may be percent-encoded, qualifiers
 can be given in random order etc.), we can't just do a string comparison, but
 instead *all* SW360 releases with PackageURLs (using external id `package-url`)
 are retrieved and decoded. When your input BOM specifies a `purl` field, then
 the PackageURL is compared field by field (type, namespace, name, version) for
 a `FULL_MATCH_BY_ID`.
 
-Also, components will be mapped by PackageURL and if a match is found, the
+Also, **components** will be mapped by PackageURL and if a match is found, the
 `capycli:componentId` property will be added to the output BOM item. Components
 can be identified directly by their external id `package-url` or as fallback
 also by the `package-url`s of their releases.
 
-PackageURL subpath and qualifiers are currently ignored during PURL matching.
+PackageURL **qualifiers** (like `?distro=alpine-3.21&package-id=3a23`) will be
+considered when using `bom map --matchmode qualifier-match`. In some cases,
+qualifiers are essential for correct mapping, but many scanners also include
+non-essential qualifiers in their SBOMs. And the distinction might be
+challenging: while `distro` is crucial for correct mapping of Alpine packages
+(same package release can have different patches in different Alpine releases),
+but for Debian, `distro` is unnecessary since package versions are already
+unique. So we use the following rules to balance accuracy and practicality:
+
+* Only the qualifiers specified in the input BOM are considered during matching,
+  qualifiers only present in SW360 releases are ignored. So you can control
+  matching by removing the unwanted qualifiers in your SBOM.
+* If one or more SW360 releases are found where *all* qualifiers specified in the
+  input BOM match, *only* these releases are added to the output BOM. Otherwise,
+  qualifiers will be ignored, so all release matches will be added.
+
+PackageURL subpath is currently ignored during PURL matching.
 
 ## Example 1: Very Simple, Full Match
 

@@ -14,6 +14,7 @@ from packageurl import PackageURL
 
 from capycli.bom.map_bom import MapBom
 from capycli.common.purl_service import PurlService
+from capycli.common.map_result import MapResultByIdQualifiers
 from tests.test_base import SW360_BASE_URL
 
 sw360_purl_releases: List[Dict[str, Any]] = [
@@ -139,8 +140,9 @@ class TestPurlService(unittest.TestCase):
         # returns all candidates including duplicates
         res = purl_service.search_releases_by_purl(PackageURL("deb", "debian", "sed", "4.4+1~2"))
         # all purls point to the same release
-        assert len(res) == 1
-        assert res[0] == sw360_purl_releases[0]["_links"]["self"]["href"]
+        assert len(res["hrefs"]) == 1
+        assert res["hrefs"][0] == sw360_purl_releases[0]["_links"]["self"]["href"]
+        assert res["results"] == []
 
         # returns all candidates including duplicates
         res = purl_service.search_components_by_purl(PackageURL("deb", "debian", "sed"))
@@ -179,7 +181,8 @@ class TestPurlService(unittest.TestCase):
         purl_service.build_purl_cache()
         # returns all candidates including duplicates
         res = purl_service.search_releases_by_purl(PackageURL("gem", name="mini_portile2", version="2.4.0"))
-        assert len(res) == 2
+        assert len(res["hrefs"]) == 2
+        assert res["results"] == []
 
         # returns all candidates including duplicates
         res = purl_service.search_components_by_purl(PackageURL("deb", "debian", "sed",
@@ -201,11 +204,14 @@ class TestPurlService(unittest.TestCase):
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
         res = purl_service.search_releases_by_purl(PackageURL("gem", name="mini_portile2", version="2.4.0"))
-        assert len(res) == 2
+        assert len(res["hrefs"]) == 2
+        assert res["results"] == []
         res = purl_service.search_releases_by_purl(PackageURL("deb", "debian", "sed", "4.4+1~2",
-                                                              qualifiers={"type": "source"}))
-        assert len(res) == 1
-        assert res[0] == sw360_purl_releases[0]["_links"]["self"]["href"]
+                                                              qualifiers={"type": "source"}),
+                                                   qualifier_match=True)
+        assert len(res["hrefs"]) == 1
+        assert res["results"] == [MapResultByIdQualifiers.FULL_MATCH.value]
+        assert res["hrefs"][0] == sw360_purl_releases[0]["_links"]["self"]["href"]
 
         res = purl_service.search_components_by_purl(PackageURL("deb", "debian", "sed",
                                                                 qualifiers={"type": "source"}))
@@ -243,8 +249,10 @@ class TestPurlService(unittest.TestCase):
         purl_service = self.purl_build_cache()
 
         res = purl_service.search_releases_by_purl(
-            PackageURL("deb", "debian", "sed", "4.4+1~2", qualifiers={"type": "source"}))
-        assert res[0] == sw360_purl_releases[0]["_links"]["self"]["href"]
+            PackageURL("deb", "debian", "sed", "4.4+1~2", qualifiers={"type": "source"}),
+            qualifier_match=True)
+        assert res["hrefs"][0] == sw360_purl_releases[0]["_links"]["self"]["href"]
+        assert res["results"] == [MapResultByIdQualifiers.FULL_MATCH.value]
 
     @responses.activate
     def test_purl_search_component(self) -> None:
@@ -353,7 +361,7 @@ class TestPurlService(unittest.TestCase):
         self.assertIsNotNone(c)
         self.assertIsNotNone(r)
         self.assertEqual(c[0], "self/href/c1")
-        self.assertEqual(r[0], "self/href/r1")
+        self.assertEqual(r["hrefs"][0], "self/href/r1")
 
 
 if __name__ == "__main__":

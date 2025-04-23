@@ -244,6 +244,108 @@ class CapycliTestBomMap(unittest.TestCase):
             assert False, "Unexpected release id"
 
     @responses.activate
+    def test_map_bom_item_purl_release_w_qualifiers(self) -> None:
+        """test bom mapping: search for releases by PURL with qualifiers
+        """
+        if not self.app.client:
+            return
+
+        self.app.purl_service = PurlService(self.app.client, cache={'maven': {
+            'com.fasterxml.jackson.core': {'jackson-core': {
+                None: [{
+                    "purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core"),
+                    "href": SW360_BASE_URL + "components/a035"}],
+                "2.18.0": [
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0",
+                                        qualifiers={"classifier": "sources"}),
+                     "href": SW360_BASE_URL + "releases/1234"},
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0",
+                                        qualifiers={"classifier": "javadoc"}),
+                     "href": SW360_BASE_URL + "releases/1235"},
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0",
+                                        qualifiers={"classifier": "sources", "packaging": "jar"}),
+                     "href": SW360_BASE_URL + "releases/1236"}]}}}})
+
+        self.app.releases = [{"Id": "1234", "ComponentId": "a035",
+                              "Name": "Jackson Core", "Version": "2.18.0",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                                 "?classifier=sources"}},
+                             {"Id": "1235", "ComponentId": "a034",
+                              "Name": "com.fasterxml.jackson.core:jackson-core", "Version": "2.18.0_javadoc",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                                 "?classifier=javadoc"}},
+                             {"Id": "1236", "ComponentId": "a034",
+                              "Name": "com.fasterxml.jackson.core:jackson-core", "Version": "2.18.0_jar",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                                 "?classifier=sources&packaging=jar"}}]
+
+        bomitem = Component(
+            name="jackson-core",
+            version="2.18.0",
+            purl=PackageURL.from_string("pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"
+                                        "?classifier=sources"))
+
+        self.app.full_search = True
+
+        # 3 matches when ignoring qualifiers
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_ID
+        assert len(res.releases) == 3
+
+        self.app.qualifier_match = True
+
+        # 2 matches for classifier=sources
+        bomitem.properties.clear()  # resert properties to remove results from previous mapping
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_ID
+        assert len(res.releases) == 2
+
+        if res.releases[0]["Sw360Id"] == "1234":
+            assert res.releases[0]["ComponentId"] == "a035"
+            assert res.releases[1]["Sw360Id"] == "1236"
+            assert res.releases[1]["ComponentId"] == "a034"
+        elif res.releases[0]["Sw360Id"] == "1236":
+            assert res.releases[0]["ComponentId"] == "a034"
+            assert res.releases[1]["Sw360Id"] == "1234"
+            assert res.releases[1]["ComponentId"] == "a035"
+        else:
+            assert False, "Unexpected release id"
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID).value
+            == "qualifiers-full-match")
+
+        self.app.qualifier_match = False
+
+        # bomitem has unknown qualifier -> all PURL version matches returned
+        assert bomitem.purl is not None
+        assert type(bomitem.purl.qualifiers) is dict
+        bomitem.purl.qualifiers["themorequalifiers"] = "thebetter"
+        bomitem.properties.clear()  # resert properties to remove results from previous mapping
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_ID
+        assert len(res.releases) == 3
+        all_results = [r["Sw360Id"] for r in res.releases]
+        assert all_results == ["1234", "1235", "1236"]
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID)
+            is None)
+
+        self.app.qualifier_match = True
+
+        bomitem.properties.clear()  # resert properties to remove results from previous mapping
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert len(res.releases) == 3
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID).value
+            == "qualifiers-ignored")
+
+    @responses.activate
     def test_map_bom_item_mixed_match(self) -> None:
         bomitem = Component(
             name="mail",

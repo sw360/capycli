@@ -60,6 +60,7 @@ class CycloneDxSupport():
     CDX_PROP_COMPONENT_ID = "capycli:componentId"
     CDX_PROP_FILENAME = "siemens:filename"
     CDX_PROP_MAPRESULT = "capycli:mapResult"
+    CDX_PROP_MAPRESULT_BY_ID = "capycli:mapResultById"
     CDX_PROP_SW360_HREF = "capycli:sw360Href"
     CDX_PROP_SW360_URL = "capycli:sw360Url"
     CDX_PROP_REL_STATE = "capycli:releaseMainlineState"

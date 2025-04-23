@@ -102,3 +102,9 @@ class TestPurlUtils(unittest.TestCase):
         input_purl = PackageURL.from_string("pkg:maven/org.springframework.boot/spring-boot-actuator@2.7.1?type=jar")
         search_purl = PackageURL.from_string("pkg:maven/org.springframework.boot/spring-boot-actuator@2.7.1")
         self.assertTrue(PurlUtils.contains([input_purl], search_purl))
+        # we are only comparing qualifiers existing in search_purl
+        self.assertTrue(PurlUtils.contains([input_purl], search_purl, compare_qualifiers=True))
+
+        search_purl = PackageURL.from_string("pkg:maven/org.springframework.boot/spring-boot-actuator@2.7.1?type=dist")
+        self.assertTrue(PurlUtils.contains([input_purl], search_purl))
+        self.assertFalse(PurlUtils.contains([input_purl], search_purl, compare_qualifiers=True))

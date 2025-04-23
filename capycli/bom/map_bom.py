@@ -60,6 +60,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         self.purl_service: Optional[PurlService] = None
         self.no_match_by_name_only = True
         self.full_search = False
+        self.qualifier_match = False
 
     def is_id_match(self, release: Dict[str, Any], component: Component) -> bool:
         """Determines whether this release is a match via identifier for the specified SBOM item"""
@@ -761,7 +762,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
         # search release and component by purl which is independent of the component cache.
         if component.purl:
             result.component_hrefs = self.external_id_svc.search_components_by_purl(component.purl)
-            result.release_hrefs = self.external_id_svc.search_releases_by_purl(component.purl)
+            r = self.external_id_svc.search_releases_by_purl(component.purl, self.qualifier_match)
+            result.release_hrefs = r["hrefs"]
+            result.release_hrefs_results = r["results"]
 
         return result
 
@@ -849,6 +852,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         print("    --matchmode MATCHMODE matching mode, comma separated list of:")
         print("                          full-search = report best matches, don't abort on first match (recommended)")
         print("                          all-versions = also report matches for name, but different version")
+        print("                          qualifier-match = consider qualifiers for PURL matching")
         print("                          ignore-debian = ignore Debian revision in version comparison, so SBOM")
         print("                                          version 3.1 will match SW360 version 3.1-3.debian")
         print("    -all                  deprecated, please use --matchmode all-versions")
@@ -903,6 +907,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         if "full-search" in args.matchmode:
             self.full_search = True
+
+        if "qualifier-match" in args.matchmode:
+            self.qualifier_match = True
 
         print_text("Loading SBOM file", args.inputfile)
         try:

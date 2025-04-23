@@ -6,9 +6,10 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from packageurl import PackageURL
+from capycli.common.map_result import MapResultByIdQualifiers
 
 
 class PurlStore:
@@ -84,3 +85,27 @@ class PurlStore:
             return entries[purl.version]
 
         return []
+
+    @staticmethod
+    def filter_by_qualifiers(entries: List[Dict[str, Any]], purl: PackageURL) -> Tuple[MapResultByIdQualifiers,
+                                                                                       List[Dict[str, Any]]]:
+        """
+        Filter entries based on the qualifiers in the given PackageURL and return the match type.
+
+        :param entries: A list of entries to filter as returned by get_by_version.
+        :param purl: The PackageURL object containing qualifiers to match.
+        :return: A tuple (qualifier_result, list of entries)
+        """
+        if not purl.qualifiers or len(entries) == 0:
+            return MapResultByIdQualifiers.NO_QUALIFIER_MAPPING, entries
+
+        assert isinstance(purl.qualifiers, dict)
+        qualifiers_items = purl.qualifiers.items()
+        filtered_entries = [
+            entry for entry in entries
+            if all(entry["purl"].qualifiers.get(key) == value for key, value in qualifiers_items)
+        ]
+
+        if filtered_entries:
+            return MapResultByIdQualifiers.FULL_MATCH, filtered_entries
+        return MapResultByIdQualifiers.IGNORED, entries

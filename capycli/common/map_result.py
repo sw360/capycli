@@ -7,10 +7,18 @@
 # -------------------------------------------------------------------------------
 
 from typing import Any, List, Optional
+from enum import Enum
 
 from cyclonedx.model.component import Component
 
 from capycli.common.capycli_bom_support import CycloneDxSupport
+
+
+class MapResultByIdQualifiers(Enum):
+    FULL_MATCH = "qualifiers-full-match"
+    IGNORED = "qualifiers-ignored"
+    UNKNOWN = "qualifiers-unknown-match"
+    NO_QUALIFIER_MAPPING = ""
 
 
 class MapResult:
@@ -50,7 +58,21 @@ class MapResult:
         self.result: str = MapResult.NO_MATCH
         self._component_hrefs: List[str] = []
         self._release_hrefs: List[str] = []
+        self._release_hrefs_results: List[str] = []
         self.releases: List[Any] = []
+
+    @property
+    def release_hrefs_results(self) -> list[str]:
+        return self._release_hrefs_results
+
+    @release_hrefs_results.setter
+    def release_hrefs_results(self, value: list[str]) -> None:
+        self._release_hrefs_results = value
+        if not self.input_component or not value:
+            return
+        CycloneDxSupport.update_or_set_property(
+            self.input_component, CycloneDxSupport.CDX_PROP_MAPRESULT_BY_ID,
+            " ".join(value))
 
     @property
     def component_hrefs(self) -> List[str]:
