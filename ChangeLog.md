@@ -19,6 +19,8 @@
 * `project createbom` stores release relations (`CONTAINED`, `SIDE_BY_SIDE` etc.) as capycli:projectRelation
 * `project update`: optimized handling of release mainline state and release relation. Now states
   provided in the SBOM are used and slowdowns/crashes introduced in 2.7.0 (#121) fixed again.
+* `bom map` will now consider the PackageURL qualifiers specified in your input BOM. See
+  `Readme_Mapping.md` for details.
 
 ## 2.7.0
 
