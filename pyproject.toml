@@ -1,9 +1,9 @@
-# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2025 Siemens
 # SPDX-License-Identifier: MIT
 
 [tool.poetry]
 name = "capycli"
-version = "2.7.0"
+version = "2.7.1"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 authors = ["Thomas Graf <thomas.graf@siemens.com>"]
 license = "MIT"

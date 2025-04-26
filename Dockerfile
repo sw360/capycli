@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: (c) 2018-2025 Siemens
+# SPDX-License-Identifier: MIT
+
 FROM python:3.12-slim
 
 ARG VERSION

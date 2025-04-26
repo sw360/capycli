@@ -5,6 +5,14 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* fix in legacy to cdx convert fix for componentId.
+* documentation fixes.
+* improvements in pulling package-urls from SW360.
+* pyjwt update to >= 2.4.0 due to CVE-2022-29217.
+* CaPyCLI now supports color console output also when running in GitLab CI.
+
 ## 2.7.0
 
 * fix for `bom findsources` for some JavaScript SBOMs.

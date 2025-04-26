@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -17,6 +17,7 @@ This module
 
 import importlib
 import logging
+import os
 import sys
 from typing import Any
 
@@ -76,7 +77,22 @@ _VERBOSITY_TO_LOG_LEVEL = {
     3: _EXTRA_VERBOSE,
 }
 
+
+def is_running_in_ci() -> bool:
+    """Check if the application is running in a CI environment."""
+    return "GITLAB_CI" in os.environ
+
+
+def ensure_color_console_output() -> None:
+    """Ensure that the console output is colored."""
+    if is_running_in_ci():
+        if "NO_COLOR" not in os.environ:
+            # required for colorama's TTY detection to work properly in Gitlab setting
+            os.environ["PYCHARM_HOSTED"] = "1"
+
+
 # initialize colorama
+ensure_color_console_output()
 init()
 
 
