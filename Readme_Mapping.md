@@ -1,5 +1,5 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2025 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
@@ -32,6 +32,28 @@ informs about the mapping result:
 * **`NO_MATCH` (100)** => Component was not found
 
 In general you can say that the lower the number, the better the match.
+
+## Notes on id mapping / PackageURL mapping
+
+CaPyCli supports mapping releases by the PackageURL. As encoding of a
+PackageURL is not unique (some characters *may* use URL encoding, qualifiers
+can be given in random order etc.), we can't just do a string comparison, but
+instead *all* SW360 releases with PackageURLs (using external id `package-url`)
+are retrieved and decoded. When your input BOM specifies a `purl` field, then
+the PackageURL is compared field by field (type, namespace, name, version) for
+a `FULL_MATCH_BY_ID`.
+
+Also, components will be mapped by PackageURL and if a match is found, the
+`capycli:componentId` property will be added to the output BOM item. Components
+can be identified directly by their external id `package-url` or as fallback
+also by the `package-url`s of their releases.
+
+PackageURL subpath and qualifiers are currently ignored during PURL matching.
+
+Note that we consider PackageURLs as *unique identifier*, so if two releases or
+components have the *same* external ID, a warning will be printed and the
+external ids will be completely ignored and mapping will continue with the
+other search steps like by file hash, by name and version etc.
 
 ## Example 1: Very Simple, Full Match
 

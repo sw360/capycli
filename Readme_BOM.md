@@ -46,10 +46,10 @@ namespace or the `capycli` namespace.
 | Key                       | Description                        |
 | ------------------------- | ---------------------------------- |
 | siemens:sw360Id           | SW360 ID (of a release)            |
-| siemens:componentId       | id of a component, part of mapping |
 | siemens:primaryLanguage   | programming language               |
 | siemens:filename          | name of a (source) file            |
 | siemens:profile           | profile/type of the SBOM           |
+| capycli:componentId       | id of a component, part of mapping |
 | capycli:sourceFileType    | SW360 attachment type              |
 | capycli:sourceFileComment | upload comment for SW360 attachment|
 | capycli:mapResult         | mapping result                     |
@@ -80,7 +80,7 @@ Example:
           "value": "Java"
         },
         {
-          "name": "ssiemens:sw360Id ",
+          "name": "siemens:sw360Id",
           "value": "f9159fde78553c2ba192b7fa8e8c2033"
         }
       ]

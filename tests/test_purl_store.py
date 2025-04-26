@@ -6,8 +6,6 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import List, Tuple
-
 import packageurl
 
 from capycli.common.purl_store import PurlStore
@@ -20,49 +18,65 @@ class TestPurlStore(TestBase):
         sut = PurlStore()
 
         purl = packageurl.PackageURL.from_string("pkg:maven/test/test")
-        entry = {"name": "test", "version": "1"}
-        successful, value = sut.add(purl, entry)
-        self.assertTrue(successful)
-        self.assertEqual(value, entry)
-        self.assertEqual(sut.get_by_name(purl), {None: entry}, msg="Entry shall be {}".format({None: entry}))
+        entry = "https://sw360.org/api/component/123"
+        cache_entries = sut.add(purl, entry)
+        self.assertEqual(cache_entries[0]["href"], entry)
+        self.assertEqual(cache_entries[0]["purl"], purl)
+        self.assertEqual(sut.get_by_name(purl), {None: [{"purl": purl, "href": entry}]})
 
-    def test_add_duplicate_version_shall_fail(self) -> None:
+    def test_add_duplicate_component(self) -> None:
         sut = PurlStore()
 
-        purl = packageurl.PackageURL.from_string("pkg:maven/test/test@1")
-        entry1 = {"name": "test", "version": "1", "first": True}
-        # Add shall return True for successful and the newly added value
-        successful, value = sut.add(purl, entry1)
-        self.assertTrue(successful)
-        self.assertEqual(value, entry1)
-        entry2 = {"name": "test", "version": "1", "first": False}
-        # Add shall return False for failed and the current entry in the store
-        successful, value = sut.add(purl, entry2)
-        self.assertFalse(successful)
-        self.assertEqual(value, entry1)
-        self.assertEqual(sut.get_by_version(purl), entry1)
+        purl = packageurl.PackageURL.from_string("pkg:maven/test/test")
+        entry1 = "https://sw360.org/api/component/123"
+        sut.add(purl, entry1)
+        entry2 = "https://sw360.org/api/component/456"
+        sut.add(purl, entry2)
+        results = sut.get_by_name(purl)
+        if results is None:
+            self.fail("Expected results to be not None")
+        else:
+            self.assertEqual(len(results[None]), 2)
+            self.assertEqual(results[None][0]["href"], entry1)
+            self.assertEqual(results[None][0]["purl"], purl)
+            self.assertEqual(results[None][1]["href"], entry2)
+            self.assertEqual(results[None][1]["purl"], purl)
 
-    def test_remove_duplicates_shall_remove_unnecessary_entries(self) -> None:
+    def test_add_duplicate_version(self) -> None:
         sut = PurlStore()
 
-        purl: packageurl.PackageURL = packageurl.PackageURL.from_string("pkg:maven/test/test@1")
-        duplicates: List[Tuple[str, str, str, str]] = [(purl.type,
-                                                        purl.namespace, purl.name, purl.version)]  # type: ignore
-        sut.add(purl, {})
+        purl1 = packageurl.PackageURL.from_string("pkg:maven/test/test@1?classifier=sources")
+        entry1 = "https://sw360.org/api/releases/123"
+        cache_entries = sut.add(purl1, entry1)
+        self.assertEqual(cache_entries[0]["href"], entry1)
 
-        sut.remove_duplicates(duplicates)
-        self.assertFalse(bool(sut.purl_cache), msg="Shall be empty {}".format(sut.purl_cache))
+        purl2 = packageurl.PackageURL.from_string("pkg:maven/test/test@1?classifier=dist")
+        entry2 = "https://sw360.org/api/releases/456"
+        cache_entries = sut.add(purl2, entry2)
+        self.assertEqual(cache_entries[0]["href"], entry1)
+        self.assertEqual(cache_entries[0]["purl"].qualifiers["classifier"], "sources")
+        self.assertEqual(cache_entries[1]["href"], entry2)
+        self.assertEqual(cache_entries[1]["purl"].qualifiers["classifier"], "dist")
+        res = sut.get_by_version(purl1)
+        if res is None:
+            self.fail("Expected results to be not None")
+        else:
+            self.assertEqual(len(res), 2)
 
-    def test_remove_duplicates_shall_ignore_unknown_entries(self) -> None:
+    def test_add_duplicate_qualifiers(self) -> None:
         sut = PurlStore()
 
-        purl: packageurl.PackageURL = packageurl.PackageURL.from_string("pkg:maven/test/test@1")
-        sut.add(purl, {"test": True})
-        duplicates: List[Tuple[str, str, str, str]] = [
-            (purl.type, purl.namespace, purl.name, "unknown"),  # type: ignore
-            (purl.type, purl.namespace, "unknown", None),  # type: ignore
-            (purl.type, "unknown", None, None),  # type: ignore
-            ("unknown", None, None, None)  # type: ignore
-        ]
-        sut.remove_duplicates(duplicates)
-        self.assertTrue(bool(sut.purl_cache))
+        purl = packageurl.PackageURL.from_string("pkg:maven/test/test@1?classifier=sources")
+        entry1 = "https://sw360.org/api/releases/123"
+        cache_entries = sut.add(purl, entry1)
+        entry2 = "https://sw360.org/api/releases/456"
+        cache_entries = sut.add(purl, entry2)
+        self.assertEqual(cache_entries[0]["href"], entry1)
+        self.assertEqual(cache_entries[0]["purl"].qualifiers["classifier"], "sources")
+        self.assertEqual(cache_entries[1]["href"], entry2)
+        self.assertEqual(cache_entries[1]["purl"].qualifiers["classifier"], "sources")
+        res = sut.get_by_version(purl)
+        if res is None:
+            self.fail("Expected results to be not None")
+        else:
+            self.assertEqual(len(res), 2)
