@@ -719,8 +719,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 2 total purls" in out)
         self.assertTrue("Found component 678dstzd8 via purl" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_ID)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_ID) 3765276512" in out)
+        self.assertTrue("CLEAR (1-full-match-by-id)" in out)
+        self.assertTrue("ADDED (1-full-match-by-id) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -933,8 +933,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 2 total purls" in out)
         self.assertTrue("Found component 678dstzd8 via purl" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_ID)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_ID) 3765276512" in out)
+        self.assertTrue("CLEAR (1-full-match-by-id)" in out)
+        self.assertTrue("ADDED (1-full-match-by-id) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -1315,8 +1315,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_NAME_AND_VERSION)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_NAME_AND_VERSION) 3765276512" in out)
+        self.assertTrue("CLEAR (3-full-match-by-name-and-version)" in out)
+        self.assertTrue("ADDED (3-full-match-by-name-and-version) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -1403,8 +1403,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_HASH)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_HASH) 3765276512" in out)
+        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
+        self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -1491,8 +1491,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_HASH)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_HASH) 3765276512" in out)
+        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
+        self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -1984,8 +1984,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_NAME_AND_VERSION)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_NAME_AND_VERSION) 3765276512" in out)
+        self.assertTrue("CLEAR (3-full-match-by-name-and-version)" in out)
+        self.assertTrue("ADDED (3-full-match-by-name-and-version) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -2133,8 +2133,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_HASH)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_HASH) 3765276512" in out)
+        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
+        self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -2282,8 +2282,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (FULL_MATCH_BY_HASH)" in out)
-        self.assertTrue("ADDED (FULL_MATCH_BY_HASH) 3765276512" in out)
+        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
+        self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -2431,8 +2431,8 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (MATCH_BY_FILENAME)" in out)
-        self.assertTrue("ADDED (MATCH_BY_FILENAME) 3765276512" in out)
+        self.assertTrue("CLEAR (4-good-match-by-filename)" in out)
+        self.assertTrue("ADDED (4-good-match-by-filename) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
         # check result files
@@ -2707,67 +2707,63 @@ class CapycliTestBomMap(CapycliTestBase):
             if updated.purl:
                 self.assertEqual("pkg:pypi/a@2.0", updated.purl.to_string())
 
-    def test_is_better_match(self) -> None:
+    def test_add_match_if_better(self) -> None:
         sut = MapBom()
 
+        release = {}
+
         # empty release list
-        val = sut.is_better_match([], MapResult.MATCH_BY_FILENAME)
-        self.assertTrue(val)
-
-        val = sut.is_better_match([], MapResult.MATCH_BY_FILENAME)
-        self.assertTrue(val)
-
-        release = {}
+        result = MapResult()
         release["MapResult"] = MapResult.NO_MATCH
+        val = sut.add_match_if_better(result, release, MapResult.MATCH_BY_FILENAME)
+        assert len(result.releases) == 1
+        self.assertTrue(val)
 
-        val = sut.is_better_match([release], MapResult.NO_MATCH)
+        result = MapResult()
+        release["MapResult"] = MapResult.NO_MATCH
+        result.releases = [release]
+        val = sut.add_match_if_better(result, release, MapResult.NO_MATCH)
         self.assertFalse(val)
 
-        val = sut.is_better_match([release], MapResult.SIMILAR_COMPONENT_FOUND)
+        result = MapResult()
+        release["MapResult"] = MapResult.NO_MATCH
+        result.releases = [release]
+        val = sut.add_match_if_better(result, release, MapResult.SIMILAR_COMPONENT_FOUND)
         self.assertTrue(val)
 
-        releases_found = []
-        release = {}
-        release["MapResult"] = MapResult.NO_MATCH
-        releases_found.append(release)
-
-        release = {}
+        result = MapResult()
         release["MapResult"] = MapResult.SIMILAR_COMPONENT_FOUND
-        releases_found.append(release)
-
-        val = sut.is_better_match(releases_found, MapResult.SIMILAR_COMPONENT_FOUND)
+        result.releases = [release]
+        val = sut.add_match_if_better(result, release, MapResult.SIMILAR_COMPONENT_FOUND)
         self.assertFalse(val)
 
-        val = sut.is_better_match(releases_found, MapResult.MATCH_BY_NAME)
+        val = sut.add_match_if_better(result, release, MapResult.MATCH_BY_NAME)
         self.assertTrue(val)
 
         release = {}
         release["MapResult"] = MapResult.MATCH_BY_NAME
-        releases_found.append(release)
-
+        result.releases.append(release)
         release = {}
         release["MapResult"] = MapResult.MATCH_BY_FILENAME
-        releases_found.append(release)
-
+        result.releases.append(release)
         release = {}
         release["MapResult"] = MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        releases_found.append(release)
-
+        result.releases.append(release)
         release = {}
         release["MapResult"] = MapResult.FULL_MATCH_BY_HASH
-        releases_found.append(release)
+        result.releases.append(release)
 
-        val = sut.is_better_match(releases_found, MapResult.FULL_MATCH_BY_HASH)
+        val = sut.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
         self.assertFalse(val)
 
-        val = sut.is_better_match(releases_found, MapResult.FULL_MATCH_BY_ID)
+        val = sut.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
         self.assertTrue(val)
 
         release = {}
         release["MapResult"] = MapResult.FULL_MATCH_BY_ID
-        releases_found.append(release)
+        result.releases.append(release)
 
-        val = sut.is_better_match(releases_found, MapResult.FULL_MATCH_BY_HASH)
+        val = sut.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
         self.assertFalse(val)
 
     def test_is_good_match(self) -> None:
