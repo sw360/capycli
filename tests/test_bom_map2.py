@@ -87,6 +87,7 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.result == MapResult.MATCH_BY_NAME
         assert res.component_id == "a035"
         assert res.releases[0]["ComponentId"] == "a035"
+        assert len(res.releases) == 1
 
     @responses.activate
     def test_map_bom_item_purl_release(self) -> None:
@@ -118,6 +119,88 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.component_id == "a035"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
+
+    @responses.activate
+    def test_map_bom_item_mixed_match(self) -> None:
+        bomitem = Component(
+            name="mail",
+            version="1.4")
+
+        self.app.releases = [{"Id": "1111", "ComponentId": "b001",
+                              "Name": "mail", "Version": "1.4",
+                              "ExternalIds": {}},
+                             {"Id": "1112", "ComponentId": "b002",
+                              "Name": "Mail", "Version": "1.0",
+                              "ExternalIds": {}}]
+
+        self.app.no_match_by_name_only = True
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+        # CaPyCli parameter --all set
+        self.app.no_match_by_name_only = False
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+        self.app.releases = [{"Id": "1111", "ComponentId": "b001",
+                              "Name": "mail", "Version": "1.0",
+                              "ExternalIds": {}},
+                             {"Id": "1112", "ComponentId": "b002",
+                              "Name": "Mail", "Version": "1.4",
+                              "ExternalIds": {}}]
+
+        self.app.no_match_by_name_only = True
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+        # CaPyCli parameter --all set
+        self.app.no_match_by_name_only = False
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+        bomitem.version = "1.2"
+
+        self.app.no_match_by_name_only = True
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.NO_MATCH
+        assert len(res.releases) == 0
+
+        # CaPyCli parameter --all set
+        self.app.no_match_by_name_only = False
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.MATCH_BY_NAME
+        assert len(res.releases) == 2
+
+    @responses.activate
+    def test_map_bom_item_mixed_match_similar(self) -> None:
+        bomitem = Component(
+            name="mail-filter",
+            version="1.4")
+
+        self.app.releases = [{"Id": "1111", "ComponentId": "b001",
+                              "Name": "mail_Filter", "Version": "1.1",
+                              "ExternalIds": {}},
+                             {"Id": "1112", "ComponentId": "b002",
+                              "Name": "Mail filter", "Version": "1.0",
+                              "ExternalIds": {}},
+                             {"Id": "1113", "ComponentId": "b003",
+                              "Name": "Mail-Filter", "Version": "1.2",
+                              "ExternalIds": {}}]
+
+        self.app.no_match_by_name_only = True
+        res = self.app.map_bom_item(bomitem, check_similar=True, result_required=False)
+        assert res.result == MapResult.SIMILAR_COMPONENT_FOUND
+        assert len(res.releases) == 2
+
+        # CaPyCli parameter --all set
+        self.app.no_match_by_name_only = False
+        res = self.app.map_bom_item(bomitem, check_similar=True, result_required=False)
+        assert res.result == MapResult.MATCH_BY_NAME
+        assert len(res.releases) == 1
 
     # ---------------------- map_bom_item_no_cache ----------------------
 
@@ -281,6 +364,7 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.result == MapResult.MATCH_BY_NAME
         assert res.component_id == "a035"
         assert res.releases[0]["ComponentId"] == "a035"
+        assert len(res.releases) == 1
 
     @responses.activate
     def test_map_bom_item_nocache_purl_nocomponent(self) -> None:
