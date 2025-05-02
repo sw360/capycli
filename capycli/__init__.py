@@ -87,7 +87,8 @@ def ensure_color_console_output() -> None:
     """Ensure that the console output is colored."""
     if is_running_in_ci():
         if "NO_COLOR" not in os.environ:
-            # required for colorama's TTY detection to work properly in Gitlab setting
+            # required for colorama's TTY detection to work properly in Gitlab setting,
+            # for details see https://github.com/tartley/colorama/issues/214
             os.environ["PYCHARM_HOSTED"] = "1"
 
 
