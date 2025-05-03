@@ -196,7 +196,24 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                 break
 
-            # second check: name AND version
+            # second check unique(?) file hashes
+            cmp_hash = CycloneDxSupport.get_source_file_hash(component)
+            if (("SourceFileHash" in release)
+                    and cmp_hash
+                    and release["SourceFileHash"]):
+                if (cmp_hash.lower() == release["SourceFileHash"].lower()):
+                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
+                    continue
+
+            cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
+            if (("BinaryFileHash" in release)
+                and cmp_hash
+                    and release["BinaryFileHash"]):
+                if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
+                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
+                    continue
+
+            # third check: name AND version
             if (component.name and release.get("Name")):
                 if release["ComponentId"] in result_component_ids:
                     name_match = True
@@ -207,26 +224,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and version_exists and component.version
                         and (component.version.lower() == release["Version"].lower())):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
-                    break
+                    continue
             else:
                 name_match = False
-
-            # third check unique(?) file hashes
-            cmp_hash = CycloneDxSupport.get_source_file_hash(component)
-            if (("SourceFileHash" in release)
-                    and cmp_hash
-                    and release["SourceFileHash"]):
-                if (cmp_hash.lower() == release["SourceFileHash"].lower()):
-                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                    break
-
-            cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
-            if (("BinaryFileHash" in release)
-                and cmp_hash
-                    and release["BinaryFileHash"]):
-                if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
-                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                    break
 
             # fourth check: source filename
             cmp_src_file = CycloneDxSupport.get_ext_ref_source_file(component)
@@ -235,7 +235,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and release["SourceFile"]):
                 if cmp_src_file.lower() == release["SourceFile"].lower():
                     self.add_match_if_better(result, release, MapResult.MATCH_BY_FILENAME)
-                    break
+                    continue
 
             # fifth check: name and ANY version
             if name_match:
@@ -343,22 +343,14 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                     break
 
-                # second check: name AND version (we don't need to check the name
-                # again as we checked it when compiling component list)
-                version_exists = "Version" in release
-                if (version_exists
-                        and ((component.version or "").lower() == release.get("Version", "").lower())):
-                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
-                    break
-
-                # third check unique(?) file hashes
+                # second check unique(?) file hashes
                 cmp_hash = CycloneDxSupport.get_source_file_hash(component)
                 if (("SourceFileHash" in release)
                         and cmp_hash
                         and release["SourceFileHash"]):
                     if (cmp_hash.lower() == release["SourceFileHash"].lower()):
                         self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                        break
+                        continue
 
                 cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
                 if (("BinaryFileHash" in release)
@@ -366,7 +358,15 @@ class MapBom(capycli.common.script_base.ScriptBase):
                         and release["BinaryFileHash"]):
                     if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
                         self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                        break
+                        continue
+
+                # third check: name AND version (we don't need to check the name
+                # again as we checked it when compiling component list)
+                version_exists = "Version" in release
+                if (version_exists
+                        and ((component.version or "").lower() == release.get("Version", "").lower())):
+                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
+                    continue
 
                 # fifth check: name and ANY version
                 if self.no_match_by_name_only:
