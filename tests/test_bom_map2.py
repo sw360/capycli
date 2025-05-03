@@ -177,10 +177,12 @@ class CapycliTestBomMap(CapycliTestBase):
 
     @responses.activate
     def test_map_bom_item_mixed_match_similar(self) -> None:
+        """test mixed match with name match and similar name match"""
         bomitem = Component(
             name="mail-filter",
             version="1.4")
 
+        # first components with similar names, then the (better) name match
         self.app.releases = [{"Id": "1111", "ComponentId": "b001",
                               "Name": "mail_Filter", "Version": "1.1",
                               "ExternalIds": {}},
@@ -191,13 +193,20 @@ class CapycliTestBomMap(CapycliTestBase):
                               "Name": "Mail-Filter", "Version": "1.2",
                               "ExternalIds": {}}]
 
-        self.app.no_match_by_name_only = True
+        self.app.no_match_by_name_only = True  # default
         res = self.app.map_bom_item(bomitem, check_similar=True, result_required=False)
         assert res.result == MapResult.SIMILAR_COMPONENT_FOUND
         assert len(res.releases) == 2
 
-        # CaPyCli parameter --all set
-        self.app.no_match_by_name_only = False
+        self.app.no_match_by_name_only = False  # CaPyCli parameter --all set
+        res = self.app.map_bom_item(bomitem, check_similar=True, result_required=False)
+        assert res.result == MapResult.MATCH_BY_NAME
+        assert len(res.releases) == 1
+
+        # reverse order, now better match comes first
+        self.app.releases = self.app.releases[::-1]
+
+        self.app.no_match_by_name_only = False  # CaPyCli parameter --all set
         res = self.app.map_bom_item(bomitem, check_similar=True, result_required=False)
         assert res.result == MapResult.MATCH_BY_NAME
         assert len(res.releases) == 1
@@ -265,9 +274,15 @@ class CapycliTestBomMap(CapycliTestBase):
         responses.add(responses.GET, SW360_BASE_URL + 'releases/1112',
                       json=release_data2)
 
+        self.app.no_match_by_name_only = True  # default
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        # TODO see #118: assert len(res.releases) == 1
+        assert len(res.releases) == 1
+
+        self.app.no_match_by_name_only = False  # CaPyCli parameter --all set
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
 
         component_matches = {"_embedded": {"sw360:components": [
             {"name": "Mail",
@@ -719,7 +734,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 2 total purls" in out)
         self.assertTrue("Found component 678dstzd8 via purl" in out)
-        self.assertTrue("CLEAR (1-full-match-by-id)" in out)
         self.assertTrue("ADDED (1-full-match-by-id) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -933,7 +947,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 2 total purls" in out)
         self.assertTrue("Found component 678dstzd8 via purl" in out)
-        self.assertTrue("CLEAR (1-full-match-by-id)" in out)
         self.assertTrue("ADDED (1-full-match-by-id) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -1315,7 +1328,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (3-full-match-by-name-and-version)" in out)
         self.assertTrue("ADDED (3-full-match-by-name-and-version) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -1403,7 +1415,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
         self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -1491,7 +1502,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
         self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -1984,7 +1994,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (3-full-match-by-name-and-version)" in out)
         self.assertTrue("ADDED (3-full-match-by-name-and-version) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -2133,7 +2142,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
         self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -2282,7 +2290,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (2-full-match-by-hash)" in out)
         self.assertTrue("ADDED (2-full-match-by-hash) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -2431,7 +2438,6 @@ class CapycliTestBomMap(CapycliTestBase):
         self.assertTrue("1 component read from SBOM" in out)
         self.assertTrue("Retrieving package-url ids, filter: {'pypi'}" in out)
         self.assertTrue("Found 0 total purls" in out)
-        self.assertTrue("CLEAR (4-good-match-by-filename)" in out)
         self.assertTrue("ADDED (4-good-match-by-filename) 3765276512" in out)
         self.assertTrue("Full matches    = 1" in out)
 
@@ -2722,12 +2728,6 @@ class CapycliTestBomMap(CapycliTestBase):
         result = MapResult()
         release["MapResult"] = MapResult.NO_MATCH
         result.releases = [release]
-        val = sut.add_match_if_better(result, release, MapResult.NO_MATCH)
-        self.assertFalse(val)
-
-        result = MapResult()
-        release["MapResult"] = MapResult.NO_MATCH
-        result.releases = [release]
         val = sut.add_match_if_better(result, release, MapResult.SIMILAR_COMPONENT_FOUND)
         self.assertTrue(val)
 
@@ -2735,11 +2735,13 @@ class CapycliTestBomMap(CapycliTestBase):
         release["MapResult"] = MapResult.SIMILAR_COMPONENT_FOUND
         result.releases = [release]
         val = sut.add_match_if_better(result, release, MapResult.SIMILAR_COMPONENT_FOUND)
-        self.assertFalse(val)
+        self.assertTrue(val)
+        assert len(result.releases) == 2
 
         val = sut.add_match_if_better(result, release, MapResult.MATCH_BY_NAME)
         self.assertTrue(val)
 
+        result.releases = []
         release = {}
         release["MapResult"] = MapResult.MATCH_BY_NAME
         result.releases.append(release)
@@ -2754,7 +2756,7 @@ class CapycliTestBomMap(CapycliTestBase):
         result.releases.append(release)
 
         val = sut.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-        self.assertFalse(val)
+        self.assertTrue(val)
 
         val = sut.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
         self.assertTrue(val)

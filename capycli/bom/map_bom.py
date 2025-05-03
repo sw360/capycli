@@ -126,30 +126,33 @@ class MapBom(capycli.common.script_base.ScriptBase):
         return False
 
     def add_match_if_better(self, map_result: MapResult, release: Dict[str, Any], proposed_match_code: str) -> bool:
-        if not map_result.releases:
-            is_better_match = True
+        """adds `release` with `proposed_match_code` to `map_result` if it is as good or better than the existing ones.
 
+        :return: True if the match was added, False if it was ignored
+        :rtype: bool
+        """
         best_match = MapResult.NO_MATCH
         for rel in map_result.releases:
             if rel["MapResult"] < best_match:
                 best_match = rel["MapResult"]
 
-        if best_match > proposed_match_code:
-            is_better_match = True
-        else:
-            is_better_match = False
+        if proposed_match_code > best_match:
+            if self.verbosity > 1:
+                print("    IGNORE (" + proposed_match_code + ")")
+            return False
 
-        if is_better_match:
+        if proposed_match_code < best_match and map_result.releases:
             map_result.releases.clear()
             if self.verbosity > 1:
                 print("    CLEAR (" + proposed_match_code + ")")
-            map_result.result = proposed_match_code
+
+        map_result.result = proposed_match_code
 
         release["MapResult"] = proposed_match_code
         map_result.releases.append(release)
         if self.verbosity > 1:
             print("    ADDED (" + proposed_match_code + ") " + release["Sw360Id"])
-        return is_better_match
+        return True
 
     @staticmethod
     def is_good_match(match_code: str) -> bool:

@@ -12,6 +12,8 @@
 * improvements in pulling package-urls from SW360.
 * pyjwt update to >= 2.4.0 due to CVE-2022-29217.
 * CaPyCLI now supports color console output also when running in GitLab CI.
+* `bom map` fix: In few cases with --nocache, it added mixed matches to output
+  BOM, now we assure that only the best mapping results are added.
 
 ## 2.7.0
 
