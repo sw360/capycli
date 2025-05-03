@@ -48,6 +48,8 @@
 * CaPyCLI now supports color console output also when running in GitLab CI.
 * `bom map` fix: In few cases with --nocache, it added mixed matches to output
   BOM, now we assure that only the best mapping results are added.
+* `bom map` used to abort on the *first good match* in the cache or SW360 answer. Now it always
+  checks the full cache or answers so that output BOM contains *all the best matches*.
 * `project createbom` stores release relations (`CONTAINED`, `SIDE_BY_SIDE` etc.) as capycli:projectRelation
 * `project update`: optimized handling of release mainline state and release relation. Now states
   provided in the SBOM are used and slowdowns/crashes introduced in 2.7.0 (#121) fixed again.
