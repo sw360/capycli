@@ -23,7 +23,7 @@ informs about the mapping result:
 
 * **`INVALID` (0)** => Invalid SBOM entry, could not get processed
 * **`FULL_MATCH_BY_ID` (1)** => Full match by identifier
-* **`FULL_MATCH_BY_HASH` (2)** => Full match by source file hash
+* **`FULL_MATCH_BY_HASH` (2)** => Full match by source or binary file hash
 * **`FULL_MATCH_BY_NAME_AND_VERSION` (3)** => Full match by name and version
 * **`MATCH_BY_FILENAME` (4)** => Match by source code filename
 * **`GOOD_MATCH_FOUND`** == `MATCH_BY_FILENAME` => successfully found a sufficiently good match
@@ -31,7 +31,10 @@ informs about the mapping result:
 * **`SIMILAR_COMPONENT_FOUND` (6)** => Component with similar name found, no version check done
 * **`NO_MATCH` (100)** => Component was not found
 
-In general you can say that the lower the number, the better the match.
+We consider lower numbers as better matches. CaPyCli will always limit the
+mapping result to the best matches found, so if there's some match by ID, other
+matches are ignored; matches by (source or binary) file hash will win over
+matches by name and version etc.
 
 ## Notes on id mapping / PackageURL mapping
 
