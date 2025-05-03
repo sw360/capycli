@@ -8,6 +8,8 @@
 ## NEXT
 
 * `bom map`: The options `--dbx` and `-all` were replaced by `--matchmode`.
+* `bom map --matchmode full-search` allows full search for the best possible
+  matches and report all of them, see the discussion in `Readme_Mapping.md`.
 
 ## 2.9.1
 

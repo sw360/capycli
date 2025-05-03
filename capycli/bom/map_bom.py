@@ -58,6 +58,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         self.mode = MapMode.ALL
         self.purl_service: Optional[PurlService] = None
         self.no_match_by_name_only = True
+        self.full_search = False
 
     def is_id_match(self, release: Dict[str, Any], component: Component) -> bool:
         """Determines whether this release is a match via identifier for the specified SBOM item"""
@@ -196,7 +197,30 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                 break
 
-            # second check: name AND version
+            # second check unique(?) file hashes
+            cmp_hash = CycloneDxSupport.get_source_file_hash(component)
+            if (("SourceFileHash" in release)
+                    and cmp_hash
+                    and release["SourceFileHash"]):
+                if (cmp_hash.lower() == release["SourceFileHash"].lower()):
+                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
+                    if self.full_search:
+                        continue
+                    else:
+                        break
+
+            cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
+            if (("BinaryFileHash" in release)
+                and cmp_hash
+                    and release["BinaryFileHash"]):
+                if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
+                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
+                    if self.full_search:
+                        continue
+                    else:
+                        break
+
+            # third check: name AND version
             if (component.name and release.get("Name")):
                 if release["ComponentId"] in result_component_ids:
                     name_match = True
@@ -207,26 +231,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and version_exists and component.version
                         and (component.version.lower() == release["Version"].lower())):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
-                    break
+                    if self.full_search:
+                        continue
+                    else:
+                        break
             else:
                 name_match = False
-
-            # third check unique(?) file hashes
-            cmp_hash = CycloneDxSupport.get_source_file_hash(component)
-            if (("SourceFileHash" in release)
-                    and cmp_hash
-                    and release["SourceFileHash"]):
-                if (cmp_hash.lower() == release["SourceFileHash"].lower()):
-                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                    break
-
-            cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
-            if (("BinaryFileHash" in release)
-                and cmp_hash
-                    and release["BinaryFileHash"]):
-                if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
-                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                    break
 
             # fourth check: source filename
             cmp_src_file = CycloneDxSupport.get_ext_ref_source_file(component)
@@ -235,7 +245,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and release["SourceFile"]):
                 if cmp_src_file.lower() == release["SourceFile"].lower():
                     self.add_match_if_better(result, release, MapResult.MATCH_BY_FILENAME)
-                    break
+                    if self.full_search:
+                        continue
+                    else:
+                        break
 
             # fifth check: name and ANY version
             if name_match:
@@ -343,22 +356,17 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                     break
 
-                # second check: name AND version (we don't need to check the name
-                # again as we checked it when compiling component list)
-                version_exists = "Version" in release
-                if (version_exists
-                        and ((component.version or "").lower() == release.get("Version", "").lower())):
-                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
-                    break
-
-                # third check unique(?) file hashes
+                # second check unique(?) file hashes
                 cmp_hash = CycloneDxSupport.get_source_file_hash(component)
                 if (("SourceFileHash" in release)
                         and cmp_hash
                         and release["SourceFileHash"]):
                     if (cmp_hash.lower() == release["SourceFileHash"].lower()):
                         self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                        break
+                        if self.full_search:
+                            continue
+                        else:
+                            break
 
                 cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
                 if (("BinaryFileHash" in release)
@@ -366,6 +374,20 @@ class MapBom(capycli.common.script_base.ScriptBase):
                         and release["BinaryFileHash"]):
                     if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
                         self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
+                        if self.full_search:
+                            continue
+                        else:
+                            break
+
+                # third check: name AND version (we don't need to check the name
+                # again as we checked it when compiling component list)
+                version_exists = "Version" in release
+                if (version_exists
+                        and ((component.version or "").lower() == release.get("Version", "").lower())):
+                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
+                    if self.full_search:
+                        continue
+                    else:
                         break
 
                 # fifth check: name and ANY version
@@ -816,6 +838,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         print("                          found = resulting SBOM shows only components that were found")
         print("                          notfound = resulting SBOM shows only components that were not found")
         print("    --matchmode MATCHMODE matching mode, comma separated list of:")
+        print("                          full-search = report best matches, don't abort on first match (recommended)")
         print("                          all-versions = also report matches for name, but different version")
         print("                          ignore-debian = ignore Debian revision in version comparison, so SBOM")
         print("                                          version 3.1 will match SW360 version 3.1-3.debian")
@@ -852,6 +875,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
         if args.verbose:
             self.verbosity = 2
 
+        if not args.matchmode:
+            args.matchmode = ""
+
         if "ignore-debian" in args.matchmode or args.dbx:
             if args.dbx:
                 print_yellow("bom map --dbx is deprecated, use --matchmode ignore-debian instead")
@@ -865,6 +891,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
             if args.all:
                 print_yellow("bom map -all is deprecated, use --matchmode all-versions instead")
             self.no_match_by_name_only = False
+
+        if "full-search" in args.matchmode:
+            self.full_search = True
 
         print_text("Loading SBOM file", args.inputfile)
         try:

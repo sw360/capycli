@@ -11,7 +11,7 @@ import unittest
 from typing import Any, Dict
 
 import responses
-from cyclonedx.model import ExternalReferenceType, XsUri
+from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri, HashType, HashAlgorithm
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -289,6 +289,70 @@ class CapycliTestBomMap(unittest.TestCase):
         assert len(res.releases) == 2
 
     @responses.activate
+    def test_map_bom_item_mixed_good_matches(self) -> None:
+        bomitem = Component(
+            name="mail",
+            version="1.4",
+            external_references=[ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                url=XsUri("file:mail-1.4.tar.gz"))])
+
+        self.app.releases = [{"Id": "1111", "ComponentId": "b001",
+                              "Name": "mail (Python)", "Version": "1.4",
+                              "SourceFile": "file:mail-1.4.tar.gz",
+                              "ExternalIds": {}},
+                             {"Id": "1112", "ComponentId": "b002",
+                              "Name": "Mail", "Version": "1.4",
+                              "ExternalIds": {}}]
+
+        self.app.full_search = True
+
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+        self.app.releases = self.app.releases[::-1]  # reverse order
+
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+    @responses.activate
+    def test_map_bom_item_multiple_equal_good_matches(self) -> None:
+        bomitem = Component(
+            name="mail",
+            version="1.4",
+            external_references=[ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                url=XsUri("file:mail-1.4.tar.gz"))])
+
+        self.app.releases = [{"Id": "1111", "ComponentId": "b001",
+                              "Name": "mail", "Version": "1.4",
+                              "SourceFile": "file:mail-1.4.tar.gz",
+                              "ExternalIds": {}},
+                             {"Id": "1112", "ComponentId": "b002",
+                              "Name": "Mail", "Version": "1.4",
+                              "ExternalIds": {}}]
+
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+        self.app.full_search = True
+
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 2
+
+        self.app.releases = self.app.releases[::-1]  # reverse order
+
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 2
+
+    @responses.activate
     def test_map_bom_item_mixed_match_similar(self) -> None:
         """test mixed match with name match and similar name match"""
         bomitem = Component(
@@ -407,6 +471,173 @@ class CapycliTestBomMap(unittest.TestCase):
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
         assert len(res.releases) == 1
+
+    @responses.activate
+    def test_map_bom_item_nocache_mixed_good_matches(self) -> None:
+        """Test mixed match with two good matches (version match and source file match)"""
+
+        bomitem = Component(
+            name="mail", version="1.4", external_references=[ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                url=XsUri("file:mail-1.4.tar.gz"),
+                hashes=[HashType(alg=HashAlgorithm.SHA_1,
+                                 content="0c9ab87312fa065a06bd68b050671c1d290b9559")])])
+
+        component_matches = {"_embedded": {"sw360:components": [
+            {"name": "mail",
+             "_links": {"self": {"href": SW360_BASE_URL + 'components/b001'}}},
+            {"name": "Mail",
+             "_links": {"self": {"href": SW360_BASE_URL + 'components/b002'}}}]}}
+        component_data1 = {"_embedded": {"sw360:releases": [{
+            "_links": {"self": {"href": SW360_BASE_URL + 'releases/1111'}}}]}}
+        component_data2 = {"_embedded": {"sw360:releases": [{
+            "_links": {"self": {"href": SW360_BASE_URL + 'releases/1112'}}}]}}
+        release_data1 = {
+            "name": "mail", "version": "1.4_pypi",
+            "_links": {
+                "self": {"href": SW360_BASE_URL + 'releases/1111'},
+                "sw360:component": {"href": SW360_BASE_URL + "components/b001"}},
+            "_embedded": {'sw360:attachments': [
+                {'filename': 'mail-1.4.tar.gz', 'sha1': '0c9ab87312fa065a06bd68b050671c1d290b9559',
+                 'attachmentType': 'SOURCE',
+                 '_links': {'self': {'href': SW360_BASE_URL + 'attachments/6f1e'}}}]}}
+        release_data2 = {"name": "Mail", "version": "1.4", "_links": {
+            "self": {"href": SW360_BASE_URL + 'releases/1112'},
+            "sw360:component": {"href": SW360_BASE_URL + "components/b002"}}}
+
+        # release matches in two components
+        responses.add(responses.GET, SW360_BASE_URL + 'components?name=mail',
+                      json=component_matches)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/b001',
+                      json=component_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/b002',
+                      json=component_data2)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1111',
+                      json=release_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1112',
+                      json=release_data2)
+
+        self.app.full_search = True
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+        # reverse component order
+        component_matches["_embedded"]["sw360:components"] = component_matches["_embedded"]["sw360:components"][::-1]
+        responses.add(responses.GET, SW360_BASE_URL + 'components?name=mail',
+                      json=component_matches)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+        # release matches in one component
+        component_data1["_embedded"]["sw360:releases"] += component_data2["_embedded"]["sw360:releases"]
+        component_data2["_embedded"]["sw360:releases"] = []
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b001', json=component_data1)
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b002', json=component_data2)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+        # reverse release order
+        component_data1["_embedded"]["sw360:releases"] = component_data1["_embedded"]["sw360:releases"][::-1]
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b001', json=component_data1)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+    @responses.activate
+    def test_map_bom_item_nocache_multiple_equal_good_matches(self) -> None:
+        """Test mixed match with two good matches (version match and source file match)"""
+
+        bomitem = Component(
+            name="mail", version="1.4", external_references=[ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                url=XsUri("file:mail-1.4.tar.gz"),
+                hashes=[HashType(alg=HashAlgorithm.SHA_1,
+                                 content="0c9ab87312fa065a06bd68b050671c1d290b9559")])])
+
+        component_matches = {"_embedded": {"sw360:components": [
+            {"name": "mail",
+             "_links": {"self": {"href": SW360_BASE_URL + 'components/b001'}}},
+            {"name": "Mail",
+             "_links": {"self": {"href": SW360_BASE_URL + 'components/b002'}}}]}}
+        component_data1 = {"_embedded": {"sw360:releases": [{
+            "_links": {"self": {"href": SW360_BASE_URL + 'releases/1111'}}}]}}
+        component_data2 = {"_embedded": {"sw360:releases": [{
+            "_links": {"self": {"href": SW360_BASE_URL + 'releases/1112'}}}]}}
+        release_data1 = {
+            "name": "mail", "version": "1.4",
+            "_links": {
+                "self": {"href": SW360_BASE_URL + 'releases/1111'},
+                "sw360:component": {"href": SW360_BASE_URL + "components/b001"}},
+            "_embedded": {'sw360:attachments': [
+                {'filename': 'mail-1.4.tar.gz', 'sha1': '0c9ab87312fa065a06bd68b050671c1d290b9559',
+                 'attachmentType': 'SOURCE',
+                 '_links': {'self': {'href': SW360_BASE_URL + 'attachments/6f1e'}}}]}}
+        release_data2 = {"name": "Mail", "version": "1.4", "_links": {
+            "self": {"href": SW360_BASE_URL + 'releases/1112'},
+            "sw360:component": {"href": SW360_BASE_URL + "components/b002"}},
+            "_embedded": {'sw360:attachments': [
+                {'filename': 'Mail_1.4.tar.gz', 'sha1': '0c9ab87312fa065a06bd68b050671c1d290b9559',
+                 'attachmentType': 'SOURCE',
+                 '_links': {'self': {'href': SW360_BASE_URL + 'attachments/aa2b'}}}]}
+        }
+
+        # release matches in two components
+        responses.add(responses.GET, SW360_BASE_URL + 'components?name=mail',
+                      json=component_matches)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/b001',
+                      json=component_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/b002',
+                      json=component_data2)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1111',
+                      json=release_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1112',
+                      json=release_data2)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 2
+
+        # reverse component order
+        component_matches["_embedded"]["sw360:components"] = component_matches["_embedded"]["sw360:components"][::-1]
+        responses.add(responses.GET, SW360_BASE_URL + 'components?name=mail',
+                      json=component_matches)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 2
+
+        # release matches in one component
+        component_data1["_embedded"]["sw360:releases"] += component_data2["_embedded"]["sw360:releases"]
+        component_data2["_embedded"]["sw360:releases"] = []
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b001', json=component_data1)
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b002', json=component_data2)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+        self.app.full_search = True
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 2
+
+        # reverse release order
+        component_data1["_embedded"]["sw360:releases"] = component_data1["_embedded"]["sw360:releases"][::-1]
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b001', json=component_data1)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 2
 
     @responses.activate
     def test_map_bom_item_nocache_invalid_version(self) -> None:
