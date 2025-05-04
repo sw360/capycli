@@ -199,18 +199,41 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             return
 
         if "info" in meta:
-            homepage = meta["info"].get("home_page", "")
+            homepage: str = ""
+            project_urls = meta["info"].get("project_urls", {})
+            if project_urls:
+                # there can be multiple entries, for wheel, source, etc.
+                for key in project_urls:
+                    if key.lower() == "github":
+                        homepage = project_urls[key]
+                        LOG.debug("  got GitHub homepage")
+                        break
+                    if key.lower() == "homepage":
+                        homepage = project_urls[key]
+                        LOG.debug("  got homepage")
+                        break
+                    if key.lower() == "code":
+                        homepage = project_urls[key]
+                        LOG.debug("  got (code) homepage")
+                        break
+
+            if not homepage:
+                homepage = meta["info"].get("home_page", "")
+                LOG.debug("  got website/homepage")
+
             if homepage:
                 ext_ref = ExternalReference(
                     type=ExternalReferenceType.WEBSITE,
                     url=XsUri(homepage))
-                LOG.debug("  got website/homepage")
                 cxcomp.external_references.add(ext_ref)
 
-            data = meta["info"].get("license", "")
-            if data:
+            license = meta["info"].get("license", "")
+            if not license:
+                license = meta["info"].get("license_expression", "")
+
+            if license:
                 license_factory = LicenseFactory()
-                cxcomp.licenses.add(license_factory.make_with_name(data))
+                cxcomp.licenses.add(license_factory.make_with_name(license))
                 LOG.debug("  got license")
 
             data = meta["info"].get("summary", "")
@@ -524,6 +547,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             print_text("\nChecking meta-data:")
 
         result = True
+        cxcomp: Component
         for cxcomp in sbom.components:
             if self.verbose:
                 print_text(f"  {cxcomp.name}, {cxcomp.version}")
@@ -538,6 +562,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 result = False
                 if self.verbose:
                     print_yellow("    Homepage missing")
+
+            if not cxcomp.licenses:
+                if self.verbose:
+                    LOG.debug("    License missing")
+            elif len(cxcomp.licenses) == 0:
+                if self.verbose:
+                    LOG.debug("    License missing")
 
             src_url = CycloneDxSupport.get_ext_ref_source_url(cxcomp)
             if not src_url:
