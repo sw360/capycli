@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2022-2024 Siemens
+# Copyright (c) 2022-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -20,6 +20,7 @@ import capycli.common.json_support
 import capycli.common.script_base
 from capycli.bom.findsources import FindSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
+from capycli.common.github_support import GitHubSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
 
@@ -260,7 +261,7 @@ class TestFindSources(TestBase):
         else:
             return []
 
-    @patch('capycli.bom.findsources.FindSources.github_request')
+    @patch('capycli.common.github_support.GitHubSupport.github_request')
     def test_find_sources(self, mock_github_request: Any) -> None:
         sut = FindSources()
 
@@ -332,37 +333,6 @@ class TestFindSources(TestBase):
             str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[7])))
 
         self.delete_file(args.outputfile)
-
-    def test_get_repo_name(self) -> None:
-        # simple
-        repo = "https://github.com/JamesNK/Newtonsoft.Json"
-        actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
-
-        self.assertEqual("JamesNK/Newtonsoft.Json", actual)
-
-        # trailing .git
-        repo = "https://github.com/restsharp/RestSharp.git"
-        actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
-
-        self.assertEqual("restsharp/RestSharp", actual)
-
-        # trailing #readme
-        repo = "https://github.com/restsharp/RestSharp#readme"
-        actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
-
-        self.assertEqual("restsharp/RestSharp", actual)
-
-        # prefix git
-        repo = "git://github.com/restsharp/RestSharp#readme"
-        actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
-
-        self.assertEqual("restsharp/RestSharp", actual)
-
-        # prefix git+https
-        repo = "git+https://github.com/restsharp/RestSharp#readme"
-        actual = capycli.bom.findsources.FindSources.get_repo_name(repo)
-
-        self.assertEqual("restsharp/RestSharp", actual)
 
     def test_normalize_version(self) -> None:
         sut = FindSources()
@@ -555,7 +525,7 @@ class TestFindSources(TestBase):
         mock_client.get_release.assert_called_once_with(mock_release_id)
 
     @patch('capycli.bom.findsources.FindSources.get_pkg_go_repo_url')
-    @patch('capycli.bom.findsources.FindSources.github_request')
+    @patch('capycli.common.github_support.GitHubSupport.github_request')
     def test_get_matching_source_url(self,
                                      mock_github_request: Any,
                                      mock_get_pkg_go_repo_url: Any,
@@ -765,7 +735,7 @@ class TestFindSources(TestBase):
 
     @_recorder.record(file_path='unauthenticated_github_request.yml')  # type: ignore
     def create_recording_for_test_github_request(self) -> None:
-        out = FindSources()  # Object Under Test
+        out = GitHubSupport()  # Object Under Test
 
         # not an API endpoint, does not return json payload
         kwargs = {'url': 'https://github.com',
@@ -843,7 +813,7 @@ class TestFindSources(TestBase):
 
     @responses.activate
     def test_github_request_unauthenticated(self) -> None:
-        out = FindSources()  # Object Under Test
+        out = GitHubSupport()  # Object Under Test
         responses._add_from_file(file_path='tests/fixtures/unauthenticated_github_request.yml')
         # not an API endpoint, does not return json payload
         kwargs = {'url': 'https://github.com',
@@ -910,7 +880,7 @@ class TestFindSources(TestBase):
 
     @responses.activate
     def test_github_request_authenticated(self) -> None:
-        out = FindSources()  # Object Under Test
+        out = GitHubSupport()  # Object Under Test
         responses._add_from_file(file_path='tests/fixtures/authenticated_github_request.yml')
         # not an API endpoint, does not return json payload
         kwargs = {'url': 'https://github.com',

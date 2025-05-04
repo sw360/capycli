@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2024 Siemens
+# Copyright (c) 2023-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, felix.hirschel@siemens.com
 #
@@ -29,6 +29,7 @@ from sw360 import SW360Error
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
+from capycli.common.github_support import GitHubSupport
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -117,91 +118,6 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         return False
 
-    @staticmethod
-    def github_request(url: str, username: str = "", token: str = "",
-                       return_response: bool = False,
-                       allow_redirects: bool = True,  # default in requests
-                       ) -> Any:
-        try:
-            headers = {}
-            if token:
-                headers["Authorization"] = "token " + token
-            if username:
-                headers["Username"] = username
-            response = requests.get(url, headers=headers,
-                                    allow_redirects=allow_redirects)
-            if response.status_code == 429 \
-                    or 'rate limit exceeded' in response.reason \
-                    or 'API rate limit exceeded' in response.json().get('message', ''):
-                print(
-                    Fore.LIGHTYELLOW_EX +
-                    "      Github API rate limit exceeded - wait 60s and retry ... " +
-                    Style.RESET_ALL)
-                time.sleep(60)
-                return FindSources.github_request(url, username, token, return_response=return_response)
-            if response.json().get('message', '').startswith("Bad credentials"):
-                print_red("Invalid GitHub credential provided - aborting!")
-                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
-
-        except AttributeError as err:
-            # response.json() did not return a dictionary
-            if hasattr(err, 'name'):
-                name = err.name
-            else:  # Python prior to 3.10
-                name = err.args[0].split("'")[3]
-            if not name == 'get':
-                raise
-
-        except requests.exceptions.JSONDecodeError:
-            response._content = b'{}'
-
-        except requests.exceptions.ConnectionError as ex:
-            print(
-                Fore.LIGHTYELLOW_EX +
-                f"      Connection issues accessing {url} " + repr(ex) +
-                "\n      Retrying in 60 seconds!" +
-                Style.RESET_ALL)
-            time.sleep(60)
-            return FindSources.github_request(url, username, token, return_response=return_response)
-
-        except Exception as ex:
-            print(
-                Fore.LIGHTYELLOW_EX +
-                "      Error accessing GitHub: " + repr(ex) +
-                Style.RESET_ALL)
-            response = requests.Response()
-            response._content = \
-                b'{' + f'"exception": "{repr(ex)}"'.encode() + b'}'
-        return response if return_response else response.json()
-
-    @staticmethod
-    def get_repositories(name: str, language: str, username: str = "", token: str = "") -> Any:
-        """Query for GitHub repositories"""
-        query = name + " language:" + language.lower()
-        search_url = "https://api.github.com/search/repositories?q=" + query
-        return FindSources.github_request(search_url, username, token)
-
-    @staticmethod
-    def get_repo_name(github_url: str) -> str:
-        """Extract the GitHub repo name from the specified URL."""
-        git = "github.com/"
-        url = github_url.replace(".git", "").replace("#readme", "")[github_url.find(git) + len(git):]
-        split = url.split("/")
-
-        if len(split) > 0:
-            if len(split) > 1:
-                repo_name = split[0] + "/" + split[1]
-            else:
-                repo_name = split[0]
-        else:
-            print(
-                Fore.LIGHTYELLOW_EX +
-                "      Error getting repo name from: " + github_url +
-                Style.RESET_ALL)
-            return ""
-
-        return repo_name
-
     if not sys.version_info < (3, 10):
         get_github_info_type = List[Dict[str, Any]] | Dict[str, Any]
     else:
@@ -245,7 +161,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
         url = 'https://' + url.replace('//', '/')
         repo = {}
         while 'tags_url' not in repo and 'github.com' in url:
-            repo = self.github_request(url, self.github_name, self.github_token)
+            repo = GitHubSupport.github_request(url, self.github_name, self.github_token)
             url = url.rsplit('/', 1)[0]  # remove last path segment
         if 'tags_url' not in repo:
             raise ValueError(f"Unable to make @github_ref {github_ref} work!")
@@ -284,8 +200,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
         tags_url = repo['tags_url'] + '?per_page=100'
         git_refs_url_tpl = repo['git_refs_url'].replace('{/sha}', '{sha}', 1)
 
-        res = self.github_request(tags_url, self.github_name,
-                                  self.github_token, return_response=True)
+        res = GitHubSupport.github_request(tags_url, self.github_name,
+                                           self.github_token, return_response=True)
         pages = self._get_link_page(res, 'last')
         for _ in range(pages):  # we prefer this over "while True"
             # note: in res.json() we already have the first results page
@@ -310,8 +226,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
             for prefix in new_prefixes:
                 url = git_refs_url_tpl.format(sha=f'/tags/{prefix}')
-                w_prefix = self.github_request(url, self.github_name,
-                                               self.github_token)
+                w_prefix = GitHubSupport.github_request(url, self.github_name,
+                                                        self.github_token)
                 if isinstance(w_prefix, dict):  # exact match
                     w_prefix = [w_prefix]
 
@@ -331,8 +247,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
                     return source_url    # the correct source_url
             try:
                 url = res.links['next']['url']
-                res = self.github_request(url, self.github_name,
-                                          self.github_token, return_response=True)
+                res = GitHubSupport.github_request(url, self.github_name,
+                                                   self.github_token, return_response=True)
             except KeyError:  # no more result pages
                 break
         print_yellow("      No matching tag for version " + version + " found")
@@ -364,7 +280,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 language = val.value
         if not use_language:
             language = ""
-        repositories = self.get_repositories(
+        repositories = GitHubSupport.get_repositories(
             component_name, language,
             self.github_name, self.github_token)
         if not repositories or repositories.get("total_count", 0) == 0:
@@ -457,7 +373,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 print_red("      This is no GitHub URL!")
                 return ""
 
-        repo_name = self.get_repo_name(github_url)
+        repo_name = GitHubSupport.get_repo_name(github_url)
 
         if self.verbose:
             print_text("      repo_name:", repo_name)
