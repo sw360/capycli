@@ -29,9 +29,9 @@ import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator, SbomWriter
+from capycli.common.github_support import GitHubSupport
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
-from capycli.common.github_support import GitHubSupport
 
 LOG = get_logger(__name__)
 
@@ -265,9 +265,6 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                     type=ExternalReferenceType.WEBSITE,
                     url=XsUri(homepage))
                 cxcomp.external_references.add(ext_ref)
-
-            if cxcomp.name == "tomli":
-                LOG.debug("  XXX")
 
             license = meta["info"].get("license", "")
             if not license:
