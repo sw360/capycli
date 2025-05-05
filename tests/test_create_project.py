@@ -461,14 +461,11 @@ class TestCreateProject(TestBase):
                 "veraion": "1.9.0",
                 "businessUnit": "SI",
                 "description": "CaPyCLI",
-                "linkedReleases": {
-                    "a5cae39f39db4e2587a7d760f59ce3d0": {
-                        "mainlineState": "SPECIFIC",
-                        "releaseRelation": "DYNAMICALLY_LINKED",
-                        "setMainlineState": True,
-                        "setReleaseRelation": True
-                    }
-                },
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "DYNAMICALLY_LINKED",
+                }],
                 "_links": {
                     "self": {
                         "href": self.MYURL + "resource/api/projects/007"
@@ -504,14 +501,11 @@ class TestCreateProject(TestBase):
                 "veraion": "1.9.0",
                 "businessUnit": "SI",
                 "description": "CaPyCLI",
-                "linkedReleases": {
-                    "a5cae39f39db4e2587a7d760f59ce3d0": {
-                        "mainlineState": "SPECIFIC",
-                        "releaseRelation": "DYNAMICALLY_LINKED",
-                        "setMainlineState": True,
-                        "setReleaseRelation": True
-                    }
-                },
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "DYNAMICALLY_LINKED",
+                }],
                 "_links": {
                     "self": {
                         "href": self.MYURL + "resource/api/projects/007"
@@ -628,14 +622,11 @@ class TestCreateProject(TestBase):
                 "veraion": "1.9.0",
                 "businessUnit": "SI",
                 "description": "CaPyCLI",
-                "linkedReleases": {
-                    "a5cae39f39db4e2587a7d760f59ce3d0": {
-                        "mainlineState": "SPECIFIC",
-                        "releaseRelation": "DYNAMICALLY_LINKED",
-                        "setMainlineState": True,
-                        "setReleaseRelation": True
-                    }
-                },
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "DYNAMICALLY_LINKED",
+                }],
                 "_links": {
                     "self": {
                         "href": self.MYURL + "resource/api/projects/007"
@@ -671,14 +662,11 @@ class TestCreateProject(TestBase):
                 "veraion": "1.9.0",
                 "businessUnit": "SI",
                 "description": "CaPyCLI",
-                "linkedReleases": {
-                    "a5cae39f39db4e2587a7d760f59ce3d0": {
-                        "mainlineState": "SPECIFIC",
-                        "releaseRelation": "DYNAMICALLY_LINKED",
-                        "setMainlineState": True,
-                        "setReleaseRelation": True
-                    }
-                },
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "DYNAMICALLY_LINKED",
+                }],
                 "_links": {
                     "self": {
                         "href": self.MYURL + "resource/api/projects/007"
@@ -780,14 +768,11 @@ class TestCreateProject(TestBase):
                 "veraion": "1.9.9",
                 "businessUnit": "SI",
                 "description": "CaPyCLI",
-                "linkedReleases": {
-                    "a5cae39f39db4e2587a7d760f59ce3d0": {
-                        "mainlineState": "SPECIFIC",
-                        "releaseRelation": "DYNAMICALLY_LINKED",
-                        "setMainlineState": True,
-                        "setReleaseRelation": True
-                    }
-                },
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "DYNAMICALLY_LINKED",
+                }],
                 "_links": {
                     "self": {
                         "href": self.MYURL + "resource/api/projects/008"
@@ -823,14 +808,11 @@ class TestCreateProject(TestBase):
                 "veraion": "1.9.0",
                 "businessUnit": "SI",
                 "description": "CaPyCLI",
-                "linkedReleases": {
-                    "a5cae39f39db4e2587a7d760f59ce3d0": {
-                        "mainlineState": "SPECIFIC",
-                        "releaseRelation": "DYNAMICALLY_LINKED",
-                        "setMainlineState": True,
-                        "setReleaseRelation": True
-                    }
-                },
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "DYNAMICALLY_LINKED",
+                }],
                 "_links": {
                     "self": {
                         "href": self.MYURL + "resource/api/projects/007"
