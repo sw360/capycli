@@ -46,7 +46,7 @@ class MapResult:
     NO_MATCH = "9-no-match"
 
     def __init__(self, component: Optional[Component] = None) -> None:
-        self.component: Optional[Component] = component
+        self.input_component: Optional[Component] = component
         self.result: str = MapResult.NO_MATCH
         self._component_id: str = ""
         self._release_id: str = ""
@@ -59,8 +59,8 @@ class MapResult:
     @component_id.setter
     def component_id(self, value: str) -> None:
         self._component_id = value
-        if self.component:
-            CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_COMPONENT_ID, value)
+        if self.input_component:
+            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID, value)
 
     @property
     def release_id(self) -> str:
@@ -69,8 +69,8 @@ class MapResult:
     @release_id.setter
     def release_id(self, value: str) -> None:
         self._release_id = value
-        if self.component:
-            CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_SW360ID, value)
+        if self.input_component:
+            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_SW360ID, value)
 
     @classmethod
     def map_code_to_string(cls, map_code: str) -> str:
@@ -109,7 +109,7 @@ class MapResult:
                 + more
             )
 
-        if not self.component:
+        if not self.input_component:
             return (
                 self.map_code_to_string(self.result)
                 + ", (no component), "
@@ -119,9 +119,9 @@ class MapResult:
             return (
                 self.map_code_to_string(self.result)
                 + ", "
-                + str(self.component.name)
+                + str(self.input_component.name)
                 + ", "
-                + str(self.component.version or "")
+                + str(self.input_component.version or "")
                 + " "
                 + str(rel)
             )

@@ -446,8 +446,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 continue
 
             dataitem: Dict[str, Any] = {}
-            if item.component:
-                dataitem["BomItem"] = item.component.name + ", " + (item.component.version or "")
+            if item.input_component:
+                dataitem["BomItem"] = item.input_component.name + ", " + (item.input_component.version or "")
             dataitem["ResultCode"] = item.result
             dataitem["ResultText"] = item.map_code_to_string(item.result)
             dataitems.append(dataitem)
@@ -632,11 +632,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     newbom.register_dependency(newbom.metadata.component, [newitem])
             elif (item.result == MapResult.NO_MATCH
                   or not self.is_good_match(item.result)):
+                # if we have no good match, add the component we're looking for as well
 
                 if (self.mode == MapMode.FOUND):
                     continue
 
-                newitem = item.component
+                newitem = item.input_component
                 if newitem:
                     CycloneDxSupport.update_or_set_property(
                         newitem,
@@ -657,7 +658,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
             for match_item in item.releases:
                 if self.is_good_match(match_item["MapResult"]):
-                    newitem = self.update_bom_item(item.component, match_item)
+                    # For good matches, merge the input component with the match item
+                    newitem = self.update_bom_item(item.input_component, match_item)
                 else:
                     # newitem = match_item
                     newitem = self.update_bom_item(None, match_item)
@@ -680,15 +682,15 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         for item in result:
             single_result: Dict[str, Any] = {}
-            if not item.component:
+            if not item.input_component:
                 continue
 
-            for prop in item.component.properties:
+            for prop in item.input_component.properties:
                 if prop.name == CycloneDxSupport.CDX_PROP_MAPRESULT:
-                    item.component.properties.remove(prop)
+                    item.input_component.properties.remove(prop)
                     break
 
-            single_result["BomItem"] = LegacySupport.cdx_component_to_legacy(item.component)
+            single_result["BomItem"] = LegacySupport.cdx_component_to_legacy(item.input_component)
             single_result["Result"] = item.result
             single_result["Matches"] = []
             for item_match in item.releases:
