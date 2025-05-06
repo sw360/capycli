@@ -48,27 +48,29 @@ class MapResult:
     def __init__(self, component: Optional[Component] = None) -> None:
         self.input_component: Optional[Component] = component
         self.result: str = MapResult.NO_MATCH
-        self._component_id: str = ""
-        self._release_id: str = ""
+        self._component_href: str = ""
+        self._release_href: str = ""
         self.releases: List[Any] = []
 
     @property
-    def component_id(self) -> str:
-        return self._component_id
+    def component_href(self) -> str:
+        return self._component_href
 
-    @component_id.setter
-    def component_id(self, value: str) -> None:
-        self._component_id = value
+    @component_href.setter
+    def component_href(self, value: str) -> None:
+        self._component_href = value
+        value = value.split("/")[-1]
         if self.input_component:
             CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID, value)
 
     @property
-    def release_id(self) -> str:
-        return self._release_id
+    def release_href(self) -> str:
+        return self._release_href
 
-    @release_id.setter
-    def release_id(self, value: str) -> None:
-        self._release_id = value
+    @release_href.setter
+    def release_href(self, value: str) -> None:
+        self._release_href = value
+        value = value.split("/")[-1]
         if self.input_component:
             CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_SW360ID, value)
 

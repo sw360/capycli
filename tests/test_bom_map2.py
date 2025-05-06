@@ -67,7 +67,7 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
@@ -78,14 +78,14 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.NO_MATCH
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert len(res.releases) == 0
 
         # enable name matching
         self.app.no_match_by_name_only = False
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.MATCH_BY_NAME
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["ComponentId"] == "a035"
         assert len(res.releases) == 1
 
@@ -116,7 +116,7 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.FULL_MATCH_BY_ID
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
@@ -360,7 +360,7 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
@@ -370,14 +370,14 @@ class CapycliTestBomMap(CapycliTestBase):
             purl=PackageURL.from_string("pkg:deb/debian/sed@1.1?type=source"))
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.NO_MATCH
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert len(res.releases) == 0
 
         # enable name matching
         self.app.no_match_by_name_only = False
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.MATCH_BY_NAME
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["ComponentId"] == "a035"
         assert len(res.releases) == 1
 
@@ -416,7 +416,7 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        assert res.component_id == ""
+        assert res.component_href == ""
         assert res.releases[0]["Sw360Id"] == "1235"
         assert res.releases[0]["ComponentId"] == "a034"
 
@@ -449,7 +449,7 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_ID
-        assert res.component_id == "a035"
+        assert res.component_href == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
@@ -460,7 +460,7 @@ class CapycliTestBomMap(CapycliTestBase):
         res = MapResult()
         res.input_component = Component(name="sed", version="1.1")
         res.result = MapResult.MATCH_BY_NAME
-        res.component_id = "a035"
+        res.component_href = SW360_BASE_URL + "components/a035"
         res.releases = [{'Name': 'sed', 'Version': '1.0',
                          'Id': '1234', 'MapResult': MapResult.MATCH_BY_NAME}]
         oldbom = Bom()
@@ -483,7 +483,7 @@ class CapycliTestBomMap(CapycliTestBase):
         assert prop == "a035"
 
         res.result = MapResult.NO_MATCH
-        res.component_id = "a035"
+        res.component_href = SW360_BASE_URL + "components/a035"
         res.releases = []
         newbom = self.app.create_updated_bom(oldbom, [res])
         prop = CycloneDxSupport.get_property_value(newbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)

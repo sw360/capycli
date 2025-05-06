@@ -14,7 +14,7 @@ import re
 import sys
 import urllib
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
@@ -183,24 +183,22 @@ class MapBom(capycli.common.script_base.ScriptBase):
     def map_bom_item(self, component: Component, check_similar: bool, result_required: bool) -> MapResult:
         """Maps a single SBOM item to the list of SW360 releases"""
 
-        result, _, _ = self.map_bom_commons(component)
+        result = self.map_bom_commons(component)
 
         for release in self.releases:
             if ("Id" in release) and ("Sw360Id" not in release):
                 release["Sw360Id"] = release["Id"]
 
             # first check: unique id
-            if result.release_id == release["Sw360Id"] or self.is_id_match(release, component):
+            result_release_id = result.release_href.split("/")[-1]
+            if result_release_id == release["Sw360Id"] or self.is_id_match(release, component):
                 self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                 break
 
             # second check: name AND version
-            if (component.name
-                and ("Name" in release)
-                    and release["Name"]):
-                if (
-                    (result.component_id is not None)
-                        and (result.component_id == release["ComponentId"])):
+            if (component.name and release.get("Name")):
+                result_component_id = result.component_href.split("/")[-1]
+                if result_component_id == release["ComponentId"]:
                     name_match = True
                 else:
                     name_match = component.name.lower() == release["Name"].lower()
@@ -280,10 +278,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-        result, release_url, component_url = self.map_bom_commons(component)
+        result = self.map_bom_commons(component)
         components = []
-        if component_url:
-            components.append(component_url)
+        if result.component_href:
+            components.append(result.component_href)
 
         # if there's no purl match, search for component names
         if len(components) == 0:
@@ -297,8 +295,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
             ]
 
         for compref in components:
-            if release_url is not None:
-                rel_list = [{"_links": {"self": {"href": release_url}}}]
+            if result.release_href:
+                rel_list = [{"_links": {"self": {"href": result.release_href}}}]
             else:
                 comp = self.client.get_component_by_url(compref)
                 if not comp:
@@ -325,7 +323,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 release = ComponentCacheManagement.convert_release_details(self.client, real_release)
 
                 # first check: unique id
-                if href == release_url or self.is_id_match(release, component):
+                if href == result.release_href or self.is_id_match(release, component):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                     break
 
@@ -703,20 +701,16 @@ class MapBom(capycli.common.script_base.ScriptBase):
             cachefile, True, token, oauth2=oauth2, url=sw360_url)
         return rel_data
 
-    def map_bom_commons(self, component: Component) -> Tuple[MapResult, Optional[str], Optional[str]]:
+    def map_bom_commons(self, component: Component) -> MapResult:
         """
         Common parts to map from a SBOM component to the SW360 component/release.
         :param bomitem: SBOM component
         :return: MapResult instance, (Optional) release url, (Optional) component url
         """
-        if not self.client:
-            print_red("  No client!")
-            sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
-
         if self.relaxed_debian_parsing and component.version:
             component.version = self.cut_off_debian_extras(component.version)
 
-        result = capycli.common.map_result.MapResult(component)
+        result = MapResult(component)
 
         # search release and component by purl which is independent of the component cache.
         if type(component.purl) is PackageURL:
@@ -726,11 +720,11 @@ class MapBom(capycli.common.script_base.ScriptBase):
             component_href, release_href = self.external_id_svc.search_component_and_release(
                 component.purl)  # type: ignore
         if component_href:
-            result.component_id = self.client.get_id_from_href(component_href)
+            result.component_href = component_href
         if release_href:
-            result.release_id = self.client.get_id_from_href(release_href)
+            result.release_href = release_href
 
-        return result, release_href, component_href
+        return result
 
     @property
     def external_id_svc(self) -> PurlService:
