@@ -563,7 +563,7 @@ class CapycliTestBomMap(CapycliTestBase):
     @responses.activate
     def test_create_updated_bom_component_id(self) -> None:
         res = MapResult()
-        res.component = Component(name="sed", version="1.1")
+        res.input_component = Component(name="sed", version="1.1")
         res.result = MapResult.MATCH_BY_NAME
         res.component_id = "a035"
         res.releases = [{'Name': 'sed', 'Version': '1.0',
@@ -599,7 +599,7 @@ class CapycliTestBomMap(CapycliTestBase):
     @responses.activate
     def test_create_updated_bom_mixed_match(self) -> None:
         res = MapResult()
-        res.component = Component(name="mail", version="1.4")
+        res.input_component = Component(name="mail", version="1.4")
         res.result = MapResult.FULL_MATCH_BY_NAME_AND_VERSION
         res.releases = [
             {'Name': 'mail', 'Version': '1.4',
