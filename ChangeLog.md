@@ -14,11 +14,14 @@
 * CaPyCLI now supports color console output also when running in GitLab CI.
 * `bom map` fix: In few cases with --nocache, it added mixed matches to output
   BOM, now we assure that only the best mapping results are added.
+* `project createbom` stores release relations (`CONTAINED`, `SIDE_BY_SIDE` etc.) as capycli:projectRelation
+* `project update`: optimized handling of release mainline state and release relation. Now states
+  provided in the SBOM are used and slowdowns/crashes introduced in 2.7.0 (#121) fixed again.
 
 ## 2.7.0
 
 * fix for `bom findsources` for some JavaScript SBOMs.
-* `bom show` command also lists purl and source code download url in verbose mode.  
+* `bom show` command also lists purl and source code download url in verbose mode.
   If one of the values is missing and `--forceerror` has been specified, error code 97 is returned.
 * `bom show` command also lists license information in verbose mode, but
   only for CycloneDX 1.6 and later.

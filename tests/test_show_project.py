@@ -168,7 +168,7 @@ class TestShowProject(TestBase):
         self.assertTrue("Project owner: thomas.graf@siemens.com" in out)
         self.assertTrue("Clearing state: IN_PROGRESS" in out)
         self.assertTrue("No linked projects" in out)
-        self.assertTrue("cli-support, 1.3 = SPECIFIC, APPROVED" in out)
+        self.assertTrue("cli-support, 1.3 = MAINLINE, APPROVED" in out)
         self.assertTrue("wheel, 0.38.4 = SPECIFIC, APPROVED" in out)
 
     @responses.activate
@@ -337,7 +337,7 @@ class TestShowProject(TestBase):
         self.assertTrue("Clearing state: IN_PROGRESS" in out)
         self.assertTrue("Linked projects:" in out)
         self.assertTrue("sub-project-dummy, 2.0.1" in out)
-        self.assertTrue("cli-support, 1.3 = SPECIFIC, APPROVED" in out)
+        self.assertTrue("cli-support, 1.3 = MAINLINE, APPROVED" in out)
         self.assertTrue("wheel, 0.38.4 = SPECIFIC, APPROVED" in out)
 
         self.assertTrue(os.path.isfile(self.OUTPUTFILE), "no output file generated")

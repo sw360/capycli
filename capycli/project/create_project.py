@@ -33,9 +33,9 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         self.onlyUpdateProject = onlyUpdateProject
         self.project_mainline_state: str = ""
 
-    def bom_to_release_list(self, sbom: Bom) -> List[str]:
-        """Creates a list with linked releases"""
-        linkedReleases = []
+    def bom_to_release_list(self, sbom: Bom) -> Dict[str, Any]:
+        """Creates a list with linked releases from the SBOM."""
+        linkedReleases: Dict[str, Any] = {}
 
         for cx_comp in sbom.components:
             rid = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID)
@@ -45,31 +45,39 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                     + ", " + str(cx_comp.version))
                 continue
 
-            linkedReleases.append(rid)
+            linkedReleases[rid] = {}
+
+            mainlineState = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_PROJ_STATE)
+            if mainlineState:
+                linkedReleases[rid]["mainlineState"] = mainlineState
+            relation = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_PROJ_RELATION)
+            if relation:
+                # No typo. In project structure, it's "relation", while release update API uses "releaseRelation".
+                linkedReleases[rid]["releaseRelation"] = relation
 
         return linkedReleases
 
-    def get_release_project_mainline_states(self, project: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        pms: List[Dict[str, Any]] = []
+    def merge_project_mainline_states(self, data: Dict[str, Any], project: Optional[Dict[str, Any]]) -> None:
         if not project:
-            return pms
+            return
 
         if "linkedReleases" not in project:
-            return pms
+            return
 
         for release in project["linkedReleases"]:  # NOT ["sw360:releases"]
             pms_release = release.get("release", "")
             if not pms_release:
                 continue
+            pms_release = pms_release.split("/")[-1]
+            if pms_release not in data:
+                continue
             pms_state = release.get("mainlineState", "OPEN")
             pms_relation = release.get("relation", "UNKNOWN")
-            pms_entry: Dict[str, Any] = {}
-            pms_entry["release"] = pms_release
-            pms_entry["mainlineState"] = pms_state
-            pms_entry["new_relation"] = pms_relation
-            pms.append(pms_entry)
 
-        return pms
+            if "mainlineState" not in data[pms_release]:
+                data[pms_release]["mainlineState"] = pms_state
+            if "releaseRelation" not in data[pms_release]:
+                data[pms_release]["releaseRelation"] = pms_relation
 
     def update_project(self, project_id: str, project: Optional[Dict[str, Any]],
                        sbom: Bom, project_info: Dict[str, Any]) -> None:
@@ -79,7 +87,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         data = self.bom_to_release_list(sbom)
-        pms = self.get_release_project_mainline_states(project)
+        self.merge_project_mainline_states(data, project)
 
         ignore_update_elements = ["name", "version"]
         # remove elements from list because they are handled separately
@@ -90,13 +98,17 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         try:
             print_text("  " + str(len(data)) + " releases in SBOM")
 
+            update_mode = self.onlyUpdateProject
             if project and "_embedded" in project and "sw360:releases" in project["_embedded"]:
                 print_text(
                     "  " + str(len(project["_embedded"]["sw360:releases"])) +
                     " releases in project before update")
+            else:
+                # Workaround for SW360 API bug: add releases will hang forever for empty projects
+                update_mode = False
 
             # note: type in sw360python, 1.4.0 is wrong - we are using the correct one!
-            result = self.client.update_project_releases(data, project_id, add=self.onlyUpdateProject)  # type: ignore
+            result = self.client.update_project_releases(data, project_id, add=update_mode)  # type: ignore
             if not result:
                 print_red("  Error updating project releases!")
             project = self.client.get_project(project_id)
@@ -113,20 +125,6 @@ class CreateProject(capycli.common.script_base.ScriptBase):
                 result2 = self.client.update_project(project_info, project_id, add_subprojects=self.onlyUpdateProject)
                 if not result2:
                     print_red("  Error updating project!")
-
-            if pms and project:
-                print_text("  Restoring original project mainline states...")
-                for pms_entry in pms:
-                    update_release = False
-                    for r in project.get("linkedReleases", []):
-                        if r["release"] == pms_entry["release"]:
-                            update_release = True
-                            break
-
-                    if update_release:
-                        rid = self.client.get_id_from_href(pms_entry["release"])
-                        self.client.update_project_release_relationship(
-                            project_id, rid, pms_entry["mainlineState"], pms_entry["new_relation"], "")
 
         except SW360Error as swex:
             if swex.response is None:
@@ -353,6 +351,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_FILE_NOT_FOUND)
 
         is_update_version = False
+        project = None
 
         if args.old_version and args.old_version != "":
             print_text("Project version will be updated with version: " + args.old_version)
@@ -413,7 +412,8 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         if self.project_id:
             print("Updating project...")
             try:
-                project = self.client.get_project(self.project_id)
+                if project is None:
+                    project = self.client.get_project(self.project_id)
             except SW360Error as swex:
                 print_red("  ERROR: unable to access project:" + repr(swex))
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)

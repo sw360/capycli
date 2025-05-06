@@ -67,6 +67,10 @@
           "value": "Python"
         },
         {
+          "name": "capycli:projectRelation",
+          "value": "DYNAMICALLY_LINKED"
+        },
+        {
           "name": "siemens:sw360Id",
           "value": "a5cae39f39db4e2587a7d760f59ce3d0"
         }
