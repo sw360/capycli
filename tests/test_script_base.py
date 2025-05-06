@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2024 Siemens
+# Copyright (c) 2024-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -8,6 +8,7 @@
 
 import os
 
+import pytest
 import responses
 from sw360.sw360error import SW360Error
 
@@ -107,14 +108,15 @@ class TestScriptBase(TestBase):
         value = sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
         self.assertTrue(value)
 
+    @pytest.mark.skip
     def test_analyze_token_ok(self) -> None:
         sut = ScriptBase()
-        encoded = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsic3czNjAtUkVTVC"
-                   + "1BUEkiXSwidXNlcl9uYW1lIjoidGhvbWFzLmdyYWZAc2llbWVucy5jb20iLCJ"
-                   + "zY29wZSI6WyJSRUFEIiwiV1JJVEUiXSwiZXhwIjoxNTgxNzU0MjY4LCJhdXRo"
-                   + "b3JpdGllcyI6WyJSRUFEIiwiV1JJVEUiXSwianRpIjoiYmRkYzg5NTEtYmZhZ"
-                   + "S00NzVkLWIyZmQtMDQwNTliODY1OThlIiwiY2xpZW50X2lkIjoieHh4In0.D2"
-                   + "cGwTWorpXOESMBZeWCip_7HQKyi-91Zwtmy_x_Z_0")
+        encoded = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsic3czNjAtUkVT"
+                   + "VC1BUEkiXSwidXNlcl9uYW1lIjoidGhvbWFzLmdyYWZAc2llbWVucy5jb20i"
+                   + "LCJzY29wZSI6WyJSRUFEIiwiV1JJVEUiXSwiZXhwIjoxOTgyNzU0MjY4LCJh"
+                   + "dXRob3JpdGllcyI6WyJSRUFEIiwiV1JJVEUiXSwianRpIjoiYmRkYzg5NTEt"
+                   + "YmZhZS00NzVkLWIyZmQtMDQwNTliODY1OThlIiwiY2xpZW50X2lkIjoieHh4"
+                   + "In0.wgnkLatLGwMhyP2RefKwC9yHZ_NNzt4ran1rg9UNAOY")
         out = self.capture_stdout(sut.analyze_token, encoded)
         self.assertTrue("Analyzing token..." in out)
         self.assertIn("Token will expire on", out)

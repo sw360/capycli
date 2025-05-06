@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -29,6 +29,7 @@ import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator, SbomWriter
+from capycli.common.github_support import GitHubSupport
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -183,6 +184,36 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         """
         return PackageURL("pypi", '', name, version, '', '').to_string()
 
+    def get_license_from_meta_data(self, meta: Dict[str, Any]) -> str:
+        """
+        Get license from meta data.
+
+        :return: the license
+        :rtype: string
+        """
+
+        if "info" in meta:
+            classifiers = meta["info"].get("classifiers")
+            for classifier in classifiers:
+                # do this only for (few) known license classifiers
+                if not classifier.startswith("License :: OSI Approved"):
+                    continue
+                if classifier == "License :: OSI Approved :: MIT License":
+                    return "MIT"
+                if classifier == "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)":
+                    return "MPL-2.0"
+                if classifier == "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)":
+                    return "LGPL-2.0-or-later"
+                if classifier == "License :: OSI Approved :: BSD License":
+                    # best guess
+                    return "BSD-3-Clause"
+                if classifier == "License :: OSI Approved :: Apache Software License":
+                    # best guess
+                    return "Apache-2.0"
+                LOG.warning("  Meta data license classifier: " + classifier)
+
+        return ""
+
     def add_meta_data_to_bomitem(self, cxcomp: Component, package_source: str = "") -> None:
         """
         Try to lookup meta data for the given item.
@@ -199,18 +230,66 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             return
 
         if "info" in meta:
-            homepage = meta["info"].get("home_page", "")
+            homepage: str = ""
+            project_urls = meta["info"].get("project_urls", {})
+            if project_urls:
+                # there can be multiple entries, for wheel, source, etc.
+                # check them is THIS order!
+                for key in project_urls:
+                    if key.lower() == "github":
+                        homepage = project_urls[key]
+                        LOG.debug("  got GitHub homepage")
+                        break
+                    if key.lower() == "repository":
+                        homepage = project_urls[key]
+                        LOG.debug("  got repository homepage")
+                        break
+                    if (key.lower() == "homepage") or key.lower() == "home":
+                        homepage = project_urls[key]
+                        LOG.debug("  got homepage")
+                        break
+                    if ((key.lower() == "code") or
+                            (key.lower() == "codebase") or
+                            (key.lower() == "source code") or
+                            (key.lower() == "source")):
+                        homepage = project_urls[key]
+                        LOG.debug("  got (code) homepage")
+                        break
+
+            if not homepage:
+                homepage = meta["info"].get("home_page", "")
+                LOG.debug("  got website/homepage")
+
             if homepage:
                 ext_ref = ExternalReference(
                     type=ExternalReferenceType.WEBSITE,
                     url=XsUri(homepage))
-                LOG.debug("  got website/homepage")
                 cxcomp.external_references.add(ext_ref)
 
-            data = meta["info"].get("license", "")
-            if data:
+            license = meta["info"].get("license", "")
+            if not license:
+                license = meta["info"].get("license_expression", "")
+
+            if not license:
+                # try to get license from GitHub
+                if homepage:
+                    repo_name = GitHubSupport.get_repo_name(homepage)
+                    if repo_name:
+                        repo_info = GitHubSupport.get_repository_info(repo_name)
+                        if repo_info:
+                            license_info = repo_info.get("license", {})
+                            if license_info:
+                                license = license_info.get("spdx_id", "")
+                                if license == "NOASSERTION":
+                                    license = ""
+                                LOG.debug("  got license from GitHub")
+
+            if not license:
+                license = self.get_license_from_meta_data(meta)
+
+            if license:
                 license_factory = LicenseFactory()
-                cxcomp.licenses.add(license_factory.make_with_name(data))
+                cxcomp.licenses.add(license_factory.make_with_name(license))
                 LOG.debug("  got license")
 
             data = meta["info"].get("summary", "")
@@ -524,6 +603,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             print_text("\nChecking meta-data:")
 
         result = True
+        cxcomp: Component
         for cxcomp in sbom.components:
             if self.verbose:
                 print_text(f"  {cxcomp.name}, {cxcomp.version}")
@@ -538,6 +618,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 result = False
                 if self.verbose:
                     print_yellow("    Homepage missing")
+
+            if not cxcomp.licenses:
+                if self.verbose:
+                    LOG.debug("    License missing")
+            elif len(cxcomp.licenses) == 0:
+                if self.verbose:
+                    LOG.debug("    License missing")
 
             src_url = CycloneDxSupport.get_ext_ref_source_url(cxcomp)
             if not src_url:
