@@ -209,7 +209,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and version_exists and component.version
                         and (component.version.lower() == release["Version"].lower())):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
-                    break
+                    continue
             else:
                 name_match = False
 
@@ -220,7 +220,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and release["SourceFileHash"]):
                 if (cmp_hash.lower() == release["SourceFileHash"].lower()):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                    break
+                    continue
 
             cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
             if (("BinaryFileHash" in release)
@@ -228,7 +228,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and release["BinaryFileHash"]):
                 if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                    break
+                    continue
 
             # fourth check: source filename
             cmp_src_file = str(CycloneDxSupport.get_ext_ref_source_file(component))
@@ -237,7 +237,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     and release["SourceFile"]):
                 if cmp_src_file.lower() == release["SourceFile"].lower():
                     self.add_match_if_better(result, release, MapResult.MATCH_BY_FILENAME)
-                    break
+                    continue
 
             # fifth check: name and ANY version
             if name_match:
@@ -345,7 +345,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 if (version_exists
                         and ((component.version or "").lower() == release.get("Version", "").lower())):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_NAME_AND_VERSION)
-                    break
+                    continue
 
                 # third check unique(?) file hashes
                 cmp_hash = CycloneDxSupport.get_source_file_hash(component)
@@ -354,7 +354,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                         and release["SourceFileHash"]):
                     if (cmp_hash.lower() == release["SourceFileHash"].lower()):
                         self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                        break
+                        continue
 
                 cmp_hash = CycloneDxSupport.get_binary_file_hash(component)
                 if (("BinaryFileHash" in release)
@@ -362,7 +362,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                         and release["BinaryFileHash"]):
                     if (cmp_hash.lower() == release["BinaryFileHash"].lower()):
                         self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_HASH)
-                        break
+                        continue
 
                 # fifth check: name and ANY version
                 if self.no_match_by_name_only:
@@ -446,8 +446,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 continue
 
             dataitem: Dict[str, Any] = {}
-            if item.component:
-                dataitem["BomItem"] = item.component.name + ", " + (item.component.version or "")
+            if item.input_component:
+                dataitem["BomItem"] = item.input_component.name + ", " + (item.input_component.version or "")
             dataitem["ResultCode"] = item.result
             dataitem["ResultText"] = item.map_code_to_string(item.result)
             dataitems.append(dataitem)
@@ -632,11 +632,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     newbom.register_dependency(newbom.metadata.component, [newitem])
             elif (item.result == MapResult.NO_MATCH
                   or not self.is_good_match(item.result)):
+                # if we have no good match, add the component we're looking for as well
 
                 if (self.mode == MapMode.FOUND):
                     continue
 
-                newitem = item.component
+                newitem = item.input_component
                 if newitem:
                     CycloneDxSupport.update_or_set_property(
                         newitem,
@@ -657,7 +658,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
             for match_item in item.releases:
                 if self.is_good_match(match_item["MapResult"]):
-                    newitem = self.update_bom_item(item.component, match_item)
+                    newitem = self.update_bom_item(item.input_component, match_item)
                 else:
                     # newitem = match_item
                     newitem = self.update_bom_item(None, match_item)
@@ -680,15 +681,15 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
         for item in result:
             single_result: Dict[str, Any] = {}
-            if not item.component:
+            if not item.input_component:
                 continue
 
-            for prop in item.component.properties:
+            for prop in item.input_component.properties:
                 if prop.name == CycloneDxSupport.CDX_PROP_MAPRESULT:
-                    item.component.properties.remove(prop)
+                    item.input_component.properties.remove(prop)
                     break
 
-            single_result["BomItem"] = LegacySupport.cdx_component_to_legacy(item.component)
+            single_result["BomItem"] = LegacySupport.cdx_component_to_legacy(item.input_component)
             single_result["Result"] = item.result
             single_result["Matches"] = []
             for item_match in item.releases:
