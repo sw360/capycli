@@ -322,16 +322,6 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     continue
 
                 # generate proper release for result
-                release = {}
-                release["Name"] = real_release["name"]
-                if self.relaxed_debian_parsing:
-                    release["Version"] = self.cut_off_debian_extras(real_release["version"])
-                else:
-                    release["Version"] = real_release["version"]
-                release["ExternalIds"] = real_release.get("externalIds", "")
-                release["Id"] = release["Sw360Id"] = self.client.get_id_from_href(href)
-                release["ComponentId"] = self.client.get_id_from_href(compref)
-
                 release = ComponentCacheManagement.convert_release_details(self.client, real_release)
 
                 # first check: unique id
@@ -643,11 +633,6 @@ class MapBom(capycli.common.script_base.ScriptBase):
                         newitem,
                         CycloneDxSupport.CDX_PROP_MAPRESULT,
                         MapResult.NO_MATCH)
-                    if item.component_id is not None:
-                        CycloneDxSupport.update_or_set_property(
-                            newitem,
-                            CycloneDxSupport.CDX_PROP_COMPONENT_ID,
-                            item.component_id)
                 newbom.components.add(newitem)
 
             # Sorted alternatives in descending version order
