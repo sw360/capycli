@@ -175,7 +175,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if tmpfolder:
             tmpfolder.cleanup()
 
-    def get_license_spdx_id(self, name: str) -> str:
+    def get_license_spdx_id(self, name: Optional[str]) -> str:
         """Get the SPDX id for a license name
 
         :param name: the license name
@@ -183,6 +183,9 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         :return: the SPDX id or empty string
         :rtype: string
         """
+        if not name:
+            return ""
+
         if name in self.allowed_licenses:
             return name
 
@@ -210,6 +213,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         # we will only add few well known licenses:
         for license in cx_comp.licenses:
             if isinstance(license, DisjunctiveLicense):
+                if not license.name:
+                    continue
                 name = self.get_license_spdx_id(license.name)
                 if name in self.allowed_licenses:
                     licenses.append(name)
@@ -217,6 +222,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                     print_yellow("Ignoring unknown license: " + license.name)
 
             if isinstance(license, LicenseExpression):
+                if not license.value:
+                    continue
                 name = self.get_license_spdx_id(license.value)
                 if name in self.allowed_licenses:
                     licenses.append(license.value)
