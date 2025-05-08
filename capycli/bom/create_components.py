@@ -19,6 +19,7 @@ import requests
 from colorama import Fore, Style
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from cyclonedx.model.license import DisjunctiveLicense, LicenseExpression
 from sw360 import SW360Error
 
 import capycli.common.json_support
@@ -59,6 +60,17 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         self.download: bool = False
         self.relaxed_debian_parsing: bool = False
         self.onlyCreateReleases: bool = onlyCreateReleases
+        self.allowed_licenses = [
+            "Apache-2.0",
+            "BSD-2-Clause", "BSD-3-Clause",
+            "BSL-1.0"
+            "EPL-1.0", "EPL-2.0",
+            "GPL-2.0-only", "GPL-3.0-only",
+            "ISC",
+            "LGPL-2.1-only", "LGPL-3.0-only",
+            "MIT",
+            "MPL-1.0", "MPL-2.0",
+            "PSF-2.0"]
 
     def upload_source_file(self, release_id: str, sourcefile: str,
                            filetype: str = "SOURCE", comment: str = "") -> None:
@@ -163,6 +175,63 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if tmpfolder:
             tmpfolder.cleanup()
 
+    def get_license_spdx_id(self, name: Optional[str]) -> str:
+        """Get the SPDX id for a license name
+
+        :param name: the license name
+        :type name: string
+        :return: the SPDX id or empty string
+        :rtype: string
+        """
+        if not name:
+            return ""
+
+        if name in self.allowed_licenses:
+            return name
+
+        if name.startswith("MIT License"):
+            return "MIT"
+
+        if name.startswith("Apache 2.0"):
+            return "Apache-2.0"
+
+        return ""
+
+    def add_licenses(self, cx_comp: Component, data: Dict[str, Any]) -> None:
+        """Add licenses to the release data structure
+
+        :param item: a single bill of materials item - a component
+        :type item: dictionary
+        :param component_data: SW360 release data
+        :type component_data: dictionary
+        """
+        if not cx_comp.licenses:
+            return
+
+        licenses: List[str] = []
+
+        # we will only add few well known licenses:
+        for license in cx_comp.licenses:
+            if isinstance(license, DisjunctiveLicense):
+                if not license.name:
+                    continue
+                name = self.get_license_spdx_id(license.name)
+                if name in self.allowed_licenses:
+                    licenses.append(name)
+                else:
+                    print_yellow("Ignoring unknown license: " + license.name)
+
+            if isinstance(license, LicenseExpression):
+                if not license.value:
+                    continue
+                name = self.get_license_spdx_id(license.value)
+                if name in self.allowed_licenses:
+                    licenses.append(license.value)
+                else:
+                    print_yellow("Ignoring unknown license: " + license.value)
+
+        data["mainLicenseIds"] = licenses
+
     def prepare_release_data(self, cx_comp: Component) -> Dict[str, Any]:
         """Create release data structure as expected by SW360 REST API
 
@@ -205,6 +274,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if language:
             data["languages"] = []
             data["languages"].append(language)
+
+        self.add_licenses(cx_comp, data)
 
         return data
 
