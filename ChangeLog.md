@@ -1,11 +1,11 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2024 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2025 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.8.0
 
 * fix in legacy to cdx convert fix for componentId.
 * documentation fixes.
@@ -18,6 +18,8 @@
 * `project update`: optimized handling of release mainline state and release relation. Now states
   provided in the SBOM are used and slowdowns/crashes introduced in 2.7.0 (#121) fixed again.
 * `bom createreleases` does now also set/update the license information for SW360 releases.
+* `getdependencies python` has now an improved detection for licenses.
+* Dependency updates.
 
 ## 2.7.0
 
