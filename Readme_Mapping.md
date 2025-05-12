@@ -32,7 +32,7 @@ informs about the mapping result:
 * **`NO_MATCH` (100)** => Component was not found
 
 We consider lower numbers as better matches. CaPyCli will always limit the
-mapping result to the best matches found, so if there's some match by ID, other
+mapping result to the best matches found, so if there are matches by ID, other
 matches are ignored; matches by (source or binary) file hash will win over
 matches by name and version etc.
 
