@@ -225,13 +225,23 @@ class CapycliTestBomMap(unittest.TestCase):
         # component found by PURL, version match by string comparison
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.FULL_MATCH_BY_ID
+        assert len(res.releases) == 1
+
+        self.app.full_search = True
+
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_ID
+        assert len(res.releases) == 2
         if res.releases[0]["Sw360Id"] == "1234":
             assert res.releases[0]["ComponentId"] == "a035"
+            assert res.releases[1]["Sw360Id"] == "1236"
+            assert res.releases[1]["ComponentId"] == "a034"
         elif res.releases[0]["Sw360Id"] == "1236":
             assert res.releases[0]["ComponentId"] == "a034"
+            assert res.releases[1]["Sw360Id"] == "1234"
+            assert res.releases[1]["ComponentId"] == "a035"
         else:
             assert False, "Unexpected release id"
-        assert len(res.releases) == 1
 
     @responses.activate
     def test_map_bom_item_mixed_match(self) -> None:
@@ -1322,10 +1332,16 @@ class CapycliTestBomMap(unittest.TestCase):
         )
 
         out = TestBase.capture_stdout(sut.run, args)
+        sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE)
+        assert len(sbom.components) == 1
         assert "1 component read from SBOM" in out
         assert "Retrieving package-url ids, filter: {'pypi'}" in out
-        assert ("ADDED (1-full-match-by-id) 3765276512" in out
-                or "ADDED (1-full-match-by-id) 1234" in out)
+
+        args.matchmode = "full-search"
+        out = TestBase.capture_stdout(sut.run, args)
+
+        assert "ADDED (1-full-match-by-id) 3765276512" in out
+        assert "ADDED (1-full-match-by-id) 1234" in out
         assert "Release 3765276512 with purl pkg:pypi/colorama@0.4.3 points to component 678dstzd8" in out
         assert "Release 1234 with purl pkg:pypi/colorama@0.4.3 points to component 12345678" in out
         assert "Candidate 3765276512 has purl pkg:pypi/colorama@0.4.3" in out
@@ -1334,20 +1350,29 @@ class CapycliTestBomMap(unittest.TestCase):
         # check result BOM
         sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE)
         assert sbom is not None
-        assert len(sbom.components) == 1
+        assert len(sbom.components) == 2
         assert sbom.components[0].version == "0.4.3"
+        assert sbom.components[1].version == "0.4.3"
         # assure we get the PURL from the release, not from input BOM
         # (which has PURL with file_name qualifier)
         assert sbom.components[0].purl == PackageURL.from_string("pkg:pypi/colorama@0.4.3")
+        assert sbom.components[1].purl == PackageURL.from_string("pkg:pypi/colorama@0.4.3")
         prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)
         assert prop == MapResult.FULL_MATCH_BY_ID
-        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
-        if prop == "678dstzd8":
+        prop = CycloneDxSupport.get_property_value(sbom.components[1], CycloneDxSupport.CDX_PROP_MAPRESULT)
+        assert prop == MapResult.FULL_MATCH_BY_ID
+
+        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
+        if prop == "3765276512":
+            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+            assert prop == "678dstzd8"
+            assert sbom.components[0].name == "colorama"
+            assert sbom.components[1].name == "python-colorama"
+        elif prop == "1234":
             prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
-            assert prop == "3765276512"
-        elif prop == "12345678":
-            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
-            assert prop == "1234"
+            assert prop == "12345678"
+            assert sbom.components[0].name == "python-colorama"
+            assert sbom.components[1].name == "colorama"
         else:
             assert False, "Unexpected component id: " + prop
 

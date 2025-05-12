@@ -6,6 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import copy
 import json
 import logging
 import os
@@ -195,7 +196,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
             # first check: unique id
             if release["Sw360Id"] in result_release_ids or self.is_id_match(release, component):
                 self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
-                break
+                if self.full_search:
+                    continue
+                else:
+                    break
 
             # second check unique(?) file hashes
             cmp_hash = CycloneDxSupport.get_source_file_hash(component)
@@ -312,8 +316,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 release = get_release_details(href)
                 if release:
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
-                # If we have release matches by PURL, we're done
-                return result
+                    if not self.full_search:
+                        return result
+            # If we have release matches by PURL, we're done
+            return result
 
         if result.component_hrefs:
             components += result.component_hrefs
@@ -528,6 +534,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     name=match.get("Name", ""),
                     version=match.get("Version", ""))
         else:
+            # copy component so we don't overwrite the input component
+            component = copy.deepcopy(component)
+
             # always overwrite the following properties
             name = match.get("Name", "")
             if name:
