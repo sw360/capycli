@@ -65,9 +65,10 @@ class CapycliTestBomMap(CapycliTestBase):
             version="1.0",
             purl=PackageURL.from_string("pkg:deb/debian/sed@1.0?type=source"))
 
+        # component found by PURL, version match by string comparison
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
@@ -76,18 +77,82 @@ class CapycliTestBomMap(CapycliTestBase):
             version="1.1",
             purl=PackageURL.from_string("pkg:deb/debian/sed@1.1?type=source"))
 
+        # component found by PURL, but version does not match
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.NO_MATCH
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID).value
+            == "a035")
         assert len(res.releases) == 0
 
         # enable name matching
         self.app.no_match_by_name_only = False
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.MATCH_BY_NAME
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID).value
+            == "a035")
         assert res.releases[0]["ComponentId"] == "a035"
         assert len(res.releases) == 1
+
+    @responses.activate
+    def test_map_bom_item_purl_component_release_conflict(self) -> None:
+        """test bom mapping (nocache): we have two releases for other versions
+        with PURLs pointing to different components, no direct purl match for release
+        """
+        if not self.app.client:
+            return
+
+        self.app.purl_service = PurlService(self.app.client, cache={'maven': {
+            'com.fasterxml.jackson.core': {'jackson-core': {
+                "2.18.0": [{
+                    "purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0"),
+                    "href": SW360_BASE_URL + "releases/1234"}],
+                "2.5.0": [{
+                    "purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.5.0"),
+                    "href": SW360_BASE_URL + "releases/1235"}]}}}})
+
+        self.app.releases = [{"Id": "1234", "ComponentId": "a035",
+                              "Name": "Jackson Core", "Version": "2.18.0",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"}},
+                             {"Id": "1235", "ComponentId": "a034",
+                              "Name": "com.fasterxml.jackson.core:jackson-core", "Version": "2.5.0",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.5.0"}},
+                             {"Id": "1236", "ComponentId": "a034",
+                              "Name": "com.fasterxml.jackson.core:jackson-core", "Version": "2.17.0",
+                              "ExternalIds": []}]
+
+        # PURL search of components via releases needs to get component ids from releases
+        release_data1 = {"name": "Jackson Core", "version": "2.18.0", "_links": {
+                         "self": {"href": SW360_BASE_URL + 'releases/1234'},
+                         "sw360:component": {"href": SW360_BASE_URL + "components/a035"}}}
+        release_data2 = {"name": "com.fasterxml.jackson.core:jackson-core", "version": "2.5.0", "_links": {
+                         "self": {"href": SW360_BASE_URL + 'releases/1235'},
+                         "sw360:component": {"href": SW360_BASE_URL + "components/a034"}}}
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1234', json=release_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1235', json=release_data2)
+
+        bomitem = Component(
+            name="jackson-core",
+            version="2.17.0",
+            purl=PackageURL.from_string("pkg:maven/com.fasterxml.jackson.core/jackson-core@2.17.0"))
+
+        # component found by PURL, version match by string comparison
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert res.releases[0]["Sw360Id"] == "1236"
+        assert res.releases[0]["ComponentId"] == "a034"
+        assert len(res.releases) == 1
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+            is None)
 
     @responses.activate
     def test_map_bom_item_purl_release(self) -> None:
@@ -116,9 +181,57 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
         assert res.result == MapResult.FULL_MATCH_BY_ID
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID).value
+            == "a035")
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
+
+    @responses.activate
+    def test_map_bom_item_purl_release_conflict(self) -> None:
+        """test bom mapping (nocache): we have two releases in different components
+        with same PURL and same version
+        """
+        if not self.app.client:
+            return
+
+        self.app.purl_service = PurlService(self.app.client, cache={'maven': {
+            'com.fasterxml.jackson.core': {'jackson-core': {
+                None: [{
+                    "purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core"),
+                    "href": SW360_BASE_URL + "components/a035"}],
+                "2.18.0": [
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0"),
+                     "href": SW360_BASE_URL + "releases/1234"},
+                    {"purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0"),
+                     "href": SW360_BASE_URL + "releases/1236"}]}}}})
+
+        self.app.releases = [{"Id": "1234", "ComponentId": "a035",
+                              "Name": "Jackson Core", "Version": "2.18.0",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"}},
+                             {"Id": "1236", "ComponentId": "a034",
+                              "Name": "com.fasterxml.jackson.core:jackson-core", "Version": "2.18.0",
+                              "ExternalIds": {
+                                  "package-url": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"}}]
+
+        bomitem = Component(
+            name="jackson-core",
+            version="2.18.0",
+            purl=PackageURL.from_string("pkg:maven/com.fasterxml.jackson.core/jackson-core@2.18.0"))
+
+        # component found by PURL, version match by string comparison
+        res = self.app.map_bom_item(bomitem, check_similar=False, result_required=False)
+        assert res.result == MapResult.FULL_MATCH_BY_ID
+        if res.releases[0]["Sw360Id"] == "1234":
+            assert res.releases[0]["ComponentId"] == "a035"
+        elif res.releases[0]["Sw360Id"] == "1236":
+            assert res.releases[0]["ComponentId"] == "a034"
+        else:
+            assert False, "Unexpected release id"
+        assert len(res.releases) == 1
 
     @responses.activate
     def test_map_bom_item_mixed_match(self) -> None:
@@ -358,26 +471,36 @@ class CapycliTestBomMap(CapycliTestBase):
                       SW360_BASE_URL + 'releases/1234',
                       json=release_data)
 
+        # component found by PURL, version match by string comparison
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
+        # component found by PURL, but version does not match
         bomitem = Component(
             name="sed",
             version="1.1",
             purl=PackageURL.from_string("pkg:deb/debian/sed@1.1?type=source"))
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.NO_MATCH
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID).value
+            == "a035")
         assert len(res.releases) == 0
 
-        # enable name matching
+        # enable name matching, so all versions shall be listed
         self.app.no_match_by_name_only = False
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.MATCH_BY_NAME
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID).value
+            == "a035")
         assert res.releases[0]["ComponentId"] == "a035"
         assert len(res.releases) == 1
 
@@ -416,9 +539,61 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
-        assert res.component_href == ""
+        assert res.component_hrefs == []
+        assert res.input_component is not None
+        assert CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID) is None
         assert res.releases[0]["Sw360Id"] == "1235"
         assert res.releases[0]["ComponentId"] == "a034"
+
+    @responses.activate
+    def test_map_bom_item_nocache_purl_component_release_conflict(self) -> None:
+        """test bom mapping (nocache): we have two releases for other versions
+        with PURLs pointing to different components, no direct purl match for release
+        """
+        if not self.app.client:
+            return
+        self.app.purl_service = PurlService(self.app.client, cache={'maven': {
+            'com.fasterxml.jackson.core': {'jackson-core': {
+                "2.18.0": [{
+                    "purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.18.0"),
+                    "href": SW360_BASE_URL + "releases/1234"}],
+                "2.5.0": [{
+                    "purl": PackageURL("maven", "com.fasterxml.jackson.core", "jackson-core", version="2.5.0"),
+                    "href": SW360_BASE_URL + "releases/1235"}]}}}})
+        bomitem = Component(
+            name="jackson-core",
+            version="2.17.0",
+            purl=PackageURL.from_string("pkg:maven/com.fasterxml.jackson.core/jackson-core@2.17.0"))
+
+        component_data1 = {"_embedded": {"sw360:releases": [{
+            "_links": {"self": {"href": SW360_BASE_URL + 'releases/1234'}}}]}}
+        component_data2 = {"_embedded": {"sw360:releases": [
+            {"_links": {"self": {"href": SW360_BASE_URL + 'releases/1235'}}},
+            {"_links": {"self": {"href": SW360_BASE_URL + 'releases/1236'}}}]}}
+        release_data1 = {"name": "Jackson Core", "version": "2.18.0", "_links": {
+                         "self": {"href": SW360_BASE_URL + 'releases/1234'},
+                         "sw360:component": {"href": SW360_BASE_URL + "components/a035"}}}
+        release_data2 = {"name": "com.fasterxml.jackson.core:jackson-core", "version": "2.5.0", "_links": {
+                         "self": {"href": SW360_BASE_URL + 'releases/1235'},
+                         "sw360:component": {"href": SW360_BASE_URL + "components/a034"}}}
+        release_data3 = {"name": "com.fasterxml.jackson.core:jackson-core", "version": "2.17.0", "_links": {
+                         "self": {"href": SW360_BASE_URL + 'releases/1236'},
+                         "sw360:component": {"href": SW360_BASE_URL + "components/a034"}}}
+        responses.add(responses.GET, SW360_BASE_URL + 'components/a035', json=component_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/a034', json=component_data2)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1234', json=release_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1235', json=release_data2)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1236', json=release_data3)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert res.releases[0]["Sw360Id"] == "1236"
+        assert res.releases[0]["ComponentId"] == "a034"
+        assert len(res.releases) == 1
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+            is None)
 
     @responses.activate
     def test_map_bom_item_nocache_purl_release(self) -> None:
@@ -449,7 +624,16 @@ class CapycliTestBomMap(CapycliTestBase):
 
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_ID
-        assert res.component_href == SW360_BASE_URL + "components/a035"
+        assert res.component_hrefs[0] == SW360_BASE_URL + "components/a035"
+        assert res.release_hrefs[0] == SW360_BASE_URL + "releases/1234"
+        assert res.input_component is not None
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID).value
+            == "a035")
+        assert (
+            CycloneDxSupport.get_property(res.input_component, CycloneDxSupport.CDX_PROP_SW360ID).value
+            == "1234")
+        assert len(res.releases) == 1
         assert res.releases[0]["Sw360Id"] == "1234"
         assert res.releases[0]["ComponentId"] == "a035"
 
@@ -460,7 +644,7 @@ class CapycliTestBomMap(CapycliTestBase):
         res = MapResult()
         res.input_component = Component(name="sed", version="1.1")
         res.result = MapResult.MATCH_BY_NAME
-        res.component_href = SW360_BASE_URL + "components/a035"
+        res.component_hrefs = [SW360_BASE_URL + "components/a035"]
         res.releases = [{'Name': 'sed', 'Version': '1.0',
                          'Id': '1234', 'MapResult': MapResult.MATCH_BY_NAME}]
         oldbom = Bom()
@@ -468,6 +652,7 @@ class CapycliTestBomMap(CapycliTestBase):
         assert 2 == len(newbom.components)
 
         # note that the result CycloneDX SBOM has ordered components
+        # first entry is the name match
         assert "sed" == newbom.components[0].name
         assert "1.0" == newbom.components[0].version
         prop = CycloneDxSupport.get_property_value(newbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)
@@ -475,6 +660,7 @@ class CapycliTestBomMap(CapycliTestBase):
         prop = CycloneDxSupport.get_property_value(newbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
         assert prop == ""
 
+        # second entry is the input_component we were looking for
         assert "sed" == newbom.components[1].name
         assert "1.1" == newbom.components[1].version
         prop = CycloneDxSupport.get_property_value(newbom.components[1], CycloneDxSupport.CDX_PROP_MAPRESULT)
@@ -482,8 +668,16 @@ class CapycliTestBomMap(CapycliTestBase):
         prop = CycloneDxSupport.get_property_value(newbom.components[1], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
         assert prop == "a035"
 
+        # we have component PURL conflict, two components with same PURL
+        res.component_hrefs = [SW360_BASE_URL + "components/a035", SW360_BASE_URL + "components/1234"]
+        oldbom = Bom()
+        newbom = self.app.create_updated_bom(oldbom, [res])
+        assert 2 == len(newbom.components)
+        prop = CycloneDxSupport.get_property_value(newbom.components[1], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+        assert prop == ""
+
         res.result = MapResult.NO_MATCH
-        res.component_href = SW360_BASE_URL + "components/a035"
+        res.component_hrefs = [SW360_BASE_URL + "components/a035"]
         res.releases = []
         newbom = self.app.create_updated_bom(oldbom, [res])
         prop = CycloneDxSupport.get_property_value(newbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)
@@ -749,6 +943,181 @@ class CapycliTestBomMap(CapycliTestBase):
         TestBase.delete_file(self.OUTPUTFILE)
         TestBase.delete_file(self.MAPPING_FILE)
         TestBase.delete_file(self.OVERVIEW_FILE)
+
+    @responses.activate
+    def test_mapping_multiple_match_by_id(self) -> None:
+        sut = MapBom()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("bom")
+        args.command.append("map")
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
+        args.outputfile = self.OUTPUTFILE
+        args.debug = True
+        args.verbose = True
+        args.nocache = True
+        args.sw360_token = TestBase.MYTOKEN
+        args.sw360_url = TestBase.MYURL
+
+        # for login
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/",
+            body="{'status': 'ok'}",
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # purl cache: components
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/components/searchByExternalIds?package-url=",
+            body="""
+            {
+                "_embedded": {
+                    "sw360:components": [
+                    ]
+                }
+            }
+            """,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # purl cache: releases
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/searchByExternalIds?package-url=",
+            body="""
+            {
+                "_embedded": {
+                    "sw360:releases": [
+                        {
+                            "type": "release",
+                            "name": "colorama",
+                            "version": "0.4.3",
+                            "componentId" : "678dstzd8",
+                            "externalIds" : {
+                                "package-url" : "pkg:pypi/colorama@0.4.3"
+                            },
+                            "_links": {
+                                "self": {
+                                    "href": "https://my.server.com/resource/api/releases/3765276512"
+                                }
+                            }
+                        },
+                        {
+                            "type": "release",
+                            "name": "python-colorama",
+                            "version": "0.4.3",
+                            "componentId" : "12345678",
+                            "externalIds" : {
+                                "package-url" : "pkg:pypi/colorama@0.4.3"
+                            },
+                            "_links": {
+                                "self": {
+                                    "href": "https://my.server.com/resource/api/releases/1234"
+                                }
+                            }
+                        }
+
+                    ]
+                }
+            }
+            """,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # the release
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/3765276512",
+            body="""
+            {
+                "name": "colorama",
+                "version": "0.4.3",
+                "releaseDate" : "2016-12-07",
+                "componentType" : "OSS",
+                "componentId" : "678dstzd8",
+                "externalIds" : {
+                    "package-url" : "pkg:pypi/colorama@0.4.3"
+                },
+                "_links": {
+                    "self": {
+                        "href": "https://my.server.com/api/releases/3765276512"
+                    },
+                    "sw360:component" : {
+                        "href" : "https://my.server.com/resource/api/components/678dstzd8"
+                    }
+                }
+            }
+            """,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/releases/1234",
+            body="""
+            {
+                "name": "python-colorama",
+                "version": "0.4.3",
+                "releaseDate" : "2016-12-07",
+                "componentType" : "OSS",
+                "componentId" : "12345678",
+                "externalIds" : {
+                    "package-url" : "pkg:pypi/colorama@0.4.3"
+                },
+                "_links": {
+                    "self": {
+                        "href": "https://my.server.com/api/releases/1234"
+                    },
+                    "sw360:component" : {
+                        "href" : "https://my.server.com/resource/api/components/12345678"
+                    }
+                }
+            }
+            """,
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        out = TestBase.capture_stdout(sut.run, args)
+        assert "1 component read from SBOM" in out
+        assert "Retrieving package-url ids, filter: {'pypi'}" in out
+        assert ("ADDED (1-full-match-by-id) 3765276512" in out
+                or "ADDED (1-full-match-by-id) 1234" in out)
+        assert "Release 3765276512 with purl pkg:pypi/colorama@0.4.3 points to component 678dstzd8" in out
+        assert "Release 1234 with purl pkg:pypi/colorama@0.4.3 points to component 12345678" in out
+        assert "Candidate 3765276512 has purl pkg:pypi/colorama@0.4.3" in out
+        assert "Candidate 1234 has purl pkg:pypi/colorama@0.4.3" in out
+
+        # check result BOM
+        sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE)
+        assert sbom is not None
+        assert len(sbom.components) == 1
+        assert sbom.components[0].version == "0.4.3"
+        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)
+        assert prop == MapResult.FULL_MATCH_BY_ID
+        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+        if prop == "678dstzd8":
+            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
+            assert prop == "3765276512"
+        elif prop == "12345678":
+            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
+            assert prop == "1234"
+        else:
+            assert False, "Unexpected component id: " + prop
+
+        TestBase.delete_file(self.OUTPUTFILE)
 
     def provide_cache_responses(self) -> None:
         responses.add(

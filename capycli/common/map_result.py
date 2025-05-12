@@ -48,31 +48,40 @@ class MapResult:
     def __init__(self, component: Optional[Component] = None) -> None:
         self.input_component: Optional[Component] = component
         self.result: str = MapResult.NO_MATCH
-        self._component_href: str = ""
-        self._release_href: str = ""
+        self._component_hrefs: List[str] = []
+        self._release_hrefs: List[str] = []
         self.releases: List[Any] = []
 
     @property
-    def component_href(self) -> str:
-        return self._component_href
+    def component_hrefs(self) -> List[str]:
+        return self._component_hrefs
 
-    @component_href.setter
-    def component_href(self, value: str) -> None:
-        self._component_href = value
-        value = value.split("/")[-1]
-        if self.input_component:
-            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID, value)
+    @component_hrefs.setter
+    def component_hrefs(self, value: List[str]) -> None:
+        self._component_hrefs = value
+        if not self.input_component:
+            return
+        if len(value) == 1:
+            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID,
+                                                    value[0].split("/")[-1])
+        else:
+            CycloneDxSupport.remove_property(self.input_component,
+                                             CycloneDxSupport.CDX_PROP_COMPONENT_ID)
 
     @property
-    def release_href(self) -> str:
-        return self._release_href
+    def release_hrefs(self) -> List[str]:
+        return self._release_hrefs
 
-    @release_href.setter
-    def release_href(self, value: str) -> None:
-        self._release_href = value
-        value = value.split("/")[-1]
-        if self.input_component:
-            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_SW360ID, value)
+    @release_hrefs.setter
+    def release_hrefs(self, value: List[str]) -> None:
+        self._release_hrefs = value
+        if not self.input_component:
+            return
+        if len(value) == 1:
+            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_SW360ID,
+                                                    value[0].split("/")[-1])
+        else:
+            CycloneDxSupport.remove_property(self.input_component, CycloneDxSupport.CDX_PROP_SW360ID)
 
     @classmethod
     def map_code_to_string(cls, map_code: str) -> str:

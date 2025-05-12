@@ -184,21 +184,21 @@ class MapBom(capycli.common.script_base.ScriptBase):
         """Maps a single SBOM item to the list of SW360 releases"""
 
         result = self.map_bom_commons(component)
+        result_release_ids = [r.split("/")[-1] for r in result.release_hrefs]
+        result_component_ids = [r.split("/")[-1] for r in result.component_hrefs]
 
         for release in self.releases:
             if ("Id" in release) and ("Sw360Id" not in release):
                 release["Sw360Id"] = release["Id"]
 
             # first check: unique id
-            result_release_id = result.release_href.split("/")[-1]
-            if result_release_id == release["Sw360Id"] or self.is_id_match(release, component):
+            if release["Sw360Id"] in result_release_ids or self.is_id_match(release, component):
                 self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                 break
 
             # second check: name AND version
             if (component.name and release.get("Name")):
-                result_component_id = result.component_href.split("/")[-1]
-                if result_component_id == release["ComponentId"]:
+                if release["ComponentId"] in result_component_ids:
                     name_match = True
                 else:
                     name_match = component.name.lower() == release["Name"].lower()
@@ -274,17 +274,38 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
     def map_bom_item_no_cache(self, component: Component) -> MapResult:
         """Maps a single SBOM item to SW360 via online checks (no cache!)"""
+
+        def get_release_details(href: str) -> Optional[Dict[str, Any]]:
+            """Get release data from SW360 for match result"""
+            if not self.client:
+                return None
+            real_release = self.client.get_release_by_url(href)
+            if not real_release:
+                print_red("Error accessing release " + href)
+                return None
+            release = ComponentCacheManagement.convert_release_details(self.client, real_release)
+            return release
+
         if not self.client:
             print_red("  No client!")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         result = self.map_bom_commons(component)
         components = []
-        if result.component_href:
-            components.append(result.component_href)
 
-        # if there's no purl match, search for component names
-        if len(components) == 0:
+        # Handle matches of PURL cache
+        if result.release_hrefs:
+            for href in result.release_hrefs:
+                release = get_release_details(href)
+                if release:
+                    self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
+                # If we have release matches by PURL, we're done
+                return result
+
+        if result.component_hrefs:
+            components += result.component_hrefs
+        else:
+            # if there's no purl match for components, search by name
             components2 = self.client.get_component_by_name(component.name)
             if not components2:
                 return result
@@ -295,35 +316,30 @@ class MapBom(capycli.common.script_base.ScriptBase):
             ]
 
         for compref in components:
-            if result.release_href:
-                rel_list = [{"_links": {"self": {"href": result.release_href}}}]
-            else:
-                comp = self.client.get_component_by_url(compref)
-                if not comp:
-                    continue
-                rel_list = comp["_embedded"].get("sw360:releases", [])
+            comp = self.client.get_component_by_url(compref)
+            if not comp:
+                continue
+            rel_list = comp["_embedded"].get("sw360:releases", [])
 
             # Sorted alternatives in descending version order
             # Please note: the release list sometimes contain just the href but no version
             try:
                 rel_list = sorted(rel_list,
                                   key=lambda x: "version" in x and ComparableVersion(
-                                      x.get("version", "")), reverse=True)  # type: ignore
+                                      x.get("version", "")), reverse=True)
             except ValueError:
                 pass  # we can live with an unsorted list
 
             for relref in rel_list:
                 href = relref["_links"]["self"]["href"]
-                real_release = self.client.get_release_by_url(href)
-                if not real_release:
-                    print_red("Error accessign release " + href)
-                    continue
 
                 # generate proper release for result
-                release = ComponentCacheManagement.convert_release_details(self.client, real_release)
+                release = get_release_details(href)
+                if not release:
+                    continue
 
                 # first check: unique id
-                if href == result.release_href or self.is_id_match(release, component):
+                if self.is_id_match(release, component):
                     self.add_match_if_better(result, release, MapResult.FULL_MATCH_BY_ID)
                     break
 
@@ -713,16 +729,9 @@ class MapBom(capycli.common.script_base.ScriptBase):
         result = MapResult(component)
 
         # search release and component by purl which is independent of the component cache.
-        if type(component.purl) is PackageURL:
-            component_href, release_href = self.external_id_svc.search_component_and_release(
-                component.purl.to_string())
-        else:
-            component_href, release_href = self.external_id_svc.search_component_and_release(
-                component.purl)  # type: ignore
-        if component_href:
-            result.component_href = component_href
-        if release_href:
-            result.release_href = release_href
+        if component.purl:
+            result.component_hrefs = self.external_id_svc.search_components_by_purl(component.purl)
+            result.release_hrefs = self.external_id_svc.search_releases_by_purl(component.purl)
 
         return result
 
