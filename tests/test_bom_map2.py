@@ -227,11 +227,15 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.result == MapResult.FULL_MATCH_BY_ID
         if res.releases[0]["Sw360Id"] == "1234":
             assert res.releases[0]["ComponentId"] == "a035"
+            assert res.releases[1]["Sw360Id"] == "1236"
+            assert res.releases[1]["ComponentId"] == "a034"
         elif res.releases[0]["Sw360Id"] == "1236":
             assert res.releases[0]["ComponentId"] == "a034"
+            assert res.releases[1]["Sw360Id"] == "1234"
+            assert res.releases[1]["ComponentId"] == "a035"
         else:
             assert False, "Unexpected release id"
-        assert len(res.releases) == 1
+        assert len(res.releases) == 2
 
     @responses.activate
     def test_map_bom_item_mixed_match(self) -> None:
@@ -1198,8 +1202,8 @@ class CapycliTestBomMap(CapycliTestBase):
         out = TestBase.capture_stdout(sut.run, args)
         assert "1 component read from SBOM" in out
         assert "Retrieving package-url ids, filter: {'pypi'}" in out
-        assert ("ADDED (1-full-match-by-id) 3765276512" in out
-                or "ADDED (1-full-match-by-id) 1234" in out)
+        assert "ADDED (1-full-match-by-id) 3765276512" in out
+        assert "ADDED (1-full-match-by-id) 1234" in out
         assert "Release 3765276512 with purl pkg:pypi/colorama@0.4.3 points to component 678dstzd8" in out
         assert "Release 1234 with purl pkg:pypi/colorama@0.4.3 points to component 12345678" in out
         assert "Candidate 3765276512 has purl pkg:pypi/colorama@0.4.3" in out
@@ -1208,17 +1212,25 @@ class CapycliTestBomMap(CapycliTestBase):
         # check result BOM
         sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE)
         assert sbom is not None
-        assert len(sbom.components) == 1
+        assert len(sbom.components) == 2
         assert sbom.components[0].version == "0.4.3"
+        assert sbom.components[1].version == "0.4.3"
         prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)
         assert prop == MapResult.FULL_MATCH_BY_ID
-        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
-        if prop == "678dstzd8":
+        prop = CycloneDxSupport.get_property_value(sbom.components[1], CycloneDxSupport.CDX_PROP_MAPRESULT)
+        assert prop == MapResult.FULL_MATCH_BY_ID
+
+        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
+        if prop == "3765276512":
+            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+            assert prop == "678dstzd8"
+            assert sbom.components[0].name == "colorama"
+            assert sbom.components[1].name == "python-colorama"
+        elif prop == "1234":
             prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
-            assert prop == "3765276512"
-        elif prop == "12345678":
-            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
-            assert prop == "1234"
+            assert prop == "12345678"
+            assert sbom.components[0].name == "python-colorama"
+            assert sbom.components[1].name == "colorama"
         else:
             assert False, "Unexpected component id: " + prop
 
