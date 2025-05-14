@@ -136,18 +136,16 @@ class TestPurlService(CapycliTestBase):
         purl_service.build_purl_cache()
 
         # returns all candidates including duplicates
-        res = purl_service.search_releases_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2")
-        assert len(res) == 3
+        res = purl_service.search_releases_by_purl(PackageURL("deb", "debian", "sed", "4.4+1~2"))
         # all purls point to the same release
-        res = purl_service.search_release_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2")
-        assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
+        assert len(res) == 1
+        assert res[0] == sw360_purl_releases[0]["_links"]["self"]["href"]
 
         # returns all candidates including duplicates
-        res = purl_service.search_components_by_external_id("package-url", "pkg:deb/debian/sed")
-        assert len(res) == 2
+        res = purl_service.search_components_by_purl(PackageURL("deb", "debian", "sed"))
         # all purls point to the same component
-        res = purl_service.search_component_by_external_id("package-url", "pkg:deb/debian/sed")
-        assert res == sw360_purl_components[0]["_links"]["self"]["href"]
+        assert len(res) == 1
+        assert res[0] == sw360_purl_components[0]["_links"]["self"]["href"]
 
     @responses.activate
     def test_purl_duplicates(self) -> None:
@@ -179,18 +177,13 @@ class TestPurlService(CapycliTestBase):
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
         # returns all candidates including duplicates
-        res = purl_service.search_releases_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
+        res = purl_service.search_releases_by_purl(PackageURL("gem", name="mini_portile2", version="2.4.0"))
         assert len(res) == 2
-        # request single match, allows no duplicates
-        res = purl_service.search_release_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
-        assert res is None
 
         # returns all candidates including duplicates
-        res = purl_service.search_components_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
+        res = purl_service.search_components_by_purl(PackageURL("deb", "debian", "sed",
+                                                                qualifiers={"type": "source"}))
         assert len(res) == 2
-        # request single match, allows no duplicates
-        res = purl_service.search_component_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
-        assert res is None
 
         # duplicates + normal data => duplicates must not be in purl_cache
         duplicate_releases["_embedded"]["sw360:releases"].append(
@@ -206,24 +199,19 @@ class TestPurlService(CapycliTestBase):
 
         purl_service = PurlService(self.app.client)
         purl_service.build_purl_cache()
-        res = purl_service.search_releases_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
+        res = purl_service.search_releases_by_purl(PackageURL("gem", name="mini_portile2", version="2.4.0"))
         assert len(res) == 2
-        res = purl_service.search_releases_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2?type=source")
+        res = purl_service.search_releases_by_purl(PackageURL("deb", "debian", "sed", "4.4+1~2",
+                                                              qualifiers={"type": "source"}))
         assert len(res) == 1
+        assert res[0] == sw360_purl_releases[0]["_links"]["self"]["href"]
 
-        res = purl_service.search_release_by_external_id("package-url", "pkg:gem/mini_portile2@2.4.0")
-        assert res is None
-        res = purl_service.search_release_by_external_id("package-url", "pkg:deb/debian/sed@4.4%2B1%7E2?type=source")
-        assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
-
-        res = purl_service.search_components_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
+        res = purl_service.search_components_by_purl(PackageURL("deb", "debian", "sed",
+                                                                qualifiers={"type": "source"}))
         assert len(res) == 2
-        res = purl_service.search_components_by_external_id("package-url", "pkg:gem/mini_portile2")
+        res = purl_service.search_components_by_purl(PackageURL("gem", name="mini_portile2"))
         assert len(res) == 1
-        res = purl_service.search_component_by_external_id("package-url", "pkg:deb/debian/sed?type=source")
-        assert res is None
-        res = purl_service.search_component_by_external_id("package-url", "pkg:gem/mini_portile2")
-        assert res == sw360_purl_components[1]["_links"]["self"]["href"]
+        assert res[0] == sw360_purl_components[1]["_links"]["self"]["href"]
 
     @responses.activate
     def test_purl_invalid(self) -> None:
@@ -253,30 +241,20 @@ class TestPurlService(CapycliTestBase):
     def test_purl_search_release(self) -> None:
         purl_service = self.purl_build_cache()
 
-        res = purl_service.search_release_by_external_id(
-            "package-url", "pkg:deb/debian/sed@4.4%2B1%7E2?type=source")
-        assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
-
-        res = purl_service.search_release_by_external_id(
-            "package-url", "pkg:deb/debian/sed@4.4+1%7E2")
-        assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
-
-        res = purl_service.search_release_by_external_id(
-            "package-url", "pkg:deb/debian/sed@4.4+1~2?type=source")
-        assert res == sw360_purl_releases[0]["_links"]["self"]["href"]
+        res = purl_service.search_releases_by_purl(
+            PackageURL("deb", "debian", "sed", "4.4+1~2", qualifiers={"type": "source"}))
+        assert res[0] == sw360_purl_releases[0]["_links"]["self"]["href"]
 
     @responses.activate
     def test_purl_search_component(self) -> None:
         purl_service = self.purl_build_cache()
-        res = purl_service.search_component_by_external_id(
-            "package-url",
-            sw360_purl_components[0]["externalIds"]["package-url"])
-        assert res == sw360_purl_components[0]["_links"]["self"]["href"]
+        res = purl_service.search_components_by_purl(
+            PackageURL.from_string(sw360_purl_components[0]["externalIds"]["package-url"]))
+        assert res[0] == sw360_purl_components[0]["_links"]["self"]["href"]
 
-        res = purl_service.search_component_by_external_id(
-            "package-url",
-            "pkg:deb/debian/mypkg")
-        assert res is None
+        res = purl_service.search_components_by_purl(
+            PackageURL("deb", "debian", "mypkg"))
+        assert res == []
 
     @responses.activate
     def test_purl_search_component_via_release(self) -> None:
@@ -302,10 +280,9 @@ class TestPurlService(CapycliTestBase):
             responses.GET,
             sw360_purl_releases[1]["_links"]["self"]["href"],
             json={"_links": {"sw360:component": {"href": "myurl"}}})
-        res = purl_service.search_component_by_external_id(
-            "package-url",
-            sw360_purl_components[1]["externalIds"]["package-url"])
-        assert res == "myurl"
+        res = purl_service.search_components_by_purl(
+            PackageURL.from_string(sw360_purl_components[1]["externalIds"]["package-url"]))
+        assert res[0] == "myurl"
 
     @responses.activate
     def test_purl_search_component_via_release_conflicts(self) -> None:
@@ -339,19 +316,15 @@ class TestPurlService(CapycliTestBase):
 
         purl_service = PurlService(self.app.client)
         # request all results
-        res = purl_service.search_components_by_external_id(
-            "package-url",
-            sw360_purl_components[1]["externalIds"]["package-url"])
+        res = purl_service.search_components_by_purl(
+            PackageURL.from_string(sw360_purl_components[1]["externalIds"]["package-url"]))
         assert len(res) == 2
-        assert res[0]["href"] == SW360_BASE_URL + "components/1"
-        assert res[0]["release_href"] == sw360_purl_releases[1]["_links"]["self"]["href"]
-        assert res[1]["href"] == SW360_BASE_URL + "components/2"
-        assert res[1]["release_href"] == SW360_BASE_URL + "releases/06dd"
-        # request single match, allows no conflicts
-        res = purl_service.search_component_by_external_id(
-            "package-url",
-            sw360_purl_components[1]["externalIds"]["package-url"])
-        assert res is None
+        if res[0] == SW360_BASE_URL + "components/2":
+            assert res[1] == SW360_BASE_URL + "components/1"
+        elif res[0] == SW360_BASE_URL + "components/1":
+            assert res[1] == SW360_BASE_URL + "components/2"
+        else:
+            assert False, "Unexpected result: " + str(res)
 
     def test_purl_search_component_and_release(self) -> None:
         test_cache: Dict[str, Any] = {
@@ -374,11 +347,12 @@ class TestPurlService(CapycliTestBase):
             return
 
         purl_service = PurlService(self.app.client, cache=test_cache)
-        c, r = purl_service.search_component_and_release("pkg:maven/org.test/c1@1")
+        c = purl_service.search_components_by_purl(PackageURL("maven", "org.test", "c1", "1"))
+        r = purl_service.search_releases_by_purl(PackageURL("maven", "org.test", "c1", "1"))
         self.assertIsNotNone(c)
         self.assertIsNotNone(r)
-        self.assertEqual(c, "self/href/c1")
-        self.assertEqual(r, "self/href/r1")
+        self.assertEqual(c[0], "self/href/c1")
+        self.assertEqual(r[0], "self/href/r1")
 
 
 if __name__ == "__main__":

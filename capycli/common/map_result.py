@@ -46,31 +46,42 @@ class MapResult:
     NO_MATCH = "9-no-match"
 
     def __init__(self, component: Optional[Component] = None) -> None:
-        self.component: Optional[Component] = component
+        self.input_component: Optional[Component] = component
         self.result: str = MapResult.NO_MATCH
-        self._component_id: str = ""
-        self._release_id: str = ""
+        self._component_hrefs: List[str] = []
+        self._release_hrefs: List[str] = []
         self.releases: List[Any] = []
 
     @property
-    def component_id(self) -> str:
-        return self._component_id
+    def component_hrefs(self) -> List[str]:
+        return self._component_hrefs
 
-    @component_id.setter
-    def component_id(self, value: str) -> None:
-        self._component_id = value
-        if self.component:
-            CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_COMPONENT_ID, value)
+    @component_hrefs.setter
+    def component_hrefs(self, value: List[str]) -> None:
+        self._component_hrefs = value
+        if not self.input_component:
+            return
+        if len(value) == 1:
+            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_COMPONENT_ID,
+                                                    value[0].split("/")[-1])
+        else:
+            CycloneDxSupport.remove_property(self.input_component,
+                                             CycloneDxSupport.CDX_PROP_COMPONENT_ID)
 
     @property
-    def release_id(self) -> str:
-        return self._release_id
+    def release_hrefs(self) -> List[str]:
+        return self._release_hrefs
 
-    @release_id.setter
-    def release_id(self, value: str) -> None:
-        self._release_id = value
-        if self.component:
-            CycloneDxSupport.update_or_set_property(self.component, CycloneDxSupport.CDX_PROP_SW360ID, value)
+    @release_hrefs.setter
+    def release_hrefs(self, value: List[str]) -> None:
+        self._release_hrefs = value
+        if not self.input_component:
+            return
+        if len(value) == 1:
+            CycloneDxSupport.update_or_set_property(self.input_component, CycloneDxSupport.CDX_PROP_SW360ID,
+                                                    value[0].split("/")[-1])
+        else:
+            CycloneDxSupport.remove_property(self.input_component, CycloneDxSupport.CDX_PROP_SW360ID)
 
     @classmethod
     def map_code_to_string(cls, map_code: str) -> str:
@@ -109,7 +120,7 @@ class MapResult:
                 + more
             )
 
-        if not self.component:
+        if not self.input_component:
             return (
                 self.map_code_to_string(self.result)
                 + ", (no component), "
@@ -119,9 +130,9 @@ class MapResult:
             return (
                 self.map_code_to_string(self.result)
                 + ", "
-                + str(self.component.name)
+                + str(self.input_component.name)
                 + ", "
-                + str(self.component.version or "")
+                + str(self.input_component.version or "")
                 + " "
                 + str(rel)
             )
