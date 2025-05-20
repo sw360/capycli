@@ -24,6 +24,7 @@ from capycli.common.github_support import GitHubSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
 
+UNITTEST_NO_REF = 'unittest/no-ref'
 
 class MockProject:
     API_PREFIX = 'https://api.github.com/repos'
@@ -92,6 +93,14 @@ class MockProject:
                                                           '/git/refs/tags/', 1),
                        } for item in self.data
                       if item.get('name', '').startswith(prefix)]
+
+            # Handle special case for response without 'ref'
+            # (remove the 'ref' key from the dict)
+            if UNITTEST_NO_REF in _url.path:
+                 result = [{'url': item['zipball_url'].replace('/zipball/refs/tags/',
+                                                          '/git/refs/tags/', 1),
+                            } for item in self.data
+                            if item.get('name', '').startswith(prefix)]
         elif '/zipball/refs/tags/' in _url.path:
             result = ''
         try:
@@ -173,6 +182,15 @@ GITHUB_PROJECTS = (
                         "autresphere/ASMediaFocusManager/commits/2e884ed20bc99bd316eb06f17136e3db0e713682")
             },
             "node_id": "MDM6UmVmNzU2MTYyNzpyZWZzL3RhZ3MvMC42"}]),
+    (UNITTEST_NO_REF, [
+        {
+            'name': 'v1.2.3',
+            'zipball_url': f'https://api.github.com/repos/{UNITTEST_NO_REF}/zipball/refs/tags/v1.2.3',
+            'tarball_url': f'https://api.github.com/repos/{UNITTEST_NO_REF}/tarball/refs/tags/v1.2.3',
+            'commit': {
+                'sha': 'dummy_commit_sha',
+                'url': f'https://api.github.com/repos/{UNITTEST_NO_REF}/commits/dummy_commit_sha'},  # noqa
+            'node_id': 'dummy_node_id'}]),
 )
 
 

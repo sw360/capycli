@@ -232,12 +232,15 @@ class FindSources(capycli.common.script_base.ScriptBase):
                     w_prefix = [w_prefix]
 
                 # ORDER BY tag-name-length DESC
-                by_size = sorted([(len(tag['ref']), tag) for tag in w_prefix],
+                # Note: it may happen that the GithHubSupport.github_request
+                # returns items without 'ref'
+                by_size = sorted([(len(tag.get('ref','')), tag)
+                                    for tag in w_prefix],
                                  key=lambda x: x[0])
                 w_prefix = [itm[1] for itm in reversed(by_size)]
 
                 transformed_for_get_matching_tags = [
-                    {'name': tag['ref'].replace('refs/tags/', '', 1),
+                    {'name': tag.get('ref','').replace('refs/tags/', '', 1),
                      'zipball_url': tag['url'].replace(
                         '/git/refs/tags/', '/zipball/refs/tags/', 1),
                      } for tag in w_prefix]
