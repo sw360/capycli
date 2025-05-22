@@ -26,6 +26,7 @@ from tests.test_base import AppArguments, TestBase
 
 UNITTEST_NO_REF = 'unittest/no-ref'
 
+
 class MockProject:
     API_PREFIX = 'https://api.github.com/repos'
 
@@ -97,12 +98,12 @@ class MockProject:
             # Handle special case for response without 'ref'
             # (remove the 'ref' key from the dict)
             if UNITTEST_NO_REF in _url.path:
-                 result = [{'url': item['zipball_url'].replace('/zipball/refs/tags/',
-                                                          '/git/refs/tags/', 1),
-                            } for item in self.data
-                            if item.get('name', '').startswith(prefix)]
-        elif '/zipball/refs/tags/' in _url.path:
-            result = ''
+                result = [{'url': item['zipball_url']
+                           .replace('/zipball/refs/tags/',
+                                    '/git/refs/tags/', 1)} for item in self.data
+                          if item.get('name', '').startswith(prefix)]
+            elif '/zipball/refs/tags/' in _url.path:
+                result = ''
         try:
             return self._as_response(result) if return_response else result
         except UnboundLocalError as err:

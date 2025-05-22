@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict, Optional, List
+from typing import Any, Dict, List, Optional
 
 import packageurl
 from sw360 import SW360
