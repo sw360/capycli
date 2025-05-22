@@ -10,7 +10,7 @@ import os
 from typing import Any, Dict
 
 import responses
-from cyclonedx.model import ExternalReferenceType, XsUri
+from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri, HashType, HashAlgorithm
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -227,11 +227,15 @@ class CapycliTestBomMap(CapycliTestBase):
         assert res.result == MapResult.FULL_MATCH_BY_ID
         if res.releases[0]["Sw360Id"] == "1234":
             assert res.releases[0]["ComponentId"] == "a035"
+            assert res.releases[1]["Sw360Id"] == "1236"
+            assert res.releases[1]["ComponentId"] == "a034"
         elif res.releases[0]["Sw360Id"] == "1236":
             assert res.releases[0]["ComponentId"] == "a034"
+            assert res.releases[1]["Sw360Id"] == "1234"
+            assert res.releases[1]["ComponentId"] == "a035"
         else:
             assert False, "Unexpected release id"
-        assert len(res.releases) == 1
+        assert len(res.releases) == 2
 
     @responses.activate
     def test_map_bom_item_mixed_match(self) -> None:
@@ -287,6 +291,34 @@ class CapycliTestBomMap(CapycliTestBase):
         res = self.app.map_bom_item(bomitem, False, False)
         assert res.result == MapResult.MATCH_BY_NAME
         assert len(res.releases) == 2
+
+    @responses.activate
+    def test_map_bom_item_mixed_good_matches(self) -> None:
+        bomitem = Component(
+            name="mail",
+            version="1.4",
+            external_references=[ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                url=XsUri("file:mail-1.4.tar.gz"))])
+
+        self.app.releases = [{"Id": "1111", "ComponentId": "b001",
+                              "Name": "mail (Python)", "Version": "1.4",
+                              "SourceFile": "file:mail-1.4.tar.gz",
+                              "ExternalIds": {}},
+                             {"Id": "1112", "ComponentId": "b002",
+                              "Name": "Mail", "Version": "1.4",
+                              "ExternalIds": {}}]
+
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+        self.app.releases = self.app.releases[::-1]  # reverse order
+
+        res = self.app.map_bom_item(bomitem, False, False)
+        assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
 
     @responses.activate
     def test_map_bom_item_mixed_match_similar(self) -> None:
@@ -406,6 +438,83 @@ class CapycliTestBomMap(CapycliTestBase):
                           json=component_matches)
         res = self.app.map_bom_item_no_cache(bomitem)
         assert res.result == MapResult.FULL_MATCH_BY_NAME_AND_VERSION
+        assert len(res.releases) == 1
+
+    @responses.activate
+    def test_map_bom_item_nocache_mixed_good_matches(self) -> None:
+        """Test mixed match with two good matches (version match and source file match)"""
+
+        bomitem = Component(
+            name="mail", version="1.4", external_references=[ExternalReference(
+                type=ExternalReferenceType.DISTRIBUTION,
+                comment=CaPyCliBom.SOURCE_FILE_COMMENT,
+                url=XsUri("file:mail-1.4.tar.gz"),
+                hashes=[HashType(alg=HashAlgorithm.SHA_1,
+                                 content="0c9ab87312fa065a06bd68b050671c1d290b9559")])])
+
+        component_matches = {"_embedded": {"sw360:components": [
+            {"name": "mail",
+             "_links": {"self": {"href": SW360_BASE_URL + 'components/b001'}}},
+            {"name": "Mail",
+             "_links": {"self": {"href": SW360_BASE_URL + 'components/b002'}}}]}}
+        component_data1 = {"_embedded": {"sw360:releases": [{
+            "_links": {"self": {"href": SW360_BASE_URL + 'releases/1111'}}}]}}
+        component_data2 = {"_embedded": {"sw360:releases": [{
+            "_links": {"self": {"href": SW360_BASE_URL + 'releases/1112'}}}]}}
+        release_data1 = {
+            "name": "mail", "version": "1.4_pypi",
+            "_links": {
+                "self": {"href": SW360_BASE_URL + 'releases/1111'},
+                "sw360:component": {"href": SW360_BASE_URL + "components/b001"}},
+            "_embedded": {'sw360:attachments': [
+                {'filename': 'mail-1.4.tar.gz', 'sha1': '0c9ab87312fa065a06bd68b050671c1d290b9559',
+                 'attachmentType': 'SOURCE',
+                 '_links': {'self': {'href': SW360_BASE_URL + 'attachments/6f1e'}}}]}}
+        release_data2 = {"name": "Mail", "version": "1.4", "_links": {
+            "self": {"href": SW360_BASE_URL + 'releases/1112'},
+            "sw360:component": {"href": SW360_BASE_URL + "components/b002"}}}
+
+        # release matches in two components
+        responses.add(responses.GET, SW360_BASE_URL + 'components?name=mail',
+                      json=component_matches)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/b001',
+                      json=component_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'components/b002',
+                      json=component_data2)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1111',
+                      json=release_data1)
+        responses.add(responses.GET, SW360_BASE_URL + 'releases/1112',
+                      json=release_data2)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+        # reverse component order
+        component_matches["_embedded"]["sw360:components"] = component_matches["_embedded"]["sw360:components"][::-1]
+        responses.add(responses.GET, SW360_BASE_URL + 'components?name=mail',
+                      json=component_matches)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+        # release matches in one component
+        component_data1["_embedded"]["sw360:releases"] += component_data2["_embedded"]["sw360:releases"]
+        component_data2["_embedded"]["sw360:releases"] = []
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b001', json=component_data1)
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b002', json=component_data2)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
+        assert len(res.releases) == 1
+
+        # reverse release order
+        component_data1["_embedded"]["sw360:releases"] = component_data1["_embedded"]["sw360:releases"][::-1]
+        responses.replace(responses.GET, SW360_BASE_URL + 'components/b001', json=component_data1)
+
+        res = self.app.map_bom_item_no_cache(bomitem)
+        assert res.result == MapResult.FULL_MATCH_BY_HASH
         assert len(res.releases) == 1
 
     @responses.activate
@@ -1093,8 +1202,8 @@ class CapycliTestBomMap(CapycliTestBase):
         out = TestBase.capture_stdout(sut.run, args)
         assert "1 component read from SBOM" in out
         assert "Retrieving package-url ids, filter: {'pypi'}" in out
-        assert ("ADDED (1-full-match-by-id) 3765276512" in out
-                or "ADDED (1-full-match-by-id) 1234" in out)
+        assert "ADDED (1-full-match-by-id) 3765276512" in out
+        assert "ADDED (1-full-match-by-id) 1234" in out
         assert "Release 3765276512 with purl pkg:pypi/colorama@0.4.3 points to component 678dstzd8" in out
         assert "Release 1234 with purl pkg:pypi/colorama@0.4.3 points to component 12345678" in out
         assert "Candidate 3765276512 has purl pkg:pypi/colorama@0.4.3" in out
@@ -1103,17 +1212,25 @@ class CapycliTestBomMap(CapycliTestBase):
         # check result BOM
         sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE)
         assert sbom is not None
-        assert len(sbom.components) == 1
+        assert len(sbom.components) == 2
         assert sbom.components[0].version == "0.4.3"
+        assert sbom.components[1].version == "0.4.3"
         prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)
         assert prop == MapResult.FULL_MATCH_BY_ID
-        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
-        if prop == "678dstzd8":
+        prop = CycloneDxSupport.get_property_value(sbom.components[1], CycloneDxSupport.CDX_PROP_MAPRESULT)
+        assert prop == MapResult.FULL_MATCH_BY_ID
+
+        prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
+        if prop == "3765276512":
+            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
+            assert prop == "678dstzd8"
+            assert sbom.components[0].name == "colorama"
+            assert sbom.components[1].name == "python-colorama"
+        elif prop == "1234":
             prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
-            assert prop == "3765276512"
-        elif prop == "12345678":
-            prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_SW360ID)
-            assert prop == "1234"
+            assert prop == "12345678"
+            assert sbom.components[0].name == "python-colorama"
+            assert sbom.components[1].name == "colorama"
         else:
             assert False, "Unexpected component id: " + prop
 
