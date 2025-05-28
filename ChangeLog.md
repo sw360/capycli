@@ -5,6 +5,11 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## 2.8.1
+
+* `bom findsources`: handle the case when a call to the GitHub API returns a
+  response without the `ref` key.
+
 ## 2.8.0
 
 * fix in legacy to cdx convert fix for componentId.
