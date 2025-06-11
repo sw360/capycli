@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2024 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -259,6 +259,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             # ensure that we have the only correct external-id name: package-url
             data["externalIds"]["package-url"] = cx_comp.purl.to_string()
 
+        # add information that this release was created by CaPyCli
+        data["additionalData"] = {}
+        data["additionalData"]["createdWith"] = "CaPyCli: " + capycli.get_app_version()
+
         # use project site as fallback for source code download url
         website = CycloneDxSupport.get_ext_ref_website(cx_comp)
         repo = CycloneDxSupport.get_ext_ref_repository(cx_comp)
@@ -318,6 +322,11 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if cx_comp.purl:
             purl = PurlUtils.component_purl_from_release_purl(cx_comp.purl)
             data["externalIds"] = {"package-url": purl}
+
+        # add information that this component was created by CaPyCli
+        data["additionalData"] = {}
+        data["additionalData"]["createdWith"] = "CaPyCli: " + capycli.get_app_version()
+
         return data
 
     def create_release(self, cx_comp: Component, component_id: str) -> Optional[Dict[str, Any]]:

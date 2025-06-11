@@ -5,6 +5,12 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* CaPyCLI now marks components, releases and projects as created by CaPyCLI,
+  i.e. it adds an `additionalData` entry with the key `createdWith` and the
+  value of the CaPyCLI and version, i.e. something like `CaPyCli 2.8.1`.
+
 ## 2.8.1
 
 * `bom findsources`: handle the case when a call to the GitHub API returns a

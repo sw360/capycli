@@ -95,6 +95,10 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             if project_info and element in project_info:
                 project_info.pop(element)
 
+        # add information that this project was created by CaPyCli
+        project_info["additionalData"] = {}
+        project_info["additionalData"]["createdWith"] = "CaPyCli: " + capycli.get_app_version()
+
         try:
             print_text("  " + str(len(data)) + " releases in SBOM")
 
@@ -253,6 +257,10 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         data["description"] = project_info.get("description", "")
         data["projectType"] = project_info.get("projectType", "")
         data["visibility"] = project_info.get("visibility", "")
+
+        # add information that this project was created by CaPyCli
+        data["additionalData"] = {}
+        data["additionalData"]["createdWith"] = "CaPyCli: " + capycli.get_app_version()
 
         try:
             result = self.client.create_new_project(
