@@ -351,7 +351,7 @@ class TestCreateProject(TestBase):
                     "tag": "SI BP DB Demo",
                     "version": "TEST",
                     "visibility": "EVERYONE",
-                    "additionalData": {"createdWith": "CaPyCli: 2.4.0"}}
+                    "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}}
                 )
             ],
             status=201,
