@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2023 Siemens
+# Copyright (c) 2021-2025 Siemens
 # All Rights Reserved.
 # Author: gernot.hillier@siemens.com, thomas.graf@siemens.com
 #
@@ -47,7 +47,8 @@ class CapycliTestBomCreateComponents(TestBase):
             "name": "activemodel", "componentType": "OSS",
             "description": "something", "categories": ["devel"],
             "homepage": "http://test.org", "languages": ["Ruby"],
-            "externalIds": {"package-url": "pkg:gem/activemodel"}}
+            "externalIds": {"package-url": "pkg:gem/activemodel"},
+            "additionalData": {"createdWith": "CaPyCli: 2.4.0"}}
 
         responses.add(
             responses.POST,
@@ -62,7 +63,8 @@ class CapycliTestBomCreateComponents(TestBase):
         release_data = {"name": "activemodel", "version": "5.2.4.3",
                         "mainlineState": "OPEN", "languages": ["Ruby"],
                         "sourceCodeDownloadurl": "http://test.org",
-                        "externalIds": {"package-url": "pkg:gem/activemodel@5.2.4.3"}}
+                        "externalIds": {"package-url": "pkg:gem/activemodel@5.2.4.3"},
+                        "additionalData": {"createdWith": "CaPyCli: 2.4.0"}}
         responses.add(
             responses.POST,
             SW360_BASE_URL + 'releases',
@@ -114,7 +116,8 @@ class CapycliTestBomCreateComponents(TestBase):
                 "name": "activemodel",
                 "componentId": "06a6e5",
                 "version": "5.2.4.3",
-                "mainlineState": "OPEN"})],
+                "mainlineState": "OPEN",
+                "additionalData": {"createdWith": "CaPyCli: 2.4.0"}})],
             # server answer with created release data
             json={"version": "5.2.4.3",
                   "_links": {"self": {

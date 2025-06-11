@@ -9,7 +9,7 @@
 
 * CaPyCLI now marks components, releases and projects as created by CaPyCLI,
   i.e. it adds an `additionalData` entry with the key `createdWith` and the
-  value of the CaPyCLI and version, i.e. something like `CaPyCli 2.8.1`.
+  value of the CaPyCLI and version, i.e. something like `CaPyCli: 2.8.1`.
 
 ## 2.8.1
 
