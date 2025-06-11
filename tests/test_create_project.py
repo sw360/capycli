@@ -13,6 +13,7 @@ from typing import Any, Dict, Tuple
 import responses
 import responses.matchers
 
+import capycli
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_project import CreateProject
 from tests.test_base import AppArguments, TestBase
@@ -693,12 +694,12 @@ class TestCreateProject(TestBase):
                         }
                     }]
                 },
-                "additionalData": {"createdWith": "CaPyCli: 2.4.0"}
+                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}
             },
             match=[
                 min_json_matcher(
                     {
-                        "additionalData": {"createdWith": "CaPyCli: 2.4.0"}
+                        "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}
                     })
             ],
             status=201,
