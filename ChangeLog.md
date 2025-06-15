@@ -5,6 +5,19 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* Improved detection detection for NuGet packages. If the project references `(runtimepack.)Microsoft.NETCore.App`,
+  `(runtimepack.)Microsoft.WindowsDesktop.App` or `(runtimepack.)Microsoft.AspNetCore.App´, then only
+  these top-level packages will get added to the SBOM and not also all sub-packages.
+
+  This will only work properly if self-contained a build for a specific `rid` like `win-x64` has been
+  done or the `dotnet publish` command has been used. Dependency detection if only done for `Release`
+  builds and not for `Debug` builds.
+  
+  The resulting SBOM also does not contain any analyzers, build, test or mocking packages that are
+  not part of the final delivery.
+
 ## 2.8.1
 
 * `bom findsources`: handle the case when a call to the GitHub API returns a

@@ -1,15 +1,16 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-25 Siemens
 # All Rights Reserved.
 # Author: martin.stoffel@siemens.com, thomas.graf@siemens.com
 #
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import glob
 import os
 import re
 import sys
-from typing import Any
+from typing import Any, List
 from xml.dom import minidom
 
 from cyclonedx.model import Property
@@ -32,6 +33,105 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
     Determine Nuget components/dependencies for a given project.
     Read a packages.config file or a .net core project file, extracts the real dependencies.
     """
+
+    def __init__(self) -> None:
+        self.verbose = False
+        self.rid_list: List[str] = [
+            # Windows RIDs
+            "win-x64", "win-x86", "win-arm64",
+            # Linux RIDs
+            "linux-x64",  # Most desktop distributions like CentOS Stream, Debian, Fedora, Ubuntu, and derivatives
+            "linux-musl-x64",  # Lightweight distributions using musl like Alpine Linux
+            "linux-musl-arm64",  # Used to build Docker images for 64-bit Arm v8 and minimalistic base images
+            "linux-arm",  # Linux distributions running on Arm like Raspbian on Raspberry Pi Model 2+
+            "linux-arm64",  # Linux distributions running on 64-bit Arm like Ubuntu Server 64-bit on RasPi Model 3+
+            "linux-bionic-arm64",  # Distributions using Android's bionic libc, for example, Termux
+            "linux-loongarch64",  # Linux distributions running on LoongArch64
+
+            # macOS RIDs
+            "osx-x64",  # Minimum OS version is macOS 10.12 Sierra
+            "osx-arm64",
+
+            # iOS RIDs
+            "ios-arm64",
+            "iossimulator-arm64",
+            "iossimulator-x64",
+
+            # Android RIDs
+            "android-arm64"
+            "android-arm"
+            "android-x64"
+            "android-x86"
+        ]
+        self.wellknown_dev_dependencies: List[str] = [
+            # Analyzers
+            "StyleCop.Analyzers",
+            "xunit.analyzers",
+            "NUnit.Analyzers",
+            "Microsoft.CodeAnalysis",
+            "Microsoft.CodeAnalysis.Common",
+            "Microsoft.CodeAnalysis.Analyzers",
+            "Microsoft.CodeAnalysis.CSharp",
+            "Microsoft.CodeAnalysis.Razor",
+            "Microsoft.CodeAnalysis.CSharp.CodeStyle",
+
+            # Code generation
+            "Microsoft.CodeAnalysis.CSharp.Workspaces",
+            "Microsoft.CodeAnalysis.Workspaces.Common",
+            "Microsoft.CodeAnalysis.VisualBasic",
+            "Microsoft.CodeAnalysis.Scripting",
+            "Microsoft.CodeAnalysis.Scripting.Common",
+            "Microsoft.CodeAnalysis.VisualBasic.Workspaces",
+            "Microsoft.CodeAnalysis.AnalyzerUtilities",
+            "Microsoft.CodeAnalysis.CSharp.Features",
+            "Microsoft.CodeAnalysis.Workspaces.MSBuild",
+            "Microsoft.CodeAnalysis.NetAnalyzers",
+            "Microsoft.CodeAnalysis.Compilers",
+            "Roslynator.Analyzers",
+            "Roslynator.Formatting.Analyzers",
+            "Roslynator.CodeAnalysis.Analyzers",
+            "Roslynator.CodeFixes",
+            "Roslynator.DotNet.Cli",
+            "Roslynator.Core",
+            "Roslynator.CSharp",
+
+            # Test frameworks
+            "Microsoft.NET.Test.Sdk",
+            "MSTest.TestAdapter",
+            "MSTest.TestFramework",
+            "xunit"
+            "xunit.abstractions",
+            "xunit.core",
+            "xunit.assert",
+            "xunit.runner.visualstudio",
+            "xunit.runner.console",
+            "xunit.runner.json",
+            "xunit.runner.msbuild",
+            "NUnit",
+            "NUnit3.TestAdapter",
+            "NUnit.ConsoleRunner",
+            "NUnit.Console",
+            "NUnit.Engine",
+
+            # Mocking frameworks
+            "Moq",
+
+            # Code coverage
+            "coverlet.msbuild",
+            "coverlet.collector",
+            "Microsoft.CodeCoverage"
+
+            # Extras
+            "Microsoft.CSharp",
+            "Microsoft.NETCore.Platforms",
+            "Microsoft.NETCore.Targets",
+            "Microsoft.TestPlatform.ObjectModel",
+            "Microsoft.TestPlatform.TestHost",
+            "NETStandard.Library"
+        ]
+        self.name_net_runtime = ".Net Runtime"
+        self.name_net_desktop_runtime = ".Net Desktop Runtime"
+        self.name_aspnet_core = "ASP.NET Core"
 
     def convert_project_file(self, csproj_file: str) -> Bom:
         """Read packages.config or .csproj file and convert to bill of material"""
@@ -57,7 +157,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                 value="C#")
             cxcomp.properties.add(prop)
 
-            sbom.components.add(cxcomp)
+            self.add_component_to_bom(sbom, cxcomp)
 
         # new style: PackageReference
         for a in data.getElementsByTagName("ItemGroup"):
@@ -88,9 +188,23 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                     value="C#")
                 cxcomp.properties.add(prop)
 
-                sbom.components.add(cxcomp)
+                self.add_component_to_bom(sbom, cxcomp)
 
         return sbom
+
+    def is_test_project(self, csproj_file: str) -> bool:
+        """
+        Check if the given csproj file is a test project.
+        This is done by checking for the presence of certain test-related packages.
+        """
+        data = minidom.parse(csproj_file)
+
+        if data.getElementsByTagName("IsTestProject"):
+            for s in data.getElementsByTagName("IsTestProject"):
+                if s.firstChild and s.firstChild.nodeValue == "true":  # type: ignore
+                    return True
+
+        return False
 
     def convert_solution_file(self, solution_file: str) -> Bom:
         """
@@ -118,6 +232,8 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                     print_text("  Processing", parts[5])
                     csproj_file = os.path.join(slnfolder, parts[5])
                     csproj_bom = self.convert_project_file(csproj_file)
+                    if not self.is_test_project(csproj_file):
+                        self.determine_extras(csproj_file, csproj_bom)
                     totalbom = self.merge_bom(totalbom, csproj_bom)
 
         return totalbom
@@ -138,6 +254,198 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
         return bom
 
+    def determine_extras(self, csproj_file: str, bom: Bom) -> None:
+        """Determine extra dependencies, .Net Runtime, ASP.NET, etc."""
+        folder = os.path.dirname(csproj_file)
+        release_folder = os.path.join(folder, "bin", "Release")
+        if not os.path.isdir(release_folder) and self.verbose:
+            print_yellow("    Release folder not found: " + release_folder)
+            return
+
+        for file in glob.glob(os.path.join(release_folder, "**", "*.deps.json"), recursive=True):
+            self.analyse_deps_json_file(file, bom)
+
+    def analyse_deps_json_file(self, deps_json_file: str, bom: Bom) -> None:
+        """Analyse the deps.json file and add components to the BOM."""
+
+        # There can be three different .deps.json files:
+        # 1. .deps.json file in the runtime folder, i.e. "net8.0"
+        #    This one does not contain the .Net Runtime dependencies
+        # 2. .deps.json file in the runtime/rid folder, i.e. "net8.0/win-x64"
+        #    This is the one we need to analyse, it contains all the real dependencies
+        # 3. .deps.json file in the runtime/rid/publish folder, i.e. "net8.0/win-x64/publish"
+        #    This one should be identical to the one in the runtime/rid folder
+
+        folder = os.path.dirname(deps_json_file)
+        parts = os.path.split(folder)
+
+        if parts[1] not in self.rid_list:
+            if self.verbose:
+                print_yellow("    Ignoring .deps.json file in folder " + folder + ", not a recognized RID: " + parts[1])
+            return
+
+        print_text("  Processing .deps.json file " + deps_json_file)
+        parts = os.path.split(deps_json_file)
+        project_name = parts[1][:-10]
+        try:
+            deps_data = capycli.common.json_support.load_json_file(deps_json_file)
+        except Exception as ex:
+            print_red("Error reading .deps.json file: " + repr(ex))
+            return
+
+        if "targets" not in deps_data:
+            print_red("No targets found in .deps.json file.")
+            return
+
+        for target in deps_data["targets"]:
+            for package_name, package_info in deps_data["targets"][target].items():
+                if package_name.startswith(project_name):
+                    # Skip the project itself, we only want the dependencies
+                    continue
+
+                if package_name.startswith("runtimepack.Microsoft.NETCore.App"):
+                    self.add_runtime_component(package_name, bom)
+                    continue
+
+                if package_name.startswith("runtimepack.Microsoft.WindowsDesktop.App"):
+                    self.add_runtime_desktop_component(package_name, bom)
+                    continue
+
+                if package_name.startswith("runtimepack.Microsoft.AspNetCore.App"):
+                    self.add_aspnet_component(package_name, bom)
+                    continue
+
+                # Ignore well-known dev dependencies
+                ignore = False
+                for to_ignore in self.wellknown_dev_dependencies:
+                    if package_name.startswith(to_ignore):
+                        if self.verbose:
+                            print_yellow("    Ignoring well-known dev dependency " + package_name)
+                        ignore = True
+                        break
+
+                if ignore:
+                    continue
+
+                # Ignore all runtime stuff
+                if package_name.startswith("runtime."):
+                    continue
+
+                parts = package_name.split("/")
+                name = parts[0]
+                version = parts[1]
+
+                purl = PackageURL("nuget", "", name, version, "", "")
+                cxcomp = Component(
+                    name=name,
+                    version=version,
+                    purl=purl,
+                    bom_ref=purl.to_string())
+
+                prop = Property(
+                    name=CycloneDxSupport.CDX_PROP_LANGUAGE,
+                    value="C#")
+                cxcomp.properties.add(prop)
+
+                self.add_component_to_bom(bom, cxcomp)
+
+    def add_runtime_component(self, package_name: str, bom: Bom) -> None:
+        """Add the .NET Runtime component to the BOM."""
+        parts = package_name.split("/")
+        if len(parts) < 2:
+            print_red("Invalid runtime package name: " + package_name)
+            return
+
+        version = parts[1]
+
+        # dummy purl
+        purl = PackageURL("nuget", "", self.name_net_runtime, version, "", "")
+        cxcomp = Component(
+            name=self.name_net_runtime,
+            version=version,
+            purl=purl,
+            bom_ref=purl.to_string())
+
+        prop = Property(
+            name=CycloneDxSupport.CDX_PROP_LANGUAGE,
+            value="C#")
+        cxcomp.properties.add(prop)
+
+        if self.verbose:
+            print_text("    Adding runtime component " + self.name_net_runtime + " " + version)
+
+        self.add_component_to_bom(bom, cxcomp)
+
+    def add_runtime_desktop_component(self, package_name: str, bom: Bom) -> None:
+        """Add the .NET Runtime component to the BOM."""
+        parts = package_name.split("/")
+        if len(parts) < 2:
+            print_red("Invalid runtime package name: " + package_name)
+            return
+
+        version = parts[1]
+
+        # dummy purl
+        purl = PackageURL("nuget", "", self.name_net_desktop_runtime, version, "", "")
+        cxcomp = Component(
+            name=self.name_net_desktop_runtime,
+            version=version,
+            purl=purl,
+            bom_ref=purl.to_string())
+
+        prop = Property(
+            name=CycloneDxSupport.CDX_PROP_LANGUAGE,
+            value="C#")
+        cxcomp.properties.add(prop)
+
+        if self.verbose:
+            print_text("    Adding runtime component " + self.name_net_desktop_runtime + " " + version)
+
+        self.add_component_to_bom(bom, cxcomp)
+
+    def add_aspnet_component(self, package_name: str, bom: Bom) -> None:
+        """Add the ASP.NET Core component to the BOM."""
+        parts = package_name.split("/")
+        if len(parts) < 2:
+            print_red("Invalid runtime package name: " + package_name)
+            return
+
+        version = parts[1]
+
+        # dummy purl
+        purl = PackageURL("nuget", "", self.name_aspnet_core, version, "", "")
+        cxcomp = Component(
+            name=self.name_aspnet_core,
+            version=version,
+            purl=purl,
+            bom_ref=purl.to_string())
+
+        prop = Property(
+            name=CycloneDxSupport.CDX_PROP_LANGUAGE,
+            value="C#")
+        cxcomp.properties.add(prop)
+
+        if self.verbose:
+            print_text("    Adding runtime component " + self.name_aspnet_core + " " + version)
+
+        self.add_component_to_bom(bom, cxcomp)
+
+    def add_component_to_bom(self, bom: Bom, comp: Component) -> None:
+        """Add a component to the BOM if it does not already exist."""
+        for existing_comp in bom.components:
+            if (existing_comp.name == comp.name) and (existing_comp.version == comp.version):
+                return
+
+        if comp.name in self.wellknown_dev_dependencies:
+            if self.verbose:
+                print_yellow(f"    Ignoring well-known dev dependency {comp.name} {comp.version}")
+            return
+
+        if self.verbose:
+            print_text(f"    Adding component {comp.name} {comp.version}")
+
+        bom.components.add(comp)
+
     def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
@@ -154,6 +462,8 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             print("    Options:")
             print("     -i INPUTFILE      csproj or sln input file to read from")
             print("     -o OUTPUTFILE     bom file to write to")
+            print("     -v, --verbose         verbose output")
+            print("     --search-meta-data    search for package meta data")
             return
 
         if not args.inputfile:
@@ -168,13 +478,15 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             print_red("No output SBOM file specified!")
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
+        self.verbose = args.verbose
+
         print_text("Reading input file " + args.inputfile)
         if args.inputfile.endswith(".sln"):
             sbom = self.convert_solution_file(args.inputfile)
         else:  # assume ".csproj"
             sbom = self.convert_project_file(args.inputfile)
 
-        print_text("Writing new SBOM to " + args.outputfile)
+        print_text("\nWriting new SBOM to " + args.outputfile)
         try:
             SbomWriter.write_to_json(sbom, args.outputfile, True)
         except Exception as ex:
