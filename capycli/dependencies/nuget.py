@@ -7,13 +7,16 @@
 # -------------------------------------------------------------------------------
 
 import glob
+import logging
 import os
 import re
 import sys
-from typing import Any, List
+from typing import Any, Dict, List, Optional
 from xml.dom import minidom
 
-from cyclonedx.model import Property
+import requests
+from cyclonedx.factory.license import LicenseFactory
+from cyclonedx.model import ExternalReference, ExternalReferenceType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -21,7 +24,7 @@ from packageurl import PackageURL
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
-from capycli.common.capycli_bom_support import CycloneDxSupport, SbomCreator, SbomWriter
+from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator, SbomWriter
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -132,6 +135,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
         self.name_net_runtime = ".Net Runtime"
         self.name_net_desktop_runtime = ".Net Desktop Runtime"
         self.name_aspnet_core = "ASP.NET Core"
+        self.nuget_api_base_url = "https://api.nuget.org/v3-flatcontainer/"
 
     def convert_project_file(self, csproj_file: str) -> Bom:
         """Read packages.config or .csproj file and convert to bill of material"""
@@ -446,6 +450,157 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
         bom.components.add(comp)
 
+    def get_nuget_metadata(self, name: str, version: str) -> Optional[Dict[str, Any]]:
+        # extras
+        if name == self.name_net_runtime:
+            return {
+                "repository": "https://github.com/dotnet/runtime",
+                "sourcecode": "https://github.com/dotnet/runtime/archive/refs/tags/v" + version + ".zip",
+                "homepage": "https://dot.net/",
+                "license": "MIT"
+            }
+
+        if name == self.name_aspnet_core:
+            return {
+                "repository": "https://github.com/dotnet/aspnetcore",
+                "sourcecode": "https://github.com/dotnet/aspnetcore/archive/refs/tags/v" + version + ".zip",
+                "homepage": "https://dotnet.microsoft.com/en-us/apps/aspnet",
+                "license": "MIT"
+            }
+
+        if name == self.name_net_desktop_runtime:
+            return {
+                "repository": "https://github.com/dotnet/windowsdesktop",
+                "sourcecode": "https://github.com/dotnet/windowsdesktop/archive/refs/tags/v" + version + ".zip",
+                "license": "MIT"
+            }
+
+        url = self.nuget_api_base_url + name.lower() + "/" + version + "/" + name.lower() + ".nuspec"
+        try:
+            response = requests.get(url)
+            if not response.ok:
+                print_yellow(
+                    "  WARNING: no meta data available for package " +
+                    name + ", " + version)
+                return None
+
+            json: Dict[str, Any] = {}
+            xml = response.content
+            if not xml:
+                print_yellow(
+                    "  WARNING: no meta data available for package " +
+                    name + ", " + version)
+                return None
+
+            # parse XML
+            data = minidom.parseString(xml)
+            authors_xml = data.getElementsByTagName("authors")
+            # <authors>James Newton-King</authors>
+            if authors_xml and authors_xml.length > 0:
+                json["author"] = authors_xml.item(0).firstChild.nodeValue.strip()
+
+            license_xml = data.getElementsByTagName("license")
+            # <license type="expression">MIT</license>
+            if license_xml and license_xml.length > 0:
+                ld = license_xml.item(0)
+                if ld.attributes and ld.attributes["type"].value == "expression":
+                    json["license"] = ld.firstChild.nodeValue.strip()
+
+            if not json.get("license", ""):
+                license_xml = data.getElementsByTagName("licenseUrl")
+                # <licenseUrl>https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md</licenseUrl>
+                if license_xml and license_xml.length > 0:
+                    json["license"] = license_xml.item(0).firstChild.nodeValue.strip()
+
+            repository_xml = data.getElementsByTagName("repository")
+            # <repository type="git" url="https://github.com/NuGet/NuGet.Client.git" />
+            if repository_xml and repository_xml.length > 0:
+                rep = repository_xml.item(0)
+                if rep.attributes and rep.attributes["url"]:
+                    json["repository"] = rep.attributes["url"].value
+
+            project_xml = data.getElementsByTagName("projectUrl")
+            # projectUrl copyright  repository projectUrl packageProjectUrl
+            if project_xml and project_xml.length > 0:
+                json["project"] = project_xml.item(0).firstChild.nodeValue.strip()
+
+            copyright_xml = data.getElementsByTagName("copyright")
+            if copyright_xml and copyright_xml.length > 0:
+                json["copyright"] = copyright_xml.item(0).firstChild.nodeValue.strip()
+
+            description_xml = data.getElementsByTagName("description")
+            if description_xml and description_xml.length > 0:
+                json["description"] = description_xml.item(0).firstChild.nodeValue.strip()
+
+            return json
+
+        except Exception as ex:
+            print_red(
+                "  ERROR: unable to retrieve meta data for package " +
+                name + ", " + version + ": " + str(ex))
+
+    def search_meta_data(self, sbom: Bom) -> None:
+        if self.verbose:
+            print_text("\nFinding meta-data:")
+
+        cxcomp: Component
+        for cxcomp in sbom.components:
+            data = self.get_nuget_metadata(cxcomp.name, cxcomp.version)
+            if not data:
+                continue
+
+            if data.get("author", ""):
+                cxcomp.authors.add = data["author"]
+                LOG.debug("  got author")
+
+            if data.get("license", ""):
+                license_factory = LicenseFactory()
+                cxcomp.licenses.add(license_factory.make_with_name(data["license"]))
+                LOG.debug("  got license")
+
+            if data.get("sourcecode", ""):
+                ext_ref = ExternalReference(
+                    type=ExternalReferenceType.DISTRIBUTION,
+                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                    url=XsUri(data["sourcecode"]))
+                cxcomp.external_references.add(ext_ref)
+
+            if data.get("repository", ""):
+                ext_ref = ExternalReference(
+                    type=ExternalReferenceType.DISTRIBUTION,
+                    comment="repository",
+                    url=XsUri(data["repository"]))
+                cxcomp.external_references.add(ext_ref)
+
+                sourcecode = data["repository"] + "/archive/refs/tags/v" + cxcomp.version + ".zip"
+                ext_ref = ExternalReference(
+                    type=ExternalReferenceType.DISTRIBUTION,
+                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                    url=XsUri(sourcecode))
+                cxcomp.external_references.add(ext_ref)
+                LOG.debug("  got source file url")
+
+            if data.get("project", ""):
+                ext_ref = ExternalReference(
+                    type=ExternalReferenceType.WEBSITE,
+                    url=XsUri(data["project"]))
+                cxcomp.external_references.add(ext_ref)
+                LOG.debug("  got homepage")
+            elif data.get("homepage", ""):
+                ext_ref = ExternalReference(
+                    type=ExternalReferenceType.WEBSITE,
+                    url=XsUri(data["homepage"]))
+                cxcomp.external_references.add(ext_ref)
+                LOG.debug("  got homepage")
+
+            if data.get("copyright", ""):
+                cxcomp.copyright = data["copyright"]
+                LOG.debug("  got copyright")
+
+            if data.get("description", ""):
+                cxcomp.description = data["description"]
+                LOG.debug("  got description")
+
     def check_meta_data(self, sbom: Bom) -> bool:
         """
         Check whether all required meta-data is available.
@@ -497,6 +652,11 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
         if args.debug:
             global LOG
             LOG = capycli.get_logger(__name__)
+        else:
+            # suppress (debug) log output from requests and urllib
+            logging.getLogger("requests").setLevel(logging.WARNING)
+            logging.getLogger("urllib3").setLevel(logging.WARNING)
+            logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
             "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
@@ -531,6 +691,9 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             sbom = self.convert_solution_file(args.inputfile)
         else:  # assume ".csproj"
             sbom = self.convert_project_file(args.inputfile)
+
+        if args.search_meta_data:
+            self.search_meta_data(sbom)
 
         self.check_meta_data(sbom)
 
