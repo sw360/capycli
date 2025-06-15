@@ -446,6 +446,52 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
         bom.components.add(comp)
 
+    def check_meta_data(self, sbom: Bom) -> bool:
+        """
+        Check whether all required meta-data is available.
+
+        Args:
+            sbom (Bom): the SBOM
+
+        Returns:
+            bool: True if all required meta-data is available; otherwise False.
+        """
+
+        if self.verbose:
+            print_text("\nChecking meta-data:")
+
+        result = True
+        cxcomp: Component
+        for cxcomp in sbom.components:
+            if self.verbose:
+                print_text(f"  {cxcomp.name}, {cxcomp.version}")
+
+            if not cxcomp.purl:
+                result = False
+                if self.verbose:
+                    print_yellow("    package-url missing")
+
+            homepage = CycloneDxSupport.get_ext_ref_website(cxcomp)
+            if not homepage:
+                result = False
+                if self.verbose:
+                    print_yellow("    Homepage missing")
+
+            if not cxcomp.licenses:
+                if self.verbose:
+                    LOG.debug("    License missing")
+            elif len(cxcomp.licenses) == 0:
+                if self.verbose:
+                    LOG.debug("    License missing")
+
+            src_url = CycloneDxSupport.get_ext_ref_source_url(cxcomp)
+            if not src_url:
+                result = False
+                if self.verbose:
+                    print_yellow("    Source code URL missing")
+
+        return result
+
     def run(self, args: Any) -> None:
         """Main method()"""
         if args.debug:
@@ -485,6 +531,11 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             sbom = self.convert_solution_file(args.inputfile)
         else:  # assume ".csproj"
             sbom = self.convert_project_file(args.inputfile)
+
+        self.check_meta_data(sbom)
+
+        if self.verbose:
+            print()
 
         print_text("\nWriting new SBOM to " + args.outputfile)
         try:
