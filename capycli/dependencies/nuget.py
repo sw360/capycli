@@ -497,40 +497,40 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             authors_xml = data.getElementsByTagName("authors")
             # <authors>James Newton-King</authors>
             if authors_xml and authors_xml.length > 0:
-                json["author"] = authors_xml.item(0).firstChild.nodeValue.strip()
+                json["author"] = authors_xml.item(0).firstChild.nodeValue.strip()  # type: ignore
 
             license_xml = data.getElementsByTagName("license")
             # <license type="expression">MIT</license>
             if license_xml and license_xml.length > 0:
                 ld = license_xml.item(0)
-                if ld.attributes and ld.attributes["type"].value == "expression":
-                    json["license"] = ld.firstChild.nodeValue.strip()
+                if ld.attributes and ld.attributes["type"].value == "expression":  # type: ignore
+                    json["license"] = ld.firstChild.nodeValue.strip()  # type: ignore
 
             if not json.get("license", ""):
                 license_xml = data.getElementsByTagName("licenseUrl")
                 # <licenseUrl>https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md</licenseUrl>
                 if license_xml and license_xml.length > 0:
-                    json["license"] = license_xml.item(0).firstChild.nodeValue.strip()
+                    json["license"] = license_xml.item(0).firstChild.nodeValue.strip()  # type: ignore
 
             repository_xml = data.getElementsByTagName("repository")
             # <repository type="git" url="https://github.com/NuGet/NuGet.Client.git" />
             if repository_xml and repository_xml.length > 0:
                 rep = repository_xml.item(0)
-                if rep.attributes and rep.attributes["url"]:
-                    json["repository"] = rep.attributes["url"].value
+                if rep.attributes and rep.attributes["url"]:  # type: ignore
+                    json["repository"] = rep.attributes["url"].value  # type: ignore
 
             project_xml = data.getElementsByTagName("projectUrl")
             # projectUrl copyright  repository projectUrl packageProjectUrl
             if project_xml and project_xml.length > 0:
-                json["project"] = project_xml.item(0).firstChild.nodeValue.strip()
+                json["project"] = project_xml.item(0).firstChild.nodeValue.strip()  # type: ignore
 
             copyright_xml = data.getElementsByTagName("copyright")
             if copyright_xml and copyright_xml.length > 0:
-                json["copyright"] = copyright_xml.item(0).firstChild.nodeValue.strip()
+                json["copyright"] = copyright_xml.item(0).firstChild.nodeValue.strip()  # type: ignore
 
             description_xml = data.getElementsByTagName("description")
             if description_xml and description_xml.length > 0:
-                json["description"] = description_xml.item(0).firstChild.nodeValue.strip()
+                json["description"] = description_xml.item(0).firstChild.nodeValue.strip()  # type: ignore
 
             return json
 
@@ -539,18 +539,21 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                 "  ERROR: unable to retrieve meta data for package " +
                 name + ", " + version + ": " + str(ex))
 
+        return None
+
     def search_meta_data(self, sbom: Bom) -> None:
         if self.verbose:
             print_text("\nFinding meta-data:")
 
         cxcomp: Component
         for cxcomp in sbom.components:
-            data = self.get_nuget_metadata(cxcomp.name, cxcomp.version)
+            version = cxcomp.version or ""
+            data = self.get_nuget_metadata(cxcomp.name, version)
             if not data:
                 continue
 
             if data.get("author", ""):
-                cxcomp.authors.add = data["author"]
+                cxcomp.authors.add(data["author"])
                 LOG.debug("  got author")
 
             if data.get("license", ""):
