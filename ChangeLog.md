@@ -7,6 +7,9 @@
 
 ## NEXT
 
+* CaPyCLI now marks components, releases and projects as created by CaPyCLI,
+  i.e. it adds an `additionalData` entry with the key `createdWith` and the
+  value of the CaPyCLI and version, i.e. something like `CaPyCli: 2.8.1`.
 * Improved detection detection for NuGet packages. If the project references `(runtimepack.)Microsoft.NETCore.App`,
   `(runtimepack.)Microsoft.WindowsDesktop.App` or `(runtimepack.)Microsoft.AspNetCore.App´, then only
   these top-level packages will get added to the SBOM and not also all sub-packages.

@@ -231,7 +231,7 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
             logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Show security vulnerabilities of a project")
 
         if args.help:

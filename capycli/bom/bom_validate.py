@@ -61,7 +61,7 @@ class BomValidate(capycli.common.script_base.ScriptBase):
 
     def run(self, args: Any) -> None:
         """Main method()"""
-        print("\n" + capycli.APP_NAME + ", " + capycli.get_app_version() + " - Validate a CaPyCLI/CycloneDX SBOM\n")
+        print("\n" + capycli.get_app_signature() + " - Validate a CaPyCLI/CycloneDX SBOM\n")
 
         if args.help:
             self.display_help()

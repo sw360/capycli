@@ -63,6 +63,12 @@ def get_app_version() -> str:
     return version
 
 
+def get_app_signature() -> str:
+    """Get the signature of this application."""
+    version = get_app_version()
+    return f"{APP_NAME}, {version}"
+
+
 # There is nothing lower than logging.DEBUG (10) in the logging library,
 # but we want an extra level to avoid being too verbose when using -vv.
 _EXTRA_VERBOSE = 5

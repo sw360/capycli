@@ -95,6 +95,17 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             if project_info and element in project_info:
                 project_info.pop(element)
 
+        project_info: Dict[str, Any] = {}
+        if project:
+            project_info["additionalData"] = project.get("additionalData", {})
+            if "createdWith" not in project.get("additionalData", {}):
+                # add information that this project was created by CaPyCli
+                # (if not already set)
+                project_info["additionalData"]["createdWith"] = capycli.get_app_signature()
+        else:
+            project_info["additionalData"] = {}
+            project_info["additionalData"]["createdWith"] = capycli.get_app_signature()
+
         try:
             print_text("  " + str(len(data)) + " releases in SBOM")
 
@@ -254,6 +265,10 @@ class CreateProject(capycli.common.script_base.ScriptBase):
         data["projectType"] = project_info.get("projectType", "")
         data["visibility"] = project_info.get("visibility", "")
 
+        # add information that this project was created by CaPyCli
+        data["additionalData"] = {}
+        data["additionalData"]["createdWith"] = capycli.get_app_signature()
+
         try:
             result = self.client.create_new_project(
                 name,
@@ -301,7 +316,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Create or update a project on SW360\n")
 
         if args.help:

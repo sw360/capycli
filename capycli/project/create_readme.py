@@ -513,7 +513,7 @@ class CreateReadmeOss(capycli.common.script_base.ScriptBase):
             LOG = capycli.get_logger(__name__)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Create a Readme_OSS\n")
 
         if args.help:

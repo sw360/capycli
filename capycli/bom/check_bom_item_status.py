@@ -176,7 +176,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
             logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version()
+            "\n" + capycli.get_app_signature()
             + " - check the status of the items on SW360\n")
 
         if args.help:
