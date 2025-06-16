@@ -529,6 +529,50 @@ class TestCreateProject(TestBase):
                             }
                         }
                     }]
+                },
+                "additionalData": {"createdWith": capycli.get_app_signature()}
+            },
+            match=[
+                min_json_matcher(
+                    {
+                        "additionalData": {"createdWith": capycli.get_app_signature()}
+                    })
+            ],
+            status=201,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        # update project
+        responses.add(
+            responses.PATCH,
+            url=self.MYURL + "resource/api/projects/007",
+            json={
+                # server returns complete project, here we only mock a part of it
+                "name": "CaPyCLI",
+                "veraion": "1.9.0",
+                "businessUnit": "SI",
+                "description": "CaPyCLI",
+                "linkedReleases": [{
+                    "release": "https://sw360.org/api/releases/3765276512",
+                    "mainlineState": "SPECIFIC",
+                    "relation": "DYNAMICALLY_LINKED",
+                }],
+                "_links": {
+                    "self": {
+                        "href": self.MYURL + "resource/api/projects/007"
+                    }
+                },
+                "_embedded": {
+                    "sw360:releases": [{
+                        "name": "Angular 2.3.0",
+                        "version": "2.3.0",
+                        "_links": {
+                            "self": {
+                                "href": "https://sw360.org/api/releases/3765276512"
+                            }
+                        }
+                    }]
                 }
             },
             match=[
@@ -918,4 +962,4 @@ class TestCreateProject(TestBase):
 if __name__ == '__main__':
     APP = TestCreateProject()
     APP.setUp()
-    APP.test_project_copy_from()
+    APP.test_project_update()
