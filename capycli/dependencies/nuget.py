@@ -553,7 +553,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                 continue
 
             if data.get("author", ""):
-                cxcomp.authors.add(data["author"])
+                cxcomp.authors.add({"name": data["author"]})
                 LOG.debug("  got author")
 
             if data.get("license", ""):
