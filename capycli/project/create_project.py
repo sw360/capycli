@@ -95,8 +95,10 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             if project_info and element in project_info:
                 project_info.pop(element)
 
-        project_info["additionalData"] = project.get("additionalData", {})
-        if "createdWith" not in project["additionalData"]:
+        project_info: Dict[str, Any] = {}
+        if project:
+            project_info["additionalData"] = project.get("additionalData", {})
+        if not project or "createdWith" not in project["additionalData"]:
             # add information that this project was created by CaPyCli
             # (if not already set)
             project_info["additionalData"]["createdWith"] = capycli.get_app_signature()
