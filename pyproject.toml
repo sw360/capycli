@@ -3,7 +3,7 @@
 
 [tool.poetry]
 name = "capycli"
-version = "2.9.0.dev2"
+version = "2.9.0.dev3"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 authors = ["Thomas Graf <thomas.graf@siemens.com>"]
 license = "MIT"
