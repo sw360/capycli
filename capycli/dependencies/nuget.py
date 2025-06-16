@@ -589,6 +589,22 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                     url=XsUri(data["project"]))
                 cxcomp.external_references.add(ext_ref)
                 LOG.debug("  got homepage")
+                if data.get("project", "").lower().startswith("https://github.com"):
+                    # guess source code URL
+                    if data["project"].endswith(".git"):
+                        # remove .git suffix
+                        data["project"] = data["project"][:-4]
+                    elif data["project"].endswith("/"):
+                        # remove trailing slash
+                        data["project"] = data["project"][:-1]
+                    sourcecode = data["project"] + "/archive/refs/tags/v" + cxcomp.version + ".zip"
+                    ext_ref = ExternalReference(
+                        type=ExternalReferenceType.DISTRIBUTION,
+                        comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                        url=XsUri(sourcecode))
+                    cxcomp.external_references.add(ext_ref)
+                    LOG.debug("  got source file url")
+
             elif data.get("homepage", ""):
                 ext_ref = ExternalReference(
                     type=ExternalReferenceType.WEBSITE,
