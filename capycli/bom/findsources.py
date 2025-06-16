@@ -694,7 +694,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Go through the list of SBOM items and try to determine the source code.\n")
 
         if args.help:

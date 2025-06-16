@@ -310,7 +310,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
             LOG = capycli.get_logger(__name__)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Determine Java components/dependencies\n")
 
         if args.help:

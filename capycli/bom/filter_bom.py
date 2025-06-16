@@ -271,7 +271,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
             global LOG
             LOG = capycli.get_logger(__name__)
 
-        print_text("\n" + capycli.APP_NAME + ", " + capycli.get_app_version() + " - Apply a filter file to a SBOM\n")
+        print_text("\n" + capycli.get_app_signature() + " - Apply a filter file to a SBOM\n")
 
         if args.help:
             print("Usage: CaPyCli bom filter [-h] [-v] -i INPUTFILE -o OUTPUTFILE -filterfile FILTERFILE")

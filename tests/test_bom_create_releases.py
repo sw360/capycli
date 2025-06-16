@@ -180,7 +180,7 @@ class CapycliTestBomCreate(CapycliTestBase):
                 "componentId": "06a6e5",
                 "version": "5.2.1-1.debian",
                 "mainlineState": "OPEN",
-                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}})],
+                "additionalData": {"createdWith": capycli.get_app_signature()}})],
             # server answer with created release data
             json={"version": "5.2.1-1.debian",
                   "_links": {"self": {
@@ -285,7 +285,7 @@ class CapycliTestBomCreate(CapycliTestBase):
                 "componentId": "06a6e5",
                 "version": "5.2.1-1.debian",
                 "mainlineState": "OPEN",
-                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}})],
+                "additionalData": {"createdWith": capycli.get_app_signature()}})],
             # server answer with created release data
             json={"version": "5.2.1-1.debian",
                   "_links": {"self": {
@@ -355,7 +355,7 @@ class CapycliTestBomCreate(CapycliTestBase):
                 "componentId": "06a6e5",
                 "version": "5.2.4.3",
                 "mainlineState": "OPEN",
-                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}})],
+                "additionalData": {"createdWith": capycli.get_app_signature()}})],
             # server answer with created release data
             json={"version": "5.2.4.3",
                   "_links": {"self": {
@@ -477,7 +477,7 @@ class CapycliTestBomCreate(CapycliTestBase):
                 "sourceCodeDownloadurl": "https://rubygems.org/gems/activemodel-5.2.1.gem",
                 "version": "5.2.1",
                 "mainlineState": "OPEN",
-                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}})],
+                "additionalData": {"createdWith": capycli.get_app_signature()}})],
             # server answer with created release data
             json={"_links": {"self": {
                 "href": SW360_BASE_URL + "releases/06a6e7"}}})
@@ -525,7 +525,7 @@ class CapycliTestBomCreate(CapycliTestBase):
                 # "sourceCodeDownloadurl": "",
                 "mainlineState": "OPEN",
                 "version": "5.2.1",
-                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}})],
+                "additionalData": {"createdWith": capycli.get_app_signature()}})],
             # server answer with created release data
             json={"_links": {"self": {
                 "href": SW360_BASE_URL + "releases/06a6e7"}}})

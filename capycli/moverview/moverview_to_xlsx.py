@@ -132,7 +132,7 @@ class MappingOverviewToExcelXlsx(capycli.common.script_base.ScriptBase):
             LOG = capycli.get_logger(__name__)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Create an Excel sheet showing the mapping overview\n")
 
         if args.help:

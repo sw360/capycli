@@ -25,7 +25,7 @@ class CommandlineSupport():
     CONFIG_FILE_NAME = ".capycli.cfg"
 
     def __init__(self) -> None:
-        custom_prog = "CaPyCli, " + capycli.get_app_version()
+        custom_prog = capycli.get_app_signature()
         custom_usage = "CaPyCli command subcommand [options]"
         command_help = """Commands and Sub-Commands
     getdependencies     dependency detection specific commands

@@ -261,7 +261,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
         # add information that this release was created by CaPyCli
         data["additionalData"] = {}
-        data["additionalData"]["createdWith"] = "CaPyCli: " + capycli.get_app_version()
+        data["additionalData"]["createdWith"] = capycli.get_app_signature()
 
         # use project site as fallback for source code download url
         website = CycloneDxSupport.get_ext_ref_website(cx_comp)
@@ -325,7 +325,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
         # add information that this component was created by CaPyCli
         data["additionalData"] = {}
-        data["additionalData"]["createdWith"] = "CaPyCli: " + capycli.get_app_version()
+        data["additionalData"]["createdWith"] = capycli.get_app_signature()
 
         return data
 
@@ -742,7 +742,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Create new components and releases on SW360\n")
 
         if args.help:

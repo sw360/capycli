@@ -351,7 +351,7 @@ class TestCreateProject(TestBase):
                     "tag": "SI BP DB Demo",
                     "version": "TEST",
                     "visibility": "EVERYONE",
-                    "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}}
+                    "additionalData": {"createdWith": capycli.get_app_signature()}}
                 )
             ],
             status=201,
@@ -694,12 +694,12 @@ class TestCreateProject(TestBase):
                         }
                     }]
                 },
-                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}
+                "additionalData": {"createdWith": capycli.get_app_signature()}
             },
             match=[
                 min_json_matcher(
                     {
-                        "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}
+                        "additionalData": {"createdWith": capycli.get_app_signature()}
                     })
             ],
             status=201,

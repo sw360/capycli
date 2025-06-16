@@ -279,7 +279,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Determine Javascript components/dependencies\n")
 
         if args.help:

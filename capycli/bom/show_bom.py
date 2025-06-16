@@ -98,7 +98,7 @@ class ShowBom(capycli.common.script_base.ScriptBase):
             global LOG
             LOG = capycli.get_logger(__name__)
 
-        print_text("\n" + capycli.APP_NAME + ", " + capycli.get_app_version() + " - Print SBOM contents to stdout\n")
+        print_text("\n" + capycli.get_app_signature() + " - Print SBOM contents to stdout\n")
 
         if args.help:
             print("usage: capycli bom show [-h] -i bomfile")

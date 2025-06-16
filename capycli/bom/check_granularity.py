@@ -224,7 +224,7 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
             LOG = capycli.get_logger(__name__)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Check the granularity of all releases in the SBOM.\n")
 
         if args.help:

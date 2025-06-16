@@ -163,7 +163,7 @@ class BomConvert(capycli.common.script_base.ScriptBase):
 
     def run(self, args: Any) -> None:
         """Main method()"""
-        print("\n" + capycli.APP_NAME + ", " + capycli.get_app_version() + " - Convert SBOM formats\n")
+        print("\n" + capycli.get_app_signature() + " - Convert SBOM formats\n")
 
         if args.help:
             self.display_help()

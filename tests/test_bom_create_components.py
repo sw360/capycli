@@ -48,7 +48,7 @@ class CapycliTestBomCreateComponents(TestBase):
             "description": "something", "categories": ["devel"],
             "homepage": "http://test.org", "languages": ["Ruby"],
             "externalIds": {"package-url": "pkg:gem/activemodel"},
-            "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}}
+            "additionalData": {"createdWith": capycli.get_app_signature()}}
 
         responses.add(
             responses.POST,
@@ -64,7 +64,7 @@ class CapycliTestBomCreateComponents(TestBase):
                         "mainlineState": "OPEN", "languages": ["Ruby"],
                         "sourceCodeDownloadurl": "http://test.org",
                         "externalIds": {"package-url": "pkg:gem/activemodel@5.2.4.3"},
-                        "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}}
+                        "additionalData": {"createdWith": capycli.get_app_signature()}}
         responses.add(
             responses.POST,
             SW360_BASE_URL + 'releases',
@@ -117,7 +117,7 @@ class CapycliTestBomCreateComponents(TestBase):
                 "componentId": "06a6e5",
                 "version": "5.2.4.3",
                 "mainlineState": "OPEN",
-                "additionalData": {"createdWith": "CaPyCli: " + capycli.get_app_version()}})],
+                "additionalData": {"createdWith": capycli.get_app_signature()}})],
             # server answer with created release data
             json={"version": "5.2.4.3",
                   "_links": {"self": {

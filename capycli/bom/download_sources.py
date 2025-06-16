@@ -158,7 +158,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Download source files from the URL specified in the SBOM\n")
 
         if args.help:

@@ -145,7 +145,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             LOG = capycli.get_logger(__name__)
 
         print_text(
-            "\n" + capycli.APP_NAME + ", " + capycli.get_app_version() +
+            "\n" + capycli.get_app_signature() +
             " - Determine Nuget components/dependencies\n")
 
         if args.help:
