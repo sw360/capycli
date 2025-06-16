@@ -133,7 +133,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             "NETStandard.Library"
         ]
         self.name_net_runtime = ".Net Runtime"
-        self.name_net_desktop_runtime = ".Net Desktop Runtime"
+        self.name_net_desktop_runtime = ".NET WindowsDesktop"
         self.name_aspnet_core = "ASP.NET Core"
         self.nuget_api_base_url = "https://api.nuget.org/v3-flatcontainer/"
 
