@@ -20,6 +20,7 @@
   
   The resulting SBOM also does not contain any analyzers, build, test or mocking packages that are
   not part of the final delivery.
+* New parameter `--search-meta-data` for `getdependencies nuget` to find the metadata for the components.
 
 ## 2.8.1
 
