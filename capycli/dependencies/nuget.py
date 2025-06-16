@@ -552,9 +552,9 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
             if not data:
                 continue
 
-            if data.get("author", ""):
-                cxcomp.authors.add({"name": data["author"]})
-                LOG.debug("  got author")
+            # if data.get("author", ""):
+            #    cxcomp.authors.add({"name": data["author"]})
+            #    LOG.debug("  got author")
 
             if data.get("license", ""):
                 license_factory = LicenseFactory()
