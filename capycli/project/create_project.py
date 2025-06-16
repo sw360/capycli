@@ -95,9 +95,11 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             if project_info and element in project_info:
                 project_info.pop(element)
 
-        # add information that this project was created by CaPyCli
-        project_info["additionalData"] = {}
-        project_info["additionalData"]["createdWith"] = capycli.get_app_signature()
+        project_info["additionalData"] = project.get("additionalData", {})
+        if "createdWith" not in project["additionalData"]:
+            # add information that this project was created by CaPyCli
+            # (if not already set)
+            project_info["additionalData"]["createdWith"] = capycli.get_app_signature()
 
         try:
             print_text("  " + str(len(data)) + " releases in SBOM")
