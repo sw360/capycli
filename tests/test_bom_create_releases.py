@@ -10,6 +10,7 @@
 from typing import Any, Dict, Tuple
 
 import responses
+import pytest
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -18,7 +19,7 @@ from packageurl import PackageURL
 import capycli.bom.create_components
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.map_result import MapResult
-from tests.test_base_vcr import SW360_BASE_URL, CapycliTestBase
+from tests.test_base import SW360_BASE_URL
 
 
 def upload_matcher(filename: str, filetype: str = "SOURCE", comment: str = "") -> Any:
@@ -44,7 +45,13 @@ def upload_matcher(filename: str, filetype: str = "SOURCE", comment: str = "") -
     return match
 
 
-class CapycliTestBomCreate(CapycliTestBase):
+class TestBomCreate:
+    @pytest.fixture(autouse=True)
+    def capsys(self, capsys: Any) -> None:
+        """internal helper to access stdout/stderr captured by pytest"""
+        self.capsys = capsys  # type: ignore
+
+    @pytest.fixture(autouse=True)
     @responses.activate
     def setUp(self) -> None:
         self.app = capycli.bom.create_components.BomCreateComponents(onlyCreateReleases=True)
@@ -1171,9 +1178,3 @@ class CapycliTestBomCreate(CapycliTestBase):
         assert len(responses.calls) <= 1
         assert "Error" not in captured.out
         assert captured.err == ""
-
-
-if __name__ == '__main__':
-    APP = CapycliTestBomCreate()
-    APP.setUp()
-    APP.test_upload_file_allow_git_binary_upload()

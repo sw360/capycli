@@ -10,6 +10,7 @@ import os
 from typing import Any, Dict
 
 import responses
+import unittest
 from cyclonedx.model import ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -21,11 +22,10 @@ from capycli.common.json_support import load_json_file
 from capycli.common.map_result import MapResult
 from capycli.common.purl_service import PurlService
 from capycli.main.result_codes import ResultCode
-from tests.test_base import AppArguments, TestBase
-from tests.test_base_vcr import SW360_BASE_URL, CapycliTestBase
+from tests.test_base import AppArguments, TestBase, SW360_BASE_URL
 
 
-class CapycliTestBomMap(CapycliTestBase):
+class CapycliTestBomMap(unittest.TestCase):
     INPUTFILE_INVALID = "plaintext.txt"
     INPUTFILE1 = "sbom_for_mapping1.json"
     INPUTFILE2 = "sbom_for_mapping2.json"

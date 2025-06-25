@@ -15,6 +15,9 @@ from typing import Any, Dict, List
 import responses
 
 
+SW360_BASE_URL = "https://my.server.com/resource/api/"
+
+
 class AppArguments():
     # Examples
     # command=['bom', 'diff', '.\\Tests\\bom_diff_1.json', '.\\tests\\bom_diff_1.json']

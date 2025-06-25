@@ -34,7 +34,7 @@ issues = "https://github.com/sw360/capycli/issues"
 capycli = "capycli.main.cli:main"
 
 [tool.poetry.dependencies]
-python = "^3.8" # drop support for 3.6 and 3.7 because of wheel and cli-support
+python = "^3.9" # drop support for 3.8 to get urllib3 2.5
 colorama = "^0.4.3"
 requests = "^2.31.0" # fix CVE-2023-32681 
 semver = "3.0.2"
@@ -60,7 +60,6 @@ flake8 = ">=3.7.8"
 coverage = "^5.4"
 responses = "0.24.1"
 pytest = "7.4.3"
-vcrpy = "4.4.0"  # arrghh, no version of vcrpy supports urllib3 >= 2
 cli-test-helpers = "^3.1.0"
 isort = "^5.12.0"
 mypy = "^1.8.0"

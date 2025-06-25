@@ -9,11 +9,12 @@
 from typing import Any, Dict, List
 
 import responses
+import unittest
 from packageurl import PackageURL
 
 from capycli.bom.map_bom import MapBom
 from capycli.common.purl_service import PurlService
-from tests.test_base_vcr import SW360_BASE_URL, CapycliTestBase
+from tests.test_base import SW360_BASE_URL
 
 sw360_purl_releases: List[Dict[str, Any]] = [
     {
@@ -43,7 +44,7 @@ sw360_purl_components: List[Dict[str, Any]] = [
 ]
 
 
-class TestPurlService(CapycliTestBase):
+class TestPurlService(unittest.TestCase):
 
     @responses.activate
     def setUp(self) -> None:
