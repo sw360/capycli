@@ -60,7 +60,10 @@ class PurlService:
                     if purl_types and purl.type not in purl_types:
                         continue
                     if not no_warnings:
-                        for e in self.purl_cache.get_by_version(purl):
+                        already_in_cache = self.purl_cache.get_by_version(purl)
+                        _, already_in_cache = PurlStore.filter_by_qualifiers(
+                            already_in_cache, purl)
+                        for e in already_in_cache:
                             if e["purl"] == purl:
                                 print_yellow("-> Multiple entries for purl:", purl)
                                 print_yellow(
@@ -86,6 +89,7 @@ class PurlService:
         self.build_purl_cache((purl.type,))
 
         result = self.purl_cache.get_by_version(purl)
+        qualifier_result, result = PurlStore.filter_by_qualifiers(result, purl)
         unique_hrefs = {r["href"] for r in result}
 
         if len(unique_hrefs) > 1:

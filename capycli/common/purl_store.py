@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from packageurl import PackageURL
 
@@ -76,26 +76,35 @@ class PurlStore:
         """
         Retrieve entries by version from the cache.
 
-        If qualifiers are provided in the PackageURL, only entries matching
-        all qualifiers will be returned. If no qualifiers match, the method
-        falls back to returning all entries for the specified version.
-
-        :param purl: The PackageURL object containing type, namespace, name, version, and qualifiers.
-        :return: A list of matching entries or None if no matches are found.
+        :param purl: The PackageURL object containing type, namespace, name, and version.
+        :return: List of entries (dicts with "purl" and "href") matching the version.
         """
         entries = self.get_by_name(purl)
         if entries and purl.version in entries:
-            if purl.qualifiers:
-                assert isinstance(purl.qualifiers, dict)
-                qualifiers_items = purl.qualifiers.items()
-                results = [
-                    entry for entry in entries[purl.version]
-                    if all(entry["purl"].qualifiers.get(key) == value for key, value in qualifiers_items)
-                ]
-                if results:
-                    return results
-
-            # Fallback: Return all entries if we have no qualifier match
             return entries[purl.version]
 
         return []
+
+    @staticmethod
+    def filter_by_qualifiers(entries: List[Dict[str, Any]], purl: PackageURL) -> Tuple[str, List[Dict[str, Any]]]:
+        """
+        Filter entries based on the qualifiers in the given PackageURL and return the match type.
+
+        :param entries: A list of entries to filter as returned by get_by_version.
+        :param purl: The PackageURL object containing qualifiers to match.
+        :return: A tuple (qualifier_result, list of entries) where qualifier_result is "no-qualifiers",
+                 "qualifiers-full-match", or "qualifiers-ignored".
+        """
+        if not purl.qualifiers:
+            return "no-qualifiers", entries
+
+        assert isinstance(purl.qualifiers, dict)
+        qualifiers_items = purl.qualifiers.items()
+        filtered_entries = [
+            entry for entry in entries
+            if all(entry["purl"].qualifiers.get(key) == value for key, value in qualifiers_items)
+        ]
+
+        if filtered_entries:
+            return "qualifiers-full-match", filtered_entries
+        return "qualifiers-ignored", entries
