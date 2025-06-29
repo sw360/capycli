@@ -174,11 +174,13 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                     version = s.attributes["Version"].value
                 else:
                     # option b) version as sub tag
-                    version = s.getElementsByTagName("Version")
-                    if (not version) or (version.length < 1):
+                    version_elem = s.getElementsByTagName("Version")
+                    if (not version_elem) or (version_elem.length < 1):
                         print_yellow("No version for for package " + name)
                     else:
-                        version = version.item(0).childNodes.item(0).nodeValue
+                        first = version_elem.item(0)
+                        if first and first.childNodes and first.childNodes.length > 0:
+                            version = first.childNodes.item(0).nodeValue  # type: ignore
 
                 purl = PackageURL("nuget", "", name, version, "", "")
                 cxcomp = Component(
@@ -205,7 +207,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
         if data.getElementsByTagName("IsTestProject"):
             for s in data.getElementsByTagName("IsTestProject"):
-                if s.firstChild and s.firstChild.nodeValue == "true":  # type: ignore
+                if s.firstChild and s.firstChild.nodeValue == "true":
                     return True
 
         return False

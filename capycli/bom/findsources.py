@@ -133,7 +133,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
            encounter projects with tens of thousands of tags.
         """
         raise NotImplementedError(
-            "Removed with introduction of get_matchting_source_tag!")
+            "Removed with introduction of get_matching_source_tag!")
 
     def _get_github_repo(self, github_ref: str) -> Dict[str, Any]:
         """Fetch GitHub API object identified by @github_ref.
@@ -404,21 +404,22 @@ class FindSources(capycli.common.script_base.ScriptBase):
         for tag in tag_info:
             try:
                 if version_prefix:
-                    name = tag.get("name")
+                    name = tag.get("name", "")
                     if name and name.rpartition("/")[0] != version_prefix:
                         continue
 
                 version_diff = semver.VersionInfo.parse(
-                    self.to_semver_string(tag.get("name", None))).compare(
+                    self.to_semver_string(tag.get("name", ""))).compare(
                     self.to_semver_string(version))
             except Exception as e:
+                cname = e.__class__.__name__ if e.__class__ else ""
                 print(
                     Fore.LIGHTYELLOW_EX +
-                    "      Warning: semver.compare() threw " + e.__class__.__name__ +
+                    "      Warning: semver.compare() threw " + cname +
                     " Exception :" + github_url + " " + version +
-                    ", released version: " + tag.get("name", None)
+                    ", released version: " + tag.get("name", "")
                     + Style.RESET_ALL)
-                version_diff = 0 if tag.get("name", None) == version else 2
+                version_diff = 0 if tag.get("name", "") == version else 2
             # If versions are equal, version_diff shall be 0.
             # 1 and -1 have different meanings that doesn't be checked below
             if version_diff == 0:
