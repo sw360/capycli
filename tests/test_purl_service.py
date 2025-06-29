@@ -6,10 +6,10 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import unittest
 from typing import Any, Dict, List
 
 import responses
-import unittest
 from packageurl import PackageURL
 
 from capycli.bom.map_bom import MapBom

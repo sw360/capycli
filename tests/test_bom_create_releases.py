@@ -9,8 +9,8 @@
 """unit tests for bom/create_components.py in createreleases mode"""
 from typing import Any, Dict, Tuple
 
-import responses
 import pytest
+import responses
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component

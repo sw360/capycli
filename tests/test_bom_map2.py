@@ -7,10 +7,10 @@
 # -------------------------------------------------------------------------------
 
 import os
+import unittest
 from typing import Any, Dict
 
 import responses
-import unittest
 from cyclonedx.model import ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
@@ -22,7 +22,7 @@ from capycli.common.json_support import load_json_file
 from capycli.common.map_result import MapResult
 from capycli.common.purl_service import PurlService
 from capycli.main.result_codes import ResultCode
-from tests.test_base import AppArguments, TestBase, SW360_BASE_URL
+from tests.test_base import SW360_BASE_URL, AppArguments, TestBase
 
 
 class CapycliTestBomMap(unittest.TestCase):

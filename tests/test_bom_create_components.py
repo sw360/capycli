@@ -20,7 +20,7 @@ import capycli.bom.create_components
 from capycli.bom.create_components import BomCreateComponents
 from capycli.common.capycli_bom_support import CycloneDxSupport
 from capycli.main.result_codes import ResultCode
-from tests.test_base import AppArguments, TestBase, SW360_BASE_URL
+from tests.test_base import SW360_BASE_URL, AppArguments, TestBase
 
 
 class CapycliTestBomCreateComponents(TestBase):

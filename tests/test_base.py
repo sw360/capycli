@@ -14,7 +14,6 @@ from typing import Any, Dict, List
 
 import responses
 
-
 SW360_BASE_URL = "https://my.server.com/resource/api/"
 
 
