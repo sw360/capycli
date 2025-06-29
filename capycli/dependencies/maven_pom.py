@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2020-2023 Siemens
+# Copyright (c) 2020-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -47,7 +47,7 @@ class GetJavaMavenPomDependencies(capycli.common.script_base.ScriptBase):
                 if root is None:
                     root = elem
                 for prefix, uri in ns_map:
-                    elem.set("xmlns:" + prefix, uri)
+                    elem.set("xmlns:" + prefix, uri)  # type: ignore
                 ns_map = []
 
         return ET.ElementTree(root)
@@ -61,6 +61,9 @@ class GetJavaMavenPomDependencies(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_READING_BOM)
 
         root = tree.getroot()
+        if not root:
+            print_red("This seems not to be a pom.xml file!")
+            sys.exit(ResultCode.RESULT_GENERAL_ERROR)
 
         ns = ""
         for key, value in root.items():
