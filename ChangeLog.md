@@ -5,9 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.9.0
 
-* drop support for Python 3.8, so we can update urllib3 to fix CVE-2025-50181 and -50182
+* drop support for Python 3.8, so we can update urllib3 to fix CVE-2025-50181 and -50182.
+* Use sw360python 1.10.0.
 
 ## 2.9.0.dev1
 
