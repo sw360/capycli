@@ -70,7 +70,7 @@
           }
         }
       ],
-      "purl": "pkg:pypi/colorama@0.4.3",
+      "purl": "pkg:pypi/colorama@0.4.3?file_name=colorama-0.4.3.tar.gz",
       "externalReferences": [
         {
           "url": "https://pypi.org/project/colorama/#files",
