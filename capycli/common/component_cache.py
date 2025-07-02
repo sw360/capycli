@@ -176,7 +176,7 @@ class ComponentCacheManagement():
             if "externalIds" in details:
                 release["ExternalIds"] = details["externalIds"]
             else:
-                release["ExternalIds"] = []
+                release["ExternalIds"] = {}
             release["CreatedOn"] = cls.get_value_or_default(details, "createdOn")
             release["MainlineState"] = cls.get_value_or_default(
                 details, "mainlineState"

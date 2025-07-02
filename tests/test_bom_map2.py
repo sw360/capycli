@@ -1105,6 +1105,9 @@ class CapycliTestBomMap(unittest.TestCase):
         assert sbom is not None
         assert len(sbom.components) == 1
         assert sbom.components[0].version == "0.4.3"
+        # assure we get the PURL from the release, not from input BOM
+        # (which has PURL with file_name qualifier)
+        assert sbom.components[0].purl == PackageURL.from_string("pkg:pypi/colorama@0.4.3")
         prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_MAPRESULT)
         assert prop == MapResult.FULL_MATCH_BY_ID
         prop = CycloneDxSupport.get_property_value(sbom.components[0], CycloneDxSupport.CDX_PROP_COMPONENT_ID)
@@ -1134,7 +1137,7 @@ class CapycliTestBomMap(unittest.TestCase):
                             "componentId" : "678dstzd8",
                             "componentType" : "OSS",
                             "externalIds" : {
-                                "package-url" : "pkg:pypi/colorama@0.4.3"
+                                "package-url" : "pkg:pypi/colorama@0.4.3?file_name=colorama-0.4.3.tar.gz"
                             },
                             "createdOn" : "2016-12-18",
                             "mainlineState" : "SPECIFIC",

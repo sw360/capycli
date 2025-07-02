@@ -76,12 +76,8 @@ class PurlStore:
         """
         Retrieve entries by version from the cache.
 
-        If qualifiers are provided in the PackageURL, only entries matching
-        all qualifiers will be returned. If no qualifiers match, the method
-        falls back to returning all entries for the specified version.
-
-        :param purl: The PackageURL object containing type, namespace, name, version, and qualifiers.
-        :return: A list of matching entries or None if no matches are found.
+        :param purl: The PackageURL object containing type, namespace, name, and version.
+        :return: List of entries (dicts with "purl" and "href") matching the version.
         """
         entries = self.get_by_name(purl)
         if entries and purl.version in entries:

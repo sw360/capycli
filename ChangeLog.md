@@ -5,6 +5,11 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* `bom map` will provide the `purl` from SW360 in the output BOM's components
+  (due to a missing code path, PURL from input BOM was copied to mapping result instead)
+
 ## 2.9.0
 
 * drop support for Python 3.8, so we can update urllib3 to fix CVE-2025-50181 and -50182.

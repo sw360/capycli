@@ -50,11 +50,6 @@ also by the `package-url`s of their releases.
 
 PackageURL subpath and qualifiers are currently ignored during PURL matching.
 
-Note that we consider PackageURLs as *unique identifier*, so if two releases or
-components have the *same* external ID, a warning will be printed and the
-external ids will be completely ignored and mapping will continue with the
-other search steps like by file hash, by name and version etc.
-
 ## Example 1: Very Simple, Full Match
 
 The input SBOM contains two releases:

@@ -515,12 +515,11 @@ class MapBom(capycli.common.script_base.ScriptBase):
             if version:
                 component.version = version
 
-            value_match = match.get("RepositoryId", "")
-            if not value_match.startswith("pkg:"):
-                value_match = None
-
-            if value_match:
-                component.purl = PackageURL.from_string(value_match)
+            try:
+                # take over purl from match to SBOM if valid
+                component.purl = PackageURL.from_string(purl)
+            except ValueError:
+                pass
 
         # update if current is empty
         value_match = match.get("Language", "")
