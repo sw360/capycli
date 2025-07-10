@@ -8,7 +8,6 @@
 
 import os
 
-from cyclonedx.model import XsUri
 from cyclonedx.model.bom_ref import BomRef
 from sortedcontainers import SortedSet
 
@@ -40,7 +39,7 @@ class TestLegacyCx(TestBase):
             cx_components[0], CycloneDxSupport.CDX_PROP_SRC_FILE_TYPE))
         self.assertEqual("James Bond", CycloneDxSupport.get_property_value(
             cx_components[0], CycloneDxSupport.CDX_PROP_SRC_FILE_COMMENT))
-        self.assertEqual(XsUri("colorama-0.4.3.tar.gz"), CycloneDxSupport.get_ext_ref_source_file(
+        self.assertEqual("colorama-0.4.3.tar.gz", CycloneDxSupport.get_ext_ref_source_file(
             cx_components[0]))
 
         self.assertEqual("python", cx_components[1].name)

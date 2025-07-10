@@ -401,7 +401,7 @@ class TestBomFilter(TestBase):
         self.assertEqual(component["Version"], bom.components[2].version)
         self.assertEqual(component["RepositoryId"], bom.components[2].purl.to_string())
         self.assertEqual(component["SourceFileUrl"], str(CycloneDxSupport.get_ext_ref_source_url(bom.components[2])))
-        self.assertEqual(component["SourceFile"], str(CycloneDxSupport.get_ext_ref_source_file(bom.components[2])))
+        self.assertEqual(component["SourceFile"], CycloneDxSupport.get_ext_ref_source_file(bom.components[2]))
         self.assertEqual(
             component["Language"],
             CycloneDxSupport.get_property_value(bom.components[2], CycloneDxSupport.CDX_PROP_LANGUAGE))

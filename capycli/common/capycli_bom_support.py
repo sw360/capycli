@@ -60,6 +60,7 @@ class CycloneDxSupport():
     CDX_PROP_COMPONENT_ID = "capycli:componentId"
     CDX_PROP_FILENAME = "siemens:filename"
     CDX_PROP_MAPRESULT = "capycli:mapResult"
+    CDX_PROP_MAPRESULT_BY_ID = "capycli:mapResultById"
     CDX_PROP_SW360_HREF = "capycli:sw360Href"
     CDX_PROP_SW360_URL = "capycli:sw360Url"
     CDX_PROP_REL_STATE = "capycli:releaseMainlineState"
@@ -217,11 +218,15 @@ class CycloneDxSupport():
         return ""
 
     @staticmethod
-    def get_ext_ref_source_file(comp: Component) -> Any:
+    def get_ext_ref_source_file(comp: Component) -> str:
         for ext_ref in comp.external_references:
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
                     and (ext_ref.comment == CaPyCliBom.SOURCE_FILE_COMMENT):
-                return ext_ref.url
+                url = str(ext_ref.url)
+                if url.startswith("file://"):
+                    return url[7:]
+                else:
+                    return url
 
         return ""
 
@@ -235,11 +240,15 @@ class CycloneDxSupport():
         return ""
 
     @staticmethod
-    def get_ext_ref_binary_file(comp: Component) -> Any:
+    def get_ext_ref_binary_file(comp: Component) -> str:
         for ext_ref in comp.external_references:
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
                     and (ext_ref.comment == CaPyCliBom.BINARY_FILE_COMMENT):
-                return ext_ref.url
+                url = str(ext_ref.url)
+                if url.startswith("file://"):
+                    return url[7:]
+                else:
+                    return url
 
         return ""
 
