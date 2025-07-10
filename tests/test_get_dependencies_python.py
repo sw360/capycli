@@ -222,14 +222,14 @@ class TestGetDependenciesPython(TestBase):
             str(CycloneDxSupport.get_ext_ref_binary_url(sbom.components[0])))
         self.assertEqual(
             "chardet-3.0.4-py2.py3-none-any.whl",
-            str(CycloneDxSupport.get_ext_ref_binary_file(sbom.components[0])))
+            CycloneDxSupport.get_ext_ref_binary_file(sbom.components[0]))
 
         self.assertEqual(
             "https://files.pythonhosted.org/packages/fc/bb/a5768c230/chardet-3.0.4.tar.gz",
             str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])))
         self.assertEqual(
             "chardet-3.0.4.tar.gz",
-            str(CycloneDxSupport.get_ext_ref_source_file(sbom.components[0])))
+            CycloneDxSupport.get_ext_ref_source_file(sbom.components[0]))
 
         self.delete_file(self.OUTPUTFILE1)
         self.delete_file(self.OUTPUTFILE2)

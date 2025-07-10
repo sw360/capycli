@@ -229,7 +229,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
                     break
 
             # fourth check: source filename
-            cmp_src_file = str(CycloneDxSupport.get_ext_ref_source_file(component))
+            cmp_src_file = CycloneDxSupport.get_ext_ref_source_file(component)
             if (("SourceFile" in release)
                 and cmp_src_file
                     and release["SourceFile"]):

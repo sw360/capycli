@@ -9,6 +9,7 @@
 
 * `bom map` will provide the `purl` from SW360 in the output BOM's components
   (due to a missing code path, PURL from input BOM was copied to mapping result instead)
+* support file:// URLs for local paths in SBOMs
 
 ## 2.9.0
 

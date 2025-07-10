@@ -664,6 +664,12 @@ class TestBomCreate:
             CaPyCliBom.SOURCE_URL_COMMENT, my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
+        # local filename with file:// prefix
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.SOURCE_FILE_COMMENT, "file://Readme.md")
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
+
         # local filename guessed from remote url
         item = Component(
             name="activemodel",
@@ -675,9 +681,10 @@ class TestBomCreate:
             CaPyCliBom.SOURCE_URL_COMMENT, my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
-        assert len(responses.calls) == 2
+        assert len(responses.calls) == 3
         captured = self.capsys.readouterr()  # type: ignore
         assert "Error" not in captured.out
+        assert "not found" not in captured.out
         assert captured.err == ""
 
     @responses.activate
