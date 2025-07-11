@@ -217,11 +217,15 @@ class CycloneDxSupport():
         return ""
 
     @staticmethod
-    def get_ext_ref_source_file(comp: Component) -> Any:
+    def get_ext_ref_source_file(comp: Component) -> str:
         for ext_ref in comp.external_references:
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
                     and (ext_ref.comment == CaPyCliBom.SOURCE_FILE_COMMENT):
-                return ext_ref.url
+                url = str(ext_ref.url)
+                if url.startswith("file://"):
+                    return url[7:]
+                else:
+                    return url
 
         return ""
 
@@ -235,11 +239,15 @@ class CycloneDxSupport():
         return ""
 
     @staticmethod
-    def get_ext_ref_binary_file(comp: Component) -> Any:
+    def get_ext_ref_binary_file(comp: Component) -> str:
         for ext_ref in comp.external_references:
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
                     and (ext_ref.comment == CaPyCliBom.BINARY_FILE_COMMENT):
-                return ext_ref.url
+                url = str(ext_ref.url)
+                if url.startswith("file://"):
+                    return url[7:]
+                else:
+                    return url
 
         return ""
 

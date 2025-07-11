@@ -438,12 +438,12 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         filehash = None
         if filetype in ["SOURCE", "SOURCE_SELF"]:
             url = str(CycloneDxSupport.get_ext_ref_source_url(cx_comp))
-            filename = str(CycloneDxSupport.get_ext_ref_source_file(cx_comp))
+            filename = CycloneDxSupport.get_ext_ref_source_file(cx_comp)
             filehash = str(CycloneDxSupport.get_source_file_hash(cx_comp))
 
         if filetype in ["BINARY", "BINARY_SELF"]:
             url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
-            filename = str(CycloneDxSupport.get_ext_ref_binary_file(cx_comp))
+            filename = CycloneDxSupport.get_ext_ref_binary_file(cx_comp)
             filehash = str(CycloneDxSupport.get_binary_file_hash(cx_comp))
 
         # Note that we retrieve the SHA1 has from the CycloneDX data.

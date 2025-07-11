@@ -3000,8 +3000,8 @@ class CapycliTestBomMap(unittest.TestCase):
         for ext_ref in updated.external_references:
             self.assertIsInstance(ext_ref.url, XsUri)
         self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
-        self.assertEqual("123%251.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
-        self.assertEqual("123%25.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("123%251.zip", CycloneDxSupport.get_ext_ref_source_file(updated))
+        self.assertEqual("123%25.dll", CycloneDxSupport.get_ext_ref_binary_file(updated))
         self.assertEqual("http://somewhere", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("007", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
 
@@ -3025,8 +3025,8 @@ class CapycliTestBomMap(unittest.TestCase):
         self.assertEqual("http://456", str(CycloneDxSupport.get_ext_ref_source_url(comp)))
         for ext_ref in updated.external_references:
             self.assertIsInstance(ext_ref.url, XsUri)
-        self.assertEqual("456.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
-        self.assertEqual("456.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("456.zip", CycloneDxSupport.get_ext_ref_source_file(updated))
+        self.assertEqual("456.dll", CycloneDxSupport.get_ext_ref_binary_file(updated))
         self.assertEqual("http://somewhereelse", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("888", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
 
@@ -3051,8 +3051,8 @@ class CapycliTestBomMap(unittest.TestCase):
         for ext_ref in updated.external_references:
             self.assertIsInstance(ext_ref.url, XsUri)
         self.assertEqual("http://123", str(CycloneDxSupport.get_ext_ref_source_url(updated)))
-        self.assertEqual("123%251.zip", str(CycloneDxSupport.get_ext_ref_source_file(updated)))
-        self.assertEqual("123%25.dll", str(CycloneDxSupport.get_ext_ref_binary_file(updated)))
+        self.assertEqual("123%251.zip", CycloneDxSupport.get_ext_ref_source_file(updated))
+        self.assertEqual("123%25.dll", CycloneDxSupport.get_ext_ref_binary_file(updated))
         self.assertEqual("http://somewhere", str(CycloneDxSupport.get_ext_ref_website(updated)))
         self.assertEqual("007", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_SW360ID))
         self.assertEqual("0815", CycloneDxSupport.get_property_value(updated, CycloneDxSupport.CDX_PROP_COMPONENT_ID))
