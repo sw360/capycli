@@ -5,11 +5,12 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.9.1
 
 * `bom map` will provide the `purl` from SW360 in the output BOM's components
   (due to a missing code path, PURL from input BOM was copied to mapping result instead)
 * support file:// URLs for local paths in SBOMs
+* Fixed a misbehavior when creating a project together with existing `projectinfo.json`.
 
 ## 2.9.0
 
