@@ -95,7 +95,6 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             if project_info and element in project_info:
                 project_info.pop(element)
 
-        project_info: Dict[str, Any] = {}
         if project:
             project_info["additionalData"] = project.get("additionalData", {})
             if "createdWith" not in project.get("additionalData", {}):
