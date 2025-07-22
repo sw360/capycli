@@ -5,6 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* `bom map`: The options `--dbx` and `-all` were replaced by `--matchmode`.
+
 ## 2.9.1
 
 * `bom map` will provide the `purl` from SW360 in the output BOM's components

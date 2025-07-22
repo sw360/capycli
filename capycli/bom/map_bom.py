@@ -815,9 +815,12 @@ class MapBom(capycli.common.script_base.ScriptBase):
         print("                          all = default, write everything to resulting SBOM")
         print("                          found = resulting SBOM shows only components that were found")
         print("                          notfound = resulting SBOM shows only components that were not found")
-        print("    --dbx                 relaxed Debian version handling: *completely* ignore Debian revision,")
-        print("                          so SBOM version 3.1 will match SW360 version 3.1-3.debian")
-        print("    -all                  also report matches for name, but different version")
+        print("    --matchmode MATCHMODE matching mode, comma separated list of:")
+        print("                          all-versions = also report matches for name, but different version")
+        print("                          ignore-debian = ignore Debian revision in version comparison, so SBOM")
+        print("                                          version 3.1 will match SW360 version 3.1-3.debian")
+        print("    -all                  deprecated, please use --matchmode all-versions")
+        print("    --dbx                 deprecated, please use --matchmode ignore-debian")
 
     def run(self, args: Any) -> None:
         """Main method()"""
@@ -849,14 +852,18 @@ class MapBom(capycli.common.script_base.ScriptBase):
         if args.verbose:
             self.verbosity = 2
 
-        if args.dbx:
+        if "ignore-debian" in args.matchmode or args.dbx:
+            if args.dbx:
+                print_yellow("bom map --dbx is deprecated, use --matchmode ignore-debian instead")
             print_text("Using relaxed debian version checks")
             self.relaxed_debian_parsing = True
 
         if args.mode:
             self.mode = args.mode
 
-        if args.all:
+        if "all-versions" in args.matchmode or args.all:
+            if args.all:
+                print_yellow("bom map -all is deprecated, use --matchmode all-versions instead")
             self.no_match_by_name_only = False
 
         print_text("Loading SBOM file", args.inputfile)
