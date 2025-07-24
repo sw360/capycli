@@ -399,7 +399,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                         bom_purl = packageurl.PackageURL.from_string(
                             data["externalIds"][repository_type])
                         sw360_purls = PurlUtils.get_purl_list_from_sw360_object(release_data)
-                        id_match = PurlUtils.contains(sw360_purls, bom_purl)
+                        id_match = PurlUtils.contains(sw360_purls, bom_purl, compare_qualifiers=True)
                     except ValueError:
                         pass
                     if not id_match:

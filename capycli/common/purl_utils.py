@@ -56,17 +56,23 @@ class PurlUtils:
         return []
 
     @staticmethod
-    def contains(purls: list, search_purl: packageurl.PackageURL) -> bool:  # type: ignore
+    def contains(purls: list, search_purl: packageurl.PackageURL,  # type: ignore
+                 compare_qualifiers: bool = False) -> bool:
         """
         Search the given PackageURL in the provided list
         Important: The matching is only based on type, namespace, name and version.
-        We do not consider qualifiers and subpath.
+        If `compare_qualifiers` is set, the qualifiers present in the search_purl are also checked.
+        We do not consider other qualifiers and subpath.
         """
         for entry in purls:
             if (entry.type == search_purl.type
                     and entry.namespace == search_purl.namespace
                     and entry.name == search_purl.name
                     and entry.version == search_purl.version):
+                if compare_qualifiers and isinstance(search_purl.qualifiers, dict):
+                    for key, value in search_purl.qualifiers.items():
+                        if key not in entry.qualifiers or entry.qualifiers[key] != value:
+                            return False
                 return True
         return False
 

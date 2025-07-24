@@ -60,7 +60,10 @@ class PurlService:
                     if purl_types and purl.type not in purl_types:
                         continue
                     if not no_warnings:
-                        for e in self.purl_cache.get_by_version(purl):
+                        already_in_cache = self.purl_cache.get_by_version(purl)
+                        _, already_in_cache = PurlStore.filter_by_qualifiers(
+                            already_in_cache, purl)
+                        for e in already_in_cache:
                             if e["purl"] == purl:
                                 print_yellow("-> Multiple entries for purl:", purl)
                                 print_yellow(
@@ -78,14 +81,18 @@ class PurlService:
                         print_yellow("-> Ignoring invalid purl entry in", entry["_links"]["self"]["href"])
                         print_yellow(purl_string)
 
-    def search_releases_by_purl(self, purl: packageurl.PackageURL) -> List[str]:
+    def search_releases_by_purl(self, purl: packageurl.PackageURL, qualifier_match: bool = False) -> Dict[str, Any]:
         """Get SW360 releases by Package URL using the purl cache
 
-        :return: list of release urls
+        :return: tuple of release hrefs and list of notes about mapping
         """
         self.build_purl_cache((purl.type,))
 
         result = self.purl_cache.get_by_version(purl)
+        if qualifier_match:
+            qualifier_result, result = PurlStore.filter_by_qualifiers(result, purl)
+        else:
+            qualifier_result = None
         unique_hrefs = {r["href"] for r in result}
 
         if len(unique_hrefs) > 1:
@@ -94,7 +101,12 @@ class PurlService:
                 print_yellow("      Candidate", self.client.get_id_from_href(r["href"]),
                              "has purl", r["purl"])
 
-        return list(unique_hrefs)
+        search_result = {
+            "hrefs": list(unique_hrefs),
+            # can be extended with more details in the future
+            "results": [qualifier_result.value] if (qualifier_result and qualifier_result.value) else []
+        }
+        return search_result
 
     def search_components_by_purl(self, purl: packageurl.PackageURL) -> List[str]:
         """

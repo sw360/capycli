@@ -35,6 +35,7 @@ class AppArguments():
         self.help: bool = False
         self.id: str = ""
         self.inputfile: str = ""
+        self.matchmode: str = ""
         self.name: str = ""
         self.ncli: bool = False
         self.nconf: bool = False

@@ -279,7 +279,7 @@ class CommandlineSupport():
             help="source folder or additional source file"
         )
 
-        # special parsing flag for MapBom
+        # special parsing flag for BomCreateComponents
         self.parser.add_argument(
             "--dbx",
             dest="dbx",
@@ -358,6 +358,14 @@ class CommandlineSupport():
             choices=map_modes,
             dest="mode",
             help="specific mode for some commands",
+        )
+
+        # special flag for MapBom
+        self.parser.add_argument(
+            "--matchmode",
+            dest="matchmode",
+            default="",
+            help="see \"bom map --help\"",
         )
 
         # used by bom convert

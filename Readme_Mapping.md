@@ -23,7 +23,7 @@ informs about the mapping result:
 
 * **`INVALID` (0)** => Invalid SBOM entry, could not get processed
 * **`FULL_MATCH_BY_ID` (1)** => Full match by identifier
-* **`FULL_MATCH_BY_HASH` (2)** => Full match by source file hash
+* **`FULL_MATCH_BY_HASH` (2)** => Full match by source or binary file hash
 * **`FULL_MATCH_BY_NAME_AND_VERSION` (3)** => Full match by name and version
 * **`MATCH_BY_FILENAME` (4)** => Match by source code filename
 * **`GOOD_MATCH_FOUND`** == `MATCH_BY_FILENAME` => successfully found a sufficiently good match
@@ -31,24 +31,50 @@ informs about the mapping result:
 * **`SIMILAR_COMPONENT_FOUND` (6)** => Component with similar name found, no version check done
 * **`NO_MATCH` (100)** => Component was not found
 
-In general you can say that the lower the number, the better the match.
+We consider lower numbers as better matches. By default, CaPyCli will stop the
+search when a "good" match (match code between 1 and 4) is found and add this
+release to the output BOM. If there are multiple good matches in SW360, the
+output thus depends on the order the results are returned by SW360 (or found in
+the CaPyCli cache).
+
+The "bom map --matchmode full-search" option allows to change that behaviour so that
+CaPyCli will always search through all releases in the API answer or cache, and
+report *all best* matches found. If there are matches by ID, other matches are
+ignored; matches by (source or binary) file hash will win over matches by name
+and version etc.
 
 ## Notes on id mapping / PackageURL mapping
 
-CaPyCli supports mapping releases by the PackageURL. As encoding of a
-PackageURL is not unique (some characters *may* use URL encoding, qualifiers
+CaPyCli supports mapping **releases** by the PackageURL. As encoding of a
+PackageURL is not unique (some characters may be percent-encoded, qualifiers
 can be given in random order etc.), we can't just do a string comparison, but
 instead *all* SW360 releases with PackageURLs (using external id `package-url`)
 are retrieved and decoded. When your input BOM specifies a `purl` field, then
 the PackageURL is compared field by field (type, namespace, name, version) for
 a `FULL_MATCH_BY_ID`.
 
-Also, components will be mapped by PackageURL and if a match is found, the
+Also, **components** will be mapped by PackageURL and if a match is found, the
 `capycli:componentId` property will be added to the output BOM item. Components
 can be identified directly by their external id `package-url` or as fallback
 also by the `package-url`s of their releases.
 
-PackageURL subpath and qualifiers are currently ignored during PURL matching.
+PackageURL **qualifiers** (like `?distro=alpine-3.21&package-id=3a23`) will be
+considered when using `bom map --matchmode qualifier-match`. In some cases,
+qualifiers are essential for correct mapping, but many scanners also include
+non-essential qualifiers in their SBOMs. And the distinction might be
+challenging: while `distro` is crucial for correct mapping of Alpine packages
+(same package release can have different patches in different Alpine releases),
+but for Debian, `distro` is unnecessary since package versions are already
+unique. So we use the following rules to balance accuracy and practicality:
+
+* Only the qualifiers specified in the input BOM are considered during matching,
+  qualifiers only present in SW360 releases are ignored. So you can control
+  matching by removing the unwanted qualifiers in your SBOM.
+* If one or more SW360 releases are found where *all* qualifiers specified in the
+  input BOM match, *only* these releases are added to the output BOM. Otherwise,
+  qualifiers will be ignored, so all release matches will be added.
+
+PackageURL subpath is currently ignored during PURL matching.
 
 ## Example 1: Very Simple, Full Match
 
