@@ -8,9 +8,9 @@
 
 import packageurl
 
+from capycli.common.map_result import MapResultByIdQualifiers
 from capycli.common.purl_store import PurlStore
 from tests.test_base import TestBase
-from capycli.common.map_result import MapResultByIdQualifiers
 
 
 class TestPurlStore(TestBase):
