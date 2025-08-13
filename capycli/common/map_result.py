@@ -6,8 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-from typing import Any, List, Optional
 from enum import Enum
+from typing import Any, List, Optional
 
 from cyclonedx.model.component import Component
 

@@ -9,6 +9,7 @@
 from typing import Any, Dict, List, Optional, Tuple
 
 from packageurl import PackageURL
+
 from capycli.common.map_result import MapResultByIdQualifiers
 
 

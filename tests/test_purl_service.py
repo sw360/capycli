@@ -13,8 +13,8 @@ import responses
 from packageurl import PackageURL
 
 from capycli.bom.map_bom import MapBom
-from capycli.common.purl_service import PurlService
 from capycli.common.map_result import MapResultByIdQualifiers
+from capycli.common.purl_service import PurlService
 from tests.test_base import SW360_BASE_URL
 
 sw360_purl_releases: List[Dict[str, Any]] = [

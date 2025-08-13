@@ -11,7 +11,7 @@ import unittest
 from typing import Any, Dict
 
 import responses
-from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri, HashType, HashAlgorithm
+from cyclonedx.model import ExternalReference, ExternalReferenceType, HashAlgorithm, HashType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
