@@ -490,7 +490,7 @@ class CaPyCliBom():
     @classmethod
     def read_sbom(cls, inputfile: str) -> Bom:
         LOG.debug(f"Reading from file {inputfile}")
-        with open(inputfile) as fin:
+        with open(inputfile, encoding="utf-8") as fin:
             try:
                 json_data = json.load(fin)
             except Exception as exp:
@@ -568,7 +568,7 @@ class CaPyCliBom():
     def validate_sbom(cls, inputfile: str, spec_version: str, show_success: bool = True) -> bool:
         """Validate the given SBOM file against the given CycloneDX spec. version."""
         LOG.debug(f"Validating SBOM from file {inputfile}")
-        with open(inputfile) as fin:
+        with open(inputfile, encoding="utf-8") as fin:
             try:
                 json_string = fin.read()
             except Exception as exp:
