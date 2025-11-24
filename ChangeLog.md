@@ -11,6 +11,7 @@
 * `bom map`: new `--matchmode` options `full-search` (report all best matches) and
   `qualifier-match` (consider PackageURL qualifiers). See `Readme_Mapping.md`.
 * fix: `bom show` now properly shows components without versions.
+* fix: `bom show` and `bom validate` read SBOMs in UTF-8 encoding.
 
 ## 2.9.1
 
