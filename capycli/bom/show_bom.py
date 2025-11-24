@@ -63,7 +63,11 @@ class ShowBom(capycli.common.script_base.ScriptBase):
             return
 
         for bomitem in bom.components:
-            print_text("  " + bomitem.name + ", " + bomitem.version)
+            if not bomitem.version:
+                print_text("  " + bomitem.name)
+                print_yellow("  component version is missing!")
+            else:
+                print_text("  " + bomitem.name + ", " + bomitem.version)
 
             if self.verbose:
                 if bomitem.purl:
