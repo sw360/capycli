@@ -12,6 +12,7 @@
   `qualifier-match` (consider PackageURL qualifiers). See `Readme_Mapping.md`.
 * fix: `bom show` now properly shows components without versions.
 * fix: `bom show` and `bom validate` read SBOMs in UTF-8 encoding.
+* `getdependencies javascript` has an improved source code detection.
 
 ## 2.9.1
 

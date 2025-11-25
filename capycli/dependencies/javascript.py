@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2024 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, sameer.panda@siemens.com
 #
@@ -214,11 +214,13 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 version)
             return bomitem
 
-        val = info.get("homepage", "")
-        if val:
+        homepage: str = info.get("homepage", "")
+        if homepage:
+            if homepage.endswith("#readme"):
+                homepage = homepage[:-7]
             ext_ref = ExternalReference(
                 type=ExternalReferenceType.WEBSITE,
-                url=XsUri(val))
+                url=XsUri(homepage))
             bomitem.external_references.add(ext_ref)
 
         repository = info.get("repository")
@@ -238,11 +240,18 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             if not str(url).startswith("http"):
                 url = "https://" + url
             url = self.find_source_file(url, bomitem.name, version)
-            CycloneDxSupport.update_or_set_ext_ref(
-                bomitem,
-                ExternalReferenceType.DISTRIBUTION,
-                CaPyCliBom.SOURCE_URL_COMMENT,
-                url)
+            if url:
+                CycloneDxSupport.update_or_set_ext_ref(
+                    bomitem,
+                    ExternalReferenceType.DISTRIBUTION,
+                    CaPyCliBom.SOURCE_URL_COMMENT,
+                    url)
+            else:
+                print_yellow(
+                    "  No source archive found for component " +
+                    bomitem.name +
+                    ", " +
+                    version)
         bomitem.description = info.get("description", "")
         if not CycloneDxSupport.get_binary_file_hash(bomitem):
             ext_ref2 = CycloneDxSupport.get_ext_ref(

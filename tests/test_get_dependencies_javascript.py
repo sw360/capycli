@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2022-2024 Siemens
+# Copyright (c) 2022-2025 Siemens
 # All Rights Reserved.
 # Author: gernot.hillier@siemens.com
 #
@@ -179,7 +179,7 @@ class TestGetDependenciesJavascript(TestBase):
         self.assertEqual("zone.js", enhanced.components[0].name)
         self.assertEqual("Zones for JavaScript", enhanced.components[0].description)
         val = str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0]))
-        self.assertEqual("", val)
+        self.assertEqual("github.com/angular/angular.git", val)
 
         self.delete_file("test_package_lock_1.json")
 
