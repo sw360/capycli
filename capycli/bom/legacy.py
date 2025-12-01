@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -70,6 +70,10 @@ class LegacySupport():
 
     @staticmethod
     def get_purl_from_legacy(item: Dict[str, Any]) -> PackageURL:
+        if "purl" in item:
+            id = item.get("purl", "")
+            if id:
+                return PackageURL.from_string(id)
         if "RepositoryType" in item:
             if (item["RepositoryType"] == "package-url") or (item["RepositoryType"] == "purl"):
                 id = item.get("RepositoryId", "")

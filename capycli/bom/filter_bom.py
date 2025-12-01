@@ -195,15 +195,18 @@ class FilterBom(capycli.common.script_base.ScriptBase):
                     continue
 
                 match = False
-                if "Name" in filterentry["component"]:
+                name = filterentry["component"].get("Name", "")
+                if not name:
+                    name = filterentry["component"].get("name", "")
+                if name:
                     prefix = ""
-                    if filterentry["component"]["Name"].endswith("*"):
-                        prefix = filterentry["component"]["Name"][:-1]
+                    if name.endswith("*"):
+                        prefix = name[:-1]
 
                     if prefix:
                         match = component.name.startswith(prefix)
                     else:
-                        match = component.name == filterentry["component"]["Name"]
+                        match = component.name == name
                 elif "RepositoryId" in filterentry["component"]:
                     prefix = ""
                     if filterentry["component"]["RepositoryId"].endswith("*"):
