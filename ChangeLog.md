@@ -13,6 +13,7 @@
 * fix: `bom show` now properly shows components without versions.
 * fix: `bom show` and `bom validate` read SBOMs in UTF-8 encoding.
 * `getdependencies javascript` has an improved source code detection.
+* Improve filtering in `bom filter`.
 
 ## 2.9.1
 
