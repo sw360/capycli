@@ -14,6 +14,7 @@
 * fix: `bom show` and `bom validate` read SBOMs in UTF-8 encoding.
 * `getdependencies javascript` has an improved source code detection.
 * Improve filtering in `bom filter`.
+* Update to Poetry 2.1.4 including an update of `pyproject.toml`.
 
 ## 2.9.1
 
@@ -173,10 +174,10 @@
 * Warnings about multiple purls entries when running `bom map` are now only shown if `-v` has been specified.
 * breaking change
   * `bom map` will report matches by name, but different version **only** if `-all` has been specified.
-    The original idea of CaPyCLI was to report as many potential matches as possible and to let the user
-    decide which match to take by editing the SBOM. But it seems that many users did not read the documentation
-    and the expectations were different. Therefore the default behavior has been changed.
-    The original behavior of versions prior to 2.x can be enabled via the `-all` switch.
+    The original idea of CaPyCLI was to report as many potential matches as possible and to let the
+    user decide which match to take by editing the SBOM. But it seems that many users did not read
+    the documentation and the expectations were different. Therefore the default behavior has been
+    changed. The original behavior of versions prior to 2.x can be enabled via the `-all` switch.
 
 ## 2.0.0.dev (2023-05-19)
 
@@ -205,7 +206,8 @@
     * `all` instead of 0
     * `found` instead of 1
     * `notfound` instead of 2
-  * dropped support for option `-stage`. The SW360 server instance can get specified via the `-url` parameter.
+  * dropped support for option `-stage`. The SW360 server instance can get specified via the  
+    `-url` parameter.
   * The hard coded address https://sw360.siemens.com has been removed.
     CaPyCLI reads the SW360 server address either from the environment variable `SW360ServerUrl` or
     via the `-url` parameter.
@@ -274,8 +276,8 @@
 * CycloneDX JSON BOMs are expected in UTF-8 encoding.
 * `bom map` has now a much faster way to create/update the cache. Due to the new SW360 REST API
 endpoint to get all releases with one call it now takes only 1.3 minutes.
-* `project vulnerabilities` is working again. It seems that there was a breaking change in the REST API
-  answer.
+* `project vulnerabilities` is working again. It seems that there was a breaking change in the  
+  REST API answer.
 
 ## 1.8.0 (2022-04-07)
 

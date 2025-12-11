@@ -1,22 +1,20 @@
 # SPDX-FileCopyrightText: (c) 2018-2025 Siemens
 # SPDX-License-Identifier: MIT
 
-[tool.poetry]
+[project]
 name = "capycli"
 version = "2.9.1"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
-authors = ["Thomas Graf <thomas.graf@siemens.com>"]
-license = "MIT"
 readme="Readme.md"
-repository = "https://github.com/sw360/capycli"
-homepage = "https://github.com/sw360/capycli"
+requires-python = ">=3.9,<4.0"
+license = "MIT"
+authors = [
+    {name = "Thomas Graf", email="thomas.graf@siemens.com"},
+    {name = "Gernot Hillier", email="gernot.hillier@siemens.com"}
+]
 keywords = ["sw360", "cli, automation", "license", "compliance", "clearing"]
-include = [
-    "LICENSE.md",
-    { path = "capycli/data/granularity_list.csv", format = "wheel" },
-    { path = "capycli/data/__init__.py", format = "wheel" },
-    { path = "capycli/data/granularity_list.csv", format = "sdist" },
-    { path = "capycli/data/__init__.py", format = "sdist" },
+license-files = [
+    "LICENSE.md"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -26,37 +24,45 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 
+dependencies = [
+    "colorama (>=0.4.3,<0.5.0)",
+    "requests (>=2.31.0,<3.0.0)",
+    "semver (==3.0.2)",
+    "packageurl-python (>=0.15.6,<0.16.0)",
+    "pyjwt (>=2.4.0,<3.0.0)",
+    "openpyxl (>=3.0.3,<4.0.0)",
+    "requirements-parser (==0.11.0)",
+    "sw360 (>=1.8.1,<2.0.0)",
+    "wheel (>=0.38.4,<0.39.0)",
+    "cli-support (==2.0.1)",
+    "chardet (==5.2.0)",
+    "cyclonedx-python-lib (>=8.0.0,<9.0.0)",
+    "tomli (>=2.0.2,<3.0.0)",
+    "dateparser (>=1.1.8,<2.0.0)",
+    "urllib3 (>=2.5.0,<3.0.0)",
+    "importlib-resources (>=5.12.0,<6.0.0)",
+    "beautifulsoup4 (>=4.11.1,<5.0.0)",
+    "jsonschema (>=4.23.0,<5.0.0)",
+    "validation (>=0.8.3,<0.9.0)"]
 
-[tool.poetry.urls]
+[project.urls]
+repository = "https://github.com/sw360/capycli"
+homepage = "https://github.com/sw360/capycli"
 issues = "https://github.com/sw360/capycli/issues"
 
-[tool.poetry.scripts]
+[project.scripts]
 capycli = "capycli.main.cli:main"
 
-[tool.poetry.dependencies]
-python = "^3.9" # drop support for 3.8 to get urllib3 2.5
-colorama = "^0.4.3"
-requests = "^2.31.0" # fix CVE-2023-32681 
-semver = "3.0.2"
-packageurl-python = "^0.15.6"
-pyjwt = "^2.4.0"
-openpyxl = "^3.0.3"
-requirements-parser = "0.11.0"
-sw360 = "^1.8.1"
-wheel = "^0.38.4"
-cli-support = "2.0.1"
-chardet = "5.2.0"
-cyclonedx-python-lib = "^8.0.0"
-tomli = "^2.0.2"
-dateparser = "^1.1.8"
-urllib3 = "*"
-importlib-resources = "^5.12.0"
-beautifulsoup4 = "^4.11.1"
-jsonschema = "^4.23.0"
-validation = "^0.8.3"
+[tool.poetry]
+include = [
+    "LICENSE.md",
+    { path = "capycli/data/granularity_list.csv", format = "wheel" },
+    { path = "capycli/data/__init__.py", format = "wheel" },
+    { path = "capycli/data/granularity_list.csv", format = "sdist" },
+    { path = "capycli/data/__init__.py", format = "sdist" },
+]
 
 [tool.poetry.group.dev.dependencies]
-flake8 = ">=3.7.8"
 coverage = "^5.4"
 responses = "0.24.1"
 pytest = "7.4.3"
