@@ -662,9 +662,10 @@ done.
 
 There are two commands:
 
-`bom createreleases` creates new releases for existing components, but will skip non-existing components.
-By default, it requires "ComponentId" information in the SBOM (added by `bom map` for a package-url match,
-see discussion there). This is usually a quite safe operation which can be used in CI pipelines.
+`bom createreleases` creates new releases for existing components, but will skip non-existing
+components. By default, it requires "ComponentId" information in the SBOM (added by `bom map`
+for a package-url match, see discussion there). This is usually a quite safe operation which
+can be used in CI pipelines.
 
 `bom createcomponents`, in contrast, will automatically add every unmapped entry in your SBOM to SW360
 (only performing very basic checks to not create exact duplicates) -- so this shall only be used after
