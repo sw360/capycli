@@ -17,6 +17,7 @@
 * Update to Poetry 2.1.4 including an update of `pyproject.toml`.
 * Replace tomli by tomllib and drop support for Python <3.11.
 * Support platform dependent binaries using PyInstaller.
+* Dependency updates.
 
 ## 2.9.1
 
