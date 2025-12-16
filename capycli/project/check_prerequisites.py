@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -113,19 +113,20 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             print_red("Error retrieving project details")
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
-        has_errors = False
+        count_errors = 0
+        count_warnings = 0
         print_text("  Project name: " + project["name"] + ", " + project["version"])
         print_text("  Clearing state: " + project.get("clearingState", "UNKNOWN"))
 
         if not project.get("projectOwner", None):
             print_yellow("  No project owner specified!")
-            has_errors = True
+            count_warnings += 1
         else:
             print_green("  Project owner: " + project.get("projectOwner", "UNKNOWN"))
 
         if not project.get("projectResponsible", None):
             print_yellow("  No project responsible specified!")
-            has_errors = True
+            count_warnings += 1
         else:
             print_green(
                 "  Project responsible: "
@@ -133,6 +134,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         if len(project.get("securityResponsibles", [])) < 1:
             print_yellow("  No security responsibles specified!")
+            count_warnings += 1
         else:
             print_green(
                 "  Security responsible(s): "
@@ -140,6 +142,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
         if not project.get("tag", None):
             print_yellow("  No tag specified!")
+            count_warnings += 1
         else:
             print_green("  Tag: " + project.get("tag", "UNKNOWN"))
 
@@ -160,7 +163,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                 release = self.client.get_release_by_url(href)
                 if not release:
                     print_red("Error accessign release " + href)
-                    has_errors = True
+                    count_errors += 1
                     continue
 
                 state = self.get_clearing_state(project, href)
@@ -169,6 +172,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
                 if not release.get("sourceCodeDownloadurl", ""):
                     print_yellow("      No download URL specified!")
+                    count_warnings += 1
                 else:
                     print_green(
                         "      Download URL: " +
@@ -176,6 +180,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
 
                 if len(release.get("languages", [])) < 1:
                     print_yellow("      No programming language specified!")
+                    count_warnings += 1
                 else:
                     print_green(
                         "      Programming language: " +
@@ -189,7 +194,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                                     cx_comp, CycloneDxSupport.CDX_PROP_SW360ID) == release_id]
                     if len(bom_item) == 0:
                         print_red("      Item not in specified SBOM!")
-                        has_errors = True
+                        count_errors += 1
                     else:
                         assert len(bom_item) == 1
                         bom_sha1 = CycloneDxSupport.get_source_file_hash(bom_item[0])
@@ -202,12 +207,14 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                             "      Source " +
                             source_name +
                             " seems to be from Maven!")
+                        count_warnings += 1
                     if bom_sha1:
                         if bom_sha1 != source_info.get("sha1", ""):
                             print_red(
                                 "      SHA1 for source " +
                                 source_name +
                                 " does not match!")
+                            count_errors += 1
                             self.check_checkStatus(source_info)
                         else:
                             print_green(
@@ -218,9 +225,10 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                 if len(source) != 1:
                     if state == "OPEN":
                         print(Fore.LIGHTRED_EX, end="")
-                        has_errors = True
+                        count_errors += 1
                     else:
                         print(Fore.LIGHTYELLOW_EX, end="")
+                        count_warnings += 1
                 else:
                     print(Fore.LIGHTGREEN_EX, end="")
                 print("     ", len(source), "source file(s) available." + Fore.RESET)
@@ -229,6 +237,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                 if (not ids) or (not ids):
                     print_yellow(
                         "      No component management id (package-url, etc.) specified!")
+                    count_warnings += 1
                 else:
                     print_green("      component management id: " + str(ids))
 
@@ -249,6 +258,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                         print_red(
                             "      SBOM Item not in SW360 project: "
                             + cx_comp.name + " " + cx_comp.version)
+                        count_errors += 1
                 print_text("      Check finished.")
             else:
                 print_yellow("      No SBOM specified, skipping release comparison!")
@@ -256,7 +266,14 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         else:
             print_text("    No linked releases")
 
-        return has_errors
+        print_text("\nSummary:")
+        print_text("  Total components: " + str(len(releases)))
+        if count_warnings > 0:
+            print_yellow("  Warnings: " + str(count_warnings))
+        if count_errors > 0:
+            print_red("  Errors: " + str(count_errors))
+
+        return count_errors > 0
 
     def run(self, args: Any) -> None:
         """Main method()"""
