@@ -20,8 +20,8 @@ import logging
 import os
 import sys
 from typing import Any
+import tomllib
 
-import tomli
 from colorama import Fore, Style, init
 
 APP_NAME = "CaPyCli"
@@ -36,7 +36,7 @@ def _get_project_meta() -> Any:
     """Read version information from poetry configuration file."""
     try:
         with open('pyproject.toml', mode='rb') as pyproject:
-            return tomli.load(pyproject)['tool']['poetry']
+            return tomllib.load(pyproject)['tool']['poetry']
     except Exception:
         # ignore all errors
         pass

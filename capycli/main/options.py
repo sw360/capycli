@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-25 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -10,8 +10,7 @@
 
 import os
 from typing import Any, Dict
-
-import tomli
+import tomllib
 
 import capycli
 from capycli.bom.bom_convert import BomFormat
@@ -434,14 +433,14 @@ class CommandlineSupport():
         toml_dict = None
         try:
             if config_string:
-                toml_dict = tomli.loads(config_string)
+                toml_dict = tomllib.loads(config_string)
             elif filename:
                 with open(filename, "rb") as f:
-                    toml_dict = tomli.load(f)
+                    toml_dict = tomllib.load(f)
             else:
                 if os.path.isfile(self.CONFIG_FILE_NAME):
                     with open(self.CONFIG_FILE_NAME, "rb") as f:
-                        toml_dict = tomli.load(f)
+                        toml_dict = tomllib.load(f)
 
             if not toml_dict:
                 return {}
@@ -450,7 +449,7 @@ class CommandlineSupport():
                 return {}
 
             return toml_dict["capycli"]
-        except tomli.TOMLDecodeError as tex:
+        except tomllib.TOMLDecodeError as tex:
             LOG.warning("Config file has invalid format: " + repr(tex))
         except Exception as ex:
             LOG.warning("Error reading config file: " + repr(ex))
