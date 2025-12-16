@@ -6,7 +6,7 @@ name = "capycli"
 version = "2.9.1"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 readme="Readme.md"
-requires-python = ">=3.9,<3.15"
+requires-python = ">=3.11,<3.15"
 license = "MIT"
 authors = [
     {name = "Thomas Graf", email="thomas.graf@siemens.com"},
