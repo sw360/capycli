@@ -15,6 +15,7 @@
 * `getdependencies javascript` has an improved source code detection.
 * Improve filtering in `bom filter`.
 * Update to Poetry 2.1.4 including an update of `pyproject.toml`.
+* Support platform dependent binaries using PyInstaller.
 
 ## 2.9.1
 

@@ -6,7 +6,7 @@ name = "capycli"
 version = "2.9.1"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 readme="Readme.md"
-requires-python = ">=3.9,<4.0"
+requires-python = ">=3.9,<3.15"
 license = "MIT"
 authors = [
     {name = "Thomas Graf", email="thomas.graf@siemens.com"},
@@ -37,7 +37,6 @@ dependencies = [
     "cli-support (==2.0.1)",
     "chardet (==5.2.0)",
     "cyclonedx-python-lib (>=8.0.0,<9.0.0)",
-    "tomli (>=2.0.2,<3.0.0)",
     "dateparser (>=1.1.8,<2.0.0)",
     "urllib3 (>=2.5.0,<3.0.0)",
     "importlib-resources (>=5.12.0,<6.0.0)",
@@ -76,6 +75,7 @@ types-python-dateutil = "^2.8.19.14"
 types-requests = "2.31.0.6"  # this is the last version that uses urllib3 < 2
 types-beautifulsoup4 = "^4.12.0.20240106"
 codespell = "^2.2.6"
+pyinstaller = "^6.17.0"
 flake8 = "^7.3.0"
 
 [build-system]
