@@ -19,8 +19,8 @@ import importlib
 import logging
 import os
 import sys
-from typing import Any
 import tomllib
+from typing import Any
 
 from colorama import Fore, Style, init
 

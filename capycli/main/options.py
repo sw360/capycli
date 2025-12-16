@@ -9,8 +9,8 @@
 """Contains the logic for all of the default options for CaPyCli."""
 
 import os
-from typing import Any, Dict
 import tomllib
+from typing import Any, Dict
 
 import capycli
 from capycli.bom.bom_convert import BomFormat
