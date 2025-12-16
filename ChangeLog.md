@@ -15,9 +15,11 @@
 * `getdependencies javascript` has an improved source code detection.
 * Improve filtering in `bom filter`.
 * Update to Poetry 2.1.4 including an update of `pyproject.toml`.
-* Replace tomli by tomllib and drop support for Python <3.11.
+* Replace tomli by tomllib and drop support for Python <=3.10.
 * Support platform dependent binaries using PyInstaller.
 * Dependency updates.
+* `project prerequisites` now has a summary at the end of the output to show how many
+  components have been scanned and how many warnings and errors there are.
 
 ## 2.9.1
 
