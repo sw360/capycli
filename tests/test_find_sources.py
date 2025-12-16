@@ -16,8 +16,6 @@ import requests
 import responses
 from responses import _recorder
 
-import capycli.common.json_support
-import capycli.common.script_base
 from capycli.bom.findsources import FindSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.github_support import GitHubSupport
@@ -484,26 +482,26 @@ class TestFindSources(TestBase):
         githubUrl = "https://github.com/apache/kafka"
         zipball_url = "https://api.github.com/repos/apache/kafka/zipball/refs/tags/" + validTag
         sourceUrl = "https://github.com/apache/kafka/archive/refs/tags/" + validTag + ".zip"
-        findResource = capycli.bom.findsources.FindSources()
+        findResource = FindSources()
         # test Empty tagInfo array
         tagInfo: List[Dict[str, Any]] = []
-        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        actual = findResource.get_matching_tag(tagInfo, validTag, githubUrl)
         self.assertEqual(actual, "")
         # test Empty tag string
         tagInfo = [{"name": emptyString, "zipball_url": zipball_url}]
-        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        actual = findResource.get_matching_tag(tagInfo, validTag, githubUrl)
         self.assertEqual(actual, '')
         # test Empty url string
         tagInfo = [{"name": validTag, "zipball_url": emptyString}]
-        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        actual = findResource.get_matching_tag(tagInfo, validTag, githubUrl)
         self.assertEqual(actual, "")
         # test non-matching tag
         tagInfo = [{"name": invalidTag, "zipball_url": zipball_url}]
-        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        actual = findResource.get_matching_tag(tagInfo, validTag, githubUrl)
         self.assertEqual(actual, '')
         # test valid tag
         tagInfo = [{"name": validTag, "zipball_url": zipball_url}]
-        actual = capycli.bom.findsources.FindSources.get_matching_tag(findResource, tagInfo, validTag, githubUrl)
+        actual = findResource.get_matching_tag(tagInfo, validTag, githubUrl)
         self.assertEqual(actual, sourceUrl)
 
     @patch("time.sleep")

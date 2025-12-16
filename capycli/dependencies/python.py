@@ -9,6 +9,7 @@
 import logging
 import os
 import sys
+import tomllib
 from dataclasses import dataclass
 from enum import Enum
 from io import TextIOWrapper
@@ -18,7 +19,6 @@ from typing import Any, Dict, List, Optional
 import chardet
 import requests
 import requirements
-import tomli
 from cyclonedx.factory.license import LicenseFactory
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
@@ -427,9 +427,9 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         """
         try:
             with open(filename, "rb") as f:
-                tomli_data = tomli.load(f)
+                toml_data = tomllib.load(f)
 
-            return tomli_data
+            return toml_data
         except Exception as ex:
             LOG.debug(f"Does not look like a {err_hint} file: " + repr(ex))
 

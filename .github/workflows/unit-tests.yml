@@ -1,6 +1,6 @@
 # This workflow will install Python dependencies and run the tests.
 
-# Copyright (c) 2021-2024 Siemens
+# Copyright (c) 2021-2025 Siemens
 # Author: thomas.graf@siemens.com
 # SPDX-License-Identifier: MIT
 
@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
     - uses: actions/checkout@v3

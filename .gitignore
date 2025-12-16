@@ -48,3 +48,4 @@ SoftwareClearing/*.json
 SoftwareClearing/*.txt
 !SoftwareClearing/projectinfo.json
 
+build/
