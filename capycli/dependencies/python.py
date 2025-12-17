@@ -68,6 +68,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
     def __init__(self) -> None:
         self.verbose = False
+        self.proj_file_override = ""
 
     @staticmethod
     def normalize_packagename(name: str) -> str:
@@ -404,8 +405,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             LOG.debug("Guessing requirements file")
             return InputFileType.REQUIREMENTS
 
-        if (filename == "poetry.lock") or (filename == "poetry2.lock"):
-            # "poetry2.lock is only for unit test
+        if (filename == "poetry.lock"):
             data = self.read_poetry_lock_file(full_filename)
             if data:
                 LOG.debug("Guessing poetry.lock file")
@@ -510,6 +510,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             else:
                 LOG.warning(f"Dependency {dep2} not found!")
 
+    @staticmethod
+    def get_pure_dep_name(name: str) -> str:
+        """Get pure dependency name (without extras)."""
+        if "(" in name:
+            return name.split("(")[0].strip()
+        return name
+
     def get_lock_file_entries_for_sbom(self,
                                        pyproject_file: str,
                                        all_entries: List[LockFileEntry]) -> List[LockFileEntry]:
@@ -521,10 +528,17 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             # => return all dependencies
             return all_entries
 
-        cfg = pyproject_info["tool"]["poetry"]
+        poetry2xflag = False
+        if "project" in pyproject_info:
+            cfg = pyproject_info["project"]
+            poetry2xflag = True
+        else:
+            cfg = pyproject_info["tool"]["poetry"]
         # get only real dependencies
         dependencies = cfg.get("dependencies", [])
         for dep in dependencies:
+            if poetry2xflag:
+                dep = self.get_pure_dep_name(dep)
             dep_name = GetPythonDependencies.normalize_packagename(dep)
             if dep_name.lower() == "python":
                 # ignore python (version) 'dependency'
@@ -536,7 +550,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 LOG.warning(f"Dependency {dep_name} not found!")
 
         # are there other groups of dependencies?
-        dep_groups = cfg.get("group")
+        dep_groups = pyproject_info["tool"]["poetry"].get("group")
         for group in dep_groups:
             print_yellow("Ignoring dependency group " + group)
             for dep in dep_groups[group].get("dependencies", []):
@@ -546,7 +560,12 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
     def sbom_from_poetry_lock_file(self, filename: str, search_meta_data: bool, package_source: str = "") -> Bom:
         folder = os.path.dirname(filename)
-        pyproject_file = os.path.join(folder, "pyproject.toml")
+
+        if self.proj_file_override:
+            # override for unit tests
+            pyproject_file = self.proj_file_override
+        else:
+            pyproject_file = os.path.join(folder, "pyproject.toml")
         creator = SbomCreator()
         sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         entry_list_all = self.get_all_lock_file_entries(filename)

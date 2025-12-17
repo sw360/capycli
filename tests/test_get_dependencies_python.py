@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2024 Siemens
+# Copyright (c) 2023-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -19,7 +19,10 @@ from tests.test_base import AppArguments, TestBase
 class TestGetDependenciesPython(TestBase):
     INPUTFILE = "poetry.lock"
     INPUTFILE2 = "sbom_with_sw360.json"
-    INPUTFILE3 = "poetry2.lock"
+    INPUTFILE3 = "poetry_1.8.3/poetry.lock"
+    PROJFILE3 = "poetry_1.8.3/pyproject.toml"
+    INPUTFILE4 = "poetry_2.1.4/poetry.lock"
+    PROJFILE4 = "poetry_2.1.4/pyproject.toml"
     OUTPUTFILE1 = "test_requirements.txt"
     OUTPUTFILE2 = "output.json"
 
@@ -420,6 +423,7 @@ class TestGetDependenciesPython(TestBase):
         self.delete_file(self.OUTPUTFILE2)
 
         sut = GetPythonDependencies()
+        sut.proj_file_override = os.path.join(os.path.dirname(__file__), "fixtures", self.PROJFILE3)
 
         # create argparse command line argument object
         args = AppArguments()
@@ -449,7 +453,43 @@ class TestGetDependenciesPython(TestBase):
 
         self.delete_file(self.OUTPUTFILE2)
 
+    def test_process_poetry_2_1_4(self) -> None:
+        # IMPORTANT: in this file there are no longer "category" values
+        self.delete_file(self.OUTPUTFILE2)
+
+        sut = GetPythonDependencies()
+        sut.proj_file_override = os.path.join(os.path.dirname(__file__), "fixtures", self.PROJFILE4)
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("getdependencies")
+        args.command.append("python")
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE4)
+        args.outputfile = self.OUTPUTFILE2
+        args.verbose = True
+        args.debug = False
+        args.search_meta_data = False
+
+        out = self.capture_stdout(sut.run, args)
+        # self.dump_textfile(out, "DUMP.TXT")
+        self.assertTrue("Checking meta-data:" in out)
+        self.assertTrue("cli_support, 2.0.1" in out)
+        self.assertTrue(self.OUTPUTFILE2 in out)
+        # for the real version 2.6.0 source code it would be 39 components,
+        # but for the test the number is different
+        self.assertTrue(" components items written to file." in out)
+
+        # dev dependencies are also listed, but ignored
+        self.assertTrue("Ignoring dependency flake8" in out)
+        self.assertTrue("Ignoring dependency responses" in out)
+        self.assertTrue("sw360, 1.10.1" in out)
+
+        self.assertTrue(os.path.isfile(self.OUTPUTFILE2))
+
+        self.delete_file(self.OUTPUTFILE2)
+
 
 if __name__ == "__main__":
     APP = TestGetDependenciesPython()
-    APP.test_process_poetry_1_4_0_lock()
+    APP.test_process_poetry_2_1_4()
