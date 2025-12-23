@@ -7,7 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import pytest
-from cyclonedx.factory.license import LicenseExpression  # type: ignore
+from cyclonedx.model.license import LicenseExpression
 from cyclonedx.model import XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
