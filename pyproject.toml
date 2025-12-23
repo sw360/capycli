@@ -14,7 +14,7 @@ authors = [
 ]
 keywords = ["sw360", "cli, automation", "license", "compliance", "clearing"]
 license-files = [
-    "LICENSE.md"
+    "License.md"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -54,7 +54,7 @@ capycli = "capycli.main.cli:main"
 
 [tool.poetry]
 include = [
-    "LICENSE.md",
+    "License.md",
     { path = "capycli/data/granularity_list.csv", format = "wheel" },
     { path = "capycli/data/__init__.py", format = "wheel" },
     { path = "capycli/data/granularity_list.csv", format = "sdist" },
