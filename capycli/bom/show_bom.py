@@ -14,10 +14,10 @@ import os
 import sys
 from typing import Any
 
-from cyclonedx.model.license import DisjunctiveLicense, LicenseExpression
 from cyclonedx.model import XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from cyclonedx.model.license import DisjunctiveLicense, LicenseExpression
 
 import capycli.common.script_base
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
