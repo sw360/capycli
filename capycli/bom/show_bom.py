@@ -14,7 +14,7 @@ import os
 import sys
 from typing import Any
 
-from cyclonedx.factory.license import DisjunctiveLicense, LicenseExpression  # type: ignore
+from cyclonedx.model.license import DisjunctiveLicense, LicenseExpression
 from cyclonedx.model import XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component

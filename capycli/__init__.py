@@ -123,7 +123,7 @@ class ConsoleHandler(logging.Handler):
             else:
                 # info, debug, all other
                 # suppress all cyclonedx serialize log output
-                if record.name == "serializable":
+                if (record.name == "serializable") or record.name == "py_serializable":
                     return
                 print(msg)
         except Exception:
