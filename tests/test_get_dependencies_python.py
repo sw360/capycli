@@ -23,6 +23,8 @@ class TestGetDependenciesPython(TestBase):
     PROJFILE3 = "poetry_1.8.3/pyproject.toml"
     INPUTFILE4 = "poetry_2.1.4/poetry.lock"
     PROJFILE4 = "poetry_2.1.4/pyproject.toml"
+    INPUTFILE5 = "uv_0.9.18/uv.lock"
+    PROJFILE5 = "uv_0.9.18/pyproject.toml"
     OUTPUTFILE1 = "test_requirements.txt"
     OUTPUTFILE2 = "output.json"
 
@@ -383,6 +385,9 @@ class TestGetDependenciesPython(TestBase):
         actual = sut.determine_file_type("poetry.lock")
         self.assertEqual(InputFileType.POETRY_LOCK, actual)
 
+        actual = sut.determine_file_type("uv.lock")
+        self.assertEqual(InputFileType.UV_LOCK, actual)
+
         # test fallback
         actual = sut.determine_file_type(".gitignore")
         self.assertEqual(InputFileType.REQUIREMENTS, actual)
@@ -453,7 +458,7 @@ class TestGetDependenciesPython(TestBase):
 
         self.delete_file(self.OUTPUTFILE2)
 
-    def test_process_poetry_2_1_4(self) -> None:
+    def test_process_poetry_2_1_4_lock(self) -> None:
         # IMPORTANT: in this file there are no longer "category" values
         self.delete_file(self.OUTPUTFILE2)
 
@@ -489,7 +494,40 @@ class TestGetDependenciesPython(TestBase):
 
         self.delete_file(self.OUTPUTFILE2)
 
+    def test_process_uv_1_3_lock(self) -> None:
+        self.delete_file(self.OUTPUTFILE2)
+
+        sut = GetPythonDependencies()
+        sut.proj_file_override = os.path.join(os.path.dirname(__file__), "fixtures", self.PROJFILE5)
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("getdependencies")
+        args.command.append("python")
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE5)
+        args.outputfile = self.OUTPUTFILE2
+        args.verbose = True
+        args.debug = False
+        args.search_meta_data = False
+
+        out = self.capture_stdout(sut.run, args)
+        # self.dump_textfile(out, "DUMP.TXT")
+        self.assertTrue("Checking meta-data:" in out)
+        self.assertTrue("cli_support, 2.0.1" in out)
+        self.assertTrue(self.OUTPUTFILE2 in out)
+        self.assertTrue(" components items written to file." in out)
+
+        # dev dependencies are also listed, but ignored
+        self.assertTrue("Ignoring dependency flake8" in out)
+        self.assertTrue("Ignoring dependency responses" in out)
+        self.assertTrue("sw360, 1.10.1" in out)
+
+        self.assertTrue(os.path.isfile(self.OUTPUTFILE2))
+
+        self.delete_file(self.OUTPUTFILE2)
+
 
 if __name__ == "__main__":
     APP = TestGetDependenciesPython()
-    APP.test_process_poetry_2_1_4()
+    APP.test_determine_file_type()

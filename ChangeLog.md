@@ -21,6 +21,7 @@
 * `project prerequisites` now has a summary at the end of the output to show how many
   components have been scanned and how many warnings and errors there are.
 * Adapt `getdependencies python` to the Poetry 2.x pyproject.toml format.
+* `getdependencies python` now also supports uv and its `uv.lock` file.
 
 ## 2.9.1
 
