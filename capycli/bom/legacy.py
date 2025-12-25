@@ -205,6 +205,8 @@ class LegacySupport():
 
         binaryFile = item.get("BinaryFile", "")
         if binaryFile:
+            if not binaryFile.startswith("file://"):
+                binaryFile = "file:///" + binaryFile
             ext_ref = ExternalReference(
                 type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_FILE_COMMENT,

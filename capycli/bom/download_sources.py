@@ -110,14 +110,17 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
                 new = False
                 ext_ref = CycloneDxSupport.get_ext_ref(
                     component, ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
+                file_uri = path
+                if not file_uri.startswith("file://"):
+                    file_uri = "file:///" + file_uri
                 if not ext_ref:
                     ext_ref = ExternalReference(
                         type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-                        url=XsUri(path))
+                        url=XsUri(file_uri))
                     new = True
                 else:
-                    ext_ref.url = XsUri(path)
+                    ext_ref.url = XsUri(file_uri)
                 ext_ref.hashes.add(HashType(
                     alg=HashAlgorithm.SHA_1,
                     content=sha1))
@@ -188,7 +191,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_READING_BOM)
 
         if args.verbose:
-            print_text(" " + str(len(bom.components)) + "components written to SBOM file")
+            print_text(" " + str(len(bom.components)) + "components read from SBOM file")
 
         source_folder = "./"
         if args.source:

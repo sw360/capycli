@@ -62,6 +62,8 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
             url = dep.get("resolved", "").split('/')[-1]
             if url:
+                if not url.startswith("file://"):
+                    url = "file:///" + url
                 ext_ref = ExternalReference(
                     type=ExternalReferenceType.DISTRIBUTION,
                     comment=CaPyCliBom.BINARY_FILE_COMMENT,
@@ -131,6 +133,8 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
 
                 url = dep.get("resolved", "").split('/')[-1]
                 if url:
+                    if not url.startswith("file://"):
+                        url = "file:///" + url
                     ext_ref = ExternalReference(
                         type=ExternalReferenceType.DISTRIBUTION,
                         comment=CaPyCliBom.BINARY_FILE_COMMENT,
