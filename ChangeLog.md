@@ -23,6 +23,7 @@
 * Adapt `getdependencies python` to the Poetry 2.x pyproject.toml format.
 * `getdependencies python` now also supports uv and its `uv.lock` file.
 * Have correct `file:///` uri for files in SBOM external references.
+* `getdependencies python` writes now correct package names **with dashed** in the SBOM.
 
 ## 2.9.1
 

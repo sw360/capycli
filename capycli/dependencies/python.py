@@ -81,7 +81,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         see https://packaging.python.org/en/latest/specifications/name-normalization/#name-normalization
         """
         _NORMALIZE_MATCHER = compile(r"[-_.]+")
-        return _NORMALIZE_MATCHER.sub("_", name.lower())
+        return _NORMALIZE_MATCHER.sub("-", name.lower())
 
     def requirements_to_package_list(self, input_file: str) -> List[Dict[str, str]]:
         """

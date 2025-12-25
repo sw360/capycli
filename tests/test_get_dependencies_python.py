@@ -411,7 +411,7 @@ class TestGetDependenciesPython(TestBase):
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue("Checking meta-data:" in out)
-        self.assertTrue("cli_support" in out)
+        self.assertTrue("cli-support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
         self.assertTrue("30 components items written to file." in out)
 
@@ -444,7 +444,7 @@ class TestGetDependenciesPython(TestBase):
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue("Checking meta-data:" in out)
-        self.assertTrue("cli_support" in out)
+        self.assertTrue("cli-support" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
         # for the real version 2.6.0 source code it would be 39 components,
         # but for the test the umber is different
@@ -479,7 +479,7 @@ class TestGetDependenciesPython(TestBase):
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue("Checking meta-data:" in out)
-        self.assertTrue("cli_support, 2.0.1" in out)
+        self.assertTrue("cli-support, 2.0.1" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
         # for the real version 2.6.0 source code it would be 39 components,
         # but for the test the number is different
@@ -514,7 +514,7 @@ class TestGetDependenciesPython(TestBase):
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue("Checking meta-data:" in out)
-        self.assertTrue("cli_support, 2.0.1" in out)
+        self.assertTrue("cli-support, 2.0.1" in out)
         self.assertTrue(self.OUTPUTFILE2 in out)
         self.assertTrue(" components items written to file." in out)
 
