@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -66,10 +66,13 @@ class LegacyCx(CaPyCliBom):
         # extra handling
         prop = CycloneDxSupport.get_property(component, "source-file")
         if prop:
+            file_uri = prop.value
+            if not file_uri.startswith("file://"):
+                file_uri = "file:///" + file_uri
             ext_ref = ExternalReference(
                 type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-                url=XsUri(prop.value))
+                url=XsUri(file_uri))
             prop2 = CycloneDxSupport.get_property(component, "source-file-hash")
             if prop2:
                 ext_ref.hashes.add(HashType(
@@ -80,10 +83,13 @@ class LegacyCx(CaPyCliBom):
 
         prop = CycloneDxSupport.get_property(component, "source-file-url")
         if prop:
+            file_uri = prop.value
+            if not file_uri.startswith("file://"):
+                file_uri = "file:///" + file_uri
             ext_ref = ExternalReference(
                 type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.SOURCE_URL_COMMENT,
-                url=XsUri(prop.value))
+                url=XsUri(file_uri))
             prop2 = CycloneDxSupport.get_property(component, "source-file-hash")
             if prop2:
                 ext_ref.hashes.add(HashType(
@@ -112,10 +118,13 @@ class LegacyCx(CaPyCliBom):
 
         prop = CycloneDxSupport.get_property(component, "binary-file")
         if prop:
+            file_uri = prop.value
+            if not file_uri.startswith("file://"):
+                file_uri = "file:///" + file_uri
             ext_ref = ExternalReference(
                 type=ExternalReferenceType.DISTRIBUTION,
                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                url=XsUri(prop.value))
+                url=XsUri(file_uri))
             prop2 = CycloneDxSupport.get_property(component, "binary-file-hash")
             if prop2:
                 ext_ref.hashes.add(HashType(

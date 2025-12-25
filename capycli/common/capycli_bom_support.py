@@ -163,12 +163,18 @@ class CycloneDxSupport():
     @staticmethod
     def have_relative_ext_ref_path(ext_ref: ExternalReference, rel_to: str) -> str:
         if isinstance(ext_ref.url, str):
-            bip = pathlib.PurePath(ext_ref.url)
+            check_val = ext_ref.url._uri
+            if check_val.startswith("file:///"):
+                check_val = check_val[8:]
+            bip = pathlib.PurePath(check_val)
         else:
-            bip = pathlib.PurePath(ext_ref.url._uri)
+            check_val = ext_ref.url._uri
+            if check_val.startswith("file:///"):
+                check_val = check_val[8:]
+            bip = pathlib.PurePath(check_val)
         file = bip.as_posix()
         if os.path.isfile(file):
-            ext_ref.url = XsUri("file://" + bip.relative_to(rel_to).as_posix())
+            ext_ref.url = XsUri("file:///" + bip.relative_to(rel_to).as_posix())
         return bip.name
 
     @staticmethod
@@ -223,7 +229,9 @@ class CycloneDxSupport():
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
                     and (ext_ref.comment == CaPyCliBom.SOURCE_FILE_COMMENT):
                 url = str(ext_ref.url)
-                if url.startswith("file://"):
+                if url.startswith("file:///"):
+                    return url[8:]
+                elif url.startswith("file://"):
                     return url[7:]
                 else:
                     return url
@@ -245,7 +253,9 @@ class CycloneDxSupport():
             if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
                     and (ext_ref.comment == CaPyCliBom.BINARY_FILE_COMMENT):
                 url = str(ext_ref.url)
-                if url.startswith("file://"):
+                if url.startswith("file:///"):
+                    return url[8:]
+                elif url.startswith("file://"):
                     return url[7:]
                 else:
                     return url

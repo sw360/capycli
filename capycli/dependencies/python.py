@@ -314,10 +314,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 for item in meta["urls"]:
                     if "packagetype" in item:
                         if item["packagetype"] == "bdist_wheel":
+                            file_uri = item["filename"]
+                            if not file_uri.startswith("file://"):
+                                file_uri = "file:///" + file_uri
                             ext_ref = ExternalReference(
                                 type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                                url=XsUri(item["filename"]))
+                                url=XsUri(file_uri))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got binary file")
 
@@ -329,10 +332,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             LOG.debug("  got binary file url")
 
                         if item["packagetype"] == "sdist":
+                            file_uri = item["filename"]
+                            if not file_uri.startswith("file://"):
+                                file_uri = "file:///" + file_uri
                             ext_ref = ExternalReference(
                                 type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-                                url=XsUri(item["filename"]))
+                                url=XsUri(file_uri))
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file")
 

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2024 Siemens
+# Copyright (c) 2023-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -130,7 +130,7 @@ class TestBomDownloadsources(TestBase):
             try:
                 out = self.capture_stdout(sut.run, args)
                 out_bom = CaPyCliBom.read_sbom(args.outputfile)
-                # capycli.common.json_support.write_json_to_file(out, "STDOUT.TXT")
+                # json_support.write_json_to_file(out, "STDOUT.TXT")
                 self.assertTrue("Loading SBOM file" in out)
                 self.assertTrue("sbom_for_download.json" in out)  # path may vary
                 self.assertIn("SBOM file is not relative to", out)
@@ -144,11 +144,10 @@ class TestBomDownloadsources(TestBase):
                     out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
                 self.assertIsNotNone(ext_ref)
                 if ext_ref:  # only for mypy
-                    self.assertEqual(ext_ref.url._uri, resultfile)
-                    # if ext_ref.url is XsUri:
-                    #    self.assertEqual(ext_ref.url._uri, resultfile)
-                    # else:
-                    #    self.assertEqual(ext_ref.url, resultfile)
+                    check_val = ext_ref.url._uri
+                    if check_val.startswith("file:///"):
+                        check_val = check_val[8:]
+                    self.assertEqual(check_val, resultfile)
 
                 self.delete_file(args.outputfile)
                 return
@@ -192,7 +191,7 @@ class TestBomDownloadsources(TestBase):
                     out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
                 self.assertIsNotNone(ext_ref)
                 if ext_ref:  # only for mypy
-                    self.assertEqual(ext_ref.url._uri, "file://certifi-2022.12.7.tar.gz")
+                    self.assertEqual(ext_ref.url._uri, "file:///certifi-2022.12.7.tar.gz")
 
                 self.delete_file(args.outputfile)
                 return
@@ -275,7 +274,10 @@ class TestBomDownloadsources(TestBase):
                     bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
                 self.assertIsNotNone(ext_ref)
                 if ext_ref:  # only for mypy
-                    self.assertEqual(str(ext_ref.url), resultfile)
+                    check_val = ext_ref.url._uri
+                    if check_val.startswith("file:///"):
+                        check_val = check_val[8:]
+                    self.assertEqual(check_val, resultfile)
 
                 self.assertEqual(len(bom.components[1].external_references), 0)
                 return
@@ -288,4 +290,4 @@ class TestBomDownloadsources(TestBase):
 
 if __name__ == "__main__":
     lib = TestBomDownloadsources()
-    lib.test_simple_bom()
+    lib.test_simple_bom_relative_path()
