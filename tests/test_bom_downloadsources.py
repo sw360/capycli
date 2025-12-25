@@ -14,7 +14,6 @@ from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.component import Component
 
 from capycli.bom.download_sources import BomDownloadSources
-from capycli.common import json_support
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.main.result_codes import ResultCode
 from tests.test_base import AppArguments, TestBase
