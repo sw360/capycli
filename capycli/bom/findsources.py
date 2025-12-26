@@ -93,6 +93,48 @@ class FindSources(capycli.common.script_base.ScriptBase):
         self.sw360_url: str = os.environ.get("SW360ServerUrl", "")
         self.tag_cache = self.TagCache()
 
+    @staticmethod
+    def does_url_exist(url: str) -> bool:
+        """Check if a URL exists"""
+        try:
+            response = requests.head(url, allow_redirects=True)
+            return response.ok
+
+        except requests.ConnectionError:
+            return False
+
+    @staticmethod
+    def is_github_repo(url: str) -> bool:
+        """Check if URL is a GitHub repository URL"""
+        # do *NOT* use r"^(https?://)?(www\.)?github\.com/([a-zA-Z0-9-]+)(/[a-zA-Z0-9-]+)+/?$")
+        return "github.com" in url.lower()
+
+    def guess_source_code_url(self, github_project: str, version: str) -> str:
+        """Try to guess the source code URL from project url and version"""
+        github_project = github_project.replace(".git", "").replace("#readme", "")
+        if not github_project:
+            return ""
+
+        if not FindSources.is_github_repo(github_project):
+            # only works for GitHub repos
+            return ""
+
+        source_url = github_project + "/archive/tags/" + version + ".zip"
+        LOG.debug(f"  Guessing source code url {source_url}")
+        valid = self.is_sourcefile_accessible(source_url)
+        if valid:
+            return source_url
+
+        # try leading 'v'
+        source_url = github_project + "/archive/tags/v" + version + ".zip"
+        LOG.debug(f"  Guessing source code url {source_url}")
+        valid = self.is_sourcefile_accessible(source_url)
+        if valid:
+            return source_url
+
+        LOG.debug("  Url does not exist")
+        return ""
+
     def is_sourcefile_accessible(self, sourcefile_url: str) -> bool:
         """Check if the URL is accessible."""
         try:

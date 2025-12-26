@@ -24,6 +24,8 @@
 * `getdependencies python` now also supports uv and its `uv.lock` file.
 * Have correct `file:///` uri for files in SBOM external references.
 * `getdependencies python` writes now correct package names **with dashed** in the SBOM.
+* `getdependencies python` now first tries to get `GitHub` source code urls, before
+  using `pythonhosted` urls.
 
 ## 2.9.1
 
