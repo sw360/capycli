@@ -138,7 +138,7 @@ class TestGetDependenciesPython(TestBase):
         args.debug = True
         args.search_meta_data = True
 
-        # for login
+        # for get meta-data
         responses.add(
             responses.GET,
             url="https://pypi.org/pypi/chardet/3.0.4/json",
@@ -202,6 +202,27 @@ class TestGetDependenciesPython(TestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
+        # for is_sourcefile_accessible()
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/chardet/archive/tags/3.0.4.zip",
+            body="""
+            """,
+            status=302,
+            content_type="application/json",
+            adding_headers={"location": "https://codeload.github.com/chardet/chardet/zip/tags/3.0.4"},
+        )
+
+        responses.add(
+            responses.HEAD,
+            # url="https://pypi.org/pypi/chardet/3.0.4/json",
+            url="https://codeload.github.com/chardet/chardet/zip/tags/3.0.4",
+            body="""
+            """,
+            status=200,
+            content_type="application/json",
+        )
+
         out = self.capture_stdout(sut.run, args)
         self.assertTrue("chardet, 3.0.4" in out)
 
@@ -230,7 +251,7 @@ class TestGetDependenciesPython(TestBase):
             CycloneDxSupport.get_ext_ref_binary_file(sbom.components[0]))
 
         self.assertEqual(
-            "https://files.pythonhosted.org/packages/fc/bb/a5768c230/chardet-3.0.4.tar.gz",
+            "https://github.com/chardet/chardet/archive/tags/3.0.4.zip",
             str(CycloneDxSupport.get_ext_ref_source_url(sbom.components[0])))
         self.assertEqual(
             "chardet-3.0.4.tar.gz",
@@ -530,4 +551,4 @@ class TestGetDependenciesPython(TestBase):
 
 if __name__ == "__main__":
     APP = TestGetDependenciesPython()
-    APP.test_determine_file_type()
+    APP.test_get_metadata()

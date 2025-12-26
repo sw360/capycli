@@ -933,7 +933,122 @@ class TestFindSources(TestBase):
         kwargs['return_response'] = False
         res = out.github_request(**kwargs)  # type: ignore
 
+    def test_is_github_repo(self) -> None:
+        actual = FindSources.is_github_repo("https://github.com/python-attrs/attrs")
+        self.assertTrue(actual)
+
+        actual = FindSources.is_github_repo("https://www.crummy.com/software/BeautifulSoup/bs4/")
+        self.assertFalse(actual)
+
+    @responses.activate
+    def test_does_url_exist(self) -> None:
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/chardet/archive/tags/3.0.4.zip",
+            body="""
+            """,
+            status=200,
+            content_type="application/json",
+        )
+
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/chardet/archive/tags/xxx.zip",
+            body="""
+            """,
+            status=404,
+            content_type="application/json",
+        )
+
+        actual = FindSources.does_url_exist("https://github.com/chardet/chardet/archive/tags/3.0.4.zip")
+        self.assertTrue(actual)
+
+        actual = FindSources.does_url_exist("https://github.com/chardet/chardet/archive/tags/xxx.zip")
+        self.assertFalse(actual)
+
+        actual = FindSources.does_url_exist("https://github.com/chardet/chardet/archive/tags/yyy.zip")
+        self.assertFalse(actual)
+
+    @responses.activate
+    def test_guess_source_code_url(self) -> None:
+        fs = FindSources()
+        actual = fs.guess_source_code_url("#readme", "3.0.4")
+        self.assertEqual(actual, "")
+
+        actual = fs.guess_source_code_url(".git", "3.0.4")
+        self.assertEqual(actual, "")
+
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/archive/tags/3.0.4.zip",
+            body="""
+            """,
+            status=200,
+            content_type="application/json",
+        )
+
+        actual = fs.guess_source_code_url("https://github.com/chardet", "3.0.4")
+        self.assertEqual(actual, "https://github.com/chardet/archive/tags/3.0.4.zip")
+
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/archive/tags/3.0.4.zip",
+            body="""
+            """,
+            status=404,
+            content_type="application/json",
+        )
+
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/archive/tags/v3.0.4.zip",
+            body="""
+            """,
+            status=200,
+            content_type="application/json",
+        )
+
+        actual = fs.guess_source_code_url("https://github.com/chardet.git", "3.0.4")
+        self.assertEqual(actual, "https://github.com/chardet/archive/tags/v3.0.4.zip")
+
+    @responses.activate
+    def test_is_sourcefile_accessible(self) -> None:
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/chardet/archive/tags/xxx.zip",
+            body="""
+            """,
+            status=404,
+            content_type="application/json",
+        )
+
+        fs = FindSources()
+        actual = fs.is_sourcefile_accessible("https://github.com/chardet/chardet/archive/tags/xxx.zip")
+        self.assertFalse(actual)
+
+        responses.add(
+            responses.HEAD,
+            url="https://github.com/chardet/chardet/archive/tags/3.0.4.zip",
+            body="""
+            """,
+            status=302,
+            content_type="application/json",
+            adding_headers={"location": "https://codeload.github.com/chardet/chardet/zip/tags/3.0.4"},
+        )
+
+        responses.add(
+            responses.HEAD,
+            url="https://codeload.github.com/chardet/chardet/zip/tags/3.0.4",
+            body="""
+            """,
+            status=200,
+            content_type="application/json",
+        )
+
+        actual = fs.is_sourcefile_accessible("https://github.com/chardet/chardet/archive/tags/3.0.4.zip")
+        self.assertTrue(actual)
+
 
 if __name__ == "__main__":
     APP = TestFindSources()
-    APP.test_find_sources()
+    APP.test_is_sourcefile_accessible()

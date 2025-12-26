@@ -28,6 +28,7 @@ from packageurl import PackageURL
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
+from capycli.bom.findsources import FindSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator, SbomWriter
 from capycli.common.github_support import GitHubSupport
 from capycli.common.print import print_red, print_text, print_yellow
@@ -309,6 +310,37 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 cxcomp.external_references.add(ext_ref)
                 LOG.debug("  got package url")
 
+            # before we use the sdist information, let's see whether we
+            # have a homepage URL already *and* it is GitHub *and*
+            # we find the matching source code on GitHub
+            source_url = ""
+            if homepage and FindSources.is_github_repo(homepage):
+                fs = FindSources()
+
+                # first try to guess the source code URL.
+                # this works for GitHub releases and does no require
+                # rate-limited GitHub API calls
+                source_url = fs.guess_source_code_url(homepage, version=version)
+                if source_url:
+                    ext_ref = ExternalReference(
+                        type=ExternalReferenceType.DISTRIBUTION,
+                        comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                        url=XsUri(source_url))
+                    cxcomp.external_references.add(ext_ref)
+                    LOG.debug("  got GitHub source file url")
+                else:
+                    # ok, guess does not help.
+                    # Lets hope that the GitHub API can help us
+                    # beforer we run into rate-limiting issues
+                    source_url = fs.get_github_source_url(homepage, version=version)
+                    if source_url:
+                        ext_ref = ExternalReference(
+                            type=ExternalReferenceType.DISTRIBUTION,
+                            comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                            url=XsUri(source_url))
+                        cxcomp.external_references.add(ext_ref)
+                        LOG.debug("  got GitHub source file url")
+
             if "urls" in meta:
                 # there can be multiple entries, for wheel, source, etc.
                 for item in meta["urls"]:
@@ -342,12 +374,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file")
 
-                            ext_ref = ExternalReference(
-                                type=ExternalReferenceType.DISTRIBUTION,
-                                comment=CaPyCliBom.SOURCE_URL_COMMENT,
-                                url=XsUri(item["url"]))
-                            cxcomp.external_references.add(ext_ref)
-                            LOG.debug("  got source file url")
+                            if not source_url:
+                                ext_ref = ExternalReference(
+                                    type=ExternalReferenceType.DISTRIBUTION,
+                                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                                    url=XsUri(item["url"]))
+                                cxcomp.external_references.add(ext_ref)
+                                LOG.debug("  got sdist source file url")
 
     def convert_package_list(self, package_list: List[Dict[str, Any]], search_meta_data: bool,
                              package_source: str = "") -> Bom:
@@ -620,6 +653,10 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         entry_list_all = self.get_all_poetry_lock_file_entries(filename)
         entry_list = self.get_lock_file_entries_for_sbom(pyproject_file, entry_list_all)
+
+        if search_meta_data:
+            print_text("\nRetrieving package meta data ...")
+
         for package in entry_list:
             purl = PackageURL(type="pypi", name=package.name, version=package.version)
             cxcomp = Component(
