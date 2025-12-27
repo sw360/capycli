@@ -24,6 +24,7 @@ from sw360 import SW360Error
 
 import capycli.common.json_support
 import capycli.common.script_base
+from capycli.bom.download_sources import BomDownloadSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomWriter
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.common.purl_utils import PurlUtils
@@ -162,6 +163,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
                             "      File with the name '", tail, "' is already attached to release. Skip the upload!")
                     else:
                         self.upload_source_file(release_id, fullpath, filetype, comment)
+                        if not BomDownloadSources.is_good_source_file(fullpath):
+                            print_yellow("    Downloaded file seems not to be a valid source file!")
                 except Exception as ex:
                     print_red("      Error writing downloaded file: " + repr(ex))
             else:

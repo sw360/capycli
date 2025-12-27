@@ -26,6 +26,8 @@
 * `getdependencies python` writes now correct package names **with dashed** in the SBOM.
 * `getdependencies python` now first tries to get `GitHub` source code urls, before
   using `pythonhosted` urls.
+* CaPyCLI displays a warning in `bom show`, `bom DownloadSources`, or `bom CreateReleases`
+  when the source file does not look like a source file, i.e. the file extension does not match.
 
 ## 2.9.1
 
