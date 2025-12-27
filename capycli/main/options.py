@@ -28,49 +28,50 @@ class CommandlineSupport():
         custom_usage = "CaPyCli command subcommand [options]"
         command_help = """Commands and Sub-Commands
     getdependencies     dependency detection specific commands
-        Nuget             determine dependencies for a .Net/Nuget project
-        Python            determine dependencies for a Python project
-        Javascript        determine dependencies for a JavaScript project
-        MavenPom          determine dependencies for a Java/Maven project using the pom.xml file
-        MavenList         determine dependencies for a Java/Maven project using a Maven command
+        Nuget               determine dependencies for a .Net/Nuget project
+        Python              determine dependencies for a Python project
+        Javascript          determine dependencies for a JavaScript project
+        MavenPom            determine dependencies for a Java/Maven project using the pom.xml file
+        MavenList           determine dependencies for a Java/Maven project using a Maven command
 
     bom                 bill of material (BOM) specific commands
-        Show              display contents of a SBOM
-        Convert           convert SBOM formats
-        Filter            apply filter file to a SBOM
-        Check             check that all releases in the SBOM exist on target SW360 instance
-        CheckItemStatus   show additional information about SBOM items on SW360
-        Map               map a given SBOM to data on SW360
-        CreateReleases    create new releases for existing components on SW360
-        CreateComponents  create new components and releases on SW360 (use with care!)
-        DownloadSources   download source files from the URL specified in the SBOM
-        Granularity       check a bill of material for potential component granularity issues
-        Diff              compare two bills of material
-        Merge             merge two bills of material
-        Findsources       determine the source code for SBOM items
-        Validate          validate an SBOM
+        Show                display contents of a SBOM
+        Convert             convert SBOM formats
+        Filter              apply filter file to a SBOM
+        Check               check that all releases in the SBOM exist on target SW360 instance
+        CheckItemStatus     show additional information about SBOM items on SW360
+        Map                 map a given SBOM to data on SW360
+        CreateReleases      create new releases for existing components on SW360
+        CreateComponents    create new components and releases on SW360 (use with care!)
+        DownloadSources     download source files from the URL specified in the SBOM
+        DownloadAttachments download SW360 attachments as specified in the SBOM
+        Granularity         check a bill of material for potential component granularity issues
+        Diff                compare two bills of material
+        Merge               merge two bills of material
+        Findsources         determine the source code for SBOM items
+        Validate            validate an SBOM
 
     mapping
-        ToHtml            create a HTML page showing the mapping result
-        ToXlsx            create an Excel sheet showing the mapping result
+        ToHtml              create a HTML page showing the mapping result
+        ToXlsx              create an Excel sheet showing the mapping result
 
     moverview
-        ToHtml            create a HTML page showing the mapping result overview
-        ToXlsx            create an Excel sheet showing the mapping result overview
+        ToHtml              create a HTML page showing the mapping result overview
+        ToXlsx              create an Excel sheet showing the mapping result overview
 
     project
-        Find              find a project by name
-        Prerequisites     checks whether all prerequisites for a successful
-                          software clearing are fulfilled
-        Show              show project details
-        Licenses          show licenses of all cleared components
-        Create            create or update a project on SW360
-        Update            update an exiting project, preserving linked releases
-        GetLicenseInfo    get license info of all project components
-        CreateBom         create a SBOM for a project on SW360
-        CreateReadme      create a Readme_OSS
-        Vulnerabilities   show security vulnerabilities of a project
-        ECC               show export control status of a project
+        Find                find a project by name
+        Prerequisites       checks whether all prerequisites for a successful
+                            software clearing are fulfilled
+        Show                show project details
+        Licenses            show licenses of all cleared components
+        Create              create or update a project on SW360
+        Update              update an exiting project, preserving linked releases
+        GetLicenseInfo      get license info of all project components
+        CreateBom           create a SBOM for a project on SW360
+        CreateReadme        create a Readme_OSS
+        Vulnerabilities     show security vulnerabilities of a project
+        ECC                 show export control status of a project
 
     Note that each command has also its own help display, i.e. if you enter
     `capycli project vulnerabilities -h` you will get a help that only shows the options
@@ -217,6 +218,13 @@ class CommandlineSupport():
             "--overview",
             dest="create_overview",
             help="create an mapping overview JSON file",
+        )
+
+        self.parser.add_argument(
+            "-ct",
+            "--controlfile",
+            dest="controlfile",
+            help="control file for \"bom DownloadAttachments\" and \"project CreateReadme\"",
         )
 
         self.parser.add_argument(
