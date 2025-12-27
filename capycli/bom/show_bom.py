@@ -20,6 +20,7 @@ from cyclonedx.model.component import Component
 from cyclonedx.model.license import DisjunctiveLicense, LicenseExpression
 
 import capycli.common.script_base
+from capycli.bom.download_sources import BomDownloadSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
@@ -84,6 +85,9 @@ class ShowBom(capycli.common.script_base.ScriptBase):
                 download_url = CycloneDxSupport.get_ext_ref_source_url(bomitem)
                 if download_url:
                     print_text("    download URL: " + download_url.uri)
+                    if not BomDownloadSources.is_good_source_file(download_url.uri):
+                        print_yellow("    Download file seems not to be a valid source file!")
+                        self.has_error = True
                 else:
                     print_yellow("    No download URL given!")
                     self.has_error = True

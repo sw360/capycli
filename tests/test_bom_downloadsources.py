@@ -287,6 +287,16 @@ class TestBomDownloadsources(TestBase):
 
         self.assertTrue(False, "Error: we must never arrive here")
 
+    def test_is_good_source_file(self) -> None:
+        sut = BomDownloadSources()
+        self.assertTrue(sut.is_good_source_file("good_file.tar.gz"))
+        self.assertTrue(sut.is_good_source_file("good_file.tgz"))
+        self.assertTrue(sut.is_good_source_file("good_file.zip"))
+        self.assertTrue(sut.is_good_source_file("good_file.7z"))
+        self.assertFalse(sut.is_good_source_file("bad_file.html"))
+        self.assertFalse(sut.is_good_source_file("https://someurl.com/"))
+        self.assertFalse(sut.is_good_source_file("nonexistentfile.xyz"))
+
 
 if __name__ == "__main__":
     lib = TestBomDownloadsources()

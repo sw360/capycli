@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2020-2023 Siemens
+# Copyright (c) 2020-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -45,6 +45,16 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             return ""
         return fname[0].rstrip('"').lstrip('"')
 
+    @staticmethod
+    def is_good_source_file(filename: str) -> bool:
+        """
+        Checks whether this seems to be a valid/good source file.
+        The only thing we can do it to check the file extension.
+        """
+        good_extensions = [".zip", ".tar", ".gz", ".tar.gz", ".tgz", ".tar.bz2", ".tbz2", ".tar.xz", ".txz", ".7z"]
+        _, extension = os.path.splitext(filename)
+        return extension in good_extensions
+
     def download_source_file(self, url: str, source_folder: str) -> Optional[Tuple[str, str]]:
         """Download a file from a URL.
 
@@ -70,6 +80,8 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             path = os.path.join(source_folder, filename)
             if (response.status_code == requests.codes["ok"]):
                 open(path, "wb").write(response.content)
+                if not BomDownloadSources.is_good_source_file(path):
+                    print_yellow("    Downloaded file seems not to be a valid source file!")
                 sha1 = hashlib.sha1(response.content).hexdigest()
                 return (path, sha1)
             else:
