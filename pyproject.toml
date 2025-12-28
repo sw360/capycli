@@ -42,7 +42,8 @@ dependencies = [
     "importlib-resources (>=5.12.0,<6.0.0)",
     "beautifulsoup4 (>=4.11.1,<5.0.0)",
     "jsonschema (>=4.23.0,<5.0.0)",
-    "validation (>=0.8.3,<0.9.0)"]
+    "validation (>=0.8.3,<0.9.0)",
+    "halo (>=0.0.31,<0.0.32)"]
 
 [project.urls]
 repository = "https://github.com/sw360/capycli"

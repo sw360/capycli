@@ -23,6 +23,7 @@ from cyclonedx.factory.license import LicenseFactory
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from halo import Halo
 from packageurl import PackageURL
 
 import capycli.common.json_support
@@ -72,6 +73,19 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
     def __init__(self) -> None:
         self.verbose = False
         self.proj_file_override = ""
+        self.spinner_shape = {
+            "interval": 80,
+            "frames": [
+                "⣾",
+                "⣽",
+                "⣻",
+                "⢿",
+                "⡿",
+                "⣟",
+                "⣯",
+                "⣷"
+            ]
+        }
 
     @staticmethod
     def normalize_packagename(name: str) -> str:
@@ -655,9 +669,14 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         entry_list = self.get_lock_file_entries_for_sbom(pyproject_file, entry_list_all)
 
         if search_meta_data:
-            print_text("\nRetrieving package meta data ...")
+            print_text("\nRetrieving package meta data")
+            if self.verbose:
+                spinner = Halo(text="Retrieving package meta data", spinner=self.spinner_shape)
+                spinner.start()
 
         for package in entry_list:
+            if search_meta_data and self.verbose:
+                spinner.text = f"Processing package {package.name}, {package.version}"
             purl = PackageURL(type="pypi", name=package.name, version=package.version)
             cxcomp = Component(
                 name=package.name,
@@ -691,6 +710,10 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                         pass
 
             sbom.components.add(cxcomp)
+
+        if search_meta_data and self.verbose:
+            spinner.succeed('Package meta data processing completed.')
+            spinner.stop()
 
         return sbom
 
@@ -706,7 +729,16 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         sbom = creator.create([], addlicense=True, addprofile=True, addtools=True)
         entry_list_all = self.get_all_uv_lock_file_entries(filename)
         entry_list = self.get_lock_file_entries_for_sbom(pyproject_file, entry_list_all)
+
+        if search_meta_data:
+            print_text("\nRetrieving package meta data")
+            if self.verbose:
+                spinner = Halo(text="Retrieving package meta data", spinner=self.spinner_shape)
+                spinner.start()
+
         for package in entry_list:
+            if search_meta_data and self.verbose:
+                spinner.text = f"Processing package {package.name}, {package.version}"
             purl = PackageURL(type="pypi", name=package.name, version=package.version)
             cxcomp = Component(
                 name=package.name,
@@ -740,6 +772,10 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                         pass
 
             sbom.components.add(cxcomp)
+
+        if search_meta_data and self.verbose:
+            spinner.succeed('Package meta data processing completed.')
+            spinner.stop()
 
         return sbom
 
