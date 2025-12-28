@@ -425,6 +425,14 @@ class CommandlineSupport():
             help="copy the project with the given id and the update it",
         )
 
+        # used by BomDownloadSources
+        self.parser.add_argument(
+            "-bp",
+            "--bom-package",
+            dest="bom_package",
+            help="create a single zip archive that contains the SBOM and all source files",
+        )
+
     def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:
         """
         Read configuration from string or config file.

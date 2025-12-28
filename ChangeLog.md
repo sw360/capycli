@@ -28,6 +28,8 @@
   using `pythonhosted` urls.
 * CaPyCLI displays a warning in `bom show`, `bom DownloadSources`, or `bom CreateReleases`
   when the source file does not look like a source file, i.e. the file extension does not match.
+* CaPyCLI can now created SBOM packages as part of the `bom downloadsources` command.  
+  A SBOM package is a single zip archive that contains the SBOM and all source files.
 
 ## 2.9.1
 
