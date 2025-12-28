@@ -8,6 +8,7 @@
 
 import os
 import tempfile
+import zipfile
 
 import responses
 from cyclonedx.model import ExternalReferenceType
@@ -23,6 +24,7 @@ class TestBomDownloadsources(TestBase):
     INPUTFILE = "sbom_for_download.json"
     INPUTERROR = "plaintext.txt"
     OUTPUTFILE = "output.json"
+    BOM_PACKAGE = "test_bom_package.zip"
 
     def test_show_help(self) -> None:
         sut = BomDownloadSources()
@@ -297,7 +299,128 @@ class TestBomDownloadsources(TestBase):
         self.assertFalse(sut.is_good_source_file("https://someurl.com/"))
         self.assertFalse(sut.is_good_source_file("nonexistentfile.xyz"))
 
+    @responses.activate
+    def test_simple_bom_package(self) -> None:
+        sut = BomDownloadSources()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("bom")
+        args.command.append("downloadsources")
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE)
+        args.bom_package = TestBomDownloadsources.BOM_PACKAGE
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            args.source = tmpdirname
+
+            # for login
+            responses.add(
+                responses.GET,
+                url="https://files.pythonhosted.org/packages/37/f7/2b1b/certifi-2022.12.7.tar.gz",
+                body="""
+                SOME DUMMY DATA
+                """,
+                status=200,
+                content_type="application/json",
+            )
+
+            try:
+                out = self.capture_stdout(sut.run, args)
+                # json_support.write_json_to_file(out, "STDOUT.TXT")
+                self.assertTrue("Loading SBOM file" in out)
+                self.assertTrue("sbom_for_download.json" in out)  # path may vary
+                self.assertTrue("Downloading source files to folder" in out)
+                self.assertTrue("Downloading file certifi-2022.12.7.tar.gz" in out)
+                self.assertTrue("Creating BOM package test_bom_package.zip" in out)
+
+                resultfile = os.path.join(tmpdirname, "certifi-2022.12.7.tar.gz")
+                self.assertTrue(os.path.isfile(resultfile))
+
+                self.assertTrue(os.path.isfile(args.bom_package))
+                archive = zipfile.ZipFile(args.bom_package, 'r')
+                namelist = archive.namelist()
+                self.assertIn("sbom.cdx.json", namelist)
+                self.assertIn("certifi-2022.12.7.tar.gz", namelist)
+                archive.extract("sbom.cdx.json", tmpdirname)
+                out_bom = CaPyCliBom.read_sbom(os.path.join(tmpdirname, "sbom.cdx.json"))
+
+                ext_ref = CycloneDxSupport.get_ext_ref(
+                    out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
+                self.assertIsNotNone(ext_ref)
+                if ext_ref:  # only for mypy
+                    check_val = ext_ref.url._uri
+                    if check_val.startswith("file:///"):
+                        check_val = check_val[8:]
+                    self.assertEqual(check_val, "certifi-2022.12.7.tar.gz")
+
+                self.delete_file(args.bom_package)
+                return
+            except Exception as e:  # noqa
+                # catch all exception to let Python cleanup the temp folder
+                print(e)
+
+        self.assertTrue(False, "Error: we must never arrive here")
+
+    @responses.activate
+    def test_simple_bom_package_no_zip_no_source(self) -> None:
+        sut = BomDownloadSources()
+
+        # create argparse command line argument object
+        args = AppArguments()
+        args.command = []
+        args.command.append("bom")
+        args.command.append("downloadsources")
+        args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestBomDownloadsources.INPUTFILE)
+        args.bom_package = TestBomDownloadsources.BOM_PACKAGE
+
+        # for login
+        responses.add(
+            responses.GET,
+            url="https://files.pythonhosted.org/packages/37/f7/2b1b/certifi-2022.12.7.tar.gz",
+            body="""
+            SOME DUMMY DATA
+            """,
+            status=200,
+            content_type="application/json",
+        )
+
+        try:
+            out = self.capture_stdout(sut.run, args)
+            # json_support.write_json_to_file(out, "STDOUT.TXT")
+            self.assertTrue("Loading SBOM file" in out)
+            self.assertTrue("sbom_for_download.json" in out)  # path may vary
+            self.assertTrue("Downloading source files to folder" in out)
+            self.assertTrue("Downloading file certifi-2022.12.7.tar.gz" in out)
+            self.assertTrue("Creating BOM package test_bom_package.zip" in out)
+
+            self.assertTrue(os.path.isfile(args.bom_package))
+            archive = zipfile.ZipFile(args.bom_package, 'r')
+            namelist = archive.namelist()
+            self.assertIn("sbom.cdx.json", namelist)
+            self.assertIn("certifi-2022.12.7.tar.gz", namelist)
+            with tempfile.TemporaryDirectory() as tmpdirname:
+                archive.extract("sbom.cdx.json", tmpdirname)
+                out_bom = CaPyCliBom.read_sbom(os.path.join(tmpdirname, "sbom.cdx.json"))
+
+                ext_ref = CycloneDxSupport.get_ext_ref(
+                    out_bom.components[0], ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT)
+                self.assertIsNotNone(ext_ref)
+                if ext_ref:  # only for mypy
+                    check_val = ext_ref.url._uri
+                    if check_val.startswith("file:///"):
+                        check_val = check_val[8:]
+                    self.assertEqual(check_val, "certifi-2022.12.7.tar.gz")
+
+                self.delete_file(args.bom_package)
+            return
+        except Exception as e:  # noqa
+            # catch all exception to let Python cleanup the temp folder
+            print(e)
+
+        self.assertTrue(False, "Error: we must never arrive here")
+
 
 if __name__ == "__main__":
     lib = TestBomDownloadsources()
-    lib.test_simple_bom_relative_path()
+    lib.test_simple_bom_package_no_zip_no_source()

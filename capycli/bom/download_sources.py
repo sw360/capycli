@@ -11,7 +11,9 @@ import logging
 import os
 import pathlib
 import re
+import shutil
 import sys
+import tempfile
 from typing import Any, Optional, Tuple
 from urllib.parse import urlparse
 
@@ -185,6 +187,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             print("    -source SOURCE        source folder or additional source file")
             print("    -o OUTPUTFILE         output file to write to")
             print("    -v                    be verbose")
+            print("    -bp, --bom-package    create a single zip archive that contains the SBOM and all source files")
             return
 
         if not args.inputfile:
@@ -206,18 +209,29 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             print_text(" " + str(len(bom.components)) + "components read from SBOM file")
 
         source_folder = "./"
+        cleanup_temp_dir = False
+        if args.bom_package and not args.source:
+            temp_dir = tempfile.TemporaryDirectory(prefix="capycli_bom_pkg_")
+            source_folder = temp_dir.name
+            cleanup_temp_dir = True
         if args.source:
             source_folder = args.source
         if (not source_folder) or (not os.path.isdir(source_folder)):
             print_red("Target source code folder does not exist!")
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
 
-        print_text("Downloading source files to folder " + source_folder + " ...")
+        if args.bom_package:
+            pp = pathlib.Path(args.bom_package)
+            if pp.suffix.lower() != ".zip":
+                print_yellow("Warning: bom package file should have .zip extension")
+                args.bom_package = args.bom_package + ".zip"
+
+        print_text("\nDownloading source files to folder " + source_folder + " ...")
 
         self.download_sources(bom, source_folder)
 
         if args.outputfile:
-            print_text("Updating path information")
+            print_text("\nUpdating path information")
             self.update_local_path(bom, args.outputfile)
 
             print_text("Writing updated SBOM to " + args.outputfile)
@@ -229,5 +243,22 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
 
             if args.verbose:
                 print_text(" " + str(len(bom.components)) + " components written to SBOM file")
+
+        if args.bom_package:
+            print_text("\nCreating BOM package " + args.bom_package)
+            try:
+                # add SBOM to temp folder
+                sbom_file = os.path.join(source_folder, "sbom.cdx.json")
+                self.update_local_path(bom, sbom_file)
+                SbomWriter.write_to_json(bom, sbom_file, True)
+                shutil.make_archive(
+                    base_name=args.bom_package.rstrip(".zip"),
+                    format="zip",
+                    root_dir=source_folder)
+                if cleanup_temp_dir:
+                    temp_dir.cleanup()
+            except Exception as ex:
+                print_red("Error creating BOM package: " + repr(ex))
+                sys.exit(ResultCode.RESULT_ERROR_WRITING_BOM)
 
         print("\n")

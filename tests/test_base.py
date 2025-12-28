@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2024 Siemens
+# Copyright (c) 2021-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -69,6 +69,7 @@ class AppArguments():
         self.force_error: bool = False
         self.project_mainline_state = ""
         self.copy_from = ""
+        self.bom_package = ""
 
 
 class TestBasePytest:
