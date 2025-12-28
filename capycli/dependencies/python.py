@@ -675,7 +675,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 spinner.start()
 
         for package in entry_list:
-            if self.verbose:
+            if search_meta_data and self.verbose:
                 spinner.text = f"Processing package {package.name}, {package.version}"
             purl = PackageURL(type="pypi", name=package.name, version=package.version)
             cxcomp = Component(
@@ -737,7 +737,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 spinner.start()
 
         for package in entry_list:
-            if self.verbose:
+            if search_meta_data and self.verbose:
                 spinner.text = f"Processing package {package.name}, {package.version}"
             purl = PackageURL(type="pypi", name=package.name, version=package.version)
             cxcomp = Component(
