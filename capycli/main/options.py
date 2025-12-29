@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-25 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -49,6 +49,7 @@ class CommandlineSupport():
         Merge             merge two bills of material
         Findsources       determine the source code for SBOM items
         Validate          validate an SBOM
+        BomPackage        create a single archive that contains the SBOM and all source and binary files
 
     mapping
         ToHtml            create a HTML page showing the mapping result
@@ -423,14 +424,6 @@ class CommandlineSupport():
             "--copy_from",
             dest="copy_from",
             help="copy the project with the given id and the update it",
-        )
-
-        # used by BomDownloadSources
-        self.parser.add_argument(
-            "-bp",
-            "--bom-package",
-            dest="bom_package",
-            help="create a single zip archive that contains the SBOM and all source files",
         )
 
     def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:

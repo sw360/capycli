@@ -11,9 +11,7 @@ import logging
 import os
 import pathlib
 import re
-import shutil
 import sys
-import tempfile
 from typing import Any, Optional, Tuple
 from urllib.parse import urlparse
 
@@ -36,7 +34,8 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
     Download source files from the URL specified in the SBOM.
     """
 
-    def get_filename_from_cd(self, cd: str) -> str:
+    @staticmethod
+    def get_filename_from_cd(cd: str) -> str:
         """
         Get filename from content-disposition.
         """
@@ -57,18 +56,20 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
         _, extension = os.path.splitext(filename)
         return extension in good_extensions
 
-    def download_source_file(self, url: str, source_folder: str) -> Optional[Tuple[str, str]]:
+    @staticmethod
+    def download_source_file(url: str, source_folder: str, is_binary: bool = False) -> Optional[Tuple[str, str]]:
         """Download a file from a URL.
 
         @params:
             url           - Required : url of the file to get uploaded (string)
             source_folder - Required : folder to store the source files (string)
+            is_binary     - Optional : whether the file is a binary file (boolean, default: False)
         """
         print_text("    URL = " + url)
 
         try:
             response = requests.get(url, allow_redirects=True)
-            filename = self.get_filename_from_cd(response.headers.get("content-disposition", ""))
+            filename = BomDownloadSources.get_filename_from_cd(response.headers.get("content-disposition", ""))
             if not filename:
                 filename_ps = urlparse(url)
                 if filename_ps:
@@ -82,7 +83,7 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             path = os.path.join(source_folder, filename)
             if (response.status_code == requests.codes["ok"]):
                 open(path, "wb").write(response.content)
-                if not BomDownloadSources.is_good_source_file(path):
+                if not is_binary and not BomDownloadSources.is_good_source_file(path):
                     print_yellow("    Downloaded file seems not to be a valid source file!")
                 sha1 = hashlib.sha1(response.content).hexdigest()
                 return (path, sha1)
@@ -187,7 +188,6 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             print("    -source SOURCE        source folder or additional source file")
             print("    -o OUTPUTFILE         output file to write to")
             print("    -v                    be verbose")
-            print("    -bp, --bom-package    create a single zip archive that contains the SBOM and all source files")
             return
 
         if not args.inputfile:
@@ -209,22 +209,11 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
             print_text(" " + str(len(bom.components)) + "components read from SBOM file")
 
         source_folder = "./"
-        cleanup_temp_dir = False
-        if args.bom_package and not args.source:
-            temp_dir = tempfile.TemporaryDirectory(prefix="capycli_bom_pkg_")
-            source_folder = temp_dir.name
-            cleanup_temp_dir = True
         if args.source:
             source_folder = args.source
         if (not source_folder) or (not os.path.isdir(source_folder)):
             print_red("Target source code folder does not exist!")
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
-
-        if args.bom_package:
-            pp = pathlib.Path(args.bom_package)
-            if pp.suffix.lower() != ".zip":
-                print_yellow("Warning: bom package file should have .zip extension")
-                args.bom_package = args.bom_package + ".zip"
 
         print_text("\nDownloading source files to folder " + source_folder + " ...")
 
@@ -243,22 +232,5 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
 
             if args.verbose:
                 print_text(" " + str(len(bom.components)) + " components written to SBOM file")
-
-        if args.bom_package:
-            print_text("\nCreating BOM package " + args.bom_package)
-            try:
-                # add SBOM to temp folder
-                sbom_file = os.path.join(source_folder, "sbom.cdx.json")
-                self.update_local_path(bom, sbom_file)
-                SbomWriter.write_to_json(bom, sbom_file, True)
-                shutil.make_archive(
-                    base_name=args.bom_package.rstrip(".zip"),
-                    format="zip",
-                    root_dir=source_folder)
-                if cleanup_temp_dir:
-                    temp_dir.cleanup()
-            except Exception as ex:
-                print_red("Error creating BOM package: " + repr(ex))
-                sys.exit(ResultCode.RESULT_ERROR_WRITING_BOM)
 
         print("\n")

@@ -69,7 +69,6 @@ class AppArguments():
         self.force_error: bool = False
         self.project_mainline_state = ""
         self.copy_from = ""
-        self.bom_package = ""
 
 
 class TestBasePytest:

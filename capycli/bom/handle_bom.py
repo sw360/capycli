@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -10,6 +10,7 @@ import sys
 from typing import Any
 
 import capycli.bom.bom_convert
+import capycli.bom.bom_package
 import capycli.bom.bom_validate
 import capycli.bom.check_bom
 import capycli.bom.check_bom_item_status
@@ -51,6 +52,7 @@ def run_bom_command(args: Any) -> None:
         print("    Merge             merge two bills of material")
         print("    Findsources       determine the source code for SBOM items")
         print("    Validate          validate an SBOM")
+        print("    BomPackage        create a single archive that contains the SBOM and all source and binary files")
         return
 
     subcommand = args.command[1].lower()
@@ -137,6 +139,12 @@ def run_bom_command(args: Any) -> None:
         """Validate an SBOM."""
         app14 = capycli.bom.bom_validate.BomValidate()
         app14.run(args)
+        return
+
+    if subcommand == "bompackage":
+        """Validate an SBOM."""
+        app15 = capycli.bom.bom_package.BomPackage()
+        app15.run(args)
         return
 
     print_red("Unknown sub-command: ")

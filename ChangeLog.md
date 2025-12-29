@@ -5,6 +5,11 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## 2.10.0.dev2
+
+* Have `bom bompackage` as a separate command and have the advanced folder structure
+  based on SHA1 hashes.
+
 ## 2.10.0.dev1
 
 * `bom map`: The options `--dbx` and `-all` were replaced by `--matchmode`.
