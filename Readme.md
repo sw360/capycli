@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 -->
 
-![Header_Image](images/Github-social-capycli.png)
+![Header_Image](https://github.com/sw360/capycli/blob/0318f71ba1f9ba177432840717768fccfad1d6da/images/Github-social-capycli.png)
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
