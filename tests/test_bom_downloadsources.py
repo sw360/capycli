@@ -354,6 +354,7 @@ class TestBomDownloadsources(TestBase):
                         check_val = check_val[8:]
                     self.assertEqual(check_val, "certifi-2022.12.7.tar.gz")
 
+                archive.close()
                 self.delete_file(args.bom_package)
                 return
             except Exception as e:  # noqa
@@ -412,6 +413,7 @@ class TestBomDownloadsources(TestBase):
                         check_val = check_val[8:]
                     self.assertEqual(check_val, "certifi-2022.12.7.tar.gz")
 
+                archive.close()
                 self.delete_file(args.bom_package)
             return
         except Exception as e:  # noqa
