@@ -3,7 +3,7 @@
 
 [project]
 name = "capycli"
-version = "2.9.1"
+version = "2.10.0.dev1"
 description = "CaPyCli - Clearing Automation Python Command Line Interface for SW360"
 readme="Readme.md"
 requires-python = ">=3.11,<3.15"

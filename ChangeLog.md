@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.10.0.dev1
 
 * `bom map`: The options `--dbx` and `-all` were replaced by `--matchmode`.
 * `bom map`: new `--matchmode` options `full-search` (report all best matches) and
