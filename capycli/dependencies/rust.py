@@ -255,7 +255,7 @@ class GetRustDependencies(capycli.common.script_base.ScriptBase):
         LOG.debug(f"  Cargo.lock version: {cargo_lock_version}")
 
         entry_list: List[PackageEntry] = []
-        for package in cargo_lock["package"]:
+        for package in cargo_lock.get("package", []):
             pkg = PackageEntry(
                 name=package.get("name", "").strip(),
                 version=package.get("version", "").strip(),

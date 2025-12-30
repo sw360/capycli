@@ -108,34 +108,34 @@ class TestGetDependenciesRust(TestBase):
     def test_get_metadata(self) -> None:
         # create a test project data
         cargo_toml = """
-        [package]
-        name = "betterapp"
-        version = "0.1.0"
-        edition = "2024"
+[package]
+name = "betterapp"
+version = "0.1.0"
+edition = "2024"
 
-        [dependencies]
-        clap = { version = "4.5.53", features = ["derive"] }
+[dependencies]
+clap = { version = "4.5.53", features = ["derive"] }
         """
         with open(self.INPUT_CARGO_TOML, "w") as outfile:
             outfile.write(cargo_toml)
 
         cargo_lock = """
-        [[package]]
-        name = "betterapp"
-        version = "0.1.0"
-        dependencies = [
-        "clap",
-        "siemens_lib",
-        ]
+[[package]]
+name = "betterapp"
+version = "0.1.0"
+dependencies = [
+"clap",
+"siemens_lib",
+]
 
-        [[package]]
-        name = "clap"
-        version = "4.5.53"
-        source = "registry+https://github.com/rust-lang/crates.io-index"
-        checksum = "c9e340e012a1bf4935f5282ed1436d1489548e8f72308207ea5df0e23d2d03f8"
-        dependencies = [
-        "clap_builder",
-        ]
+[[package]]
+name = "clap"
+version = "4.5.53"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c9e340e012a1bf4935f5282ed1436d1489548e8f72308207ea5df0e23d2d03f8"
+dependencies = [
+"clap_builder",
+]
         """
         with open(self.INPUT_CARGO_LOCK, "w") as outfile:
             outfile.write(cargo_lock)
