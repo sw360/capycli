@@ -199,6 +199,7 @@ class TestBomPackage(TestBase):
             self.assertNotIn("sources/1b27be1573e99442dc3ca77b36caf76fc77a456a/", namelist)
             self.assertNotIn("sources/1b27be1573e99442dc3ca77b36caf76fc77a456a/certifi-2022.12.7.tar.gz", namelist)
             if os.path.isfile(os.path.join(args.outputfile)):
+                archive.close()
                 self.delete_file(args.outputfile)
             return
         except:  # noqa
