@@ -168,6 +168,7 @@ class TestGetDependenciesRust(TestBase):
         out = self.capture_stdout(sut.run, args)
         # json_support.write_json_to_file(out, "STDOUT.TXT")
         self.assertTrue("Analyzing project file:" in out)
+        self.assertTrue("Found package:" in out)
         self.assertTrue("Found package: betterapp, version: 0.1.0" in out)
         self.assertTrue("Analyzing lock file..." in out)
         self.assertTrue("Ignoring package: betterapp, 0.1.0" in out)
