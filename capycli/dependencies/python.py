@@ -779,7 +779,8 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         return sbom
 
-    def check_meta_data(self, sbom: Bom) -> bool:
+    @staticmethod
+    def check_meta_data(sbom: Bom, verbose: bool) -> bool:
         """
         Check whether all required meta-data is available.
 
@@ -790,37 +791,37 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             bool: True if all required meta-data is available; otherwise False.
         """
 
-        if self.verbose:
+        if verbose:
             print_text("\nChecking meta-data:")
 
         result = True
         cxcomp: Component
         for cxcomp in sbom.components:
-            if self.verbose:
+            if verbose:
                 print_text(f"  {cxcomp.name}, {cxcomp.version}")
 
             if not cxcomp.purl:
                 result = False
-                if self.verbose:
+                if verbose:
                     print_yellow("    package-url missing")
 
             homepage = CycloneDxSupport.get_ext_ref_website(cxcomp)
             if not homepage:
                 result = False
-                if self.verbose:
+                if verbose:
                     print_yellow("    Homepage missing")
 
             if not cxcomp.licenses:
-                if self.verbose:
+                if verbose:
                     LOG.debug("    License missing")
             elif len(cxcomp.licenses) == 0:
-                if self.verbose:
+                if verbose:
                     LOG.debug("    License missing")
 
             src_url = CycloneDxSupport.get_ext_ref_source_url(cxcomp)
             if not src_url:
                 result = False
-                if self.verbose:
+                if verbose:
                     print_yellow("    Source code URL missing")
 
         return result
@@ -884,7 +885,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             print_text("Formatting package list...")
             sbom = self.convert_package_list(package_list, args.search_meta_data, args.package_source)
 
-        self.check_meta_data(sbom)
+        GetPythonDependencies.check_meta_data(sbom, self.verbose)
 
         if self.verbose:
             print()
