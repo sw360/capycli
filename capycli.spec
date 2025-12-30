@@ -10,15 +10,15 @@ from os import path
 
 site_packages = next(p for p in sys.path if 'site-packages' in p)
 datas=[
-        (path.join(site_packages,"cyclonedx\schema/_res/*.*"), 'cyclonedx\\schema\\_res'),
-        (path.join(site_packages,"license_expression/data"), 'license_expression\\data')
+        (path.join(site_packages,"cyclonedx/schema/_res/*.*"), 'cyclonedx/schema/_res'),
+        (path.join(site_packages,"license_expression/data"), 'license_expression/data')
     ]
 datas += copy_metadata('capycli')
 hiddenimports = []
 hiddenimports += collect_submodules('application')
 
 a = Analysis(
-    ['capycli\\__main__.py'],
+    ['capycli/__main__.py'],
     pathex=[],
     binaries=[],
     datas=datas,
