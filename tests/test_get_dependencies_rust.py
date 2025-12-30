@@ -90,13 +90,17 @@ class TestGetDependenciesRust(TestBase):
         args = AppArguments()
         args.command = []
         args.command.append("getdependencies")
-        args.command.append("python")
+        args.command.append("rust")
         args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUT_PACKAGE)
         args.outputfile = self.OUTPUTFILE
         args.verbose = True
         args.debug = True
 
         out = self.capture_stdout(sut.run, args)
+        self.assertTrue("Analyzing project file:" in out)
+        self.assertTrue("Found package:" in out)
+        self.assertTrue("Found package: betterapp, version: 0.1.0" in out)
+        self.assertTrue("Analyzing lock file..." in out)
         self.assertTrue("anstream, 0.6.21" in out)
         self.assertTrue("clap, 4.5.53" in out)
         self.assertTrue("Ignoring package: betterapp, 0.1.0" in out)
