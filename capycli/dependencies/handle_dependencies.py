@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-23 Siemens
+# Copyright (c) 2019-2025 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -14,6 +14,7 @@ import capycli.dependencies.maven_list
 import capycli.dependencies.maven_pom
 import capycli.dependencies.nuget
 import capycli.dependencies.python
+import capycli.dependencies.rust
 from capycli.common.print import print_red
 from capycli.main.result_codes import ResultCode
 
@@ -34,6 +35,7 @@ def run_dependency_command(args: Any) -> None:
         print("    Javascript        determine dependencies for a JavaScript project")
         print("    MavenPom          determine dependencies for a Java/Maven project using the pom.xml file")
         print("    MavenList         determine dependencies for a Java/Maven project using a Maven command")
+        print("    Rust              determine dependencies for a Rust project")
         return
 
     subcommand = args.command[1].lower()
@@ -65,6 +67,12 @@ def run_dependency_command(args: Any) -> None:
         """Determine Java components/dependencies for a given project"""
         app5 = capycli.dependencies.maven_list.GetJavaMavenTreeDependencies()
         app5.run(args)
+        return
+
+    if subcommand == "rust":
+        """Determine Rust components/dependencies for a given project"""
+        app6 = capycli.dependencies.rust.GetRustDependencies()
+        app6.run(args)
         return
 
     print_red("Unknown sub-command: " + subcommand)
