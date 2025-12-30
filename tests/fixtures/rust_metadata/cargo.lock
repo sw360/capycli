@@ -13,6 +13,9 @@ version = "4.5.53"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c9e340e012a1bf4935f5282ed1436d1489548e8f72308207ea5df0e23d2d03f8"
 dependencies = [
-"clap_builder",
 ]
+
+[[package]]
+name = "siemens_lib"
+version = "0.1.0"
         

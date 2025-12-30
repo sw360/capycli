@@ -10,6 +10,7 @@ import os
 
 import responses
 
+# from capycli.common import json_support
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.dependencies.rust import GetRustDependencies
 from capycli.main.result_codes import ResultCode
@@ -165,8 +166,17 @@ class TestGetDependenciesRust(TestBase):
         )
 
         out = self.capture_stdout(sut.run, args)
-        self.assertTrue("clap, 4.5.53" in out)
+        # json_support.write_json_to_file(out, "STDOUT.TXT")
+        self.assertTrue("Analyzing project file:" in out)
+        self.assertTrue("Found package: betterapp, version: 0.1.0" in out)
+        self.assertTrue("Analyzing lock file..." in out)
         self.assertTrue("Ignoring package: betterapp, 0.1.0" in out)
+        self.assertTrue("Ignoring local dependency: siemens_lib, 0.1.0" in out)
+        self.assertTrue("Retrieving package meta data" in out)
+        self.assertTrue("Checking meta-data:" in out)
+        self.assertTrue("clap, 4.5.53" in out)
+        self.assertTrue("Writing new SBOM to output.json" in out)
+        self.assertTrue("1 component items written to file" in out)
 
         sbom = CaPyCliBom.read_sbom(self.OUTPUTFILE)
         self.assertIsNotNone(sbom)
