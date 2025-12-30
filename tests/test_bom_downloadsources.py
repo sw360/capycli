@@ -23,7 +23,6 @@ class TestBomDownloadsources(TestBase):
     INPUTFILE = "sbom_for_download.json"
     INPUTERROR = "plaintext.txt"
     OUTPUTFILE = "output.json"
-    BOM_PACKAGE = "test_bom_package.zip"
 
     def test_show_help(self) -> None:
         sut = BomDownloadSources()
