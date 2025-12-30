@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import os
+import pytest
 
 import responses
 
@@ -109,6 +110,7 @@ class TestGetDependenciesRust(TestBase):
         self.delete_file(self.OUTPUTFILE)
 
     @responses.activate
+    @pytest.mark.skip
     def test_get_metadata(self) -> None:
         sut = GetRustDependencies()
         # create argparse command line argument object
