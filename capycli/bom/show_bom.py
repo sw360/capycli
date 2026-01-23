@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2024 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -64,11 +64,14 @@ class ShowBom(capycli.common.script_base.ScriptBase):
             return
 
         for bomitem in bom.components:
+            name = bomitem.name
+            if bomitem.group:
+                name = bomitem.group + "/" + bomitem.name
             if not bomitem.version:
-                print_text("  " + bomitem.name)
+                print_text("  " + name)
                 print_yellow("  component version is missing!")
             else:
-                print_text("  " + bomitem.name + ", " + bomitem.version)
+                print_text("  " + name + ", " + bomitem.version)
 
             if self.verbose:
                 if bomitem.purl:

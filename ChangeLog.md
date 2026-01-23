@@ -1,9 +1,13 @@
 <!--
-# SPDX-FileCopyrightText: (c) 2018-2025 Siemens
+# SPDX-FileCopyrightText: (c) 2018-2026 Siemens
 # SPDX-License-Identifier: MIT
 -->
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
+
+## NEXT
+
+* `bom show` now also shows the group, if it exists.
 
 ## 2.10.0
 
