@@ -136,7 +136,7 @@ class ScriptBase:
         return (self.sw360_url + "group/guest/components/-/component/release/detailRelease/"
                 + release_id)
 
-    def attachment_api_url(self, release_id, attachment_id) -> str:
+    def attachment_api_url(self, release_id: str, attachment_id: str) -> str:
         """Returns the REST API URL for an attachment."""
         return (self.sw360_url + "resource/api/releases/" + release_id
                 + "/attachments/" + attachment_id)

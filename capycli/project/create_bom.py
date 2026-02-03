@@ -109,11 +109,11 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                         ext_ref_type = ExternalReferenceType.DISTRIBUTION
                     else:
                         ext_ref_type = ExternalReferenceType.OTHER
-                        attachment_id = self.client.get_id_from_href(attachment["_links"]["self"]["href"]))
-                        sw360_id_prop = Property(CycloneDxSupport.CDX_PROP_SW360ID, attachment_id)
-                    CycloneDxSupport.set_ext_ref(rel_item, ext_ref_type,
-                                                 comment, attachment["filename"],
-                                                 HashAlgorithm.SHA_1, attachment.get("sha1"),
+                        attachment_id = self.client.get_id_from_href(attachment["_links"]["self"]["href"])
+                        sw360_id_prop = Property(name=CycloneDxSupport.CDX_PROP_SW360ID, value=attachment_id)
+                    CycloneDxSupport.set_ext_ref(comp=rel_item, type=ext_ref_type,
+                                                 comment=comment, value=attachment["filename"],
+                                                 hash_algo=HashAlgorithm.SHA_1, hash=attachment.get("sha1", ""),
                                                  properties=[sw360_id_prop])
 
             except SW360Error as swex:

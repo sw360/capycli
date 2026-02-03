@@ -9,7 +9,7 @@
 import logging
 import os
 import sys
-from typing import Tuple
+from typing import Any, Tuple
 
 import sw360.sw360_api
 from cyclonedx.model.bom import Bom
@@ -79,7 +79,7 @@ class BomDownloadAttachments(capycli.common.script_base.ScriptBase):
                     print_red("    Error getting", swex.url, swex.response)
         return sbom
 
-    def run(self, args):
+    def run(self, args: Any) -> None:
         """Main method
 
         @params:
