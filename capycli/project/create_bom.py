@@ -10,7 +10,7 @@ import logging
 import sys
 from typing import Any, Dict, List, Tuple
 
-from cyclonedx.model import ExternalReferenceType, HashAlgorithm
+from cyclonedx.model import ExternalReferenceType, HashAlgorithm, Property
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
@@ -109,11 +109,12 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                         ext_ref_type = ExternalReferenceType.DISTRIBUTION
                     else:
                         ext_ref_type = ExternalReferenceType.OTHER
-                        comment += (", sw360Id: "
-                                    + self.client.get_id_from_href(attachment["_links"]["self"]["href"]))
+                        attachment_id = self.client.get_id_from_href(attachment["_links"]["self"]["href"]))
+                        sw360_id_prop = Property(CycloneDxSupport.CDX_PROP_SW360ID, attachment_id)
                     CycloneDxSupport.set_ext_ref(rel_item, ext_ref_type,
                                                  comment, attachment["filename"],
-                                                 HashAlgorithm.SHA_1, attachment.get("sha1"))
+                                                 HashAlgorithm.SHA_1, attachment.get("sha1"),
+                                                 properties=[sw360_id_prop])
 
             except SW360Error as swex:
                 print_red("    ERROR: unable to access project:" + repr(swex))

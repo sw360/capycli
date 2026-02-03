@@ -125,17 +125,19 @@ class CycloneDxSupport():
 
     @staticmethod
     def set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str,
-                    hash_algo: str = "", hash: str = "") -> None:
+                    hash_algo: str = "", hash: str = "", properties: list[Property] = []) -> None:
         if isinstance(value, XsUri):
             ext_ref = ExternalReference(
                 type=type,
                 url=value,
-                comment=comment)
+                comment=comment,
+                properties=properties)
         else:
             ext_ref = ExternalReference(
                 type=type,
                 url=XsUri(value),
-                comment=comment)
+                comment=comment,
+                properties=properties)
 
         if hash_algo and hash:
             ext_ref.hashes.add(HashType(
