@@ -105,8 +105,9 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 if "dev" in dep:
                     isdev = dep["dev"]
 
+                version = dep.get("version", "")
                 if isdev:
-                    # LOG.debug("Ignoring dev dependency: " + key + "," + dep["version"])
+                    print_yellow("Ignoring dev dependency: " + key + "," + dep["version"])
                     continue
 
                 modified_key = ""
@@ -115,11 +116,14 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
                 else:
                     modified_key = key
 
-                LOG.debug("Checking dependency: " + modified_key + "," + dep["version"])
-                purl = PackageURL("npm", "", modified_key, dep["version"], "", "")
+                if dep.get("link", ""):
+                    print_yellow("Ignoring linked dependency: " + modified_key + "," + version)
+                    continue
+                LOG.debug("Checking dependency: " + modified_key + "," + version)
+                purl = PackageURL("npm", "", modified_key, version, "", "")
                 cxcomp = Component(
                     name=modified_key.strip(),
-                    version=dep["version"].strip(),
+                    version=version.strip(),
                     purl=purl,
                     bom_ref=purl.to_string())
 
