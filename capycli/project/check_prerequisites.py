@@ -155,7 +155,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         else:
             print_text("\n    No linked projects")
 
-        releases: Dict[str, Any] = {}
+        releases: List[Dict[str, Any]] = []
         if "sw360:releases" in project["_embedded"]:
             print_text("\n  Components: ")
             releases = project["_embedded"]["sw360:releases"]
@@ -163,7 +163,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
                 href = key["_links"]["self"]["href"]
                 release = self.client.get_release_by_url(href)
                 if not release:
-                    print_red("Error accessign release " + href)
+                    print_red("Error accessing release " + href)
                     count_errors += 1
                     continue
 
