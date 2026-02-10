@@ -8,6 +8,7 @@
 ## NEXT
 
 * `bom show` now also shows the group, if it exists.
+* Improve dependency detection in `getdependencies javascript`.
 
 ## 2.10.0
 
