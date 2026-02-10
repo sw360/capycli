@@ -155,6 +155,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
         else:
             print_text("\n    No linked projects")
 
+        releases: Dict[str, Any] = {}
         if "sw360:releases" in project["_embedded"]:
             print_text("\n  Components: ")
             releases = project["_embedded"]["sw360:releases"]
@@ -267,7 +268,10 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             print_text("    No linked releases")
 
         print_text("\nSummary:")
-        print_text("  Total components: " + str(len(releases)))
+        if releases:
+            print_text("  Total components: " + str(len(releases)))
+        else:
+            print_text("  Total components: 0 (no releases)")
         if count_warnings > 0:
             print_yellow("  Warnings: " + str(count_warnings))
         if count_errors > 0:
