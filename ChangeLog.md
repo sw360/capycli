@@ -8,6 +8,7 @@
 ## NEXT
 
 * `bom show` now also shows the group, if it exists.
+* Fix issue in `project prerequisites` when reading an empty project.
 
 ## 2.10.0
 

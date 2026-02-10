@@ -7,8 +7,8 @@
 # -------------------------------------------------------------------------------
 
 import os
-import pytest
 
+import pytest
 import responses
 
 # from capycli.common import json_support
