@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.10.1
 
 * `bom show` now also shows the group, if it exists.
 * Improve dependency detection in `getdependencies javascript`.
