@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2024 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -251,10 +251,16 @@ class FilterBom(capycli.common.script_base.ScriptBase):
         if self.verbose:
             for filterentry in filter["Components"]:
                 if not filterentry["Processed"]:
-                    print_yellow(
-                        "  No matching entry found for " +
-                        filterentry["component"]["Name"] + ", " +
-                        filterentry["component"].get("Version", "(all)"))
+                    searchitem = ""
+                    if filterentry["component"].get("Name"):
+                        searchitem = filterentry["component"]["Name"] + ", "\
+                            + filterentry["component"].get("Version", "(all)")
+                    elif filterentry["component"].get("RepositoryId"):
+                        searchitem = filterentry["component"]["RepositoryId"]
+
+                    if searchitem:
+                        print_yellow(
+                            "  No matching entry found for " + searchitem)
 
             print()
 
