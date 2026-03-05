@@ -6,14 +6,111 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+from unittest.mock import MagicMock
+
 from capycli.common.github_support import GitHubSupport
 from tests.test_base import TestBase
 
 
-class GitHubSupportHtml(TestBase):
+class GitHubSupportTest(TestBase):
     """Test class for GitHubSupport methods"""
     INPUTFILE1 = "sbom.siemens.capycli.json"
     OUTPUTFILE = "test.html"
+
+    def test_init(self) -> None:
+        """Test GitHubSupport initialization"""
+        gh_support = GitHubSupport()
+        self.assertIsNotNone(gh_support.github_project_name_regex)
+        # Test regex pattern matching
+        self.assertIsNotNone(gh_support.github_project_name_regex.match("owner/repo"))
+        self.assertIsNotNone(gh_support.github_project_name_regex.match("sw360/capycli"))
+        self.assertIsNone(gh_support.github_project_name_regex.match("invalid url with spaces"))
+
+    def test_gh_request_headers_no_credentials(self) -> None:
+        """Test header construction without credentials"""
+        headers = GitHubSupport._gh_request_headers()
+        self.assertEqual(headers, {"Accept": "application/vnd.github+json"})
+
+    def test_gh_request_headers_with_token(self) -> None:
+        """Test header construction with token"""
+        headers = GitHubSupport._gh_request_headers(token="test_token")
+        self.assertEqual(headers["Accept"], "application/vnd.github+json")
+        self.assertEqual(headers["Authorization"], "token test_token")
+        self.assertNotIn("Username", headers)
+
+    def test_gh_request_headers_with_username_and_token(self) -> None:
+        """Test header construction with username and token"""
+        headers = GitHubSupport._gh_request_headers(token="test_token", username="test_user")
+        self.assertEqual(headers["Accept"], "application/vnd.github+json")
+        self.assertEqual(headers["Authorization"], "token test_token")
+        self.assertEqual(headers["Username"], "test_user")
+
+    def test_blocked_by_ratelimit_not_blocked(self) -> None:
+        """Test rate limit check when not blocked"""
+        response = MagicMock()
+        response.status_code = 200
+        response.headers = {}
+        self.assertFalse(GitHubSupport._blocked_by_ratelimit(response))
+
+    def test_blocked_by_ratelimit_403_with_remaining(self) -> None:
+        """Test rate limit check when blocked with 403"""
+        response = MagicMock()
+        response.status_code = 403
+        response.headers = {'x-ratelimit-remaining': '0'}
+        self.assertTrue(GitHubSupport._blocked_by_ratelimit(response))
+
+    def test_blocked_by_ratelimit_429_with_remaining(self) -> None:
+        """Test rate limit check when blocked with 429"""
+        response = MagicMock()
+        response.status_code = 429
+        response.headers = {'x-ratelimit-remaining': '0'}
+        self.assertTrue(GitHubSupport._blocked_by_ratelimit(response))
+
+    def test_blocked_by_ratelimit_403_with_remaining_nonzero(self) -> None:
+        """Test rate limit check when 403 but remaining > 0"""
+        response = MagicMock()
+        response.status_code = 403
+        response.headers = {'x-ratelimit-remaining': '10'}
+        self.assertFalse(GitHubSupport._blocked_by_ratelimit(response))
+
+    def test_calculate_ratelimit_wait_time_with_retry_after(self) -> None:
+        """Test wait time calculation with retry-after header"""
+        response = MagicMock()
+        response.headers = {'retry-after': '30'}
+        wait_time = GitHubSupport._calculate_ratelimit_wait_time(response)
+        self.assertEqual(wait_time, 30)
+
+    def test_calculate_ratelimit_wait_time_default(self) -> None:
+        """Test wait time calculation with no headers"""
+        response = MagicMock()
+        response.headers = {}
+        wait_time = GitHubSupport._calculate_ratelimit_wait_time(response)
+        self.assertEqual(wait_time, GitHubSupport.default_wait_time)
+
+    def test_response_is_json_valid(self) -> None:
+        """Test JSON response validation with valid JSON"""
+        response = MagicMock()
+        response.json.return_value = {"key": "value"}
+        self.assertTrue(GitHubSupport._response_is_json(response))
+
+    def test_response_is_json_invalid(self) -> None:
+        """Test JSON response validation with invalid JSON"""
+        response = MagicMock()
+        response.json.side_effect = ValueError("No JSON")
+        self.assertFalse(GitHubSupport._response_is_json(response))
+
+    def test_credential_issue_bad_credentials(self) -> None:
+        """Test credential issue detection with bad credentials"""
+        response = MagicMock()
+        response.ok = False
+        response.json.return_value = {"message": "Bad credentials"}
+        self.assertTrue(GitHubSupport._credential_issue(response))
+
+    def test_credential_issue_no_issue(self) -> None:
+        """Test credential issue detection with valid response"""
+        response = MagicMock()
+        response.ok = True
+        self.assertFalse(GitHubSupport._credential_issue(response))
 
     def test_get_repositories(self) -> None:
         actual = GitHubSupport.get_repositories("capycli", "python")
@@ -79,5 +176,5 @@ class GitHubSupportHtml(TestBase):
 
 
 if __name__ == "__main__":
-    APP = GitHubSupportHtml()
+    APP = GitHubSupportTest()
     APP.test_get_repository_info()
