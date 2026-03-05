@@ -65,7 +65,7 @@ class GitHubSupport:
                     Fore.LIGHTYELLOW_EX +
                     f"      Resource not found at {url} - could be intended or not ... " +
                     Style.RESET_ALL)
-                return response if return_response else {}
+                return response if return_response else response.json()
 
             # Raise an exception for other HTTP errors
             response.raise_for_status()
@@ -76,6 +76,8 @@ class GitHubSupport:
                     f"      Persistent issues accessing {url} " + repr(ex) +
                     "\n      Aborting after retried once!")
                 sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SERVICE)
+
+            GitHubSupport.last_request_error = True
 
             print(
                 Fore.LIGHTYELLOW_EX +
@@ -124,6 +126,8 @@ class GitHubSupport:
     @staticmethod
     def _credential_issue(response: requests.Response) -> bool:
         """Check if the response indicates a credential issue."""
+        if response.status_code == 401:
+            return True
         if not response.ok:
             message = response.json().get('message', '')
             return "bad credentials" in message.lower()
