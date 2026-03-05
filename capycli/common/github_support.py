@@ -27,7 +27,7 @@ class GitHubSupport:
     default_wait_time = 60  # seconds
     default_gh_api_timeout = 15  # seconds
     last_request_error = False
-    
+
     def __init__(self) -> None:
         self.github_project_name_regex = re.compile(r"^[a-zA-Z0-9-]+(/[a-zA-Z0-9-]+)*$")
 
@@ -36,9 +36,10 @@ class GitHubSupport:
                        return_response: bool = False,
                        allow_redirects: bool = True,  # default in requests
                        ) -> Any:
+        """Helper method to perform GitHub API requests"""
         try:
             response = requests.get(url, headers=GitHubSupport._gh_request_headers(token, username),
-                                    allow_redirects=allow_redirects, 
+                                    allow_redirects=allow_redirects,
                                     timeout=GitHubSupport.default_gh_api_timeout)
 
             # Check for rate limit errors (403 Forbidden or 429 Too Many Requests)
@@ -49,7 +50,9 @@ class GitHubSupport:
                     f"      Github API rate limit exceeded - wait {wait_time}s and retry ... " +
                     Style.RESET_ALL)
                 time.sleep(wait_time)
-                return GitHubSupport.github_request(url, username, token, return_response=return_response)
+                return GitHubSupport.github_request(
+                    url, username, token, return_response=return_response,
+                    allow_redirects=allow_redirects)
 
             # Check for credential issues
             if GitHubSupport._credential_issue(response):
@@ -64,8 +67,8 @@ class GitHubSupport:
                     Style.RESET_ALL)
                 return response if return_response else {}
 
-            # Raise an exception for other HTTP errors 
-            response.raise_for_status() 
+            # Raise an exception for other HTTP errors
+            response.raise_for_status()
 
         except requests.exceptions.RequestException as ex:
             if GitHubSupport.last_request_error:
@@ -77,10 +80,10 @@ class GitHubSupport:
             print(
                 Fore.LIGHTYELLOW_EX +
                 f"      Connection issues accessing {url} " + repr(ex) +
-                f"\n      Retrying using the same url." +
+                "\n      Retrying using the same url." +
                 Style.RESET_ALL)
-            return GitHubSupport.github_request(url, username, token, return_response=return_response, 
-                                                allow_redirects=allow_redirects)
+            return GitHubSupport.github_request(url, username, token,
+                    return_response=return_response, allow_redirects=allow_redirects)
 
         # Reset the error flag on success or after handling exceptions
         GitHubSupport.last_request_error = False
@@ -121,19 +124,10 @@ class GitHubSupport:
     @staticmethod
     def _credential_issue(response: requests.Response) -> bool:
         """Check if the response indicates a credential issue."""
-        if not response.ok and GitHubSupport._response_is_json(response):
+        if not response.ok:
             message = response.json().get('message', '')
             return "bad credentials" in message.lower()
         return False
-
-    @staticmethod
-    def _response_is_json(response: requests.Response) -> bool:
-        """Check if the response content is valid JSON."""
-        try:
-            response.json()
-            return True
-        except Exception:
-            return False
 
     @staticmethod
     def get_repositories(name: str, language: str, username: str = "", token: str = "") -> Any:
@@ -146,7 +140,8 @@ class GitHubSupport:
     def get_repo_name(github_url: str) -> str:
         """Extract the GitHub repo name from the specified URL."""
         git = "github.com/"
-        url = github_url.replace(".git", "").replace("#readme", "")[github_url.find(git) + len(git):]
+        url = github_url.replace(".git", "").replace(
+            "#readme", "")[github_url.find(git) + len(git):]
         split = url.split("/")
 
         if len(split) > 0:
