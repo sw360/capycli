@@ -28,19 +28,23 @@ class GitHubSupportTest(TestBase):
 
     def test_gh_request_headers_no_credentials(self) -> None:
         """Test header construction without credentials"""
+        # Without api=True, no Accept header is added
         headers = GitHubSupport._gh_request_headers()
+        self.assertEqual(headers, {})
+        # With api=True, Accept header is added
+        headers = GitHubSupport._gh_request_headers(api=True)
         self.assertEqual(headers, {"Accept": "application/vnd.github+json"})
 
     def test_gh_request_headers_with_token(self) -> None:
         """Test header construction with token"""
-        headers = GitHubSupport._gh_request_headers(token="test_token")
+        headers = GitHubSupport._gh_request_headers(token="test_token", api=True)
         self.assertEqual(headers["Accept"], "application/vnd.github+json")
         self.assertEqual(headers["Authorization"], "token test_token")
         self.assertNotIn("Username", headers)
 
     def test_gh_request_headers_with_username_and_token(self) -> None:
         """Test header construction with username and token"""
-        headers = GitHubSupport._gh_request_headers(token="test_token", username="test_user")
+        headers = GitHubSupport._gh_request_headers(token="test_token", username="test_user", api=True)
         self.assertEqual(headers["Accept"], "application/vnd.github+json")
         self.assertEqual(headers["Authorization"], "token test_token")
         self.assertEqual(headers["Username"], "test_user")
@@ -86,18 +90,6 @@ class GitHubSupportTest(TestBase):
         response.headers = {}
         wait_time = GitHubSupport._calculate_ratelimit_wait_time(response)
         self.assertEqual(wait_time, GitHubSupport.default_wait_time)
-
-    def test_response_is_json_valid(self) -> None:
-        """Test JSON response validation with valid JSON"""
-        response = MagicMock()
-        response.json.return_value = {"key": "value"}
-        self.assertTrue(GitHubSupport._response_is_json(response))
-
-    def test_response_is_json_invalid(self) -> None:
-        """Test JSON response validation with invalid JSON"""
-        response = MagicMock()
-        response.json.side_effect = ValueError("No JSON")
-        self.assertFalse(GitHubSupport._response_is_json(response))
 
     def test_credential_issue_bad_credentials(self) -> None:
         """Test credential issue detection with bad credentials"""

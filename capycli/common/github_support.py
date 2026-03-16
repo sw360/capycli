@@ -37,8 +37,13 @@ class GitHubSupport:
                        allow_redirects: bool = True,  # default in requests
                        ) -> Any:
         """Helper method to perform GitHub API requests"""
+
+        api = True if url.startswith("https://api.github.com/") else False
+
         try:
-            response = requests.get(url, headers=GitHubSupport._gh_request_headers(token, username),
+            response = requests.get(url, headers=GitHubSupport._gh_request_headers(
+                                                token, username, api=api
+                                    ),
                                     allow_redirects=allow_redirects,
                                     timeout=GitHubSupport.default_gh_api_timeout)
 
@@ -92,9 +97,11 @@ class GitHubSupport:
         return response if return_response else response.json()
 
     @staticmethod
-    def _gh_request_headers(token: str = "", username: str = "") -> dict:
+    def _gh_request_headers(token: str = "", username: str = "", api: bool = False) -> dict:
         """Helper method to construct headers for GitHub API requests."""
-        headers = {"Accept": "application/vnd.github+json"}
+        headers = {}
+        if api:
+            headers["Accept"] = "application/vnd.github+json"
         if token:
             headers["Authorization"] = "token " + token
         if username:
