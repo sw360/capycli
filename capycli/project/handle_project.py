@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -15,6 +15,7 @@ import capycli.project.create_project
 import capycli.project.create_readme
 import capycli.project.find_project
 import capycli.project.get_license_info
+import capycli.project.project_component_check
 import capycli.project.show_ecc
 import capycli.project.show_licenses
 import capycli.project.show_project
@@ -113,6 +114,12 @@ def run_project_command(args: Any) -> None:
         """Show export control status of a project."""
         app11 = capycli.project.show_ecc.ShowExportControlStatus()
         app11.run(args)
+        return
+
+    if subcommand == "componentcheck":
+        """Check the project for special components."""
+        app12 = capycli.project.project_component_check.ProjectComponentCheck()
+        app12.run(args)
         return
 
     print_red("Unknown sub-command: " + subcommand)

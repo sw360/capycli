@@ -1,0 +1,351 @@
+{
+  "components": [
+    {
+      "bom-ref": "pkg:pypi/pytest@7.4.3",
+      "description": "xxx",
+      "externalReferences": [
+        {
+          "comment": "binary (download location)",
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "16d5969b87f0859ef33a48b35d55ac1be6e42ae49d5e853b597db70c35c57e11"
+            }
+          ],
+          "type": "distribution",
+          "url": "https://pypi.org/project/attrs/25.4.0"
+        },
+        {
+          "comment": "binary (download location)",
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "adcf7e2a1fb3b36ac48d97835bb6d8ade15b8dcce26aba8bf1d14847b57a3373"
+            }
+          ],
+          "type": "distribution",
+          "url": "https://pypi.org/project/attrs/25.4.0"
+        }
+      ],
+      "name": "pytest",
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ],
+      "purl": "pkg:pypi/attrs@25.4.0",
+      "type": "library",
+      "version": "7.4.3"
+    },
+    {
+      "bom-ref": "pkg:pypi/beautifulsoup4@4.14.3",
+      "description": "Screen-scraping library",
+      "externalReferences": [
+        {
+          "comment": "binary (download location)",
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "0918bfe44902e6ad8d57732ba310582e98da931428d231a5ecb9e7c703a735bb"
+            }
+          ],
+          "type": "distribution",
+          "url": "https://pypi.org/project/beautifulsoup4/4.14.3"
+        },
+        {
+          "comment": "binary (download location)",
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "6292b1c5186d356bba669ef9f7f051757099565ad9ada5dd630bd9de5fa7fb86"
+            }
+          ],
+          "type": "distribution",
+          "url": "https://pypi.org/project/beautifulsoup4/4.14.3"
+        }
+      ],
+      "name": "beautifulsoup4",
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ],
+      "purl": "pkg:pypi/beautifulsoup4@4.14.3",
+      "type": "library",
+      "version": "4.14.3"
+    },
+    {
+      "bom-ref": "pkg:pypi/pandas@5.0",
+      "description": "Define boolean algebras, create and parse boolean expressions and create custom boolean DSL.",
+      "externalReferences": [
+        {
+          "comment": "binary (download location)",
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "60cbc4bad079753721d32649545505362c754e121570ada4658b852a3a318d95"
+            }
+          ],
+          "type": "distribution",
+          "url": "https://pypi.org/project/boolean-py/5.0"
+        },
+        {
+          "comment": "binary (download location)",
+          "hashes": [
+            {
+              "alg": "SHA-256",
+              "content": "ef28a70bd43115208441b53a045d1549e2f0ec6e3d08a9d142cbc41c1938e8d9"
+            }
+          ],
+          "type": "distribution",
+          "url": "https://pypi.org/project/boolean-py/5.0"
+        }
+      ],
+      "name": "pandas",
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Python"
+        }
+      ],
+      "purl": "pkg:pypi/pandas@5.0",
+      "type": "library",
+      "version": "5.0"
+    },
+    {
+      "bom-ref": "pkg:maven/org.eclipse.jdt/junit@1.2.3",
+      "name": "junit",
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Java"
+        }
+      ],
+      "purl": "pkg:maven/org.eclipse.jdt/junit@1.2.3",
+      "type": "library",
+      "version": "123"
+    },
+    {
+      "bom-ref": "pkg:npm/gulp@1.2.3",
+      "name": "gulp",
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "JavaScript"
+        }
+      ],
+      "type": "library",
+      "version": "123"
+    },
+    {
+      "bom-ref": "pkg:github.com/stretchr/testify@0.38.4",
+      "externalReferences": [],
+      "name": "testify",
+      "group": "github.com/stretchr",
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Go"
+        }
+      ],
+      "purl": "pkg:nuget/github.com/stretchr/testify@9.9.9",
+      "type": "library",
+      "version": "9.9.9"
+    }
+  ],
+  "definitions": {
+    "standards": [
+      {
+        "bom-ref": "standard-bom",
+        "description": "The Standard for Software Bills of Materials in Siemens",
+        "externalReferences": [
+          {
+            "type": "website",
+            "url": "https://sbom.siemens.io/"
+          }
+        ],
+        "name": "Standard BOM",
+        "owner": "Siemens AG",
+        "version": "3.0.0"
+      }
+    ]
+  },
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/attrs@25.4.0"
+    },
+    {
+      "ref": "pkg:pypi/beautifulsoup4@4.14.3"
+    },
+    {
+      "ref": "pkg:pypi/boolean-py@5.0"
+    },
+    {
+      "ref": "pkg:pypi/certifi@2025.11.12"
+    },
+    {
+      "ref": "pkg:pypi/chardet@5.2.0"
+    },
+    {
+      "ref": "pkg:pypi/charset-normalizer@3.4.4"
+    },
+    {
+      "ref": "pkg:pypi/cli-support@2.0.1"
+    },
+    {
+      "ref": "pkg:pypi/colorama@0.4.6"
+    },
+    {
+      "ref": "pkg:pypi/cyclonedx-python-lib@11.6.0"
+    },
+    {
+      "ref": "pkg:pypi/dateparser@1.2.2"
+    },
+    {
+      "ref": "pkg:pypi/defusedxml@0.7.1"
+    },
+    {
+      "ref": "pkg:pypi/et-xmlfile@2.0.0"
+    },
+    {
+      "ref": "pkg:pypi/halo@0.0.31"
+    },
+    {
+      "ref": "pkg:pypi/idna@3.11"
+    },
+    {
+      "ref": "pkg:pypi/importlib-resources@5.13.0"
+    },
+    {
+      "ref": "pkg:pypi/jsonschema-specifications@2025.9.1"
+    },
+    {
+      "ref": "pkg:pypi/jsonschema@4.25.1"
+    },
+    {
+      "ref": "pkg:pypi/license-expression@30.4.4"
+    },
+    {
+      "ref": "pkg:pypi/log-symbols@0.0.14"
+    },
+    {
+      "ref": "pkg:pypi/openpyxl@3.1.5"
+    },
+    {
+      "ref": "pkg:pypi/packageurl-python@0.15.6"
+    },
+    {
+      "ref": "pkg:pypi/packaging@25.0"
+    },
+    {
+      "ref": "pkg:pypi/py-serializable@2.1.0"
+    },
+    {
+      "ref": "pkg:pypi/pyjwt@2.10.1"
+    },
+    {
+      "ref": "pkg:pypi/python-dateutil@2.9.0.post0"
+    },
+    {
+      "ref": "pkg:pypi/pytz@2025.2"
+    },
+    {
+      "ref": "pkg:pypi/referencing@0.37.0"
+    },
+    {
+      "ref": "pkg:pypi/regex@2025.11.3"
+    },
+    {
+      "ref": "pkg:pypi/requests@2.32.5"
+    },
+    {
+      "ref": "pkg:pypi/requirements-parser@0.11.0"
+    },
+    {
+      "ref": "pkg:pypi/rpds-py@0.30.0"
+    },
+    {
+      "ref": "pkg:pypi/semver@3.0.2"
+    },
+    {
+      "ref": "pkg:pypi/six@1.17.0"
+    },
+    {
+      "ref": "pkg:pypi/sortedcontainers@2.4.0"
+    },
+    {
+      "ref": "pkg:pypi/soupsieve@2.8.1"
+    },
+    {
+      "ref": "pkg:pypi/spinners@0.0.24"
+    },
+    {
+      "ref": "pkg:pypi/sw360@1.10.1"
+    },
+    {
+      "ref": "pkg:pypi/termcolor@3.3.0"
+    },
+    {
+      "ref": "pkg:pypi/types-setuptools@80.9.0.20251223"
+    },
+    {
+      "ref": "pkg:pypi/typing-extensions@4.15.0"
+    },
+    {
+      "ref": "pkg:pypi/tzdata@2025.3"
+    },
+    {
+      "ref": "pkg:pypi/tzlocal@5.3.1"
+    },
+    {
+      "ref": "pkg:pypi/urllib3@2.6.2"
+    },
+    {
+      "ref": "pkg:pypi/validation@0.8.3"
+    },
+    {
+      "ref": "pkg:pypi/wheel@0.38.4"
+    }
+  ],
+  "metadata": {
+    "licenses": [
+      {
+        "license": {
+          "id": "CC0-1.0"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "name": "siemens:profile",
+        "value": "clearing"
+      }
+    ],
+    "timestamp": "2025-12-30T08:44:56.941306+00:00",
+    "tools": {
+      "components": [
+        {
+          "externalReferences": [
+            {
+              "type": "website",
+              "url": "https://github.com/sw360/capycli"
+            }
+          ],
+          "name": "CaPyCLI",
+          "supplier": {
+            "name": "Siemens AG"
+          },
+          "type": "application",
+          "version": "2.10.0.dev1"
+        }
+      ]
+    }
+  },
+  "serialNumber": "urn:uuid:1e5f9a27-074b-457c-9db0-a55151346fee",
+  "version": 1,
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6"
+}

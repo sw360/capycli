@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright 2023-2024 Siemens
+# Copyright 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -41,3 +41,4 @@ class ResultCode(object):
     RESULT_FILTER_ERROR = 96
     RESULT_PREREQUISITE_ERROR = 97
     RESULT_LICENSE_INFO_ERROR = 98
+    RESULT_SPECIAL_COMPONENT_FOUND = 99

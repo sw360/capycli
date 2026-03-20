@@ -42,6 +42,7 @@ _SoftwareClearing/
 
 !SBOM/*.json
 !tests/fixtures/*
+!capycli/data/*.json
 
 SoftwareClearing/*.html
 SoftwareClearing/*.json

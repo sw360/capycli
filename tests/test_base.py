@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2025 Siemens
+# Copyright (c) 2021-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -69,6 +69,8 @@ class AppArguments():
         self.force_error: bool = False
         self.project_mainline_state = ""
         self.copy_from = ""
+        self.remote_check_list: str = ""
+        self.local_checklist_list: str = ""
 
 
 class TestBasePytest:

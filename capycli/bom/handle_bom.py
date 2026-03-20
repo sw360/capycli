@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2025 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -15,6 +15,7 @@ import capycli.bom.bom_validate
 import capycli.bom.check_bom
 import capycli.bom.check_bom_item_status
 import capycli.bom.check_granularity
+import capycli.bom.component_check
 import capycli.bom.create_components
 import capycli.bom.diff_bom
 import capycli.bom.download_sources
@@ -53,6 +54,7 @@ def run_bom_command(args: Any) -> None:
         print("    Findsources       determine the source code for SBOM items")
         print("    Validate          validate an SBOM")
         print("    BomPackage        create a single archive that contains the SBOM and all source and binary files")
+        print("    ComponentCheck    check the SBOM for special components")
         return
 
     subcommand = args.command[1].lower()
@@ -145,6 +147,12 @@ def run_bom_command(args: Any) -> None:
         """Validate an SBOM."""
         app15 = capycli.bom.bom_package.BomPackage()
         app15.run(args)
+        return
+
+    if subcommand == "componentcheck":
+        """Check the SBOM for special components."""
+        app16 = capycli.bom.component_check.ComponentCheck()
+        app16.run(args)
         return
 
     print_red("Unknown sub-command: ")
