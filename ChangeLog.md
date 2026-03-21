@@ -13,7 +13,9 @@
   part of license compliance checks. These are for example unit test tools like
   `junit` or `pytest`, linter like `eslint`, mocking frameworks like `Moq`, etc.
   CaPyCLI has a list of these components (data/component_checks.json), but you
-  can also provide your own list.
+  can also provide your own list. For more information please have a look at [this documentation](documentation/Readme_Componentcheck.md).
+* New folder `documentation` where we want to keep all more detailed documentation
+  on the way CaPyCLI works.
 
 ## 2.10.1
 

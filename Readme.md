@@ -152,14 +152,14 @@ These options are not available for all commands. At the moment
 
 Over the time we implemented more and more commands with more and more parameters.  
 We understand that it is hard for beginners to find the right command for the task
-they want to do. Have a look at our [Use Case Overview](UseCaseOverview.md).
+they want to do. Have a look at our [Use Case Overview](documentation/UseCaseOverview.md).
 
 ## Software Clearing Approaches
 
 From time to time there are questions **why** a command has been implemented in this
 specific way or why a command exists at all. Not all organization have the same
 approach when doing license compliance. Have a look at our
-[Software Clearing Approach Overview](SoftwareClearingApproachOverview.md) to see our
+[Software Clearing Approach Overview](documentation/SoftwareClearingApproachOverview.md) to see our
 approaches.
 
 ## Note about Python Dependency Detection
@@ -233,7 +233,7 @@ The software bill of materials (SBOM) is a crucial information for most operatio
 There is no common description what a bill of materials should contain.
 There are different formats available, for example the SBOM of CyCloneDX,
 nevertheless most tools have their own SBOM format.
-We have decided also to have our own flavor of CycloneDX, see [SBOM](Readme_BOM.md),
+We have decided also to have our own flavor of CycloneDX, see [SBOM](documentation/Readme_BOM.md),
 focused on the information we need to handle components, releases and projects
 on SW360. It is a simple JSON format. CaPyCli reads or writes exactly the
 information that is needed.
@@ -243,7 +243,7 @@ to refer you to the open source tools from [CycloneDX](https://cyclonedx.org/).
 
 ## Mapping a SBOM to SW360
 
-SBOM mapping is described in an extra file, see [SBOM Mapping](Readme_Mapping.md).
+SBOM mapping is described in an extra file, see [SBOM Mapping](documentation/Readme_Mapping.md).
 
 ## Project Management
 
