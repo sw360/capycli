@@ -25,11 +25,11 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
     Check a project for special components.
     """
     def __init__(self) -> None:
-        self.ComponentCheck = ComponentCheck()
+        self.component_check = ComponentCheck()
 
     def is_dev_dependency(self, name: str) -> bool:
         """Check whether the given component matches any known development dependency."""
-        dd = self.ComponentCheck.component_check_list.get("dev_dependencies", [])
+        dd = self.component_check.component_check_list.get("dev_dependencies", [])
         for ecosystem in dd:
             for entry in dd.get(ecosystem, []):
                 if name.lower() == entry.get("name", ""):
@@ -40,7 +40,7 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
     def is_python_binary_component(self, name: str) -> bool:
         """Check whether the given component matches any known python component
         with additional binary dependencies."""
-        pbc = self.ComponentCheck.component_check_list.get("python_binary_components", [])
+        pbc = self.component_check.component_check_list.get("python_binary_components", [])
         for entry in pbc:
             if name.lower() == entry.get("name", ""):
                 return True
@@ -49,7 +49,7 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
 
     def is_file_to_ignore(self, name: str) -> bool:
         """Check whether the given component is to be ignored."""
-        for entry in self.ComponentCheck.files_to_ignore:
+        for entry in self.component_check.files_to_ignore:
             if name.lower() == entry.get("name", ""):
                 return True
 
@@ -112,34 +112,34 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
             " - Check the project for special components\n")
 
         if args.help:
-            print("usage: CaPyCli project componentcheck [-h] -t TOKEN -name NAME -version VERSION"
-                  "[-v] [-id PROJECT_ID] [-rcl URL] [-lcl FILE]")
-            print("")
-            print("optional arguments:")
-            print("    -h, --help            show this help message and exit")
-            print("    -name NAME            name of the project")
-            print("    -version VERSION      version of the project")
-            print("    -id PROJECT_ID        SW360 id of the project, supersedes name and version parameters")
-            print("    -t SW360_TOKEN        use this token for access to SW360")
-            print("    -oa,                  this is an oauth2 token")
-            print("    -url SW360_URL        use this URL for access to SW360")
-            print("    -v                    be verbose")
-            print("    -rcl                  read the component check list file from the URL specified")
-            print("    -lcl                  read the component check list file from local")
-            print("    --forceerror          force an error exit code in case of validation errors or warnings")
+            print_text("usage: CaPyCli project componentcheck [-h] -t TOKEN -name NAME -version VERSION "
+                       "[-v] [-id PROJECT_ID] [-rcl URL] [-lcl FILE]")
+            print_text("")
+            print_text("optional arguments:")
+            print_text("    -h, --help            show this help message and exit")
+            print_text("    -name NAME            name of the project")
+            print_text("    -version VERSION      version of the project")
+            print_text("    -id PROJECT_ID        SW360 id of the project, supersedes name and version parameters")
+            print_text("    -t SW360_TOKEN        use this token for access to SW360")
+            print_text("    -oa,                  this is an oauth2 token")
+            print_text("    -url SW360_URL        use this URL for access to SW360")
+            print_text("    -v                    be verbose")
+            print_text("    -rcl                  read the component check list file from the URL specified")
+            print_text("    -lcl                  read the component check list file from local")
+            print_text("    --forceerror          force an error exit code in case of validation errors or warnings")
             return
 
         print_text("Reading component check list from component_checks.json...")
         try:
-            self.ComponentCheck.read_component_check_list(args.remote_check_list, args.local_checklist_list)
+            self.component_check.read_component_check_list(args.remote_check_list, args.local_checklist_list)
         except Exception as ex:
             print_red("Error reading component check list " + repr(ex))
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)
-        if len(self.ComponentCheck.component_check_list) > 0:
-            print("  Got component checklist.")
+        if len(self.component_check.component_check_list) > 0:
+            print_text("  Got component checklist.")
 
-        self.ComponentCheck.files_to_ignore = self.ComponentCheck.component_check_list.get("files_to_ignore", [])
-        print_text(f"  {len(self.ComponentCheck.files_to_ignore)} components will be ignored.")
+        self.component_check.files_to_ignore = self.component_check.component_check_list.get("files_to_ignore", [])
+        print_text(f"  {len(self.component_check.files_to_ignore)} components will be ignored.")
 
         if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
             print_red("ERROR: login failed!")

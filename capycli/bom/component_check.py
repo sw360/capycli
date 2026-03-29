@@ -48,9 +48,8 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             f1.write(response.content)
 
     def read_component_check_list(self, download_url: str = "", local_check_list_file: str = "") -> None:
-        """Reads the granularity list from file."""
+        """Reads the component check list from file."""
         self.component_check_list = {}
-        text_list = ""
         if local_check_list_file:
             try:
                 with open(local_check_list_file, "r", encoding="utf-8") as fin:
@@ -69,6 +68,7 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             except Exception as e:
                 print_red(f"An unexpected error occurred: {e}")
         if not self.component_check_list:
+            text_list = ""
             if sys.version_info >= (3, 9):
                 resources = pkg_resources.files("capycli.data")
                 text_list = (resources / "component_checks.json").read_text()
@@ -160,14 +160,14 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             " - Check the SBOM for special components.\n")
 
         if args.help:
-            print("usage: CaPyCli bom componentcheck [-h] [-v] -i bomfile [-rcl URL] [-lcl FILE]")
-            print("")
-            print("optional arguments:")
-            print("    -h, --help      show this help message and exit")
-            print("    -i INPUTFILE    SBOM file to read from (JSON)")
-            print("    -v              be verbose")
-            print("    -rcl            read the component check list file from the URL specified")
-            print("    -lcl            read the component check list file from local")
+            print_text("usage: CaPyCli bom componentcheck [-h] [-v] -i bomfile [-rcl URL] [-lcl FILE]")
+            print_text("")
+            print_text("optional arguments:")
+            print_text("    -h, --help      show this help message and exit")
+            print_text("    -i INPUTFILE    SBOM file to read from (JSON)")
+            print_text("    -v              be verbose")
+            print_text("    -rcl            read the component check list file from the URL specified")
+            print_text("    -lcl            read the component check list file from local")
             print("    --forceerror          force an error exit code in case of validation errors or warnings")
             return
 
@@ -186,7 +186,7 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             print_red("Error reading component check list " + repr(ex))
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)
         if len(self.component_check_list) > 0:
-            print("  Got component checklist.")
+            print_text("  Got component checklist.")
 
         self.files_to_ignore = self.component_check_list.get("files_to_ignore", [])
         print_text(f"  {len(self.files_to_ignore)} components will be ignored.")
