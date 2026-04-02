@@ -42,9 +42,8 @@ CaPyCLI offers some basic support to do this
 * `CaPyCLI getdependencies MavenPom`
 * `CaPyCLI getdependencies MavenList`
 
-You can also convert a flat list of component names and version to a SBOM using the
-`CaPyCLI bom FromFlatList` command. It is also possible to convert a CSV file to a SBOM using the
-`CaPyCLI bom FromCSV` command.
+You can also convert a flat list of component names and versions or a CSV file to an SBOM using the
+`CaPyCLI bom Convert` command.
 
 Again, this is only very basic support. For better results we recommend the tools provided by [CycloneDX](https://cyclonedx.org/):
 
