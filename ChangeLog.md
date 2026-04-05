@@ -23,6 +23,10 @@
 * Improve dependency detection in `getdependencies javascript`.
 * Fix issue in `project prerequisites` when reading an empty project.
 
+## NEXT
+
+* Fixed a bug in `bom filter`, that happened in verbose output when using a purl for filtering.
+
 ## 2.10.0
 
 * Have `bom bompackage` as a separate command and have the advanced folder structure
