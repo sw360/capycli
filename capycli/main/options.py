@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2025 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -396,6 +396,22 @@ class CommandlineSupport():
             "--local-granularity",
             dest="local_granularity_list",
             help="read the granularity list file from local"
+        )
+
+        # used by bom ComponentCheck
+        self.parser.add_argument(
+            "-rcl",
+            "--remote-checklist",
+            dest="remote_check_list",
+            help="read the component check list file from the download URL specified"
+        )
+
+        # used by bom ComponentCheck
+        self.parser.add_argument(
+            "-lcl",
+            "--local-checklist",
+            dest="local_checklist_list",
+            help="read the component check list file from local"
         )
 
         self.parser.add_argument(

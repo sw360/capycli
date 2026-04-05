@@ -5,15 +5,24 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* Two new commands: `bom componentcheck` and `project componentcheck`. The first one
+  checks a given SBOM for special components, the second one does the same for
+  an existing SW360 project. **Special components** are components that should not be
+  part of license compliance checks. These are for example unit test tools like
+  `junit` or `pytest`, linter like `eslint`, mocking frameworks like `Moq`, etc.
+  CaPyCLI has a list of these components (data/component_checks.json), but you
+  can also provide your own list. For more information please have a look at [this documentation](documentation/Readme_Componentcheck.md).
+* New folder `documentation` where we want to keep all more detailed documentation
+  on the way CaPyCLI works.
+* Fixed a bug in `bom filter`, that happened in verbose output when using a purl for filtering.  
+
 ## 2.10.1
 
 * `bom show` now also shows the group, if it exists.
 * Improve dependency detection in `getdependencies javascript`.
 * Fix issue in `project prerequisites` when reading an empty project.
-
-## NEXT
-
-* Fixed a bug in `bom filter`, that happened in verbose output when using a purl for filtering.
 
 ## 2.10.0
 

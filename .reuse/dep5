@@ -24,8 +24,8 @@ Files:  tests/fixtures/*
 Copyright: 2018-2023 Siemens
 License: MIT
 
-Files: capycli/data/granularity_list.csv requirements.txt
-Copyright: 2018-2023 Siemens
+Files: capycli/data/granularity_list.csv requirements.txt capycli/data/component_checks.json
+Copyright: 2018-2026 Siemens
 License: MIT
 
 Files: Legacy/code.siemens.com-gitlab-ci.yml.txt  Legacy/Pipfile.lock
