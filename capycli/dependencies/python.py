@@ -736,12 +736,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 for file_metadata in package.files:
                     LOG.debug(f"    Processing file_metadata: {file_metadata}")
                     try:
+                        hf = HashTypeFactory()
                         cxcomp.external_references.add(ExternalReference(
                             type=ExternalReferenceType.DISTRIBUTION,
                             url=XsUri(cxcomp.get_pypi_url()),
                             # comment=f'Distribution file: {file_metadata.file}',
                             comment=CaPyCliBom.BINARY_URL_COMMENT,
-                            hashes=[HashTypeFactory.from_composite_str(file_metadata.hash)]
+                            hashes=[hf.from_composite_str(file_metadata.hash)]
                         ))
                     except Exception as ex:
                         # IGNORE
