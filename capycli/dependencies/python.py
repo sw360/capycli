@@ -19,11 +19,13 @@ from typing import Any, Dict, List, Optional
 import chardet
 import requests
 import requirements
+from cyclonedx.contrib.hash.factories import HashTypeFactory
 from cyclonedx.contrib.license.factories import LicenseFactory
-from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, Property, XsUri
+from cyclonedx.model import ExternalReference, ExternalReferenceType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from cyclonedx.model.contact import OrganizationalEntity
+from cyclonedx.model.lifecycle import LifecyclePhase, PredefinedLifecycle
 from halo import Halo
 from packageurl import PackageURL
 
@@ -368,6 +370,8 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                         cxcomp.external_references.add(ext_ref)
                         LOG.debug("  got GitHub source file url")
 
+            hf = HashTypeFactory()
+            component_hashes = []
             if "urls" in meta:
                 # there can be multiple entries, for wheel, source, etc.
                 for item in meta["urls"]:
@@ -376,17 +380,25 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             file_uri = item["filename"]
                             if not file_uri.startswith("file://"):
                                 file_uri = "file:///" + file_uri
+                            hashes = []
+                            if "digests" in item and "sha256" in item["digests"] and item["digests"]["sha256"]:
+                                hashes = [hf.from_hashlib_alg("sha256", item["digests"]["sha256"])]
                             ext_ref = ExternalReference(
                                 type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.BINARY_FILE_COMMENT,
-                                url=XsUri(file_uri))
+                                url=XsUri(file_uri),
+                                hashes=hashes)
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got binary file")
+
+                            # take the wheel hash also as component hash
+                            component_hashes = hashes
 
                             ext_ref = ExternalReference(
                                 type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.BINARY_URL_COMMENT,
-                                url=XsUri(item["url"]))
+                                url=XsUri(item["url"]),
+                                hashes=hashes)
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got binary file url")
 
@@ -394,10 +406,14 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             file_uri = item["filename"]
                             if not file_uri.startswith("file://"):
                                 file_uri = "file:///" + file_uri
+                            hashes = []
+                            if "digests" in item and "sha256" in item["digests"] and item["digests"]["sha256"]:
+                                hashes = [hf.from_hashlib_alg("sha256", item["digests"]["sha256"])]
                             ext_ref = ExternalReference(
                                 type=ExternalReferenceType.DISTRIBUTION,
                                 comment=CaPyCliBom.SOURCE_FILE_COMMENT,
-                                url=XsUri(file_uri))
+                                url=XsUri(file_uri),
+                                hashes=hashes)
                             cxcomp.external_references.add(ext_ref)
                             LOG.debug("  got source file")
 
@@ -405,9 +421,19 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                                 ext_ref = ExternalReference(
                                     type=ExternalReferenceType.DISTRIBUTION,
                                     comment=CaPyCliBom.SOURCE_URL_COMMENT,
-                                    url=XsUri(item["url"]))
+                                    url=XsUri(item["url"]),
+                                    hashes=hashes)
                                 cxcomp.external_references.add(ext_ref)
                                 LOG.debug("  got sdist source file url")
+
+            if component_hashes:
+                # add the hashes also to the component itself
+                for h in component_hashes:
+                    cxcomp.hashes.add(h)
+
+            # There is no copyright information in Python package metadata.
+            # There is also no copyright information available from GitHub
+            cxcomp.copyright = "N/A"
 
     def convert_package_list(self, package_list: List[Dict[str, Any]], search_meta_data: bool,
                              package_source: str = "") -> Bom:
@@ -715,7 +741,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                             url=XsUri(cxcomp.get_pypi_url()),
                             # comment=f'Distribution file: {file_metadata.file}',
                             comment=CaPyCliBom.BINARY_URL_COMMENT,
-                            hashes=[HashType.from_composite_str(file_metadata.hash)]
+                            hashes=[HashTypeFactory.from_composite_str(file_metadata.hash)]
                         ))
                     except Exception as ex:
                         # IGNORE
@@ -772,12 +798,13 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 for file_metadata in package.files:
                     LOG.debug(f"    Processing file_metadata: {file_metadata}")
                     try:
+                        hf = HashTypeFactory()
                         cxcomp.external_references.add(ExternalReference(
                             type=ExternalReferenceType.DISTRIBUTION,
                             url=XsUri(cxcomp.get_pypi_url()),
                             # comment=f'Distribution file: {file_metadata.file}',
                             comment=CaPyCliBom.BINARY_URL_COMMENT,
-                            hashes=[HashType.from_composite_str(file_metadata.hash)]
+                            hashes=[hf.from_composite_str(file_metadata.hash)]
                         ))
                     except Exception as ex:
                         # IGNORE
@@ -818,12 +845,18 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             LOG.warning("Main project component has no name or version. Skipping.")
             return
 
+        # special hack for CaPyCLI
+        copyright = "N/A"
+        if name == "capycli":
+            copyright = "Siemens AG"
+
         description = cfg.get("description", "").strip()
         purl = self.generate_purl(name, version)
         cxcomp = Component(
             name=name,
             version=version,
             purl=PackageURL.from_string(purl),
+            copyright=copyright,
             bom_ref=purl,
             description=description)
         sbom.metadata.component = cxcomp
@@ -864,6 +897,23 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         # repository = "https://github.com/sw360/capycli"
         # homepage = "https://github.com/sw360/capycli"
         # issues = "https://github.com/sw360/capycli/issues"
+
+    def do_json_post_processing(self, filename: str) -> None:
+        """Do some JSON post-processing to add composition information."""
+        LOG.debug("Doing JSON post-processing to add composition information")
+        try:
+            json_sbom: Dict[str, Any] = capycli.common.json_support.load_json_file(filename)
+
+            # add composition information
+            if "components" in json_sbom and len(json_sbom["components"]) > 0:
+                json_sbom["compositions"] = [
+                    {
+                        "aggregate": "unknown"
+                    }
+                ]
+            capycli.common.json_support.write_json_to_file(json_sbom, filename)
+        except Exception as ex:
+            print_red("Error postprocessing SBOM file: " + repr(ex))
 
     @staticmethod
     def check_meta_data(sbom: Bom, verbose: bool) -> bool:
@@ -975,6 +1025,14 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         if (datatype == InputFileType.POETRY_LOCK) or (datatype == InputFileType.UV_LOCK):
             self.add_main_component(args.inputfile, sbom)
 
+        # add some more extras
+        # author of a created SBOM is always CaPyCLI
+        sbom.metadata.authors.add(OrganizationalEntity(name="CaPyCLI"))
+        # lifecycle phase is "build"
+        sbom.metadata.lifecycles.add(PredefinedLifecycle(phase=LifecyclePhase.BUILD))
+        # compositions are not supported by cyclonedx-pathon-lib
+        # We do this as a JSON post-processing step
+
         GetPythonDependencies.check_meta_data(sbom, self.verbose)
 
         if self.verbose:
@@ -982,6 +1040,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         print_text("Writing new SBOM to " + args.outputfile)
         SbomWriter.write_to_json(sbom, args.outputfile, True)
+        self.do_json_post_processing(args.outputfile)
         print_text(" " + self.get_comp_count_text(sbom) + " items written to file.")
 
         print_text()
