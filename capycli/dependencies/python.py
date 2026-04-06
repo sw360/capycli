@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2025 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -19,10 +19,11 @@ from typing import Any, Dict, List, Optional
 import chardet
 import requests
 import requirements
-from cyclonedx.factory.license import LicenseFactory
+from cyclonedx.contrib.license.factories import LicenseFactory
 from cyclonedx.model import ExternalReference, ExternalReferenceType, HashType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from cyclonedx.model.contact import OrganizationalEntity
 from halo import Halo
 from packageurl import PackageURL
 
@@ -310,6 +311,18 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 cxcomp.licenses.add(license_factory.make_with_name(license))
                 LOG.debug("  got license")
 
+            author = meta["info"].get("author", "")
+            cxcomp.supplier = OrganizationalEntity()
+            if author:
+                cxcomp.author = author
+                LOG.debug("  got author")
+
+                # set also also as supplier
+                cxcomp.supplier.name = author
+            else:
+                cxcomp.author = "N/A"
+                cxcomp.supplier.name = "N/A"
+
             data = meta["info"].get("summary", "")
             if data:
                 cxcomp.description = data
@@ -443,7 +456,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         for package in package_list:
             print_text("  " + package["name"] + ", " + package["version"])
 
-        print()
+        print_text()
 
     def determine_file_type(self, full_filename: str) -> InputFileType:
         """
@@ -779,6 +792,79 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
         return sbom
 
+    def add_main_component(self, filename: str, sbom: Bom) -> None:
+        """Add main project component to the SBOM."""
+        folder = os.path.dirname(filename)
+
+        if self.proj_file_override:
+            # override for unit tests
+            pyproject_file = self.proj_file_override
+        else:
+            pyproject_file = os.path.join(folder, "pyproject.toml")
+        pyproject_info = self.read_pyproject_file(pyproject_file)
+        if not pyproject_info:
+            return
+
+        if "project" in pyproject_info:
+            # this is for poetry >= 2.0 and uv
+            cfg = pyproject_info["project"]
+            new_pyproject_format = True
+        else:
+            cfg = pyproject_info["tool"]["poetry"]
+
+        name = cfg.get("name", "").strip()
+        version = cfg.get("version", "").strip()
+        if not name or not version:
+            LOG.warning("Main project component has no name or version. Skipping.")
+            return
+
+        description = cfg.get("description", "").strip()
+        purl = self.generate_purl(name, version)
+        cxcomp = Component(
+            name=name,
+            version=version,
+            purl=PackageURL.from_string(purl),
+            bom_ref=purl,
+            description=description)
+        sbom.metadata.component = cxcomp
+        for c in sbom.components:
+            sbom.register_dependency(sbom.metadata.component, [c])
+
+        license = cfg.get("license", "").strip()
+        if license:
+            license_factory = LicenseFactory()
+            cxcomp.licenses.add(license_factory.make_with_name(license))
+            LOG.debug("  got license")
+
+        authors = cfg.get("authors", [])
+        author = ""
+        if new_pyproject_format:
+            if authors and len(authors) > 0:
+                author = authors[0].get("name", "") if isinstance(authors[0], dict) else authors[0].strip()
+        else:
+            if authors and len(authors) > 0:
+                author = authors[0].strip()
+
+        cxcomp.supplier = OrganizationalEntity()
+        if author:
+            cxcomp.author = author
+            LOG.debug("  got author")
+
+            # set also also as supplier
+            cxcomp.supplier.name = author
+        else:
+            cxcomp.author = "N/A"
+            cxcomp.supplier.name = "N/A"
+
+        # authors = [
+        #    {name = "Thomas Graf", email="thomas.graf@siemens.com"},
+        #    {name = "Gernot Hillier", email="gernot.hillier@siemens.com"}
+        # ]
+        # [project.urls]
+        # repository = "https://github.com/sw360/capycli"
+        # homepage = "https://github.com/sw360/capycli"
+        # issues = "https://github.com/sw360/capycli/issues"
+
     @staticmethod
     def check_meta_data(sbom: Bom, verbose: bool) -> bool:
         """
@@ -842,18 +928,18 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             " - Determine Python components/dependencies\n")
 
         if args.help:
-            print("usage: capycli getdependencies python [-i INPUTFILE] [-o OUTFILE] [-ol] [-v] [-ds]")
-            print("")
-            print("Determine Python project dependencies")
-            print("")
-            print("optional arguments:")
-            print("    -h, --help            show this help message and exit")
-            print("    -i INPUTFILE, --inputfile INPUTFILE")
-            print("                            input file (requirements.txt)")
-            print("    -o OUTFILE, --outfile OUTFILE")
-            print("                            output file (BOM)")
-            print("    -v, --verbose         verbose output")
-            print("    --search-meta-data    search for package meta data")
+            print_text("usage: capycli getdependencies python [-i INPUTFILE] [-o OUTFILE] [-ol] [-v] [-ds]")
+            print_text("")
+            print_text("Determine Python project dependencies")
+            print_text("")
+            print_text("optional arguments:")
+            print_text("    -h, --help            show this help message and exit")
+            print_text("    -i INPUTFILE, --inputfile INPUTFILE")
+            print_text("                            input file (requirements.txt)")
+            print_text("    -o OUTFILE, --outfile OUTFILE")
+            print_text("                            output file (BOM)")
+            print_text("    -v, --verbose         verbose output")
+            print_text("    --search-meta-data    search for package meta data")
             return
 
         if not args.inputfile:
@@ -885,13 +971,17 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
             print_text("Formatting package list...")
             sbom = self.convert_package_list(package_list, args.search_meta_data, args.package_source)
 
+        # add meta data for the main project component
+        if (datatype == InputFileType.POETRY_LOCK) or (datatype == InputFileType.UV_LOCK):
+            self.add_main_component(args.inputfile, sbom)
+
         GetPythonDependencies.check_meta_data(sbom, self.verbose)
 
         if self.verbose:
-            print()
+            print_text()
 
         print_text("Writing new SBOM to " + args.outputfile)
         SbomWriter.write_to_json(sbom, args.outputfile, True)
         print_text(" " + self.get_comp_count_text(sbom) + " items written to file.")
 
-        print()
+        print_text()
