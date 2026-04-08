@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-25 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: martin.stoffel@siemens.com, thomas.graf@siemens.com
 #
@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional
 from xml.dom import minidom
 
 import requests
-from cyclonedx.factory.license import LicenseFactory
+from cyclonedx.contrib.license.factories import LicenseFactory
 from cyclonedx.model import ExternalReference, ExternalReferenceType, Property, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component

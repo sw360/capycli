@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2025 Siemens
+# Copyright (c) 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -551,4 +551,4 @@ class TestGetDependenciesPython(TestBase):
 
 if __name__ == "__main__":
     APP = TestGetDependenciesPython()
-    APP.test_get_metadata()
+    APP.test_process_poetry_1_8_3_lock()

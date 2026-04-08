@@ -16,7 +16,18 @@
   can also provide your own list. For more information please have a look at [this documentation](documentation/Readme_Componentcheck.md).
 * New folder `documentation` where we want to keep all more detailed documentation
   on the way CaPyCLI works.
-* Fixed a bug in `bom filter`, that happened in verbose output when using a purl for filtering.  
+* Fixed a bug in `bom filter`, that happened in verbose output when using a purl for filtering.
+* Improved SBOM quality for Python SBOMs
+  * if an author of a component is known then he is added, otherwise "N/A" is added
+  * if an author of a component is known then he is also added as supplier, otherwise "N/A" is added
+  * the information from pyproject.toml is used as main component (if it exists)
+  * The author of the SBOM is always CaPyCLI.
+  * lifecycle phase information is always `build`
+  * composition aggregate state is "unknown", because CaPyCLI is mostly right - nevertheless
+    the final check needs to be done by a human. For example to answer the question whether
+    a Python runtime needs to be part of the SBOM or not.
+  * Python metadata does not provide copyright information, all copyright are set to "N/A".
+  * Dependency updates.
 
 ## 2.10.1
 
