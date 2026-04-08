@@ -104,7 +104,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
                 url = parts[0]
                 # if isinstance(url, Tuple):
                 if type(url) is Tuple:
-                    url = url[0]
+                    url = url[0]   # type: ignore
                 if url not in parsed_urls:
                     parsed_urls.append(url)
 
