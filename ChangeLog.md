@@ -27,6 +27,7 @@
     the final check needs to be done by a human. For example to answer the question whether
     a Python runtime needs to be part of the SBOM or not.
   * Python metadata does not provide copyright information, all copyright are set to "N/A".
+  * Dependency updates.
 
 ## 2.10.1
 
