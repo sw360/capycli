@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.11.0
 
 * Two new commands: `bom componentcheck` and `project componentcheck`. The first one
   checks a given SBOM for special components, the second one does the same for
