@@ -4000,14 +4000,7 @@
       ],
       "purl": "pkg:pypi/log-symbols@0.0.14",
       "supplier": {
-        "name": "Manraj Singh",
-        "url": ["https://github.com/manrajgrover/py-log-symbols"],
-        "email": "john@doe.com"
-      },
-      "manufacturer": {
-        "name": "Manraj Singh",
-        "url": ["https://github.com/manrajgrover/py-log-symbols"],
-        "email": "john@doe.com"
+        "name": "Manraj Singh"
       },
       "type": "library",
       "version": "0.0.14"
@@ -11315,14 +11308,6 @@
         "name": "CaPyCLI"
       }
     ],
-    "manufacturer": {
-      "name": "CaPyCLI",
-      "url": ["https://github.com/sw360/capycli"]
-    },
-    "supplier": {
-      "name": "CaPyCLI",
-      "url": ["https://github.com/sw360/capycli"]
-    },
     "component": {
       "author": "Thomas Graf",
       "bom-ref": "pkg:pypi/capycli@2.10.1",
@@ -11361,7 +11346,7 @@
         "value": "clearing"
       }
     ],
-    "timestamp": "2026-04-06T16:15:35.517784+00:00",
+    "timestamp": "2026-04-08T09:17:34.499986+00:00",
     "tools": {
       "components": [
         {
@@ -11381,7 +11366,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:46ab2f4b-064e-497d-8e7d-bffb0d7d0b21",
+  "serialNumber": "urn:uuid:d303a57f-ec1f-42c3-8b5c-554d199b533b",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
