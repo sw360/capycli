@@ -833,6 +833,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
         if not pyproject_info:
             return
 
+        new_pyproject_format = False
         if "project" in pyproject_info:
             # this is for poetry >= 2.0 and uv
             cfg = pyproject_info["project"]
