@@ -25,6 +25,7 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
     """
     def __init__(self) -> None:
         self.component_check = ComponentCheck()
+        self.verbose = False
 
     def is_dev_dependency(self, name: str) -> bool:
         """Check whether the given component matches any known development dependency."""
@@ -131,11 +132,14 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
             print_text("    --forceerror          force an error exit code in case of validation errors or warnings")
             return
 
-        print_text("Reading component check list from component_checks.json...")
+        self.verbose = args.verbose
+        self.component_check.verbose = args.verbose
+
+        print_text("Reading component checklist...")
         try:
             self.component_check.read_component_check_list(args.remote_check_list, args.local_checklist_list)
         except Exception as ex:
-            print_red("Error reading component check list " + repr(ex))
+            print_red("Error reading component checklist " + repr(ex))
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)
         if len(self.component_check.component_check_list) > 0:
             print_text("  Got component checklist.")

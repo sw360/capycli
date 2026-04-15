@@ -94,10 +94,10 @@ class TestComponentCheck(TestBase):
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue(self.INPUTFILE1 in out)
-        self.assertTrue("Reading component check list from component_checks.json..." in out)
+        self.assertTrue("Reading component checklist..." in out)
         self.assertTrue("Got component checklist." in out)
         self.assertTrue("0 components will be ignored." in out)
-        self.assertTrue("6 components read from SBOM" in out)
+        self.assertTrue("7 components read from SBOM" in out)
         self.assertTrue("pandas 5.0 is known as a Python component that has additional binary dependencies" in out)
         self.assertTrue("pytest 7.4.3 seems to be a development dependency" in out)
 
@@ -116,11 +116,12 @@ class TestComponentCheck(TestBase):
 
         out = self.capture_stdout(sut.run, args)
         self.assertTrue(self.INPUTFILE1 in out)
-        self.assertTrue("Reading component check list from component_checks.json..." in out)
+        self.assertTrue("Reading component checklist..." in out)
         self.assertTrue("Got component checklist." in out)
         self.assertTrue("1 components will be ignored." in out)
         self.assertTrue("gulp 123 seems to be a development dependency" in out)
-        self.assertTrue("junit 123 seems to be a development dependency" in out)
+        self.assertTrue("junit 1.2.3 seems to be a development dependency" in out)
+        self.assertTrue("junit 1.2.4 seems to be a development dependency" in out)
         self.assertFalse("pytest 7.4.3 seems to be a development dependency" in out)
 
     @responses.activate
@@ -217,4 +218,4 @@ class TestComponentCheck(TestBase):
 
 if __name__ == '__main__':
     APP = TestComponentCheck()
-    APP.test_read_granularity_list_local_file_not_found()
+    APP.test_real_bom2()

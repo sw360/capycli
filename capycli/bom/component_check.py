@@ -40,6 +40,7 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
     def __init__(self) -> None:
         self.component_check_list: Dict[str, Any] = {}
         self.files_to_ignore: List[Dict[str, Any]] = []
+        self.verbose = False
 
     @staticmethod
     def get_component_check_list(download_url: str) -> None:
@@ -56,6 +57,8 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             try:
                 with open(local_check_list_file, "r", encoding="utf-8") as fin:
                     self.component_check_list = json.load(fin)
+                if self.verbose:
+                    print_text(f"  Reading component checklist from {local_check_list_file}...")
             except FileNotFoundError as e:
                 print_yellow(f"File not found: {e} \n Reading the default component check list")
             except Exception as e:
@@ -65,6 +68,8 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
                 ComponentCheck.get_component_check_list(download_url)
                 with open("component_checks.json", "r", encoding="utf-8") as fin:
                     self.component_check_list = json.load(fin)
+                if self.verbose:
+                    print_text(f"  Reading component checklist from {download_url}...")
             except FileNotFoundError as e:
                 print_yellow(f"File not found: {e} \n Reading the default component check list")
             except Exception as e:
@@ -95,14 +100,17 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             ecosystem = pd.get("type", "").lower()
             for entry in self.get_dev_dependencies(ecosystem):
                 name_to_compare = entry.get("name", "")
-                if comp.group and entry.get("namespace", ""):
-                    if comp.group.lower() != entry.get("namespace", ""):
+                if comp.purl.namespace and entry.get("namespace", ""):
+                    if comp.purl.namespace.lower() != entry.get("namespace", ""):
                         continue
-                else:
-                    # it can happen that comp.group is empty, but the namespace
-                    # ...is included in the name
-                    if entry.get("namespace", ""):
-                        name_to_compare = entry.get("namespace", "") + "/" + name_to_compare
+
+                if comp.name.lower() == name_to_compare.lower():
+                    return True
+
+                # it can happen that comp.purl.namespace is empty, but the namespace
+                # ...is included in the name
+                if entry.get("namespace", ""):
+                    name_to_compare = entry.get("namespace", "") + "/" + name_to_compare
 
                 if comp.name.lower() == name_to_compare.lower():
                     return True
@@ -192,11 +200,13 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             print_red("Input file not found!")
             sys.exit(ResultCode.RESULT_FILE_NOT_FOUND)
 
-        print_text("Reading component check list from component_checks.json...")
+        self.verbose = args.verbose
+
+        print_text("Reading component checklist...")
         try:
             self.read_component_check_list(args.remote_check_list, args.local_checklist_list)
         except Exception as ex:
-            print_red("Error reading component check list " + repr(ex))
+            print_red("Error reading component checklist " + repr(ex))
             sys.exit(ResultCode.RESULT_GENERAL_ERROR)
         if len(self.component_check_list) > 0:
             print_text("  Got component checklist.")
