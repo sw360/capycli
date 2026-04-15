@@ -9,7 +9,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/sw360/capycli/blob/main/License.md)
 [![PyPI](https://shields.io/pypi/v/capycli)](https://pypi.org/project/capycli/)
-[![Python Version](https://img.shields.io/badge/python-3.10%2C3.14-yellow?logo=python)](https://www.python.org/doc/versions/)
+[![Python Version](https://img.shields.io/badge/python-3.12%2C3.13%2C3.14-yellow?logo=python)](https://www.python.org/doc/versions/)
 [![Static Checks](https://github.com/sw360/capycli/actions/workflows/static-checks.yml/badge.svg)](https://github.com/sw360/capycli/actions/workflows/static-checks.yml)
 [![Unit Tests](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/tngraf/c8f15831ecdcf6e86ab2b69cbb2d4f89/raw/df1a91c074c5ee34dc1f0dcf82bc0e76e39b5b4e/capycli-cobertura-coverage.json&color=green)](https://github.com/sw360/capycli/actions/workflows/unit-tests.yml)
@@ -73,9 +73,12 @@ Commands and Sub-Commands
         CreateComponents  create new components and releases on SW360 (use with care!)
         DownloadSources   download source files from the URL specified in the SBOM
         Granularity       check a bill of material for potential component granularity issues
-        Diff              compare two bills of material.
-        Merge             merge two bills of material.
-        Findsources       determine the source code for SBOM items.
+        Diff              compare two bills of material
+        Merge             merge two bills of material
+        Findsources       determine the source code for SBOM items
+        Validate          validate an SBOM
+        BomPackage        create a single archive that contains the SBOM and all source and binary files
+        ComponentCheck    check the SBOM for special components
 
     mapping
         ToHtml            create a HTML page showing the mapping result
@@ -97,6 +100,7 @@ Commands and Sub-Commands
         CreateReadme      create a Readme_OSS
         Vulnerabilities   show security vulnerabilities of a project
         ECC               Show export control status of a project
+        ComponentCheck    check the project for special components
 
 Options:
   command                                           command and subcommand to process
@@ -137,8 +141,17 @@ Options:
   -m MODE, --mode MODE                              specific mode for some commands
   -if INPUTFORMAT                                   Specify input file format
   -of OUTPUTFORMAT                                  Specify output file format
+  -rg REMOTE_GRANULARITY_LIST                       read the granularity list file from the
+                                                    download URL specified
+  -lg LOCAL_GRANULARITY_LIST                        read the granularity list file from local
+  -rcl REMOTE_CHECK_LIST                            read the component check list file from
+                                                    the download URL specified
+  -lcl LOCAL_CHECKLIST_LIST                         read the component check list file from local
   -X DEBUG                                          Enable debug output
   --forceerror FORCE_ERROR                          force an error exit code in case of visual errors
+  -pms PROJECT_MAINLINE_STATE                       project mainline state for releases in a
+                                                    newly created project
+  --copy_from COPY_FROM                             copy the project with the given id and update it
 ```
 
 **Note about `--forceexit` and `--forceerror`**:  
@@ -240,6 +253,9 @@ information that is needed.
 Conversion support from or to our SBOM format is available.
 For converting CycloneDX (XML) to JSON or for converting SPDX SBOMs, we like
 to refer you to the open source tools from [CycloneDX](https://cyclonedx.org/).
+
+For information about the "quality" of the SBOMs, or may be better the information
+that someone might expect in a specific format, please have a look at [SBOM Quality](documentation/SBOM_Quality.md)
 
 ## Mapping a SBOM to SW360
 

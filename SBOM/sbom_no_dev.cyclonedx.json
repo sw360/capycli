@@ -4527,7 +4527,7 @@
     },
     {
       "author": "N/A",
-      "bom-ref": "pkg:pypi/packaging@26.0",
+      "bom-ref": "pkg:pypi/packaging@26.1",
       "copyright": "N/A",
       "description": "Core utilities for Python packages",
       "externalReferences": [
@@ -4536,38 +4536,38 @@
           "hashes": [
             {
               "alg": "SHA-256",
-              "content": "b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529"
+              "content": "5d9c0669c6285e491e0ced2eee587eaf67b670d94a19e94e3984a481aba6802f"
             }
           ],
           "type": "distribution",
-          "url": "file:///packaging-26.0-py3-none-any.whl"
+          "url": "file:///packaging-26.1-py3-none-any.whl"
         },
         {
           "comment": "source archive (local copy)",
           "hashes": [
             {
               "alg": "SHA-256",
-              "content": "00243ae351a257117b6a241061796684b084ed1c516a08c48a3f7e147a9d80b4"
+              "content": "f042152b681c4bfac5cae2742a55e103d27ab2ec0f3d88037136b6bfe7c9c5de"
             }
           ],
           "type": "distribution",
-          "url": "file:///packaging-26.0.tar.gz"
+          "url": "file:///packaging-26.1.tar.gz"
         },
         {
           "comment": "binary (download location)",
           "hashes": [
             {
               "alg": "SHA-256",
-              "content": "b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529"
+              "content": "5d9c0669c6285e491e0ced2eee587eaf67b670d94a19e94e3984a481aba6802f"
             }
           ],
           "type": "distribution",
-          "url": "https://files.pythonhosted.org/packages/b7/b9/c538f279a4e237a006a2c98387d081e9eb060d203d8ed34467cc0f0b9b53/packaging-26.0-py3-none-any.whl"
+          "url": "https://files.pythonhosted.org/packages/7a/c2/920ef838e2f0028c8262f16101ec09ebd5969864e5a64c4c05fad0617c56/packaging-26.1-py3-none-any.whl"
         },
         {
           "comment": "source archive (download location)",
           "type": "distribution",
-          "url": "https://github.com/pypa/packaging/archive/tags/26.0.zip"
+          "url": "https://github.com/pypa/packaging/archive/tags/26.1.zip"
         },
         {
           "comment": "PyPi URL",
@@ -4582,7 +4582,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529"
+          "content": "5d9c0669c6285e491e0ced2eee587eaf67b670d94a19e94e3984a481aba6802f"
         }
       ],
       "licenses": [
@@ -4599,12 +4599,12 @@
           "value": "Python"
         }
       ],
-      "purl": "pkg:pypi/packaging@26.0",
+      "purl": "pkg:pypi/packaging@26.1",
       "supplier": {
         "name": "N/A"
       },
       "type": "library",
-      "version": "26.0"
+      "version": "26.1"
     },
     {
       "author": "Paul Horton",
@@ -10710,7 +10710,7 @@
     },
     {
       "author": "Thomas Graf",
-      "bom-ref": "pkg:pypi/sw360@1.10.1",
+      "bom-ref": "pkg:pypi/sw360@1.11.0",
       "copyright": "N/A",
       "description": "Python interface to the SW360 software component catalogue",
       "externalReferences": [
@@ -10719,38 +10719,38 @@
           "hashes": [
             {
               "alg": "SHA-256",
-              "content": "97c2f9a7513fcaf9caaf294e46ab11da4bf45e9c00c855e3fa4532a2a6cdeb41"
+              "content": "ebf94ce8a33af46b974a0a36f772b36435133a8d7df705a24fcd42d41edbfea4"
             }
           ],
           "type": "distribution",
-          "url": "file:///sw360-1.10.1-py3-none-any.whl"
+          "url": "file:///sw360-1.11.0-py3-none-any.whl"
         },
         {
           "comment": "source archive (local copy)",
           "hashes": [
             {
               "alg": "SHA-256",
-              "content": "ea8206f667968faf61e324bda5b365a578f5a2dc00f2ed6e752661ee4d6d3411"
+              "content": "38b4f68c8c03e325bbd604cb2602763cd1fca955a4a18e2b537751235d34e375"
             }
           ],
           "type": "distribution",
-          "url": "file:///sw360-1.10.1.tar.gz"
+          "url": "file:///sw360-1.11.0.tar.gz"
         },
         {
           "comment": "binary (download location)",
           "hashes": [
             {
               "alg": "SHA-256",
-              "content": "97c2f9a7513fcaf9caaf294e46ab11da4bf45e9c00c855e3fa4532a2a6cdeb41"
+              "content": "ebf94ce8a33af46b974a0a36f772b36435133a8d7df705a24fcd42d41edbfea4"
             }
           ],
           "type": "distribution",
-          "url": "https://files.pythonhosted.org/packages/fe/72/0a20569a27007ecbe5b7d9bdb1685e292a8c50b570d6dc63992c0c1945d3/sw360-1.10.1-py3-none-any.whl"
+          "url": "https://files.pythonhosted.org/packages/9c/ad/cc884c11464df5d2bae5cde894cb6c90ae1d3154726ca546c7897e7bb56b/sw360-1.11.0-py3-none-any.whl"
         },
         {
           "comment": "source archive (download location)",
           "type": "distribution",
-          "url": "https://github.com/sw360/sw360python/archive/tags/v1.10.1.zip"
+          "url": "https://github.com/sw360/sw360python/archive/refs/tags/V1.11.0.zip"
         },
         {
           "comment": "PyPi URL",
@@ -10765,7 +10765,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "97c2f9a7513fcaf9caaf294e46ab11da4bf45e9c00c855e3fa4532a2a6cdeb41"
+          "content": "ebf94ce8a33af46b974a0a36f772b36435133a8d7df705a24fcd42d41edbfea4"
         }
       ],
       "licenses": [
@@ -10782,12 +10782,12 @@
           "value": "Python"
         }
       ],
-      "purl": "pkg:pypi/sw360@1.10.1",
+      "purl": "pkg:pypi/sw360@1.11.0",
       "supplier": {
         "name": "Thomas Graf"
       },
       "type": "library",
-      "version": "1.10.1"
+      "version": "1.11.0"
     },
     {
       "author": "N/A",
@@ -11472,7 +11472,7 @@
         "pkg:pypi/log-symbols@0.0.14",
         "pkg:pypi/openpyxl@3.1.5",
         "pkg:pypi/packageurl-python@0.15.6",
-        "pkg:pypi/packaging@26.0",
+        "pkg:pypi/packaging@26.1",
         "pkg:pypi/py-serializable@2.1.0",
         "pkg:pypi/pyjwt@2.12.1",
         "pkg:pypi/python-dateutil@2.9.0.post0",
@@ -11487,7 +11487,7 @@
         "pkg:pypi/sortedcontainers@2.4.0",
         "pkg:pypi/soupsieve@2.8.3",
         "pkg:pypi/spinners@0.0.24",
-        "pkg:pypi/sw360@1.10.1",
+        "pkg:pypi/sw360@1.11.0",
         "pkg:pypi/termcolor@3.3.0",
         "pkg:pypi/types-setuptools@82.0.0.20260408",
         "pkg:pypi/typing-extensions@4.15.0",
@@ -11497,7 +11497,7 @@
         "pkg:pypi/validation@0.8.3",
         "pkg:pypi/wheel@0.38.4"
       ],
-      "ref": "pkg:pypi/capycli@2.10.1"
+      "ref": "pkg:pypi/capycli@2.11.1"
     },
     {
       "ref": "pkg:pypi/certifi@2026.2.25"
@@ -11554,7 +11554,7 @@
       "ref": "pkg:pypi/packageurl-python@0.15.6"
     },
     {
-      "ref": "pkg:pypi/packaging@26.0"
+      "ref": "pkg:pypi/packaging@26.1"
     },
     {
       "ref": "pkg:pypi/py-serializable@2.1.0"
@@ -11599,7 +11599,7 @@
       "ref": "pkg:pypi/spinners@0.0.24"
     },
     {
-      "ref": "pkg:pypi/sw360@1.10.1"
+      "ref": "pkg:pypi/sw360@1.11.0"
     },
     {
       "ref": "pkg:pypi/termcolor@3.3.0"
@@ -11634,7 +11634,7 @@
     ],
     "component": {
       "author": "Thomas Graf",
-      "bom-ref": "pkg:pypi/capycli@2.10.1",
+      "bom-ref": "pkg:pypi/capycli@2.11.1",
       "copyright": "Siemens AG",
       "description": "CaPyCli - Clearing Automation Python Command Line Interface for SW360",
       "licenses": [
@@ -11645,12 +11645,12 @@
         }
       ],
       "name": "capycli",
-      "purl": "pkg:pypi/capycli@2.10.1",
+      "purl": "pkg:pypi/capycli@2.11.1",
       "supplier": {
         "name": "Thomas Graf"
       },
       "type": "library",
-      "version": "2.10.1"
+      "version": "2.11.1"
     },
     "licenses": [
       {
@@ -11670,7 +11670,7 @@
         "value": "clearing"
       }
     ],
-    "timestamp": "2026-04-08T14:37:06.173253+00:00",
+    "timestamp": "2026-04-15T15:13:29.097716+00:00",
     "tools": {
       "components": [
         {
@@ -11685,12 +11685,12 @@
             "name": "Siemens AG"
           },
           "type": "application",
-          "version": "2.10.1"
+          "version": "2.11.0"
         }
       ]
     }
   },
-  "serialNumber": "urn:uuid:f4afb703-c587-4f0d-8da3-bb7ea273d415",
+  "serialNumber": "urn:uuid:6a325c17-2e9a-4231-8789-11630b5ac988",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

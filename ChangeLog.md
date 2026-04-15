@@ -5,9 +5,10 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.11.1
 
 * fix namespace handling in `bom componentcheck` and `project componentcheck`.
+* dependency updates, especially `sw360, 1.11.0`.
 
 ## 2.11.0
 
