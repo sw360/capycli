@@ -21,7 +21,6 @@ from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
-from sw360 import SW360
 
 import capycli.common.file_support
 import capycli.common.script_base
@@ -34,6 +33,7 @@ from capycli.common.map_result import MapResult
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.common.purl_service import PurlService
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360
 
 LOG = get_logger(__name__)
 
