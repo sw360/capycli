@@ -50,6 +50,7 @@ class CommandlineSupport():
         Findsources       determine the source code for SBOM items
         Validate          validate an SBOM
         BomPackage        create a single archive that contains the SBOM and all source and binary files
+        ComponentCheck    Check the SBOM for special components
 
     mapping
         ToHtml            create a HTML page showing the mapping result
@@ -72,6 +73,7 @@ class CommandlineSupport():
         CreateReadme      create a Readme_OSS
         Vulnerabilities   show security vulnerabilities of a project
         ECC               show export control status of a project
+        ComponentCheck    Check the project for special components
 
     Note that each command has also its own help display, i.e. if you enter
     `capycli project vulnerabilities -h` you will get a help that only shows the options
