@@ -252,7 +252,7 @@ class TestProjectComponentCheck(TestBase):
 
         out = self.capture_stdout(sut.run, args)
         # self.dump_textfile(out, "DUMP.TXT")
-        self.assertTrue("Reading component check list from component_checks.json" in out)
+        self.assertTrue("Reading component checklist" in out)
         self.assertTrue("Got component checklist." in out)
         self.assertTrue("0 components will be ignored." in out)
 

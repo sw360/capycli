@@ -125,7 +125,21 @@
       ],
       "purl": "pkg:maven/org.eclipse.jdt/junit@1.2.3",
       "type": "library",
-      "version": "123"
+      "version": "1.2.3"
+    },
+    {
+      "bom-ref": "pkg:maven/org.eclipse.jdt/junit@1.2.4",
+      "name": "junit",
+      "group": "org.eclipse.jdt",
+      "properties": [
+        {
+          "name": "siemens:primaryLanguage",
+          "value": "Java"
+        }
+      ],
+      "purl": "pkg:maven/org.eclipse.jdt/junit@1.2.4",
+      "type": "library",
+      "version": "1.2.4"
     },
     {
       "bom-ref": "pkg:npm/gulp@1.2.3",

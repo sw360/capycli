@@ -47,6 +47,7 @@ def run_project_command(args: Any) -> None:
         print("    CreateReadme      create a Readme_OSS")
         print("    Vulnerabilities   show security vulnerabilities of a project")
         print("    ECC               Show export control status of a project")
+        print("    ComponentCheck    Check the project for special components")
         return
 
     subcommand = args.command[1].lower()
