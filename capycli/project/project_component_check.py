@@ -10,9 +10,8 @@ import logging
 import sys
 from typing import Any
 
-import sw360
-
 import capycli.common.script_base
+import sw360
 from capycli.bom.component_check import ComponentCheck
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
@@ -32,7 +31,10 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
         dd = self.component_check.component_check_list.get("dev_dependencies", [])
         for ecosystem in dd:
             for entry in dd.get(ecosystem, []):
-                if name.lower() == entry.get("name", ""):
+                to_compare = entry.get("name", "")
+                if entry.get("namespace", ""):
+                    to_compare = entry.get("namespace", "") + "/" + to_compare
+                if name.lower() == to_compare.lower():
                     return True
 
         return False

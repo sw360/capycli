@@ -6,6 +6,8 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import logging
+
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -92,11 +94,17 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             pd = comp.purl.to_dict()
             ecosystem = pd.get("type", "").lower()
             for entry in self.get_dev_dependencies(ecosystem):
-                if comp.group:
+                name_to_compare = entry.get("name", "")
+                if comp.group and entry.get("namespace", ""):
                     if comp.group.lower() != entry.get("namespace", ""):
                         continue
+                else:
+                    # it can happen that comp.group is empty, but the namespace
+                    # ...is included in the name
+                    if entry.get("namespace", ""):
+                        name_to_compare = entry.get("namespace", "") + "/" + name_to_compare
 
-                if comp.name.lower() == entry.get("name", ""):
+                if comp.name.lower() == name_to_compare.lower():
                     return True
         else:
             # fallback: only check by name
@@ -154,6 +162,11 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
         if args.debug:
             global LOG
             LOG = capycli.get_logger(__name__)
+        else:
+            # suppress (debug) log output from requests and urllib
+            logging.getLogger("requests").setLevel(logging.WARNING)
+            logging.getLogger("urllib3").setLevel(logging.WARNING)
+            logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
 
         print_text(
             "\n" + capycli.get_app_signature() +
