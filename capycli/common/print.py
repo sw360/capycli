@@ -27,8 +27,13 @@ def print_red(*args: Any, **kwargs: Any) -> None:
     # Fore.LIGHTRED_EX = \x1b[91m
     # Style.RESET_ALL = \x1b[0m
     # For whatever reason the colorama constants do not work here, so we use the escape codes directly.
-    myargs = [f"\x1b[91m{arg}\x1b[0m" for arg in args]
-    print(*myargs, **kwargs)
+    if capycli.is_are_unit_test_running():
+        # During unit tests, we do not want to have the color codes in the output, as they make it harder
+        # to read and assert the output.
+        print(*args, **kwargs)
+    else:
+        myargs = [f"\x1b[91m{arg}\x1b[0m" for arg in args]
+        print(*myargs, **kwargs)
 
 
 def print_yellow(*args: Any, **kwargs: Any) -> None:
@@ -37,8 +42,13 @@ def print_yellow(*args: Any, **kwargs: Any) -> None:
         print(_get_debug_prefix(), end="")
     # Fore.LIGHTYELLOW_EX = \x1b[93m
     # For whatever reason the colorama constants do not work here, so we use the escape codes directly.
-    myargs = [f"\x1b[93m{arg}\x1b[0m" for arg in args]
-    print(*myargs, **kwargs)
+    if capycli.is_are_unit_test_running():
+        # During unit tests, we do not want to have the color codes in the output, as they make it harder
+        # to read and assert the output.
+        print(*args, **kwargs)
+    else:
+        myargs = [f"\x1b[93m{arg}\x1b[0m" for arg in args]
+        print(*myargs, **kwargs)
 
 
 def print_green(*args: Any, **kwargs: Any) -> None:
@@ -47,8 +57,13 @@ def print_green(*args: Any, **kwargs: Any) -> None:
         print(_get_debug_prefix(), end="")
     # Fore.LIGHTGREEN_EX = \x1b[92m
     # For whatever reason the colorama constants do not work here, so we use the escape codes directly.
-    myargs = [f"\x1b[92m{arg}\x1b[0m" for arg in args]
-    print(*myargs, **kwargs)
+    if capycli.is_are_unit_test_running():
+        # During unit tests, we do not want to have the color codes in the output, as they make it harder
+        # to read and assert the output.
+        print(*args, **kwargs)
+    else:
+        myargs = [f"\x1b[92m{arg}\x1b[0m" for arg in args]
+        print(*myargs, **kwargs)
 
 
 def print_text(*args: Any, **kwargs: Any) -> None:

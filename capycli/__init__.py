@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-2025 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -30,6 +30,10 @@ VERBOSITY_LEVEL = 1
 
 def is_debug_logging_enabled() -> bool:
     return VERBOSITY_LEVEL > 1
+
+
+def is_are_unit_test_running() -> bool:
+    return "PYTEST_CURRENT_TEST" in os.environ
 
 
 def _get_project_meta() -> Any:
