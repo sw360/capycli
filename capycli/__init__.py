@@ -105,7 +105,7 @@ init()
 
 class ConsoleHandler(logging.Handler):
     """Handler that write to stderr for errors and to stdout
-    for other logiing records."""
+    for other logging records."""
     def __init__(self) -> None:
         super().__init__()
 
