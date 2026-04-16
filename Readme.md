@@ -61,6 +61,7 @@ Commands and Sub-Commands
         Javascript        determine dependencies for a JavaScript project
         MavenPom          determine dependencies for a Java/Maven project using the pom.xml file
         MavenList         determine dependencies for a Java/Maven project using a Maven command
+        Rust              determine dependencies for a Rust project
 
     bom                 bill of material (SBOM) specific commands
         Show              display contents of a SBOM
