@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -8,8 +8,6 @@
 
 import datetime
 from typing import Any
-
-from colorama import Fore, Style
 
 import capycli.common
 
@@ -26,27 +24,31 @@ def print_red(*args: Any, **kwargs: Any) -> None:
     """Print the given text in red color."""
     if capycli.is_debug_logging_enabled():
         print(_get_debug_prefix(), end="")
-    print(Fore.LIGHTRED_EX, end="")
-    print(*args, **kwargs, end="")
-    print(Style.RESET_ALL)
+    # Fore.LIGHTRED_EX = \x1b[91m
+    # Style.RESET_ALL = \x1b[0m
+    # For whatever reason the colorama constants do not work here, so we use the escape codes directly.
+    myargs = [f"\x1b[91m{arg}\x1b[0m" for arg in args]
+    print(*myargs, **kwargs)
 
 
 def print_yellow(*args: Any, **kwargs: Any) -> None:
     """Print the given text in red color."""
     if capycli.is_debug_logging_enabled():
         print(_get_debug_prefix(), end="")
-    print(Fore.LIGHTYELLOW_EX, end="")
-    print(*args, **kwargs, end="")
-    print(Style.RESET_ALL)
+    # Fore.LIGHTYELLOW_EX = \x1b[93m
+    # For whatever reason the colorama constants do not work here, so we use the escape codes directly.
+    myargs = [f"\x1b[93m{arg}\x1b[0m" for arg in args]
+    print(*myargs, **kwargs)
 
 
 def print_green(*args: Any, **kwargs: Any) -> None:
     """Print the given text in red color."""
     if capycli.is_debug_logging_enabled():
         print(_get_debug_prefix(), end="")
-    print(Fore.LIGHTGREEN_EX, end="")
-    print(*args, **kwargs, end="")
-    print(Style.RESET_ALL)
+    # Fore.LIGHTGREEN_EX = \x1b[92m
+    # For whatever reason the colorama constants do not work here, so we use the escape codes directly.
+    myargs = [f"\x1b[92m{arg}\x1b[0m" for arg in args]
+    print(*myargs, **kwargs)
 
 
 def print_text(*args: Any, **kwargs: Any) -> None:
