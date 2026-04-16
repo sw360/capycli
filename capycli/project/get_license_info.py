@@ -12,12 +12,13 @@ import os
 import sys
 from typing import Any, Dict, List
 
+from sw360 import SW360Error
+
 import capycli.common.script_base
 from capycli.common.json_support import load_json_file
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.common.script_support import ScriptSupport
 from capycli.main.result_codes import ResultCode
-from sw360 import SW360Error
 
 LOG = capycli.get_logger(__name__)
 

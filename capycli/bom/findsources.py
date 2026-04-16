@@ -24,6 +24,7 @@ from colorama import Fore, Style
 from cyclonedx.model import ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -31,7 +32,6 @@ from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, Sbo
 from capycli.common.github_support import GitHubSupport
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
-from sw360 import SW360Error
 
 LOG = get_logger(__name__)
 

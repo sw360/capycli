@@ -10,8 +10,9 @@ import logging
 import sys
 from typing import Any
 
-import capycli.common.script_base
 import sw360
+
+import capycli.common.script_base
 from capycli.bom.component_check import ComponentCheck
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
