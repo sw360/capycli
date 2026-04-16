@@ -33,7 +33,7 @@ dependencies = [
     "pyjwt (>=2.4.0,<3.0.0)",
     "openpyxl (>=3.0.3,<4.0.0)",
     "requirements-parser (==0.11.0)",
-    "sw360 (>=1.8.1,<2.0.0)",
+    "sw360 (>=1.11.1)",
     "wheel (>=0.38.4,<0.39.0)",
     "cli-support (==2.0.1)",
     "chardet (==5.2.0)",

@@ -9,6 +9,7 @@
 
 * fix namespace handling in `bom componentcheck` and `project componentcheck`.
 * dependency updates, especially `sw360, 1.11.0`.
+* Fix console color output.
 
 ## 2.11.0
 
