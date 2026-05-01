@@ -92,7 +92,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             vmaj, _, vmin, _, vmic = self._re_version.search(version).groups()
             # generate sensible prefixes here and add them to candidates
             for d in data:
-                # extract the longest prefix w/o a numberical component
+                # extract the longest prefix w/o a numerical component
                 # remember what we believe is the version separator
                 matches = self._re_prefix_and_sep.search(d)
                 if matches is None:
@@ -318,7 +318,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
                     )
                 elif isinstance(result, dict) and len(get_label(result)) > 0:
                     result = [result]  # exact match
-                else:  # GitHub used one of its endless possibilites to fail
+                else:  # GitHub used one of its endless possibilities to fail
                     continue
                 _transformed = [{
                     'name': get_label(tag).replace('refs/tags/', '', 1),
