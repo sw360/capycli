@@ -85,8 +85,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
         _re_prefix_and_sep = re.compile(r"^([^0-9]+)([0-9]+(.)?(.*))?$")
         _re_version = re.compile(r"([0-9]+)([^0-9]([0-9]+)([^0-9]([0-9]+))?)?")
-        def gen_new_prefixes(self, project: str, version: str, data: Any
-                            ) -> List[str]:
+
+        def gen_new_prefixes(self, project: str, version: str, data: Any) -> List[str]:
             """Generate new tag prefixes for a project and version."""
             candidates = []  # output list
             vmaj, _, vmin, _, vmic = self._re_version.search(version).groups()
@@ -113,7 +113,6 @@ class FindSources(capycli.common.script_base.ScriptBase):
                     candidates.append(prefix + version[0])
                     candidates.append(prefix + version[0] + sep)
             return self.filter_and_cache(project, version, candidates)
-
 
     def __init__(self) -> None:
         self.verbose: bool = False
@@ -304,15 +303,15 @@ class FindSources(capycli.common.script_base.ScriptBase):
 
             for prefix in new_prefixes:
                 url = git_refs_url_tpl.format(sha=f'/tags/{prefix}')
-                result = GitHubSupport.github_request(url, self.github_name,
-                                                        self.github_token)
+                result = GitHubSupport.github_request(
+                    url, self.github_name, self.github_token)
                 if isinstance(result, list):
                     # ORDER BY tag-name-length DESC
                     result = list(
                         reversed(
                             sorted(
                                 [tag for tag in result
-                                        if len(get_label(tag)) > 0],
+                                 if len(get_label(tag)) > 0],
                                 key=lambda x: len(x['ref'])
                             )
                         )
@@ -322,10 +321,10 @@ class FindSources(capycli.common.script_base.ScriptBase):
                 else:  # GitHub used one of its endless possibilites to fail
                     continue
                 _transformed = [{
-                    'name':        get_label(tag).replace('refs/tags/', '', 1),
-                    'zipball_url': get_url(tag).replace('/git/refs/tags/',
-                                                    '/zipball/refs/tags/', 1),
-                     } for tag in result]
+                    'name': get_label(tag).replace('refs/tags/', '', 1),
+                    'zipball_url': get_url(tag).replace(
+                        '/git/refs/tags/', '/zipball/refs/tags/', 1),
+                } for tag in result]
                 source_url = self.get_matching_tag(
                     _transformed, version, tags_url)
                 if len(source_url) > 0:  # we found what we believe is
