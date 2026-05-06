@@ -21,7 +21,7 @@ from cyclonedx.model.contact import OrganizationalEntity
 from cyclonedx.model.definition import Definitions, Standard
 from cyclonedx.model.tool import ToolRepository
 from cyclonedx.output import make_outputter
-from cyclonedx.output.json import JsonV1Dot6
+from cyclonedx.output.json import JsonV1Dot6, JsonV1Dot7
 from cyclonedx.schema import OutputFormat, SchemaVersion
 from cyclonedx.validation.json import JsonStrictValidator
 
@@ -564,6 +564,8 @@ class CaPyCliBom():
     @classmethod
     def _string_to_schema_version(cls, spec_version: str) -> SchemaVersion:
         """Convert the given string to a CycloneDX spec version."""
+        if spec_version == "1.7":
+            return SchemaVersion.V1_7
         if spec_version == "1.6":
             return SchemaVersion.V1_6
         if spec_version == "1.5":
