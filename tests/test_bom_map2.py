@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2023 Siemens
+# Copyright (c) 2021-2026 Siemens
 # All Rights Reserved.
 # Author: gernot.hillier@siemens.com, thomas.graf@siemens.com
 #
@@ -3514,8 +3514,31 @@ class CapycliTestBomMap(unittest.TestCase):
         self.assertTrue(sut.is_good_match(MapResult.FULL_MATCH_BY_NAME_AND_VERSION))
         self.assertTrue(sut.is_good_match(MapResult.MATCH_BY_FILENAME))
 
+    def test_update_bom_item_multi_purl(self) -> None:
+        """
+        Special test for issue #218 "Bug when using capycli bom map -o outmap (v2.11.1)"
+        """
+        sut = MapBom()
+
+        # have a match with multiple purls
+        match: Dict[str, Any] = {
+            "Name": "clap",
+            "Version": "4.5.60",
+            "ExternalIds": {
+                "package-url": "[\"pkg:cargo/clap_builder@4.5.60\",\"pkg:cargo/clap@4.5.60\"]"
+            },
+        }
+
+        comp = sut.update_bom_item(None, match)
+        self.assertIsNotNone(comp)
+        self.assertEqual("clap", comp.name)
+        self.assertEqual("4.5.60", comp.version)
+        self.assertIsNotNone(comp.purl)
+        if comp.purl:
+            self.assertEqual("pkg:cargo/clap_builder@4.5.60", comp.purl.to_string())
+
 
 if __name__ == "__main__":
     APP = CapycliTestBomMap()
     APP.setUp()
-    APP.test_mapping_require_result_not_found()
+    APP.test_update_bom_item_multi_purl()
