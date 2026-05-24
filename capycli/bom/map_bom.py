@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -33,6 +33,7 @@ from capycli.common.component_cache import ComponentCacheManagement
 from capycli.common.map_result import MapResult
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.common.purl_service import PurlService
+from capycli.common.purl_utils import PurlUtils
 from capycli.main.result_codes import ResultCode
 
 LOG = get_logger(__name__)
@@ -504,15 +505,22 @@ class MapBom(capycli.common.script_base.ScriptBase):
         """
         Return the package-url for the given SW360 entry.
         """
-        purl = ""
+        raw_purl = ""
         if "RepositoryId" in match and match["RepositoryId"]:
             return match["RepositoryId"]
 
         if "ExternalIds" in match:
             if "package-url" in match["ExternalIds"]:
-                purl = match["ExternalIds"]["package-url"]
+                raw_purl = match["ExternalIds"]["package-url"]
             elif "purl" in match["ExternalIds"]:
-                purl = match["ExternalIds"]["purl"]
+                raw_purl = match["ExternalIds"]["purl"]
+
+        if not raw_purl:
+            return ""
+
+        purls = PurlUtils.parse_purls_from_external_id(raw_purl)
+        if purls:
+            purl = purls[0]
 
         return purl
 
