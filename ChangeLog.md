@@ -5,6 +5,13 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## NEXT
+
+* Fix for issue 218: Bug when using capycli bom map -o outmap (v2.11.1).
+  Fixes CaPyCLI so that it doesn't crash. But the root cause cannot get
+  fixed: SW360 releases may have multiple purls, CycloneDX components
+  can have only one single purl.
+
 ## 2.11.1
 
 * fix namespace handling in `bom componentcheck` and `project componentcheck`.
