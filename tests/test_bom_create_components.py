@@ -61,7 +61,6 @@ class CapycliTestBomCreateComponents(TestBase):
 
         release_data = {"name": "activemodel", "version": "5.2.4.3",
                         "mainlineState": "OPEN", "languages": ["Ruby"],
-                        "sourceCodeDownloadurl": "http://test.org",
                         "externalIds": {"package-url": "pkg:gem/activemodel@5.2.4.3"},
                         "additionalData": {"createdWith": capycli.get_app_signature()}}
         responses.add(
