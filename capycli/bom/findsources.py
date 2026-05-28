@@ -24,7 +24,6 @@ from colorama import Fore, Style
 from cyclonedx.model import ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
-from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -32,6 +31,8 @@ from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, Sbo
 from capycli.common.github_support import GitHubSupport
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error
+from sw360.sw360keycloak import SW360Keycloak
 
 LOG = get_logger(__name__)
 
@@ -744,15 +745,17 @@ class FindSources(capycli.common.script_base.ScriptBase):
             print("usage: CaPyCli bom findsources [-h] [-v] [-o OUTPUTFILE] -i bomfile")
             print("")
             print("optional arguments:")
-            print("    -h, --help            show this help message and exit")
-            print("    -i INPUTFILE          SBOM file to read from (JSON)")
-            print("    -o OUTPUTFILE         output file to write to")
-            print("    -t SW360_TOKEN        (optional) use this token for access to SW360")
-            print("    -oa, --oauth2         (optional) this is an oauth2 token")
-            print("    -url SW360_URL        (optional) use this URL for access to SW360")
-            print("    -name NAME            (optional) GitHub name for login")
-            print("    -gt TOKEN             (optional) GitHub token for login")
-            print("    -v                    be verbose")
+            print("    -h, --help                    show this help message and exit")
+            print("    -i INPUTFILE                  SBOM file to read from (JSON)")
+            print("    -o OUTPUTFILE                 output file to write to")
+            print("    -t SW360_TOKEN                (opt.) use this token for access to SW360")
+            print("    -oa, --oauth2                 (opt.) this is an oauth2 token")
+            print("    -url SW360_URL                (opt.) use this URL for access to SW360")
+            print("    -name NAME                    (opt.) GitHub name for login")
+            print("    -gt TOKEN                     (opt.) GitHub token for login")
+            print("    -v                            be verbose")
+            print("    -client_id CLIENT_ID          (opt.) the SW360 client_id to be used for token generation")
+            print("    -client_secret CLIENT_SECRET  (opt.) the SW360 client_secret to be used for token generation")
             return
 
         if not args.inputfile:
@@ -770,6 +773,17 @@ class FindSources(capycli.common.script_base.ScriptBase):
             self.sw360_url = args.sw360_url
 
         if self.sw360_url:
+            if args.client_id and args.client_secret:
+                print_text("Creating token using client id and secret...")
+                kc = SW360Keycloak(args.sw360_url)
+                args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=False)
+                if args.sw360_token:
+                    args.oauth2 = True
+                    print_text("  Got token.")
+                else:
+                    print_red("  Failed to get token!")
+                    sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
             self.login(
                 token=args.sw360_token, url=self.sw360_url, oauth2=args.oauth2)
             print("Using SW360 releases and components to detect GitHub url")

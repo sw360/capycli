@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-2025 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -19,6 +19,7 @@ from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Keycloak
 
 LOG = get_logger(__name__)
 
@@ -301,16 +302,32 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             print("Checks whether all prerequisites for a successful software clearing are fulfilled")
             print("")
             print("Options:")
-            print("    -h, --help              show this help message and exit")
-            print("    -n NAME, --name NAME    name of the project")
-            print("    -v VERSION,             version of the project")
-            print("    -id PROJECT_ID          SW360 id of the project, supersedes name and version parameters")
-            print("    -i INPUTFILE            SBOM input file to read from (JSON)")
-            print("    -t SW360_TOKEN,         use this token for access to SW360")
-            print("    -oa, --oauth2           this is an oauth2 token")
-            print("    -url SW360_URL          use this URL for access to SW360")
-            print("    --forceerror            force an error exit code in case of prerequisite errors")
+            print("    -h, --help                    show this help message and exit")
+            print("    -n NAME, --name NAME          name of the project")
+            print("    -v VERSION,                   version of the project")
+            print("    -id PROJECT_ID                SW360 id of the project, supersedes name and version parameters")
+            print("    -i INPUTFILE                  SBOM input file to read from (JSON)")
+            print("    -t SW360_TOKEN,               use this token for access to SW360")
+            print("    -oa, --oauth2                 this is an oauth2 token")
+            print("    -url SW360_URL                use this URL for access to SW360")
+            print("    --forceerror                  force an error exit code in case of prerequisite errors")
+            print("    -client_id CLIENT_ID          the SW360 client_id to be used for token generation")
+            print("    -client_secret CLIENT_SECRET  the SW360 client_secret to be used for token generation")
             return
+
+        if not args.sw360_token and args.client_id and args.client_secret:
+            print_text("Creating token using client id and secret...")
+            kc = SW360Keycloak(args.sw360_url)
+            args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=False)
+            if args.sw360_token:
+                args.oauth2 = True
+                print_text("  Got token.")
+            else:
+                print_red("  Failed to get token!")
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        if args.sw360_token and args.oauth2:
+            self.analyze_token(args.sw360_token)
 
         if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
             print_red("ERROR: login failed!")

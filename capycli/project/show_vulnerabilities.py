@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2020-2024 Siemens
+# Copyright (c) 2020-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -12,12 +12,12 @@ from typing import Any, Dict, Optional
 
 import requests
 from colorama import Fore, Style
-from sw360 import SW360Error
 
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error, SW360Keycloak
 
 LOG = capycli.get_logger(__name__)
 
@@ -206,16 +206,18 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
         print("\nusage: CaPyCli project vulnerabilities [options]")
         print("Options:")
         print("""
-  -id ID           SW360 id of the project
-  -t SW360_TOKEN   use this token for access to SW360
-  -oa,             this is an oauth2 token
-  -url SW360_URL   use this URL for access to SW360
-  -name            name of the project, component or release
-  -version         version of the project, component or release
-  -v               be verbose
-  -format FMT      output format, one of [text, json], default is text
-  -fe PRIO         minimum vulnerability priority to force exit code != 0
-        """)
+  -id ID                        SW360 id of the project
+  -t SW360_TOKEN                use this token for access to SW360
+  -oa,                          this is an oauth2 token
+  -url SW360_URL                use this URL for access to SW360
+  -name                         name of the project, component or release
+  -version                      version of the project, component or release
+  -v                            be verbose
+  -format FMT                   output format, one of [text, json], default is text
+  -fe PRIO                      minimum vulnerability priority to force exit code != 0
+  -client_id CLIENT_ID          the SW360 client_id to be used for token generation
+  -client_secret CLIENT_SECRET  the SW360 client_secret to be used for token generation
+    """)
 
         print()
 
@@ -244,6 +246,20 @@ class ShowSecurityVulnerability(capycli.common.script_base.ScriptBase):
         self.format = args.format
         if args.verbose:
             print("Output format is", self.format)
+
+        if not args.sw360_token and args.client_id and args.client_secret:
+            print_text("Creating token using client id and secret...")
+            kc = SW360Keycloak(args.sw360_url)
+            args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=False)
+            if args.sw360_token:
+                args.oauth2 = True
+                print_text("  Got token.")
+            else:
+                print_red("  Failed to get token!")
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        if args.sw360_token and args.oauth2:
+            self.analyze_token(args.sw360_token)
 
         if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
             print_red("ERROR: login failed!")

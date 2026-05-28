@@ -978,21 +978,18 @@ setuptools = ">=42.0.0"
 
 [[package]]
 name = "pyjwt"
-version = "2.12.1"
+version = "2.13.0"
 description = "JSON Web Token implementation in Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "pyjwt-2.12.1-py3-none-any.whl", hash = "sha256:28ca37c070cad8ba8cd9790cd940535d40274d22f80ab87f3ac6a713e6e8454c"},
-    {file = "pyjwt-2.12.1.tar.gz", hash = "sha256:c74a7a2adf861c04d002db713dd85f84beb242228e671280bf709d765b03672b"},
+    {file = "pyjwt-2.13.0-py3-none-any.whl", hash = "sha256:66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728"},
+    {file = "pyjwt-2.13.0.tar.gz", hash = "sha256:41571c89ca91598c79e8ef18a2d07367d4810fbbd6f637794879baf1b7703423"},
 ]
 
 [package.extras]
 crypto = ["cryptography (>=3.4.0)"]
-dev = ["coverage[toml] (==7.10.7)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=8.4.2,<9.0.0)", "sphinx", "sphinx-rtd-theme", "zope.interface"]
-docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
-tests = ["coverage[toml] (==7.10.7)", "pytest (>=8.4.2,<9.0.0)"]
 
 [[package]]
 name = "pytest"
@@ -1545,17 +1542,18 @@ files = [
 
 [[package]]
 name = "sw360"
-version = "1.11.1"
+version = "1.12.0.dev1"
 description = "Python interface to the SW360 software component catalogue"
 optional = false
 python-versions = "<4.0,>=3.11"
 groups = ["main"]
 files = [
-    {file = "sw360-1.11.1-py3-none-any.whl", hash = "sha256:7321459349f273ac70ce90b7bd89d176149133202f300a6bc996cc45ba69122e"},
-    {file = "sw360-1.11.1.tar.gz", hash = "sha256:2cb67812ef02a83b53646ae92de15858381b31b7d00bebe0edc5bf84bd8670e2"},
+    {file = "sw360-1.12.0.dev1-py3-none-any.whl", hash = "sha256:351764e55734c9db12604428117460da6a1805fdc52101b5b49011e4563e89b6"},
+    {file = "sw360-1.12.0.dev1.tar.gz", hash = "sha256:a2441ba5e1bcd94a5bba188fae92259767866f6dbe1cb2f0e421cae2be3e8d6f"},
 ]
 
 [package.dependencies]
+pyjwt = ">=2.13.0,<3.0.0"
 requests = ">=2.33,<3.0"
 
 [[package]]
@@ -1787,4 +1785,4 @@ test = ["pytest (>=3.0.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "c03c6b02d812176181a43a48f76aa7f2dc8e4fa606ec9f5b17e0bdafed0c7ea3"
+content-hash = "a00a733565eb1dcea643a16e09027ba1d4133d9867c8e485ddaa22a21e4e0452"

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2024 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -19,10 +19,10 @@ from typing import Any, Dict, List, Optional, Tuple
 import jwt
 import requests
 from cyclonedx.model.bom import Bom
-from sw360 import SW360, SW360Error
 
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360, SW360Error
 
 
 class ScriptBase:
@@ -78,6 +78,13 @@ class ScriptBase:
         try:
             # alg = RS256
             decoded = jwt.decode(token, algorithms=["HS256"], options={"verify_signature": False})  # type: ignore
+            if "scope" in decoded:
+                scope = decoded["scope"]
+                if scope.lower().find("write") >= 0:
+                    print_text("  Token has write permissions")
+                else:
+                    print_text("  Token has read permissions")
+
             if "exp" in decoded:
                 exp_seconds = int(decoded["exp"])
                 exp = datetime.fromtimestamp(exp_seconds)
@@ -85,12 +92,23 @@ class ScriptBase:
 
             # print(decoded)
             # {
-            #   'aud': ['sw360-REST-API'],
-            #   'user_name': 'thomas.graf@siemens.com',
-            #   'scope': ['READ', 'WRITE'],
-            #   'exp': 1581754268,
-            #   'authorities': ['READ', 'WRITE'],
-            #   'jti': 'bddc8951-bfae-475d-b2fd-04059b86598e',
+            #   'exp': 1776699510,
+            #   'iat': 1702769910,
+            #   'jti': 'trrtcc:6f1d3934-b319-1183-a059-8b7606f0a647',
+            #   'iss': 'https://stage.sw360.siemens.com/kc/realms/sw360',
+            #   'aud': 'account',
+            #   'sub': 'cf3fb608-4dba-42e0-bb89-7e13f995b931',
+            #   'typ': 'Bearer',
+            #   'azp': '7f75885d309970833f4187295d9babb8',
+            #   'acr': '1',
+            #   'realm_access': {'roles': ['default-roles-sw360', 'offline_access', 'uma_authorization']},
+            #   'resource_access': {'account': {'roles': ['manage-account', 'manage-account-links', 'view-profile']}},
+            #   'scope': ''READ profile email'',
+            #   'clientHost': '139.21.146.160'
+            #   'email_verified': False,
+            #   'preferred_username': 'service-account-7f75885d309970833f4187295d9babb8',
+            #   'clientAddress': '139.21.146.160',
+            #   'email': 'thomas.graf@siemens.com',
             #   'client_id': 'xxx'
             # }
         except Exception as ex:

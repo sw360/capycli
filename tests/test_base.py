@@ -71,6 +71,8 @@ class AppArguments():
         self.copy_from = ""
         self.remote_check_list: str = ""
         self.local_checklist_list: str = ""
+        self.client_id: str = ""
+        self.client_secret: str = ""
 
 
 class TestBasePytest:

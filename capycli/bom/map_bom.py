@@ -21,7 +21,6 @@ from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
-from sw360 import SW360
 
 import capycli.common.file_support
 import capycli.common.script_base
@@ -35,6 +34,7 @@ from capycli.common.print import print_green, print_red, print_text, print_yello
 from capycli.common.purl_service import PurlService
 from capycli.common.purl_utils import PurlUtils
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360, SW360Keycloak
 
 LOG = get_logger(__name__)
 
@@ -865,6 +865,10 @@ class MapBom(capycli.common.script_base.ScriptBase):
         print("                                          version 3.1 will match SW360 version 3.1-3.debian")
         print("    -all                  deprecated, please use --matchmode all-versions")
         print("    --dbx                 deprecated, please use --matchmode ignore-debian")
+        print("    -client_id CLIENT_ID  ")
+        print("                          the SW360 client_id to be used for token generation")
+        print("    -client_secret CLIENT_SECRET")
+        print("                          the SW360 client_secret to be used for token generation")
 
     def run(self, args: Any) -> None:
         """Main method()"""
@@ -927,6 +931,17 @@ class MapBom(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_READING_BOM)
         if self.verbosity > 1:
             print_text(" ", self.get_comp_count_text(sbom), "read from SBOM")
+
+        if not args.sw360_token and args.client_id and args.client_secret:
+            print_text("Creating token using client id and secret...")
+            kc = SW360Keycloak(args.sw360_url)
+            args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=False)
+            if args.sw360_token:
+                args.oauth2 = True
+                print_text("  Got token.")
+            else:
+                print_red("  Failed to get token!")
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
         if args.sw360_token and args.oauth2:
             self.analyze_token(args.sw360_token)

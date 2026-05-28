@@ -10,12 +10,11 @@ import logging
 import sys
 from typing import Any
 
-import sw360
-
 import capycli.common.script_base
 from capycli.bom.component_check import ComponentCheck
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error, SW360Keycloak
 
 LOG = capycli.get_logger(__name__)
 
@@ -71,7 +70,7 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
 
         try:
             self.project = self.client.get_project(project_id)
-        except sw360.SW360Error as swex:
+        except SW360Error as swex:
             print_red("  ERROR: unable to access project: " + repr(swex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
@@ -120,17 +119,19 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
                        "[-v] [-id PROJECT_ID] [-rcl URL] [-lcl FILE]")
             print_text("")
             print_text("optional arguments:")
-            print_text("    -h, --help            show this help message and exit")
-            print_text("    -name NAME            name of the project")
-            print_text("    -version VERSION      version of the project")
-            print_text("    -id PROJECT_ID        SW360 id of the project, supersedes name and version parameters")
-            print_text("    -t SW360_TOKEN        use this token for access to SW360")
-            print_text("    -oa,                  this is an oauth2 token")
-            print_text("    -url SW360_URL        use this URL for access to SW360")
-            print_text("    -v                    be verbose")
-            print_text("    -rcl                  read the component check list file from the URL specified")
-            print_text("    -lcl                  read the component check list file from local")
-            print_text("    --forceerror          force an error exit code in case of validation errors or warnings")
+            print_text("    -h, --help                    show this help message and exit")
+            print_text("    -name NAME                    name of the project")
+            print_text("    -version VERSION              version of the project")
+            print_text("    -id PROJECT_ID                SW360 id of the project, supersedes name and version parameters")
+            print_text("    -t SW360_TOKEN                use this token for access to SW360")
+            print_text("    -oa,                          this is an oauth2 token")
+            print_text("    -url SW360_URL                use this URL for access to SW360")
+            print_text("    -v                            be verbose")
+            print_text("    -rcl                          read the component check list file from the URL specified")
+            print_text("    -lcl                          read the component check list file from local")
+            print_text("    --forceerror                  force an error exit code in case of validation errors or warnings")
+            print_text("    -client_id CLIENT_ID          the SW360 client_id to be used for token generation")
+            print_text("    -client_secret CLIENT_SECRET  the SW360 client_secret to be used for token generation")
             return
 
         self.verbose = args.verbose
@@ -147,6 +148,20 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
 
         self.component_check.files_to_ignore = self.component_check.component_check_list.get("files_to_ignore", [])
         print_text(f"  {len(self.component_check.files_to_ignore)} components will be ignored.")
+
+        if not args.sw360_token and args.client_id and args.client_secret:
+            print_text("Creating token using client id and secret...")
+            kc = SW360Keycloak(args.sw360_url)
+            args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=False)
+            if args.sw360_token:
+                args.oauth2 = True
+                print_text("  Got token.")
+            else:
+                print_red("  Failed to get token!")
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        if args.sw360_token and args.oauth2:
+            self.analyze_token(args.sw360_token)
 
         if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
             print_red("ERROR: login failed!")

@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2019-24 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -10,13 +10,13 @@ import logging
 import sys
 from typing import Any, Dict, Optional
 
-import sw360
 from colorama import Fore
 
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
+from sw360 import SW360Error, SW360Keycloak
 
 LOG = capycli.get_logger(__name__)
 
@@ -87,7 +87,7 @@ class ShowProject(capycli.common.script_base.ScriptBase):
 
         try:
             self.project = self.client.get_project(project_id)
-        except sw360.SW360Error as swex:
+        except SW360Error as swex:
             print_red("  ERROR: unable to access project: " + repr(swex))
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
@@ -149,7 +149,7 @@ class ShowProject(capycli.common.script_base.ScriptBase):
                             for key in att:
                                 if key.get("attachmentType", "") == "SOURCE":
                                     rel_item["SourceAvailable"] = "True"
-                except sw360.SW360Error as swex:
+                except SW360Error as swex:
                     print_red("  ERROR: unable to access project:" + repr(swex))
                     sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
@@ -188,15 +188,31 @@ class ShowProject(capycli.common.script_base.ScriptBase):
                   "[-id PROJECT_ID] [-o OUTPUTFILE]")
             print("")
             print("optional arguments:")
-            print("    -h, --help            show this help message and exit")
-            print("    -name NAME            name of the project")
-            print("    -version VERSION      version of the project")
-            print("    -id PROJECT_ID        SW360 id of the project, supersedes name and version parameters")
-            print("    -t SW360_TOKEN        use this token for access to SW360")
-            print("    -oa,                  this is an oauth2 token")
-            print("    -url SW360_URL        use this URL for access to SW360")
-            print("    -o OUTPUTFILE         output file to write project details to")
+            print("    -h, --help                    show this help message and exit")
+            print("    -name NAME                    name of the project")
+            print("    -version VERSION              version of the project")
+            print("    -id PROJECT_ID                SW360 id of the project, supersedes name and version parameters")
+            print("    -t SW360_TOKEN                use this token for access to SW360")
+            print("    -oa,                          this is an oauth2 token")
+            print("    -url SW360_URL                use this URL for access to SW360")
+            print("    -o OUTPUTFILE                 output file to write project details to")
+            print("    -client_id CLIENT_ID          the SW360 client_id to be used for token generation")
+            print("    -client_secret CLIENT_SECRET  the SW360 client_secret to be used for token generation")
             return
+
+        if not args.sw360_token and args.client_id and args.client_secret:
+            print_text("Creating token using client id and secret...")
+            kc = SW360Keycloak(args.sw360_url)
+            args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=False)
+            if args.sw360_token:
+                args.oauth2 = True
+                print_text("  Got token.")
+            else:
+                print_red("  Failed to get token!")
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        if args.sw360_token and args.oauth2:
+            self.analyze_token(args.sw360_token)
 
         if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
             print_red("ERROR: login failed!")
