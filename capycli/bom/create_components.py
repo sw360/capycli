@@ -255,55 +255,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if src_url:
             data["sourceCodeDownloadurl"] = src_url
         else:
-            print_red("    No Source Code Download URL found. Will try to update the VCS/Repository URL.")
-
-            # Try to update the VCS/Repository URL of the corresponding SW360 Component
-            # with the repository or website URL from the Release
-            component_id = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_COMPONENT_ID)
-            if not component_id:
-                print_red(
-                    f"    Unable to get the SW360 Component ID from the BOM item: {cx_comp.name}. "
-                    "Will not update the VCS/Repository URL."
-                )
-            elif not self.client:
-                print_red("    No SW360 client available. Will not update the VCS/Repository URL.")
-            else:
-                component = self.client.get_component(component_id)
-                if component is None:
-                    print_red(
-                        f"    Unable to get the SW360 Component with ID: {component_id}. "
-                        "Will not update the VCS/Repository URL."
-                    )
-                else:
-                    website = CycloneDxSupport.get_ext_ref_website(cx_comp)
-                    repo = CycloneDxSupport.get_ext_ref_repository(cx_comp)
-
-                    current_vcs = component.get("vcs", "")
-                    # Note: The VCS/Repository URL can only be updated after the rollout of Issue 1886
-                    # (https://code.siemens.com/sw360/sw360portal/-/issues/1886) - before that,
-                    # the VCS/Repository URL is not available in the SW360 REST API and thus cannot be updated.
-                    if repo:
-                        print_yellow(
-                            f"    Not available until rollout of Issue 1886. "
-                            f"Could update VCS/Repository URL from: {current_vcs if current_vcs else '<empty string>'} "
-                            f"with repository: {repo}..."
-                        )
-                        # try:
-                        #     updated_component = self.client.update_component({"vcs": str(repo)}, component_id)
-                        #     print_green(f"    Successfully updated VCS/Repository URL to: {updated_component}")
-                        # except SW360Error as e:
-                        #     print_red(f"    Failed to update VCS/Repository URL: {e}")
-                    elif website:
-                        print_yellow(
-                            f"    Not available until rollout of Issue 1886. "
-                            f"Could update VCS/Repository URL from: {current_vcs if current_vcs else '<empty string>'} "
-                            f"with website: {website}..."
-                        )
-                        # try:
-                        #     updated_component = self.client.update_component({"vcs": str(website)}, component_id)
-                        #     print_green(f"    Successfully updated VCS/Repository URL to: {updated_component}")
-                        # except SW360Error as e:
-                        #     print_red(f"    Failed to update VCS/Repository URL: {e}")
+            print_red("    No Source Code Download URL found.")
 
         bin_url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
         if bin_url:
