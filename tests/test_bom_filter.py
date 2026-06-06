@@ -10,6 +10,8 @@ import os
 from typing import Any, Dict, List
 
 from cyclonedx.model import XsUri
+from cyclonedx.model.bom import Bom
+from cyclonedx.model.component import Component
 
 import capycli.bom.filter_bom
 import capycli.common.json_support
@@ -294,7 +296,6 @@ class TestBomFilter(TestBase):
         args.verbose = True
 
         out = self.capture_stdout(sut.run, args)
-        # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue(self.INPUTFILE1 in out)
         self.assertTrue(self.FILTERFILE in out)
         self.assertTrue(self.FILTERFILE_INCLUDE in out)
@@ -411,6 +412,21 @@ class TestBomFilter(TestBase):
 
         # clean test files
         self.delete_file(filterfile)
+
+    def test_find_bom_item_name_only(self) -> None:
+        """find_bom_item should match by name alone when no Version is specified"""
+        sut = capycli.bom.filter_bom.FilterBom()
+
+        bom = Bom()
+        component = Component(name="colorama", version="0.4.6")
+        bom.components.add(component)
+
+        # filter entry with Name only - no Version key
+        filterentry = {"Name": "colorama"}
+
+        result = sut.find_bom_item(bom, filterentry)
+        self.assertIsNotNone(result, "Should find component by name even without Version")
+        self.assertEqual(result.name, "colorama")
 
 
 if __name__ == "__main__":

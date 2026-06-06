@@ -88,7 +88,7 @@ class FilterBom(capycli.common.script_base.ScriptBase):
                     return component
 
             if filterentry.get("Name", "x") == component.name:
-                if filterentry.get("Version", "x") == component.version:
+                if "Version" not in filterentry or filterentry["Version"] == component.version:
                     return component
 
         return None
