@@ -74,11 +74,8 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
             except Exception as e:
                 print(f"An unexpected error occurred: {e}")
         if not text_list:
-            if sys.version_info >= (3, 9):
-                resources = pkg_resources.files("capycli.data")
-                text_list = (resources / "granularity_list.csv").read_text()
-            else:
-                text_list = pkg_resources.read_text("capycli.data", "granularity_list.csv")
+            resources = pkg_resources.files("capycli.data")
+            text_list = (resources / "granularity_list.csv").read_text()
 
         for line in text_list.splitlines():
             # ignore header (first) line
