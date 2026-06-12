@@ -6,11 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-try:
-    import importlib.resources as pkg_resources
-except ImportError:
-    # Try backported to PY<37 `importlib_resources`.
-    import importlib_resources as pkg_resources  # type: ignore
+import importlib.resources as pkg_resources
 import os
 import sys
 from typing import Any, List, Optional
