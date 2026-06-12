@@ -10,6 +10,8 @@ import os
 from typing import Any, Dict, List
 
 from cyclonedx.model import XsUri
+from cyclonedx.model.bom import Bom
+from cyclonedx.model.component import Component
 
 import capycli.bom.filter_bom
 import capycli.common.json_support
@@ -294,7 +296,6 @@ class TestBomFilter(TestBase):
         args.verbose = True
 
         out = self.capture_stdout(sut.run, args)
-        # self.dump_textfile(out, "DUMP.TXT")
         self.assertTrue(self.INPUTFILE1 in out)
         self.assertTrue(self.FILTERFILE in out)
         self.assertTrue(self.FILTERFILE_INCLUDE in out)
@@ -411,6 +412,65 @@ class TestBomFilter(TestBase):
 
         # clean test files
         self.delete_file(filterfile)
+
+    def test_filter_bom_add_name_only_no_duplicate(self) -> None:
+        """Verify that filter_bom with a name-only filter entry updates the
+        existing component instead of creating a duplicate"""
+        sut = capycli.bom.filter_bom.FilterBom()
+
+        inputfile = os.path.join(os.path.dirname(__file__), "fixtures", self.INPUTFILE1)
+        filterfile = os.path.join(os.path.dirname(__file__), "fixtures", self.FILTERFILE)
+
+        # clean any existing test files
+        self.delete_file(filterfile)
+
+        # create filter file with Name only, no Version - should update colorama
+        filter: Dict[str, Any] = {}
+        filter_entries: List[Dict[str, Any]] = []
+        filter_entry: Dict[str, Any] = {}
+        component: Dict[str, Any] = {}
+        component["Name"] = "colorama"
+        component["Sw360Id"] = "999"
+        filter_entry["component"] = component
+        filter_entry["Mode"] = "add"
+
+        filter_entries.append(filter_entry)
+        filter["Components"] = filter_entries
+
+        capycli.common.json_support.write_json_to_file(filter, filterfile)
+
+        bom = CaPyCliBom.read_sbom(inputfile)
+        count_before = len(bom.components)
+
+        bom = sut.filter_bom(bom, filterfile)
+
+        # no new component should have been added - same count as before
+        self.assertEqual(count_before, len(bom.components))
+
+        # the existing colorama component should now have the Sw360Id set
+        colorama_components = [c for c in bom.components if c.name == "colorama"]
+        self.assertEqual(1, len(colorama_components), "There must be exactly one colorama component")
+        self.assertEqual(
+            component["Sw360Id"],
+            CycloneDxSupport.get_property_value(colorama_components[0], CycloneDxSupport.CDX_PROP_SW360ID))
+
+        # clean test files
+        self.delete_file(filterfile)
+
+    def test_find_bom_item_name_only(self) -> None:
+        """find_bom_item should match by name alone when no Version is specified"""
+        sut = capycli.bom.filter_bom.FilterBom()
+
+        bom = Bom()
+        component = Component(name="colorama", version="0.4.6")
+        bom.components.add(component)
+
+        # filter entry with Name only - no Version key
+        filterentry = {"Name": "colorama"}
+
+        result = sut.find_bom_item(bom, filterentry)
+        self.assertIsNotNone(result, "Should find component by name even without Version")
+        self.assertEqual(result.name, "colorama")
 
 
 if __name__ == "__main__":
