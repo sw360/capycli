@@ -15,6 +15,7 @@ from typing import Any, List, Optional
 import capycli
 from capycli.bom import handle_bom
 from capycli.common.print import print_red
+from capycli.config import handle_config
 from capycli.dependencies import handle_dependencies
 from capycli.main import options
 from capycli.main.result_codes import ResultCode
@@ -144,6 +145,8 @@ class Application(object):
             handle_moverview.run_moverview_command(self.options)
         elif command == "project":
             handle_project.run_project_command(self.options)
+        elif command == "config":
+            handle_config.run_config_command(self.options)
         else:
             print_red("Unknown command: " + command)
             sys.exit(ResultCode.RESULT_COMMAND_ERROR)
