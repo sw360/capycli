@@ -6,11 +6,7 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-try:
-    import importlib.resources as pkg_resources
-except ImportError:
-    # Try backported to PY<37 `importlib_resources`.
-    import importlib_resources as pkg_resources  # type: ignore
+import importlib.resources as pkg_resources
 import os
 import sys
 from typing import Any, List, Optional
@@ -78,11 +74,8 @@ class CheckGranularity(capycli.common.script_base.ScriptBase):
             except Exception as e:
                 print(f"An unexpected error occurred: {e}")
         if not text_list:
-            if sys.version_info >= (3, 9):
-                resources = pkg_resources.files("capycli.data")
-                text_list = (resources / "granularity_list.csv").read_text()
-            else:
-                text_list = pkg_resources.read_text("capycli.data", "granularity_list.csv")
+            resources = pkg_resources.files("capycli.data")
+            text_list = (resources / "granularity_list.csv").read_text()
 
         for line in text_list.splitlines():
             # ignore header (first) line
