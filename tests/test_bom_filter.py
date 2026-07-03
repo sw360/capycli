@@ -469,6 +469,8 @@ class TestBomFilter(TestBase):
         filterentry = {"Name": "colorama"}
 
         result = sut.find_bom_item(bom, filterentry)
+        if not result:
+            self.fail("Should find component by name even without Version")
         self.assertIsNotNone(result, "Should find component by name even without Version")
         self.assertEqual(result.name, "colorama")
 
