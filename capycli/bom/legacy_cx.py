@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2025 Siemens
+# Copyright (c) 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -87,8 +87,7 @@ class LegacyCx(CaPyCliBom):
             if not file_uri.startswith("file://"):
                 file_uri = "file:///" + file_uri
             ext_ref = ExternalReference(
-                type=ExternalReferenceType.DISTRIBUTION,
-                comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                 url=XsUri(file_uri))
             prop2 = CycloneDxSupport.get_property(component, "source-file-hash")
             if prop2:

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2020-2024 Siemens
+# Copyright (c) 2020-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, manuel.schaffer@siemens.com
 #
@@ -65,8 +65,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
 
         if src_url:
             ext_ref = ExternalReference(
-                type=ExternalReferenceType.DISTRIBUTION,
-                comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                 url=XsUri(src_url))
             cx_comp.external_references.add(ext_ref)
 
@@ -167,8 +166,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
                         # bomitem["SourceUrl"] = url
                         src_file_url = self.find_source_file(url, cx_comp.name, version)
                         CycloneDxSupport.update_or_set_ext_ref(
-                            cx_comp, ExternalReferenceType.DISTRIBUTION,
-                            CaPyCliBom.SOURCE_URL_COMMENT, src_file_url)
+                            cx_comp, ExternalReferenceType.SOURCE_DISTRIBUTION, "", src_file_url)
 
                         print(src_file_url)
             description = info.find("./pom:description", namespaces)

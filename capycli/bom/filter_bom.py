@@ -118,9 +118,8 @@ class FilterBom(capycli.common.script_base.ScriptBase):
         if source_file_url:
             CycloneDxSupport.update_or_set_ext_ref(
                 component,
-                ExternalReferenceType.DISTRIBUTION,
-                CaPyCliBom.SOURCE_URL_COMMENT,
-                value=source_file_url)
+                ExternalReferenceType.SOURCE_DISTRIBUTION,
+                "", value=source_file_url)
 
         if ("SourceFile" in filterentry) and filterentry.get("SourceFile", ""):
             CycloneDxSupport.update_or_set_ext_ref(
