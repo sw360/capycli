@@ -86,7 +86,7 @@ class TestBomCreate:
         )
         CycloneDxSupport.update_or_set_property(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID, "06a6e5")
         CycloneDxSupport.update_or_set_ext_ref(
-            cx_comp, ExternalReferenceType.SOURCE_DISTRIBUTION, None, "new_url")
+            cx_comp, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "new_url")
 
         items = Bom()
         items.components.add(cx_comp)
@@ -659,7 +659,7 @@ class TestBomCreate:
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "Readme.md")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.SOURCE_DISTRIBUTION, None, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
         # local filename with file:// prefix
@@ -675,7 +675,7 @@ class TestBomCreate:
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_SRC_FILE_TYPE, "SOURCE_SELF")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.SOURCE_DISTRIBUTION, None, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
         assert len(responses.calls) == 3
@@ -798,7 +798,7 @@ class TestBomCreate:
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "__main__.py")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.SOURCE_DISTRIBUTION, None, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
 
         # local filename guessed from remote url
@@ -807,7 +807,7 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.SOURCE_DISTRIBUTION, None, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
 
         assert len(responses.calls) == 2
@@ -838,7 +838,7 @@ class TestBomCreate:
         # existing URL equals to new URL
         item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, None, "old_url")
+            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "old_url")
         self.app.update_release(item2, release_data)
         captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" not in captured.out
@@ -846,7 +846,7 @@ class TestBomCreate:
         # existing URL differs from new URL
         item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, None, "https://some.new/file.tar.gz")
+            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "https://some.new/file.tar.gz")
         self.app.update_release(item2, release_data)
         captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
@@ -867,7 +867,7 @@ class TestBomCreate:
         }
         item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, None, "new_url")
+            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "new_url")
         self.app.update_release(item2, release_data)
         assert len(responses.calls) == 1
 

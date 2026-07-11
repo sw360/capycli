@@ -3368,7 +3368,7 @@ class CapycliTestBomMap(unittest.TestCase):
         CycloneDxSupport.update_or_set_property(comp, CycloneDxSupport.CDX_PROP_LANGUAGE, "Java")
         CycloneDxSupport.update_or_set_property(comp, CycloneDxSupport.CDX_PROP_SW360ID, "888")
         CycloneDxSupport.update_or_set_ext_ref(
-            comp, ExternalReferenceType.SOURCE_DISTRIBUTION, None, "http://456")
+            comp, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "http://456")
         CycloneDxSupport.update_or_set_ext_ref(
             comp, ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT, "456.zip")
         CycloneDxSupport.update_or_set_ext_ref(
@@ -3393,7 +3393,7 @@ class CapycliTestBomMap(unittest.TestCase):
         CycloneDxSupport.update_or_set_property(comp, CycloneDxSupport.CDX_PROP_LANGUAGE, "")
         CycloneDxSupport.update_or_set_property(comp, CycloneDxSupport.CDX_PROP_SW360ID, "")
         CycloneDxSupport.update_or_set_ext_ref(
-            comp, ExternalReferenceType.SOURCE_DISTRIBUTION, None, "")
+            comp, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "")
         CycloneDxSupport.update_or_set_ext_ref(
             comp, ExternalReferenceType.DISTRIBUTION, CaPyCliBom.SOURCE_FILE_COMMENT, "")
         CycloneDxSupport.update_or_set_ext_ref(
