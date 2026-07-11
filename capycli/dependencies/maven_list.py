@@ -166,7 +166,7 @@ class GetJavaMavenTreeDependencies(capycli.common.dependencies_base.Dependencies
                         # bomitem["SourceUrl"] = url
                         src_file_url = self.find_source_file(url, cx_comp.name, version)
                         CycloneDxSupport.update_or_set_ext_ref(
-                            cx_comp, ExternalReferenceType.SOURCE_DISTRIBUTION, "", src_file_url)
+                            cx_comp, ExternalReferenceType.SOURCE_DISTRIBUTION, None, src_file_url)
 
                         print(src_file_url)
             description = info.find("./pom:description", namespaces)
