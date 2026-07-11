@@ -586,6 +586,11 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 component,
                 ExternalReferenceType.SOURCE_DISTRIBUTION, "")
             if not ext_ref:
+                # legacy
+                ext_ref = CycloneDxSupport.get_ext_ref(
+                    component,
+                    ExternalReferenceType.DISTRIBUTION, "source archive (download location)")
+            if not ext_ref:
                 CycloneDxSupport.update_or_set_ext_ref(
                     component,
                     ExternalReferenceType.SOURCE_DISTRIBUTION,
