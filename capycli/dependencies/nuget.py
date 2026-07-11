@@ -24,7 +24,7 @@ from packageurl import PackageURL
 import capycli.common.json_support
 import capycli.common.script_base
 from capycli import get_logger
-from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator, SbomWriter
+from capycli.common.capycli_bom_support import CycloneDxSupport, SbomCreator, SbomWriter
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
 
@@ -565,8 +565,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
             if data.get("sourcecode", ""):
                 ext_ref = ExternalReference(
-                    type=ExternalReferenceType.DISTRIBUTION,
-                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                    type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                     url=XsUri(data["sourcecode"]))
                 cxcomp.external_references.add(ext_ref)
 
@@ -579,8 +578,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
 
                 sourcecode = data["repository"] + "/archive/refs/tags/v" + cxcomp.version + ".zip"
                 ext_ref = ExternalReference(
-                    type=ExternalReferenceType.DISTRIBUTION,
-                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                    type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                     url=XsUri(sourcecode))
                 cxcomp.external_references.add(ext_ref)
                 LOG.debug("  got source file url")
@@ -601,8 +599,7 @@ class GetNuGetDependencies(capycli.common.script_base.ScriptBase):
                         data["project"] = data["project"][:-1]
                     sourcecode = data["project"] + "/archive/refs/tags/v" + cxcomp.version + ".zip"
                     ext_ref = ExternalReference(
-                        type=ExternalReferenceType.DISTRIBUTION,
-                        comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                        type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                         url=XsUri(sourcecode))
                     cxcomp.external_references.add(ext_ref)
                     LOG.debug("  got source file url")

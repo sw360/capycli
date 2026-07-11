@@ -1,5 +1,5 @@
 ﻿# -------------------------------------------------------------------------------
-# Copyright (c) 2021-2024 Siemens
+# Copyright (c) 2021-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -87,12 +87,15 @@ class CreateBom(capycli.common.script_base.ScriptBase):
                     languages = self.list_to_string(release_details["languages"])
                     CycloneDxSupport.set_property(rel_item, CycloneDxSupport.CDX_PROP_LANGUAGE, languages)
 
-                for key, comment in (("sourceCodeDownloadurl", CaPyCliBom.SOURCE_URL_COMMENT),
-                                     ("binaryDownloadurl", CaPyCliBom.BINARY_URL_COMMENT)):
-                    if key in release_details and release_details[key]:
-                        # add hash from attachment (see below) also here if same filename?
-                        CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
-                                                     comment, release_details[key])
+                if "sourceCodeDownloadurl" in release_details and release_details["sourceCodeDownloadurl"]:
+                    # add hash from attachment (see below) also here if same filename?
+                    CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+                                                 "", release_details["sourceCodeDownloadurl"])
+
+                if "binaryDownloadurl" in release_details and release_details["binaryDownloadurl"]:
+                    # add hash from attachment (see below) also here if same filename?
+                    CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.DISTRIBUTION,
+                                                 CaPyCliBom.BINARY_URL_COMMENT, release_details["binaryDownloadurl"])
 
                 if "repository" in release_details and "url" in release_details["repository"]:
                     CycloneDxSupport.set_ext_ref(rel_item, ExternalReferenceType.VCS, comment="",

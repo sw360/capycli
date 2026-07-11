@@ -14,6 +14,8 @@
 * update dependencies, especially "idna" to fix CVE-2026-45409 and "sw360" lib
   to fix CVE-2026-41066,  CVE-2026-44431 and CVE-2026-44432. When accessing a
   trusted SW360 server using REST API, they all shouldn't be critical, however.
+* Update SBOM external reference type for source code URLs from `distribution`
+  to `source-distribution`.
 
 ## 2.11.1
 

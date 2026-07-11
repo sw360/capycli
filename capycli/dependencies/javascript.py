@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2019-2025 Siemens
+# Copyright (c) 2019-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, sameer.panda@siemens.com
 #
@@ -240,8 +240,7 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             url = url.replace('git+ssh://git@/', '')
             url = url.replace('ssh://git@', '')
             ext_ref = ExternalReference(
-                type=ExternalReferenceType.DISTRIBUTION,
-                comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                 url=XsUri(url))
             bomitem.external_references.add(ext_ref)
         if "github.com" in url:
@@ -251,9 +250,8 @@ class GetJavascriptDependencies(capycli.common.dependencies_base.DependenciesBas
             if url:
                 CycloneDxSupport.update_or_set_ext_ref(
                     bomitem,
-                    ExternalReferenceType.DISTRIBUTION,
-                    CaPyCliBom.SOURCE_URL_COMMENT,
-                    url)
+                    ExternalReferenceType.SOURCE_DISTRIBUTION,
+                    "", url)
             else:
                 print_yellow(
                     "  No source archive found for component " +

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2025 Siemens
+# Copyright (c) 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -118,8 +118,12 @@ class CycloneDxSupport():
     @staticmethod
     def get_ext_ref(comp: Component, type: ExternalReferenceType, comment: str) -> Optional[ExternalReference]:
         for ext_ref in comp.external_references:
-            if (ext_ref.type == type) and (ext_ref.comment == comment):
-                return ext_ref
+            if comment:
+                if (ext_ref.type == type) and (ext_ref.comment == comment):
+                    return ext_ref
+            else:
+                if ext_ref.type == type:
+                    return ext_ref
 
         return None
 
@@ -148,9 +152,14 @@ class CycloneDxSupport():
     def update_or_set_ext_ref(comp: Component, type: ExternalReferenceType, comment: str, value: str) -> None:
         ext_ref = None
         for er in comp.external_references:
-            if (er.type == type) and (er.comment == comment):
-                ext_ref = er
-                break
+            if comment:
+                if (er.type == type) and (er.comment == comment):
+                    ext_ref = er
+                    break
+            else:
+                if er.type == type:
+                    ext_ref = er
+                    break
 
         if ext_ref:
             if isinstance(value, XsUri):
@@ -158,7 +167,10 @@ class CycloneDxSupport():
             else:
                 ext_ref.url = XsUri(value)
         else:
-            CycloneDxSupport.set_ext_ref(comp, type, comment, value)
+            if comment:
+                CycloneDxSupport.set_ext_ref(comp, type, comment, value)
+            else:
+                CycloneDxSupport.set_ext_ref(comp, type, "", value)
 
     @staticmethod
     def have_relative_ext_ref_path(ext_ref: ExternalReference, rel_to: str) -> str:
@@ -213,12 +225,13 @@ class CycloneDxSupport():
     @staticmethod
     def get_ext_ref_source_url(comp: Component) -> Any:
         for ext_ref in comp.external_references:
-            if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
-                    and (ext_ref.comment == CaPyCliBom.SOURCE_URL_COMMENT):
-                return ext_ref.url
-
             # new for CyCloneDX 1.6
             if (ext_ref.type == ExternalReferenceType.SOURCE_DISTRIBUTION):
+                return ext_ref.url
+
+            # legacy
+            if (ext_ref.type == ExternalReferenceType.DISTRIBUTION) \
+                    and (ext_ref.comment == "source archive (download location)"):
                 return ext_ref.url
 
         return ""
@@ -492,7 +505,7 @@ class CaPyCliBom():
     """
 
     # external reference comments for CaPyCLI/Siemens Standard BOM
-    SOURCE_URL_COMMENT = "source archive (download location)"
+    # SOURCE_URL_COMMENT = "source archive (download location)"
     SOURCE_FILE_COMMENT = "source archive (local copy)"
     BINARY_URL_COMMENT = "binary (download location)"
     BINARY_FILE_COMMENT = "relativePath"
