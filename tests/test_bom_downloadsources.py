@@ -12,6 +12,7 @@ import tempfile
 import responses
 from cyclonedx.model import ExternalReferenceType
 from cyclonedx.model.component import Component
+from cyclonedx.model.bom import Bom
 
 from capycli.bom.download_sources import BomDownloadSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
@@ -296,6 +297,100 @@ class TestBomDownloadsources(TestBase):
         self.assertFalse(sut.is_good_source_file("bad_file.html"))
         self.assertFalse(sut.is_good_source_file("https://someurl.com/"))
         self.assertFalse(sut.is_good_source_file("nonexistentfile.xyz"))
+
+    @responses.activate
+    def test_download_sources_reads_filename_property(self) -> None:
+        """download_sources() reads siemens:filename property and uses it as filename hint."""
+        responses.add(
+            responses.GET,
+            url="https://example.com/archive/refs/tags/v2.3.4",
+            body=b"PK\x03\x04",
+            status=200,
+        )
+
+        component = Component(name="mycomp", version="2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            component,
+            ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "https://example.com/archive/refs/tags/v2.3.4",
+        )
+        CycloneDxSupport.update_or_set_property(
+            component, CycloneDxSupport.CDX_PROP_FILENAME, "mycomp-2.3.4.zip"
+        )
+
+        sbom = Bom()
+        sbom.components.add(component)
+
+        sut = BomDownloadSources()
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            sut.download_sources(sbom, tmpdirname)
+            downloaded = os.path.join(tmpdirname, "mycomp-2.3.4.zip")
+            self.assertTrue(os.path.isfile(downloaded),
+                            f"Expected file {downloaded} not found in {os.listdir(tmpdirname)}")
+
+    @responses.activate
+    def test_download_source_file_content_disposition_filename_hint(self) -> None:
+        """Content-Disposition header takes priority over siemens:filename hint."""
+        responses.add(
+            responses.GET,
+            url="https://example.com/archive/refs/tags/v2.3.4",
+            headers={"content-disposition": "attachment; filename=server-chosen-name.zip"},
+            body=b"PK\x03\x04",
+            status=200,
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            result = BomDownloadSources.download_source_file(
+                "https://example.com/archive/refs/tags/v2.3.4",
+                tmpdirname,
+                filename_hint="mycomp-2.3.4.zip",
+            )
+            self.assertIsNotNone(result)
+            if result:
+                path, _ = result
+                self.assertTrue(path.endswith("server-chosen-name.zip"))
+                self.assertTrue(os.path.isfile(path))
+
+    @responses.activate
+    def test_download_source_file_content_disposition(self) -> None:
+        """Without hint, Content-Disposition header is used (existing behaviour)."""
+        responses.add(
+            responses.GET,
+            url="https://example.com/archive/refs/tags/v2.3.4",
+            headers={"content-disposition": "attachment; filename=server-name.zip"},
+            body=b"PK\x03\x04",
+            status=200,
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            result = BomDownloadSources.download_source_file(
+                "https://example.com/archive/refs/tags/v2.3.4",
+                tmpdirname,
+            )
+            self.assertIsNotNone(result)
+            if result:
+                path, _ = result
+                self.assertTrue(path.endswith("server-name.zip"))
+
+    @responses.activate
+    def test_download_source_file_url_basename(self) -> None:
+        """Without hint and without Content-Disposition, URL basename is used (existing behaviour)."""
+        responses.add(
+            responses.GET,
+            url="https://example.com/archive/v2.3.4.zip",
+            body=b"PK\x03\x04",
+            status=200,
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            result = BomDownloadSources.download_source_file(
+                "https://example.com/archive/v2.3.4.zip",
+                tmpdirname,
+            )
+            self.assertIsNotNone(result)
+            if result:
+                path, _ = result
+                self.assertTrue(path.endswith("v2.3.4.zip"))
 
 
 if __name__ == "__main__":
