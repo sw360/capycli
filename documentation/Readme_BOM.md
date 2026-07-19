@@ -47,7 +47,7 @@ namespace or the `capycli` namespace.
 | ------------------------- | ---------------------------------- |
 | siemens:sw360Id           | SW360 ID (of a release)            |
 | siemens:primaryLanguage   | programming language               |
-| siemens:filename          | name of a (source) file            |
+| siemens:filename          | component (source) file name       |
 | siemens:profile           | profile/type of the SBOM           |
 | capycli:componentId       | id of a component, part of mapping |
 | capycli:sourceFileType    | SW360 attachment type              |
@@ -86,6 +86,33 @@ Example:
       ]
     }
 ```
+
+### Filenames for Source Archives
+
+Some source archive URLs end in a version tag, for example:
+
+```text
+https://github.com/foo/bar/archive/refs/tags/v2.3.4
+```
+
+When no HTTP `Content-Disposition` header is returned, CaPyCLI would save this file as
+something like `v2.3.4.zip`.
+
+You can override the filename by setting the `siemens:filename` property or adding a
+"source archive (local copy)" externalReference in the SBOM component. `siemens:filename`
+must be a plain filename **without path segments** (per Siemens Standard BOM spec).
+
+#### Priority order
+
+1. HTTP `Content-Disposition` header (highest — server-provided name)
+2. externalReference with "source archive (local copy)" comment
+3. `siemens:filename` property
+4. URL basename (lowest / fallback)
+
+**Note:** After a successful `bom downloadsources` run, the `siemens:filename` property
+is updated to the plain basename of the downloaded file (spec-conform, no path).
+The relative path to the SBOM location can be found in the "source archive (local copy)"
+external reference.
 
 ### Open Issues
 

@@ -16,6 +16,10 @@
   trusted SW360 server using REST API, they all shouldn't be critical, however.
 * Update SBOM external reference type for source code URLs from `distribution`
   to `source-distribution`.
+* Support for `siemens:filename` property as filename hint in `bom downloadsources`
+  and `bom createreleases`. The property is used as fallback when server sends no
+  `Content-Disposition` header. Useful for URLs that end in a version tag without
+  file name (e.g. `.../archive/refs/tags/v2.3.4`), see Readme_BOM.md.
 
 ## 2.11.1
 

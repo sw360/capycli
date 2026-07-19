@@ -1178,6 +1178,93 @@ class TestBomCreate:
         assert "Error" not in captured.out
         assert captured.err == ""
 
+    @responses.activate
+    def test_upload_file_siemens_filename(self) -> None:
+        """siemens:filename property is used as filename when no SOURCE_FILE_COMMENT ref exists."""
+        responses.add(
+            responses.GET, 'https://example.com/archive/refs/tags/v2.3.4',
+            body=b"PK\x03\x04",
+            status=200,
+        )
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("mycomp-2.3.4.zip")])
+
+        self.app.download = True
+        item = Component(name="mycomp", version="2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "https://example.com/archive/refs/tags/v2.3.4")
+        CycloneDxSupport.update_or_set_property(
+            item, CycloneDxSupport.CDX_PROP_FILENAME, "mycomp-2.3.4.zip")
+
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "Error" not in captured.out
+        assert captured.err == ""
+
+    @responses.activate
+    def test_upload_file_source_file_comment_wins_over_siemens_filename(self) -> None:
+        """SOURCE_FILE_COMMENT externalReference takes priority over siemens:filename property."""
+        responses.add(
+            responses.GET, 'https://example.com/archive/refs/tags/v2.3.4',
+            body=b"PK\x03\x04",
+            status=200,
+        )
+        # Expect the name from the externalReference, not from the property
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("from-ext-ref.zip")])
+
+        self.app.download = True
+        item = Component(name="mycomp", version="2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "https://example.com/archive/refs/tags/v2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.SOURCE_FILE_COMMENT, "from-ext-ref.zip")
+        CycloneDxSupport.update_or_set_property(
+            item, CycloneDxSupport.CDX_PROP_FILENAME, "from-property.zip")
+
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "Error" not in captured.out
+        assert captured.err == ""
+
+    @responses.activate
+    def test_upload_file_content_disposition_wins(self) -> None:
+        """Content-Disposition header wins over all SBOM hints"""
+        responses.add(
+            responses.GET, 'https://example.com/archive/refs/tags/v2.3.4',
+            headers={"content-disposition": "attachment; filename=server-chosen.zip"},
+            body=b"PK\x03\x04",
+            status=200,
+        )
+        # Expect the name from Content-Disposition, not from SBOM hints
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("server-chosen.zip")])
+
+        self.app.download = True
+        item = Component(name="mycomp", version="2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "https://example.com/archive/refs/tags/v2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.SOURCE_FILE_COMMENT, "from-ext-ref.zip")
+        CycloneDxSupport.update_or_set_property(
+            item, CycloneDxSupport.CDX_PROP_FILENAME, "from-property.zip")
+
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "Error" not in captured.out
+        assert captured.err == ""
+
 
 if __name__ == '__main__':
     APP = TestBomCreate()

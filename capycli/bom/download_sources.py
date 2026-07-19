@@ -57,25 +57,31 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
         return extension in good_extensions
 
     @staticmethod
-    def download_source_file(url: str, source_folder: str, is_binary: bool = False) -> Optional[Tuple[str, str]]:
+    def download_source_file(url: str, source_folder: str, is_binary: bool = False,
+                             filename_hint: str = "") -> Optional[Tuple[str, str]]:
         """Download a file from a URL.
 
         @params:
             url           - Required : url of the file to get uploaded (string)
             source_folder - Required : folder to store the source files (string)
             is_binary     - Optional : whether the file is a binary file (boolean, default: False)
+            filename_hint - Optional : filename to use if there's no Content-Disposition header
         """
         print_text("    URL = " + url)
 
         try:
             response = requests.get(url, allow_redirects=True)
             filename = BomDownloadSources.get_filename_from_cd(response.headers.get("content-disposition", ""))
+
+            if not filename:
+                filename = filename_hint
+
             if not filename:
                 filename_ps = urlparse(url)
                 if filename_ps:
                     filename = os.path.basename(filename_ps.path)
 
-            elif not filename:
+            if not filename:
                 print_red("    Unable to identify filename from url!")
                 return None
 
@@ -110,7 +116,10 @@ class BomDownloadSources(capycli.common.script_base.ScriptBase):
 
             source_url = CycloneDxSupport.get_ext_ref_source_url(component)
             if source_url:
-                result = self.download_source_file(source_url._uri, source_folder)
+                filename_hint = CycloneDxSupport.get_property_value(
+                    component, CycloneDxSupport.CDX_PROP_FILENAME)
+                result = self.download_source_file(source_url._uri, source_folder,
+                                                   filename_hint=filename_hint)
             else:
                 result = None
                 print_red("    No URL specified!")
