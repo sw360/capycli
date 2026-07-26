@@ -236,10 +236,13 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         data["mainLicenseIds"] = licenses
 
     def prepare_release_data(self, cx_comp: Component) -> Dict[str, Any]:
-        """Create release data structure as expected by SW360 REST API
+        """Create the Release data structure as expected by SW360 REST API.
 
-        :param item: a single bill of materials item - a release
-        :type item: dictionary
+        If the Source Code Download URL is missing in the given Release, try to update the VCS/Repository URL
+        of the corresponding SW360 Component with the repository or website URL from the Release.
+
+        :param cx_comp: a single bill of materials item - a Release
+        :type cx_comp: Component
         :return: the release
         :rtype: release (dictionary)
         """
@@ -251,6 +254,8 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         src_url = str(CycloneDxSupport.get_ext_ref_source_url(cx_comp))
         if src_url:
             data["sourceCodeDownloadurl"] = src_url
+        else:
+            print_red("    No Source Code Download URL found.")
 
         bin_url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
         if bin_url:
@@ -265,17 +270,6 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         # add information that this release was created by CaPyCli
         data["additionalData"] = {}
         data["additionalData"]["createdWith"] = capycli.get_app_signature()
-
-        # use project site as fallback for source code download url
-        website = CycloneDxSupport.get_ext_ref_website(cx_comp)
-        repo = CycloneDxSupport.get_ext_ref_repository(cx_comp)
-        if not src_url:
-            if repo:
-                print("    Using repository for source code download URL...")
-                data["sourceCodeDownloadurl"] = str(repo)
-            elif website:
-                print("    Using website for source code download URL...")
-                data["sourceCodeDownloadurl"] = str(website)
 
         language = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_LANGUAGE)
         if language:
