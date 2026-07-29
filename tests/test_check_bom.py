@@ -323,7 +323,7 @@ class TestCheckBom(TestBase):
         self.assertTrue("wheel, 0.38.4" in out)
 
     @responses.activate
-    def xx_test_simple_bom_with_errors(self) -> None:
+    def test_simple_bom_with_errors(self) -> None:
         sut = CheckBom()
 
         # create argparse command line argument object
@@ -361,7 +361,7 @@ class TestCheckBom(TestBase):
             responses.GET,
             url=self.MYURL + "resource/api/releases/05c30bf89a512463260b57e84d99b38f",
             body='{"name": "python", "version": "3.8"}',
-            status=500,  # internal server error
+            status=403,  # forbidden (don't use 500 as this leads to multiple retries by urllib3)
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
@@ -370,7 +370,17 @@ class TestCheckBom(TestBase):
         responses.add(
             responses.GET,
             url=self.MYURL + "resource/api/releases/fa0d21eb17574ba9ae17e5c9b432558e",
-            body='{"name": "tomli", "version": "2.0.1"}',
+            body='''
+            {
+                "name": "tomli",
+                "version": "2.0.1",
+                "_links" : {
+                    "self" : {
+                        "href" : "https://my.server.com/resource/api/releases/fa0d21eb17574ba9ae17e5c9b432558e"
+                    }
+                }
+            }
+            ''',
             status=200,
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
@@ -380,7 +390,17 @@ class TestCheckBom(TestBase):
         responses.add(
             responses.GET,
             url=self.MYURL + "resource/api/releases/e0995819173d4ac8b1a4da3548935976",
-            body='{"name": "wheel", "version": "0.38.4"}',
+            body='''
+            {
+                "name": "wheel",
+                "version": "0.38.4",
+                "_links" : {
+                    "self" : {
+                        "href" : "https://my.server.com/resource/api/releases/e0995819173d4ac8b1a4da3548935976"
+                    }
+                }
+            }
+            ''',
             status=200,
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
@@ -391,9 +411,10 @@ class TestCheckBom(TestBase):
         self.assertTrue("python, 3.8" in out)
         self.assertTrue("tomli, 2.0.1" in out)
         self.assertTrue("wheel, 0.38.4" in out)
+        self.assertTrue("Status Code: 403" in out)
 
     @responses.activate
-    def xx_test_simple_bom_without_id_with_errors(self) -> None:
+    def test_simple_bom_without_id_with_errors(self) -> None:
         sut = CheckBom()
 
         # create argparse command line argument object
@@ -419,7 +440,17 @@ class TestCheckBom(TestBase):
         responses.add(
             responses.GET,
             url=self.MYURL + "resource/api/releases/9a2373710bd44769a2560dd31280901d",
-            body='{"name": "colorama", "version": "0.4.6"}',
+            body='''
+            {
+                "name": "colorama",
+                "version": "0.4.6",
+                "_links" : {
+                    "self" : {
+                        "href" : "https://my.server.com/resource/api/releases/9a2373710bd44769a2560dd31280901d"
+                    }
+                }
+            }
+            ''',
             status=200,
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
@@ -429,7 +460,17 @@ class TestCheckBom(TestBase):
         responses.add(
             responses.GET,
             url=self.MYURL + "resource/api/releases/05c30bf89a512463260b57e84d99b38f",
-            body='{"name": "python", "version": "3.8"}',
+            body='''
+            {
+                "name": "python",
+                "version": "3.8",
+                "_links" : {
+                    "self" : {
+                        "href" : "https://my.server.com/resource/api/releases/05c30bf89a512463260b57e84d99b38f"
+                    }
+                }
+            }
+            ''',
             status=200,
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
@@ -455,16 +496,6 @@ class TestCheckBom(TestBase):
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
 
-        # for tomli (2)
-        responses.add(
-            responses.GET,
-            url=self.MYURL + "resource/api/releases/fa0d21eb17574ba9ae17e5c9b432558e",
-            body='{"name": "tomli", "version": "2.0.1"}',
-            status=200,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
-
         # for wheel (1)
         responses.add(
             responses.GET,
@@ -481,17 +512,7 @@ class TestCheckBom(TestBase):
                    }
                 } ]
                 }}''',
-            status=500,
-            content_type="application/json",
-            adding_headers={"Authorization": "Token " + self.MYTOKEN},
-        )
-
-        # for wheel (2)
-        responses.add(
-            responses.GET,
-            url=self.MYURL + "resource/api/releases/e0995819173d4ac8b1a4da3548935976",
-            body='{"name": "wheel", "version": "0.38.4"}',
-            status=200,
+            status=403,  # forbidden (don't use 500 as this leads to multiple retries by urllib3)
             content_type="application/json",
             adding_headers={"Authorization": "Token " + self.MYTOKEN},
         )
@@ -501,6 +522,7 @@ class TestCheckBom(TestBase):
         self.assertTrue("python, 3.8" in out)
         self.assertTrue("tomli, 2.0.1" in out)
         self.assertTrue("wheel, 0.38.4" in out)
+        self.assertIn("Status Code: 403", out)
 
     @responses.activate
     def xxx_test_simple_bom_show_all(self) -> None:
