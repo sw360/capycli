@@ -411,6 +411,7 @@ class TestCheckBom(TestBase):
         self.assertTrue("python, 3.8" in out)
         self.assertTrue("tomli, 2.0.1" in out)
         self.assertTrue("wheel, 0.38.4" in out)
+        self.assertTrue("Status Code: 403" in out)
 
     @responses.activate
     def test_simple_bom_without_id_with_errors(self) -> None:
@@ -521,6 +522,7 @@ class TestCheckBom(TestBase):
         self.assertTrue("python, 3.8" in out)
         self.assertTrue("tomli, 2.0.1" in out)
         self.assertTrue("wheel, 0.38.4" in out)
+        self.assertIn("Status Code: 403", out)
 
     @responses.activate
     def xxx_test_simple_bom_show_all(self) -> None:
