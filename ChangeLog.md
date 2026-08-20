@@ -20,6 +20,8 @@
   and `bom createreleases`. The property is used as fallback when server sends no
   `Content-Disposition` header. Useful for URLs that end in a version tag without
   file name (e.g. `.../archive/refs/tags/v2.3.4`), see Readme_BOM.md.
+* Update dependencies.
+* Update sw360 to version 1.12.0.dev3.
 
 ## 2.11.1
 

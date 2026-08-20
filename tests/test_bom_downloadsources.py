@@ -11,8 +11,8 @@ import tempfile
 
 import responses
 from cyclonedx.model import ExternalReferenceType
-from cyclonedx.model.component import Component
 from cyclonedx.model.bom import Bom
+from cyclonedx.model.component import Component
 
 from capycli.bom.download_sources import BomDownloadSources
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
