@@ -4,10 +4,10 @@ from unittest.mock import MagicMock, patch
 
 from cyclonedx.model.bom import Bom
 from pytest import fixture, raises
+from sw360 import SW360Error
 
 from capycli.main.result_codes import ResultCode
 from capycli.project.create_project import CreateProject
-from sw360 import SW360Error
 
 IRRELEVANT_STR = "irrelevant"
 IRRELEVANT_DICT = {"irrelevant": "data"}

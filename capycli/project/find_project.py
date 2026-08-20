@@ -12,11 +12,11 @@ import traceback
 from typing import Any, Dict, Optional
 
 import requests
+from sw360 import SW360Error, SW360Keycloak
 
 import capycli.common.script_base
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
-from sw360 import SW360Error, SW360Keycloak
 
 LOG = capycli.get_logger(__name__)
 

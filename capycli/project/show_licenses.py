@@ -15,11 +15,11 @@ from typing import Any, Dict, List
 
 from cli_support import CliFile
 from colorama import Fore, Style
+from sw360 import SW360Keycloak
 
 import capycli.common.script_base
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
-from sw360 import SW360Keycloak
 
 LOG = capycli.get_logger(__name__)
 

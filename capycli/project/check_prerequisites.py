@@ -13,13 +13,13 @@ from typing import Any, Dict, List, Optional
 
 from colorama import Fore
 from cyclonedx.model.bom import Bom
+from sw360 import SW360Keycloak
 
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport
 from capycli.common.print import print_green, print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
-from sw360 import SW360Keycloak
 
 LOG = get_logger(__name__)
 
