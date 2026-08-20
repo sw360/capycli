@@ -6,15 +6,9 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
-import logging
-
-try:
-    import importlib.resources as pkg_resources
-except ImportError:
-    # Try backported to PY<37 `importlib_resources`.
-    import importlib_resources as pkg_resources  # type: ignore
-
+import importlib.resources as pkg_resources
 import json
+import logging
 import os
 import sys
 from typing import Any, Dict, List
@@ -75,12 +69,8 @@ class ComponentCheck(capycli.common.script_base.ScriptBase):
             except Exception as e:
                 print_red(f"An unexpected error occurred: {e}")
         if not self.component_check_list:
-            text_list = ""
-            if sys.version_info >= (3, 9):
-                resources = pkg_resources.files("capycli.data")
-                text_list = (resources / "component_checks.json").read_text()
-            else:
-                text_list = pkg_resources.read_text("capycli.data", "component_checks.json")
+            resources = pkg_resources.files("capycli.data")
+            text_list = (resources / "component_checks.json").read_text()
 
             self.component_check_list = json.loads(text_list)
 

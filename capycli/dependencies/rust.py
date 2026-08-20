@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2025 Siemens
+# Copyright (c) 2025-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -24,7 +24,7 @@ from packageurl import PackageURL
 import capycli.common.script_base
 from capycli import get_logger
 from capycli.bom.findsources import FindSources
-from capycli.common.capycli_bom_support import CaPyCliBom, CycloneDxSupport, SbomCreator, SbomWriter
+from capycli.common.capycli_bom_support import CycloneDxSupport, SbomCreator, SbomWriter
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.dependencies.python import GetPythonDependencies
 from capycli.main.result_codes import ResultCode
@@ -172,8 +172,7 @@ class GetRustDependencies(capycli.common.script_base.ScriptBase):
                 source_url = fs.guess_source_code_url(homepage, version=version)
                 if source_url:
                     ext_ref = ExternalReference(
-                        type=ExternalReferenceType.DISTRIBUTION,
-                        comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                        type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                         url=XsUri(source_url))
                     cxcomp.external_references.add(ext_ref)
                     LOG.debug("  got GitHub source file url")
@@ -184,8 +183,7 @@ class GetRustDependencies(capycli.common.script_base.ScriptBase):
                     source_url = fs.get_github_source_url(homepage, version=version)
                     if source_url:
                         ext_ref = ExternalReference(
-                            type=ExternalReferenceType.DISTRIBUTION,
-                            comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                            type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                             url=XsUri(source_url))
                         cxcomp.external_references.add(ext_ref)
                         LOG.debug("  got GitHub source file url")
@@ -195,8 +193,7 @@ class GetRustDependencies(capycli.common.script_base.ScriptBase):
             dl_path = "https://crates.io" + dl_path
             if not source_url and dl_path:
                 ext_ref = ExternalReference(
-                    type=ExternalReferenceType.DISTRIBUTION,
-                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                    type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                     url=XsUri(dl_path))
                 cxcomp.external_references.add(ext_ref)
                 LOG.debug("  got dl_path")

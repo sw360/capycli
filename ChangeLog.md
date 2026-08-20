@@ -13,6 +13,17 @@
   can have only one single purl.
 * New options `-client_id` and `-client_secret` to support dynamic token generation
   with the new SW360 backend >= 20.
+* update dependencies, especially "idna" to fix CVE-2026-45409 and "sw360" lib
+  to fix CVE-2026-41066,  CVE-2026-44431 and CVE-2026-44432. When accessing a
+  trusted SW360 server using REST API, they all shouldn't be critical, however.
+* Update SBOM external reference type for source code URLs from `distribution`
+  to `source-distribution`.
+* Support for `siemens:filename` property as filename hint in `bom downloadsources`
+  and `bom createreleases`. The property is used as fallback when server sends no
+  `Content-Disposition` header. Useful for URLs that end in a version tag without
+  file name (e.g. `.../archive/refs/tags/v2.3.4`), see Readme_BOM.md.
+* Update dependencies.
+* Update sw360 to version 1.12.0.dev3.
 
 ## 2.11.1
 

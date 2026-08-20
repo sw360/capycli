@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2025 Siemens
+# Copyright (c) 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -164,8 +164,7 @@ class LegacySupport():
             sourceUrl = item.get("SourceUrl", "")
             if sourceUrl:
                 ext_ref = ExternalReference(
-                    type=ExternalReferenceType.DISTRIBUTION,
-                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                    type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                     url=XsUri(sourceUrl))
                 hash = item.get("SourceFileHash", "")
                 if hash:
@@ -177,8 +176,7 @@ class LegacySupport():
         sourceFile = item.get("SourceFile", "")
         if sourceFile:
             ext_ref = ExternalReference(
-                type=ExternalReferenceType.DISTRIBUTION,
-                comment="source archive (local copy)",
+                type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                 url=XsUri(sourceFile))
             hash = item.get("SourceFileHash", "")
             if hash:

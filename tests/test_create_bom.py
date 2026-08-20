@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023 Siemens
+# Copyright (c) 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, rayk.bajohr@siemens.com
 #
@@ -214,10 +214,11 @@ class TestCreateBom(TestBasePytest):
         cx_comp = cdx_bom.components[0]
         assert cx_comp.purl.to_string() == release["externalIds"]["package-url"]
 
-        ext_refs_src_url = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_URL_COMMENT]
+        ext_refs_src_url = [e for e in cx_comp.external_references
+                            if e.type == ExternalReferenceType.SOURCE_DISTRIBUTION]
         assert len(ext_refs_src_url) == 1
         assert str(ext_refs_src_url[0].url) == release["sourceCodeDownloadurl"]
-        assert ext_refs_src_url[0].type == ExternalReferenceType.DISTRIBUTION
+        assert ext_refs_src_url[0].type == ExternalReferenceType.SOURCE_DISTRIBUTION
 
         ext_refs_src_file = [e for e in cx_comp.external_references if e.comment == CaPyCliBom.SOURCE_FILE_COMMENT]
         assert len(ext_refs_src_file) == 2
@@ -347,4 +348,4 @@ class TestCreateBom(TestBasePytest):
 
 if __name__ == "__main__":
     APP = TestCreateBom()
-    APP.test_project_show_by_name()
+    APP.test_project_by_id()

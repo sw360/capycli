@@ -130,7 +130,7 @@ class ComparableVersion:
     def __ne__(self, other: ComparableVersion | object) -> bool:
         """describes not equal to operator(!=)"""
         if not isinstance(other, self.__class__):
-            return False
+            return True
 
         try:
             return self.compare(other) != 0

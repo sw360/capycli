@@ -584,14 +584,17 @@ class MapBom(capycli.common.script_base.ScriptBase):
         if value_match:
             ext_ref = CycloneDxSupport.get_ext_ref(
                 component,
-                ExternalReferenceType.DISTRIBUTION,
-                CaPyCliBom.SOURCE_URL_COMMENT)
+                ExternalReferenceType.SOURCE_DISTRIBUTION, "")
+            if not ext_ref:
+                # legacy
+                ext_ref = CycloneDxSupport.get_ext_ref(
+                    component,
+                    ExternalReferenceType.DISTRIBUTION, "source archive (download location)")
             if not ext_ref:
                 CycloneDxSupport.update_or_set_ext_ref(
                     component,
-                    ExternalReferenceType.DISTRIBUTION,
-                    CaPyCliBom.SOURCE_URL_COMMENT,
-                    value_match)
+                    ExternalReferenceType.SOURCE_DISTRIBUTION,
+                    "", value_match)
             elif str(ext_ref.url) == "":
                 ext_ref.url = XsUri(value_match)
 

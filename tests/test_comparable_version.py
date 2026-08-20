@@ -53,3 +53,9 @@ class ComparableVersionTestBase(unittest.TestCase):
         version2 = ComparableVersion("3.28")
         self.assertEqual(version1, version2, "The version should be equal")
         self.assertEqual(version2, version1, "The version should be equal")
+
+    def test_ne_with_non_comparable_version(self) -> None:
+        """__ne__ should return True when comparing to a non-ComparableVersion object"""
+        self.assertTrue(ComparableVersion("1.0") != "1.0")
+        self.assertTrue(ComparableVersion("1.0") != 42)
+        self.assertIsNotNone(ComparableVersion("1.0"))

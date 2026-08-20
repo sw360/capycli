@@ -352,8 +352,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                 source_url = fs.guess_source_code_url(homepage, version=version)
                 if source_url:
                     ext_ref = ExternalReference(
-                        type=ExternalReferenceType.DISTRIBUTION,
-                        comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                        type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                         url=XsUri(source_url))
                     cxcomp.external_references.add(ext_ref)
                     LOG.debug("  got GitHub source file url")
@@ -364,8 +363,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
                     source_url = fs.get_github_source_url(homepage, version=version)
                     if source_url:
                         ext_ref = ExternalReference(
-                            type=ExternalReferenceType.DISTRIBUTION,
-                            comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                            type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                             url=XsUri(source_url))
                         cxcomp.external_references.add(ext_ref)
                         LOG.debug("  got GitHub source file url")
@@ -419,8 +417,7 @@ class GetPythonDependencies(capycli.common.script_base.ScriptBase):
 
                             if not source_url:
                                 ext_ref = ExternalReference(
-                                    type=ExternalReferenceType.DISTRIBUTION,
-                                    comment=CaPyCliBom.SOURCE_URL_COMMENT,
+                                    type=ExternalReferenceType.SOURCE_DISTRIBUTION,
                                     url=XsUri(item["url"]),
                                     hashes=hashes)
                                 cxcomp.external_references.add(ext_ref)

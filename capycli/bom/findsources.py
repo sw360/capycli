@@ -714,9 +714,8 @@ class FindSources(capycli.common.script_base.ScriptBase):
                     found_count += 1
                     CycloneDxSupport.update_or_set_ext_ref(
                         component,
-                        ExternalReferenceType.DISTRIBUTION,
-                        CaPyCliBom.SOURCE_URL_COMMENT,
-                        source_url)
+                        ExternalReferenceType.SOURCE_DISTRIBUTION,
+                        "", source_url)
                     print_green("      Found source code: " + source_url)
                 else:
                     print_green("      Found source code URL found, but not accessible!")

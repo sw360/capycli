@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2025 Siemens
+# Copyright (c) 2021-2026 Siemens
 # All Rights Reserved.
 # Author: gernot.hillier@siemens.com, thomas.graf@siemens.com
 #
@@ -86,8 +86,7 @@ class TestBomCreate:
         )
         CycloneDxSupport.update_or_set_property(cx_comp, CycloneDxSupport.CDX_PROP_SW360ID, "06a6e5")
         CycloneDxSupport.update_or_set_ext_ref(
-            cx_comp, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "new_url")
+            cx_comp, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "new_url")
 
         items = Bom()
         items.components.add(cx_comp)
@@ -493,8 +492,8 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "https://rubygems.org/gems/activemodel-5.2.1.gem")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "new_url", "https://rubygems.org/gems/activemodel-5.2.1.gem")
         release = self.app.create_release(item, "06a6e5")
         assert release is not None
         if release:
@@ -506,8 +505,8 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "https://rubygems.org/gems/activemodel-5.2.1.gem")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "new_url", "https://rubygems.org/gems/activemodel-5.2.1.gem")
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_COMPONENT_ID, "06a6e5")
         release = self.app.create_release(item, component_id="06a6e5")
         assert release is not None
@@ -541,8 +540,8 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "")
         CycloneDxSupport.update_or_set_ext_ref(
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "")
@@ -561,8 +560,8 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "")
         CycloneDxSupport.update_or_set_ext_ref(
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "notexist.txt")
@@ -594,8 +593,8 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "https://rubygems.org/gems/activemodel-5.2.1.gem")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "new_url", "https://rubygems.org/gems/activemodel-5.2.1.gem")
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_SRC_FILE_COMMENT, "testcomment")
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "testcomment")
 
@@ -633,8 +632,8 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item2, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
+            item2, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "new_url", "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
         self.app.upload_file(item2, {}, "06a6e7", "SOURCE", "")
         captured = self.capsys.readouterr()  # type: ignore
         assert len(responses.calls) == 2
@@ -660,8 +659,7 @@ class TestBomCreate:
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "Readme.md")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
         # local filename with file:// prefix
@@ -677,8 +675,7 @@ class TestBomCreate:
         )
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_SRC_FILE_TYPE, "SOURCE_SELF")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE_SELF", "")
 
         assert len(responses.calls) == 3
@@ -701,11 +698,11 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel.git")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "new_url", "https://github.com/babel/babel.git")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_FILE_COMMENT, "babel.git")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "new_url", "babel.git")
 
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
         captured = self.capsys.readouterr()  # type: ignore
@@ -801,8 +798,7 @@ class TestBomCreate:
             item, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.SOURCE_FILE_COMMENT, "__main__.py")
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
 
         # local filename guessed from remote url
@@ -811,8 +807,7 @@ class TestBomCreate:
             version="5.2.1"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, my_url)
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", my_url)
         self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
 
         assert len(responses.calls) == 2
@@ -843,8 +838,7 @@ class TestBomCreate:
         # existing URL equals to new URL
         item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item2, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "old_url")
+            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "old_url")
         self.app.update_release(item2, release_data)
         captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" not in captured.out
@@ -852,8 +846,7 @@ class TestBomCreate:
         # existing URL differs from new URL
         item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item2, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "https://some.new/file.tar.gz")
+            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "https://some.new/file.tar.gz")
         self.app.update_release(item2, release_data)
         captured = self.capsys.readouterr()  # type: ignore
         assert "differs from BOM URL" in captured.out
@@ -874,8 +867,7 @@ class TestBomCreate:
         }
         item2 = Component(name="")
         CycloneDxSupport.update_or_set_ext_ref(
-            item2, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "new_url")
+            item2, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "new_url")
         self.app.update_release(item2, release_data)
         assert len(responses.calls) == 1
 
@@ -1173,8 +1165,8 @@ class TestBomCreate:
             version="7.16.0"
         )
         CycloneDxSupport.update_or_set_ext_ref(
-            item, ExternalReferenceType.DISTRIBUTION,
-            CaPyCliBom.SOURCE_URL_COMMENT, "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "new_url", "https://github.com/babel/babel/archive/refs/tags/v7.16.0.zip")
         self.app.update_release(item, release_data)
         captured = self.capsys.readouterr()  # type: ignore
         assert "different source attachment" in captured.out
@@ -1185,3 +1177,96 @@ class TestBomCreate:
         assert len(responses.calls) <= 1
         assert "Error" not in captured.out
         assert captured.err == ""
+
+    @responses.activate
+    def test_upload_file_siemens_filename(self) -> None:
+        """siemens:filename property is used as filename when no SOURCE_FILE_COMMENT ref exists."""
+        responses.add(
+            responses.GET, 'https://example.com/archive/refs/tags/v2.3.4',
+            body=b"PK\x03\x04",
+            status=200,
+        )
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("mycomp-2.3.4.zip")])
+
+        self.app.download = True
+        item = Component(name="mycomp", version="2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "https://example.com/archive/refs/tags/v2.3.4")
+        CycloneDxSupport.update_or_set_property(
+            item, CycloneDxSupport.CDX_PROP_FILENAME, "mycomp-2.3.4.zip")
+
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "Error" not in captured.out
+        assert captured.err == ""
+
+    @responses.activate
+    def test_upload_file_source_file_comment_wins_over_siemens_filename(self) -> None:
+        """SOURCE_FILE_COMMENT externalReference takes priority over siemens:filename property."""
+        responses.add(
+            responses.GET, 'https://example.com/archive/refs/tags/v2.3.4',
+            body=b"PK\x03\x04",
+            status=200,
+        )
+        # Expect the name from the externalReference, not from the property
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("from-ext-ref.zip")])
+
+        self.app.download = True
+        item = Component(name="mycomp", version="2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "https://example.com/archive/refs/tags/v2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.SOURCE_FILE_COMMENT, "from-ext-ref.zip")
+        CycloneDxSupport.update_or_set_property(
+            item, CycloneDxSupport.CDX_PROP_FILENAME, "from-property.zip")
+
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "Error" not in captured.out
+        assert captured.err == ""
+
+    @responses.activate
+    def test_upload_file_content_disposition_wins(self) -> None:
+        """Content-Disposition header wins over all SBOM hints"""
+        responses.add(
+            responses.GET, 'https://example.com/archive/refs/tags/v2.3.4',
+            headers={"content-disposition": "attachment; filename=server-chosen.zip"},
+            body=b"PK\x03\x04",
+            status=200,
+        )
+        # Expect the name from Content-Disposition, not from SBOM hints
+        responses.add(
+            responses.POST, SW360_BASE_URL + 'releases/06a6e7/attachments',
+            match=[upload_matcher("server-chosen.zip")])
+
+        self.app.download = True
+        item = Component(name="mycomp", version="2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.SOURCE_DISTRIBUTION,
+            "", "https://example.com/archive/refs/tags/v2.3.4")
+        CycloneDxSupport.update_or_set_ext_ref(
+            item, ExternalReferenceType.DISTRIBUTION,
+            CaPyCliBom.SOURCE_FILE_COMMENT, "from-ext-ref.zip")
+        CycloneDxSupport.update_or_set_property(
+            item, CycloneDxSupport.CDX_PROP_FILENAME, "from-property.zip")
+
+        self.app.upload_file(item, {}, "06a6e7", "SOURCE", "")
+        captured = self.capsys.readouterr()  # type: ignore
+        assert len(responses.calls) == 2
+        assert "Error" not in captured.out
+        assert captured.err == ""
+
+
+if __name__ == '__main__':
+    APP = TestBomCreate()
+    APP.setUp()
+    APP.test_create_release_emptySourceFile()

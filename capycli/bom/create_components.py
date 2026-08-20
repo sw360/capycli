@@ -454,6 +454,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         # Note that we retrieve the SHA1 has from the CycloneDX data.
         # But there is no guarantee that this *IS* really a SHA1 hash!
 
+        if (filename is None or filename == ""):
+            # Try siemens:filename property before falling back to URL basename
+            filename = CycloneDxSupport.get_property_value(cx_comp, CycloneDxSupport.CDX_PROP_FILENAME)
+
         if (filename is None or filename == "") and url:
             filename_parsed = urlparse(url)
             if filename_parsed:
