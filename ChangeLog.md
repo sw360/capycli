@@ -11,6 +11,8 @@
   Fixes CaPyCLI so that it doesn't crash. But the root cause cannot get
   fixed: SW360 releases may have multiple purls, CycloneDX components
   can have only one single purl.
+* New options `-client_id` and `-client_secret` to support dynamic token generation
+  with the new SW360 backend >= 20.
 * update dependencies, especially "idna" to fix CVE-2026-45409 and "sw360" lib
   to fix CVE-2026-41066,  CVE-2026-44431 and CVE-2026-44432. When accessing a
   trusted SW360 server using REST API, they all shouldn't be critical, however.

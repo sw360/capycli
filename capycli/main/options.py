@@ -444,6 +444,18 @@ class CommandlineSupport():
             help="copy the project with the given id and the update it",
         )
 
+        # used by all commands that need to access SW360
+        self.parser.add_argument(
+            "-client_id",
+            dest="client_id",
+            help="the SW360 client_id to be used for token generation")
+
+        # used by all commands that need to access SW360
+        self.parser.add_argument(
+            "-client_secret",
+            dest="client_secret",
+            help="the SW360 client_secret to be used for token generation")
+
     def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:
         """
         Read configuration from string or config file.
