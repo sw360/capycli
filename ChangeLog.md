@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.12.0.dev1
 
 * Fix for issue 218: Bug when using capycli bom map -o outmap (v2.11.1).
   Fixes CaPyCLI so that it doesn't crash. But the root cause cannot get
@@ -22,6 +22,7 @@
   file name (e.g. `.../archive/refs/tags/v2.3.4`), see Readme_BOM.md.
 * Update dependencies.
 * Update sw360 to version 1.12.0.dev3.
+* Tested with new SW360 backend v20 and Keycloak tokens.
 
 ## 2.11.1
 
