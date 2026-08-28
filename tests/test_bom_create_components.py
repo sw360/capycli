@@ -61,7 +61,7 @@ class CapycliTestBomCreateComponents(TestBase):
 
         release_data = {"name": "activemodel", "version": "5.2.4.3",
                         "mainlineState": "OPEN", "languages": ["Ruby"],
-                        "sourceCodeDownloadurl": "http://test.org",
+                        "sourceCodeDownloadurl": "http://test.org/activemodel@5.2.4.3.zip",
                         "externalIds": {"package-url": "pkg:gem/activemodel@5.2.4.3"},
                         "additionalData": {"createdWith": capycli.get_app_signature()}}
         responses.add(
@@ -85,6 +85,7 @@ class CapycliTestBomCreateComponents(TestBase):
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_LANGUAGE, "Ruby")
         CycloneDxSupport.update_or_set_property(item, CycloneDxSupport.CDX_PROP_CATEGORIES, "devel")
         CycloneDxSupport.update_or_set_ext_ref(item, ExternalReferenceType.WEBSITE, "", "http://test.org")
+        CycloneDxSupport.update_or_set_ext_ref(item, ExternalReferenceType.SOURCE_DISTRIBUTION, "", "http://test.org/activemodel@5.2.4.3.zip")
 
         self.app.create_component_and_release(item)
         assert len(responses.calls) == 3
