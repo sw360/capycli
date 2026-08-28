@@ -55,7 +55,7 @@ class BomValidate(capycli.common.script_base.ScriptBase):
         print("optional arguments:")
         print("    -h, --help            Show this help message and exit")
         print("    -i INPUTFILE          Input BOM filename (JSON)")
-        print("    -version SpecVersion  CycloneDX spec version to validate against: allowed are 1.4, 1.5, and 1.6")
+        print("    -version SpecVersion  CycloneDX spec version to validate against: allowed are 1.4 ... 1.7")
         print("    -v                    be verbose (show more details about purl, download URL, and license)")
         print("    --forceerror          force an error exit code in case of validation errors or warnings")
 
