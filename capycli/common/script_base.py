@@ -79,7 +79,7 @@ class ScriptBase:
             # alg = RS256
             decoded = jwt.decode(token, algorithms=["HS256"], options={"verify_signature": False})  # type: ignore
             if "scope" in decoded:
-                scope = decoded["scope"]
+                scope = str(decoded["scope"])
                 if scope.lower().find("write") >= 0:
                     print_text("  Token has write permissions")
                 else:
