@@ -5,6 +5,12 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
+## 2.12.0
+
+* Because of security reasons `-client_id` and `-client_secret` should only
+  be considered as fallback. Primary source for this information are the
+  environment variables `SW360Client_id` and `SW360Client_secret`.
+
 ## 2.12.0.dev1
 
 * Fix for issue 218: Bug when using capycli bom map -o outmap (v2.11.1).
