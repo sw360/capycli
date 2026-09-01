@@ -1010,14 +1010,14 @@ hook-testing = ["execnet (>=1.5.0)", "psutil", "pytest (>=2.7.3)"]
 
 [[package]]
 name = "pyinstaller-hooks-contrib"
-version = "2026.6"
+version = "2026.7"
 description = "Community maintained hooks for PyInstaller"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "pyinstaller_hooks_contrib-2026.6-py3-none-any.whl", hash = "sha256:fd13b8ac126b35361175edacd41a0d97080b75dd5f4b594ecefefff969509dd3"},
-    {file = "pyinstaller_hooks_contrib-2026.6.tar.gz", hash = "sha256:bef5002c32f4f50bd55b005da12cff64eca8783e7eaf86a06a62410164bab725"},
+    {file = "pyinstaller_hooks_contrib-2026.7-py3-none-any.whl", hash = "sha256:24257a04c7a5a7a034cf28e39dcee20fbeeb9f043076729480f2e1b69904408a"},
+    {file = "pyinstaller_hooks_contrib-2026.7.tar.gz", hash = "sha256:5fbcaacb22c4f4aac869a127dce283f67a4b4cfcc37d496f2446603e6d68aefa"},
 ]
 
 [package.dependencies]
@@ -1439,14 +1439,14 @@ files = [
 
 [[package]]
 name = "sw360"
-version = "1.12.0.dev3"
+version = "1.12.0"
 description = "Python interface to the SW360 software component catalogue"
 optional = false
 python-versions = "<4.0,>=3.11"
 groups = ["main"]
 files = [
-    {file = "sw360-1.12.0.dev3-py3-none-any.whl", hash = "sha256:9a4d4fbec564bcea604b61cf5b51737d231c30c26b8e4a5e26b05c6aa910ffd3"},
-    {file = "sw360-1.12.0.dev3.tar.gz", hash = "sha256:9901db1c1305f7caffdefc67788de338e42438d02b90df4e06ac97b5358091fb"},
+    {file = "sw360-1.12.0-py3-none-any.whl", hash = "sha256:0e8aacb6923859f20838c63d68ec66fc21b8d264c842ce80f325e28756dfbfb0"},
+    {file = "sw360-1.12.0.tar.gz", hash = "sha256:74dc8a08fb9995cfbef056097afe8a3dd1e29f5ede1e946c45d5a31e1f4a07a1"},
 ]
 
 [package.dependencies]
@@ -1512,14 +1512,14 @@ types-webencodings = "*"
 
 [[package]]
 name = "types-openpyxl"
-version = "3.1.5.20260807"
+version = "3.1.5.20260827"
 description = "Typing stubs for openpyxl"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "types_openpyxl-3.1.5.20260807-py3-none-any.whl", hash = "sha256:e64e9342cdac8a2d7b09f992d3606c532b75da43874f8107b6b5a122dc9d5681"},
-    {file = "types_openpyxl-3.1.5.20260807.tar.gz", hash = "sha256:1a0a42b125f8023d3ae83cc057e379d301a87f45e60b6160917824fef28ab015"},
+    {file = "types_openpyxl-3.1.5.20260827-py3-none-any.whl", hash = "sha256:94e176d871d12e3cbc34f8fb03dc14db2a4245a6690791daf16fc7b08fd67869"},
+    {file = "types_openpyxl-3.1.5.20260827.tar.gz", hash = "sha256:be8b605fb99cfd7d5f5576d4a508e8ec44be2dd15b85157c559080de6384be34"},
 ]
 
 [[package]]
@@ -1575,14 +1575,14 @@ files = [
 
 [[package]]
 name = "types-webencodings"
-version = "0.5.0.20260408"
+version = "0.6.0.20260827"
 description = "Typing stubs for webencodings"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "types_webencodings-0.5.0.20260408-py3-none-any.whl", hash = "sha256:19a2afe5c22d9b1e880b49ff823c7b531f473a390fe47ac903c0bdb5cd677dd9"},
-    {file = "types_webencodings-0.5.0.20260408.tar.gz", hash = "sha256:28c596619f367e43eee393d85f63e8d2fdb6874c654a8d441c37f8afe29c6d0d"},
+    {file = "types_webencodings-0.6.0.20260827-py3-none-any.whl", hash = "sha256:10600b0833f6c2a565879df74f806df69659f6fd87857f11438b924c74587416"},
+    {file = "types_webencodings-0.6.0.20260827.tar.gz", hash = "sha256:b7a8ce68141ae0d318fbc479137f28dc245ba578ae07f6ec6ce35b294f04cf41"},
 ]
 
 [[package]]
@@ -1618,4 +1618,4 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "0a80434b490cc0257ef5ef5ee1e8a154050eeb391456646d6ebd6e4dbe29d68c"
+content-hash = "3cb1286f47ef200277308dfa90bea9ab72c349da0a2fcef06a7fd1956f56c371"

@@ -10,6 +10,7 @@
 * Because of security reasons `-client_id` and `-client_secret` should only
   be considered as fallback. Primary source for this information are the
   environment variables `SW360Client_id` and `SW360Client_secret`.
+* Dependency updates.
 
 ## 2.12.0.dev1
 
