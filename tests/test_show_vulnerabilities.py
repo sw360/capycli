@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2022-2023 Siemens
+# Copyright (c) 2022-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com, rayk.bajohr@siemens.com
 #
@@ -8,6 +8,7 @@
 
 import os
 from typing import Any, Dict
+from unittest import mock
 
 import responses
 
@@ -46,7 +47,12 @@ class TestShowSecurityVulnerability(TestBase):
         args.verbose = True
 
         try:
-            sut.run(args)
+            # mock: remove environment variables
+            with mock.patch.dict(os.environ):
+                os.environ["SW360Client_id"] = ""
+                os.environ["SW360Client_secret"] = ""
+                sut.run(args)
+
             self.assertTrue(False, "Failed to report login failure")
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)
@@ -358,4 +364,4 @@ class TestShowSecurityVulnerability(TestBase):
 
 if __name__ == "__main__":
     APP = TestShowSecurityVulnerability()
-    APP.test_project_not_found()
+    APP.test_no_login()

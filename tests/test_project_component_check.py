@@ -6,8 +6,9 @@
 # SPDX-License-Identifier: MIT
 # -------------------------------------------------------------------------------
 
+import os
 from typing import Any, Dict
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import responses
 
@@ -49,7 +50,12 @@ class TestProjectComponentCheck(TestBase):
         args.verbose = True
 
         try:
-            sut.run(args)
+            # mock: remove environment variables
+            with patch.dict(os.environ):
+                os.environ["SW360Client_id"] = ""
+                os.environ["SW360Client_secret"] = ""
+                sut.run(args)
+
             self.assertTrue(False, "Failed to report login failure")
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)

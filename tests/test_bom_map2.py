@@ -1136,7 +1136,12 @@ class CapycliTestBomMap(unittest.TestCase):
         args.nocache = True
 
         try:
-            sut.run(args)
+            # mock: remove environment variables
+            with unittest.mock.patch.dict(os.environ):
+                os.environ["SW360Client_id"] = ""
+                os.environ["SW360Client_secret"] = ""
+                sut.run(args)
+
             self.assertTrue(False, "Failed to report login failure")
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2023-2025 Siemens
+# Copyright (c) 2023-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
 #
@@ -9,6 +9,7 @@
 import json
 import os
 from typing import Any, Dict, Tuple
+from unittest import mock
 
 import responses
 import responses.matchers
@@ -219,7 +220,12 @@ class TestCreateProject(TestBase):
         args.inputfile = os.path.join(os.path.dirname(__file__), "fixtures", TestCreateProject.INPUTFILE)
 
         try:
-            sut.run(args)
+            # mock: remove environment variables
+            with mock.patch.dict(os.environ):
+                os.environ["SW360Client_id"] = ""
+                os.environ["SW360Client_secret"] = ""
+                sut.run(args)
+
             self.assertTrue(False, "Failed to report login failure")
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)

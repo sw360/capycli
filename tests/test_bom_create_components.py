@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Copyright (c) 2021-2025 Siemens
+# Copyright (c) 2021-2026 Siemens
 # All Rights Reserved.
 # Author: gernot.hillier@siemens.com, thomas.graf@siemens.com
 #
@@ -10,6 +10,7 @@
 Most functionality is tested in test_bom_create_releases.py"""
 
 import os
+from unittest import mock
 
 import responses
 from cyclonedx.model import ExternalReferenceType
@@ -189,7 +190,12 @@ class CapycliTestBomCreateComponents(TestBase):
         args.verbose = True
 
         try:
-            sut.run(args)
+            # mock: remove environment variables
+            with mock.patch.dict(os.environ):
+                os.environ["SW360Client_id"] = ""
+                os.environ["SW360Client_secret"] = ""
+                sut.run(args)
+
             self.assertTrue(False, "Failed to report login failure")
         except SystemExit as ex:
             self.assertEqual(ResultCode.RESULT_AUTH_ERROR, ex.code)

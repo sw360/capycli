@@ -319,22 +319,23 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             " - Create or update a project on SW360\n")
 
         if args.help:
-            print("usage: CaPyCli project create -i bom.json -o bom_created.json [-source <folder>]")
-            print("")
-            print("optional arguments:")
-            print("    -i INPUTFILE,                 bom file to read from  (JSON)")
-            print("    -t SW360_TOKEN,               use this token for access to SW360")
-            print("    -oa, --oauth2                 this is an oauth2 token")
-            print("    -url SW360_URL                use this URL for access to SW360")
-            print("    -name NAME                    name of the project")
-            print("    -version VERSION,             version of the project")
-            print("    -id PROJECT_ID                SW360 id of the project, supersedes name and version parameters")
-            print("    -old-version                  previous version")
-            print("    -source projectinfo.json      additional information about the project to be created")
-            print("    -pms                          project mainline state for releases in a newly created project")
-            print("    --copy_from PROJECT_ID        copy the project with the given id and the update it")
-            print("    -client_id CLIENT_ID          the SW360 client_id to be used for token generation")
-            print("    -client_secret CLIENT_SECRET  the SW360 client_secret to be used for token generation")
+            print_text("usage: CaPyCli project create -i bom.json -o bom_created.json [-source <folder>]")
+            print_text("")
+            print_text("optional arguments:")
+            print_text("    -i INPUTFILE,                 bom file to read from  (JSON)")
+            print_text("    -t SW360_TOKEN,               use this token for access to SW360")
+            print_text("    -oa, --oauth2                 this is an oauth2 token")
+            print_text("    -url SW360_URL                use this URL for access to SW360")
+            print_text("    -name NAME                    name of the project")
+            print_text("    -version VERSION,             version of the project")
+            print_text("    -id PROJECT_ID                SW360 id of the project, supersedes name and version parameters")
+            print_text("    -old-version                  previous version")
+            print_text("    -source projectinfo.json      additional information about the project to be created")
+            print_text("    -pms                          project mainline state for releases in a newly created project")
+            print_text("    --copy_from PROJECT_ID        copy the project with the given id and the update it")
+            print_text("    -client_id CLIENT_ID          the SW360 client_id to be used for token generation")
+            print_text("    -client_secret CLIENT_SECRET  the SW360 client_secret to be used for token generation")
+            print_text("    --verbose                     be verbose")
             return
 
         if not args.inputfile:
@@ -373,19 +374,41 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print_text("Project version will be updated with version: " + args.old_version)
             is_update_version = True
 
-        if not args.sw360_token and args.client_id and args.client_secret:
-            print_text("Creating token using client id and secret...")
-            kc = SW360Keycloak(args.sw360_url)
-            args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=True)
-            if args.sw360_token:
-                args.oauth2 = True
-                print_text("  Got token.")
-            else:
-                print_red("  Failed to get token!")
-                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+        if not args.sw360_token:
+            # command line argument precede environment variables
+            client_id = args.client_id
+            client_secret = args.client_secret
 
-        if args.sw360_token and args.oauth2:
+            if not args.client_id and (not args.client_secret):
+                # look for environment variables
+                client_id = os.getenv("SW360Client_id")
+                client_secret = os.getenv("SW360Client_secret")
+                if client_id and client_secret and args.verbose:
+                    print_text("  Found client id and client secret in environment variables.")
+
+            if client_id and client_secret:
+                url = args.sw360_url
+                if not url:
+                    url = os.environ.get("SW360ServerUrl", "")
+                if not url:
+                    print_red("  SW360 URL not specified!")
+                    sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+
+                if args.verbose:
+                    print_text("  Creating token using client id and secret...")
+                kc = SW360Keycloak(url)
+                args.sw360_token = kc.get_keycloak_token(client_id, client_secret, write_access=True)
+                if args.sw360_token:
+                    args.oauth2 = True
+                    if args.verbose:
+                        print_text("  Got token.")
+                else:
+                    print_red("  Failed to get token!")
+                    sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        if args.sw360_token and args.oauth2 and args.verbose:
             self.analyze_token(args.sw360_token)
+            print_text("")
 
         if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
             print_red("ERROR: login failed!")

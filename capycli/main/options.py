@@ -154,6 +154,7 @@ class CommandlineSupport():
 
         self.parser.add_argument(
             "-v",
+            "--verbose",
             help="be verbose",
             dest="verbose",
             action="store_true",
