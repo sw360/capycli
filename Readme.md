@@ -239,7 +239,52 @@ Alternatively you can specify a token using the `-t` option.
 For proper access to an SW360 instance the correct url must be own.
 The SW360 url can be specified on the commandline with the `-url`
 parameter, via the environment variable ``SW360ServerUrl`` or in the
-config file (`.capycli.cfg`).
+config file (see next section).
+
+## Configuration File
+
+In addition to using environment variables and command line parameters,
+common settings can be preset via an optional configuration file named
+`.capycli.cfg`.
+
+CaPyCli looks for this file in the following order and uses the first
+one found:
+
+1. `./.capycli.cfg` in the current working directory
+2. `~/.capycli.cfg` in the user's home directory (`%USERPROFILE%`
+   on Windows).
+
+Note that only the **first** file found is used; merging settings from multiple
+files is not implemented yet. `./.capycli.cfg` is useful for project-specific
+settings (e.g. project name and report paths) while `~/.capycli.cfg` is the
+recommended place if you want to store server credentials, as putting sensitive
+data in a project-local config file risks accidental commit to version control.
+
+The file must be in [TOML](https://toml.io/) format and all settings
+must be placed inside a `[capycli]` table, for example:
+
+```toml
+[capycli]
+sw360_url = "https://sw360.example.com"
+oauth2 = true
+name = "MyProjectName"
+version = "1.0.0"
+```
+
+The keys correspond to the internal argument names used by CaPyCli, which
+usually match the long command line option name (e.g.  `oauth2` for
+`-oa`/`--oauth2`). For short options, the following table shows the
+corresponding internal names which you can also use for better readability
+in the configuration file.
+
+| config key alias | internal name (also accepted) |
+|------------------|-------------------------------|
+| `url`            | `sw360_url` |
+| `token`          | `sw360_token` |
+| `rr`             | `result_required` |
+| `if`             | `inputformat` |
+| `of`             | `outputformat` |
+| `X`              | `debug` |
 
 ## SBOM Format
 

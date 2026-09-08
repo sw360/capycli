@@ -8,6 +8,8 @@
 ## NEXT
 
 * Config file can be located in home directory or current working directory.
+* Document config file usage and add missing aliases so all command line
+  options can be used in the config file.
 
 ## 2.12.0
 
