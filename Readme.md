@@ -230,16 +230,28 @@ More examples and usage notes can be found in [examples.md](examples.md).
 ## API Access
 
 Access to the SW360 REST API requires an access token.
-The token can be requested on SW360/Preferences/REST API Token.
+Tokens can be requested on SW360/Preferences/REST API Token.
+Starting with SW360 v20, access tokens can also be generated
+using a Keycloak client_id and _secret you can request from your
+SW360 admin team. For more information, see the SW360 documentation.
 
-The scripts in this repository expect, that a valid token
-is stored in the environment variable ``SW360ProductionToken``.
-Alternatively you can specify a token using the `-t` option.
+You can provide a valid token in the config file (see next section),
+the environment variable ``SW360ProductionToken`` or using the
+command line option `-t`/`--token`. For the Keycloak workflow,
+use the variables ``SW360Client_id`` and ``SW360Client_secret`` or
+the config file keys or command line options `client_id` and
+`client_secret`.
 
-For proper access to an SW360 instance the correct url must be own.
+WARNING: Most operating systems allow easy access to the command line
+arguments of running processes. Therefore, don't pass the long-lived
+Keycloak `client_secret` on the command line. Use the environment
+variables or store it in a config file **in your home directory**
+with restricted file permissions. Don't put credentials into a project-local
+`./.capycli.cfg`, as it may accidentally end up in version control.
+
 The SW360 url can be specified on the commandline with the `-url`
 parameter, via the environment variable ``SW360ServerUrl`` or in the
-config file (see next section).
+config file using `sw360_url`.
 
 ## Configuration File
 

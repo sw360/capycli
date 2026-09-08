@@ -7,6 +7,8 @@
 
 ## NEXT
 
+* Warn if Keycloak client_id and client_secret are passed on the command line.
+  See Readme.md for recommendations how to store them.
 * Config file can be located in home directory or current working directory.
 * Document config file usage and add missing aliases so all command line
   options can be used in the config file.
