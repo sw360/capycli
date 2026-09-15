@@ -1,4 +1,4 @@
-﻿# -------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Copyright (c) 2021-2026 Siemens
 # All Rights Reserved.
 # Author: thomas.graf@siemens.com
@@ -14,7 +14,7 @@ from cyclonedx.model import ExternalReferenceType, HashAlgorithm
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
-from sw360 import SW360Error, SW360Keycloak
+from sw360 import SW360Error
 
 import capycli.common.script_base
 from capycli import get_logger
@@ -194,21 +194,7 @@ class CreateBom(capycli.common.script_base.ScriptBase):
             self.show_command_help()
             return
 
-        if not args.sw360_token and args.client_id and args.client_secret:
-            print_text("Creating token using client id and secret...")
-            kc = SW360Keycloak(args.sw360_url)
-            args.sw360_token = kc.get_keycloak_token(args.client_id, args.client_secret, write_access=False)
-            if args.sw360_token:
-                args.oauth2 = True
-                print_text("  Got token.")
-            else:
-                print_red("  Failed to get token!")
-                sys.exit(ResultCode.RESULT_AUTH_ERROR)
-
-        if args.sw360_token and args.oauth2:
-            self.analyze_token(args.sw360_token)
-
-        if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
+        if not self.login(app_args=args, write_access=False):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
