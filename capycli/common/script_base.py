@@ -41,6 +41,8 @@ class ScriptBase:
         self.sw360_url = os.environ.get("SW360ServerUrl", "")
         sw360_api_token = os.environ.get("SW360ProductionToken", "")
 
+        # Token abstraction via Keycloak
+        keycloak_auth = None
         if app_args:
             if url == "" and hasattr(app_args, "sw360_url") and app_args.sw360_url:
                 url = app_args.sw360_url
@@ -78,6 +80,10 @@ class ScriptBase:
                             app_args.oauth2 = True
                         if getattr(app_args, "verbose", False):
                             print_text("  Got token.")
+
+                        # Introduce abstraction for refreshing Keycloak credentials
+                        from capycli.common.keycloak_auth import KeycloakAuth
+                        keycloak_auth = KeycloakAuth(temp_url, client_id, client_secret, write_access, kc_token)
                     else:
                         print_red("  Failed to get token!")
                         sys.exit(ResultCode.RESULT_AUTH_ERROR)
@@ -104,6 +110,9 @@ class ScriptBase:
             print_text("")
 
         self.client = SW360(self.sw360_url, sw360_api_token, oauth2)
+        client_session = getattr(self.client, "session", None)
+        if keycloak_auth and client_session:
+            client_session.auth = keycloak_auth
 
         try:
             result = self.client.login_api(sw360_api_token)
