@@ -249,6 +249,11 @@ variables or store it in a config file **in your home directory**
 with restricted file permissions. Don't put credentials into a project-local
 `./.capycli.cfg`, as it may accidentally end up in version control.
 
+NOTE: If your server uses the Keycloak workflow, it allows to request read-only
+or write tokens. As of now, CaPyCli automatically requests the necessary
+permission level depending on the command (e.g. read token for "bom map" and
+write token for "project create").
+
 The SW360 url can be specified on the commandline with the `-url`
 parameter, via the environment variable ``SW360ServerUrl`` or in the
 config file using `sw360_url`.
