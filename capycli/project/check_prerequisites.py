@@ -314,7 +314,7 @@ class CheckPrerequisites(capycli.common.script_base.ScriptBase):
             print("    -client_secret CLIENT_SECRET  the SW360 client_secret to be used for token generation")
             return
 
-        if not self.login(app_args=args, write_access=False):
+        if not self.login_with_args(args, write_access=False):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

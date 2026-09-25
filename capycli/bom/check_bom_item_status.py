@@ -212,7 +212,7 @@ class CheckBomItemStatus(capycli.common.script_base.ScriptBase):
         if self._bom_has_items_without_id(bom):
             print("There are SBOM items without Sw360 id - searching per name may take a little bit longer...")
 
-        if not self.login(app_args=args, write_access=False):
+        if not self.login_with_args(args, write_access=False):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

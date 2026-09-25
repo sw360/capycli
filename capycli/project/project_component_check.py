@@ -150,7 +150,7 @@ class ProjectComponentCheck(capycli.common.script_base.ScriptBase):
         self.component_check.files_to_ignore = self.component_check.component_check_list.get("files_to_ignore", [])
         print_text(f"  {len(self.component_check.files_to_ignore)} components will be ignored.")
 
-        if not self.login(app_args=args, write_access=False):
+        if not self.login_with_args(args, write_access=False):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

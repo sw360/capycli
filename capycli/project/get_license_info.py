@@ -241,7 +241,7 @@ class GetLicenseInfo(capycli.common.script_base.ScriptBase):
                 print_red("Input file not found!")
                 sys.exit(ResultCode.RESULT_FILE_NOT_FOUND)
 
-        if not self.login(app_args=args, write_access=False):
+        if not self.login_with_args(args, write_access=False):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

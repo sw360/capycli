@@ -181,7 +181,7 @@ class ShowExportControlStatus(capycli.common.script_base.ScriptBase):
             print("    -v                            be verbose")
             return
 
-        if not self.login(app_args=args, write_access=False):
+        if not self.login_with_args(args, write_access=False):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

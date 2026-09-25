@@ -778,7 +778,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             print_text("Using relaxed debian version checks")
             self.relaxed_debian_parsing = True
 
-        if not self.login(app_args=args, write_access=True):
+        if not self.login_with_args(args, write_access=True):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

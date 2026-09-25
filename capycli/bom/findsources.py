@@ -771,7 +771,7 @@ class FindSources(capycli.common.script_base.ScriptBase):
             self.sw360_url = args.sw360_url
 
         if self.sw360_url:
-            if not self.login(app_args=args, write_access=False):
+            if not self.login_with_args(args, write_access=False):
                 print_red("ERROR: login failed!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
             print("Using SW360 releases and components to detect GitHub url")

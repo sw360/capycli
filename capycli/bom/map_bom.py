@@ -935,7 +935,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
         if self.verbosity > 1:
             print_text(" ", self.get_comp_count_text(sbom), "read from SBOM")
 
-        if not self.login(app_args=args, write_access=False):
+        if not self.login_with_args(args, write_access=False):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

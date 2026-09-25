@@ -374,7 +374,7 @@ class CreateProject(capycli.common.script_base.ScriptBase):
             print_text("Project version will be updated with version: " + args.old_version)
             is_update_version = True
 
-        if not self.login(app_args=args, write_access=True):
+        if not self.login_with_args(args, write_access=True):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
