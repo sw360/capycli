@@ -9,6 +9,7 @@
 """Contains the logic for all of the default options for CaPyCli."""
 
 import os
+import pathlib
 import tomllib
 from typing import Any, Dict
 
@@ -22,6 +23,29 @@ LOG = capycli.get_logger(__name__)
 
 class CommandlineSupport():
     CONFIG_FILE_NAME = ".capycli.cfg"
+    # Maps configuration file keys (derived from the long command line option
+    # name) to the internal name for options where the two differ.
+    CONFIG_KEY_ALIASES: Dict[str, str] = {
+        "url": "sw360_url",
+        "token": "sw360_token",
+        "raw-input": "raw_input",
+        "search-meta-data": "search_meta_data",
+        "old-version": "old_version",
+        "package-source": "package_source",
+        "forceexit": "force_exit",
+        "overview": "create_overview",
+        "mapresult": "write_mapresult",
+        "rr": "result_required",
+        "if": "inputformat",
+        "of": "outputformat",
+        "remote-granularity": "remote_granularity_list",
+        "local-granularity": "local_granularity_list",
+        "remote-checklist": "remote_check_list",
+        "local-checklist": "local_checklist_list",
+        "X": "debug",
+        "forceerror": "force_error",
+        "project-mainline-state": "project_mainline_state",
+    }
 
     def __init__(self) -> None:
         custom_prog = capycli.get_app_signature()
@@ -459,7 +483,18 @@ class CommandlineSupport():
 
     def read_config(self, filename: str = "", config_string: str = "") -> Dict[str, Any]:
         """
-        Read configuration from string or config file.
+        Read configuration from a TOML string or config file.
+
+        Lookup order (first source that is found wins, no merging):
+        1. config_string, if non-empty
+        2. filename, if non-empty
+        3. ./.capycli.cfg in the current working directory, if it exists
+        4. ~/.capycli.cfg, if it exists (%USERPROFILE%\\.capycli.cfg on Windows)
+
+        The TOML document must contain a [capycli] table; the keys of that
+        table are returned. Returns an empty dict if no source is found, if
+        the [capycli] table is missing, or on any parse or read error
+        (an error is logged in that case).
         """
 
         toml_dict = None
@@ -469,9 +504,13 @@ class CommandlineSupport():
             elif filename:
                 with open(filename, "rb") as f:
                     toml_dict = tomllib.load(f)
+            elif os.path.isfile(self.CONFIG_FILE_NAME):
+                with open(self.CONFIG_FILE_NAME, "rb") as f:
+                    toml_dict = tomllib.load(f)
             else:
-                if os.path.isfile(self.CONFIG_FILE_NAME):
-                    with open(self.CONFIG_FILE_NAME, "rb") as f:
+                home_config = pathlib.Path.home() / self.CONFIG_FILE_NAME
+                if os.path.isfile(home_config):
+                    with open(home_config, "rb") as f:
                         toml_dict = tomllib.load(f)
 
             if not toml_dict:
@@ -491,31 +530,16 @@ class CommandlineSupport():
     def process_commandline(self, argv: Any) -> Any:
         """Reads the command line arguments"""
         args = self.parser.parse_args(argv)
+        if args.client_id or args.client_secret:
+            LOG.warning("Providing client_id and client_secret on the command line is not recommended for security"
+                        " reasons. Please use the environment variables SW360Client_id/SW360Client_secret or a config"
+                        " file in your home directory instead (see Readme.md).")
         cfg = self.read_config()
 
         if cfg:
             for key in cfg:
-                args_key = key
-
-                # handle some common naming mistakes
-                if args_key == "url":
-                    args_key = "sw360_url"
-                if args_key == "url":
-                    args_key = "sw360_url"
-                if args_key == "raw-input":
-                    args_key = "raw_input"
-                if args_key == "token":
-                    args_key = "sw360_token"
-                if args_key == "oa":
-                    args_key = "oauth2"
-                if args_key == "search-meta-data":
-                    args_key = "search_meta_data"
-                if args_key == "old-version":
-                    args_key = "old_version"
-                if args_key == "package-source":
-                    args_key = "package_source"
-                if args_key == "forceexit":
-                    args_key = "force_exit"
+                # replace command line options by internal arguments in case they differ
+                args_key = self.CONFIG_KEY_ALIASES.get(key, key)
 
                 if hasattr(args, args_key) and not args.__getattribute__(args_key):
                     args.__setattr__(args_key, cfg[key])

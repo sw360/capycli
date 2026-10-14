@@ -230,16 +230,78 @@ More examples and usage notes can be found in [examples.md](examples.md).
 ## API Access
 
 Access to the SW360 REST API requires an access token.
-The token can be requested on SW360/Preferences/REST API Token.
+Tokens can be requested on SW360/Preferences/REST API Token.
+Starting with SW360 v20, access tokens can also be generated
+using a Keycloak client_id and _secret you can request from your
+SW360 admin team. For more information, see the SW360 documentation.
 
-The scripts in this repository expect, that a valid token
-is stored in the environment variable ``SW360ProductionToken``.
-Alternatively you can specify a token using the `-t` option.
+You can provide a valid token in the config file (see next section),
+the environment variable ``SW360ProductionToken`` or using the
+command line option `-t`/`--token`. For the Keycloak workflow,
+use the variables ``SW360Client_id`` and ``SW360Client_secret`` or
+the config file keys or command line options `client_id` and
+`client_secret`.
 
-For proper access to an SW360 instance the correct url must be own.
+WARNING: Most operating systems allow easy access to the command line
+arguments of running processes. Therefore, don't pass the long-lived
+Keycloak `client_secret` on the command line. Use the environment
+variables or store it in a config file **in your home directory**
+with restricted file permissions. Don't put credentials into a project-local
+`./.capycli.cfg`, as it may accidentally end up in version control.
+
+NOTE: If your server uses the Keycloak workflow, it allows to request read-only
+or write tokens. As of now, CaPyCli automatically requests the necessary
+permission level depending on the command (e.g. read token for "bom map" and
+write token for "project create").
+
 The SW360 url can be specified on the commandline with the `-url`
 parameter, via the environment variable ``SW360ServerUrl`` or in the
-config file (`.capycli.cfg`).
+config file using `sw360_url`.
+
+## Configuration File
+
+In addition to using environment variables and command line parameters,
+common settings can be preset via an optional configuration file named
+`.capycli.cfg`.
+
+CaPyCli looks for this file in the following order and uses the first
+one found:
+
+1. `./.capycli.cfg` in the current working directory
+2. `~/.capycli.cfg` in the user's home directory (`%USERPROFILE%`
+   on Windows).
+
+Note that only the **first** file found is used; merging settings from multiple
+files is not implemented yet. `./.capycli.cfg` is useful for project-specific
+settings (e.g. project name and report paths) while `~/.capycli.cfg` is the
+recommended place if you want to store server credentials, as putting sensitive
+data in a project-local config file risks accidental commit to version control.
+
+The file must be in [TOML](https://toml.io/) format and all settings
+must be placed inside a `[capycli]` table, for example:
+
+```toml
+[capycli]
+sw360_url = "https://sw360.example.com"
+oauth2 = true
+name = "MyProjectName"
+version = "1.0.0"
+```
+
+The keys correspond to the internal argument names used by CaPyCli, which
+usually match the long command line option name (e.g.  `oauth2` for
+`-oa`/`--oauth2`). For short options, the following table shows the
+corresponding internal names which you can also use for better readability
+in the configuration file.
+
+| config key alias | internal name (also accepted) |
+|------------------|-------------------------------|
+| `url`            | `sw360_url` |
+| `token`          | `sw360_token` |
+| `rr`             | `result_required` |
+| `if`             | `inputformat` |
+| `of`             | `outputformat` |
+| `X`              | `debug` |
 
 ## SBOM Format
 
