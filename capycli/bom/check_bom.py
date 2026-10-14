@@ -66,7 +66,7 @@ class CheckBom(capycli.common.script_base.ScriptBase):
                     print(
                         "  " + component.name + ", " + version +
                         ", " + sw360id)
-                    if swex.response:
+                    if swex.response is not None:
                         print("  Status Code: " + str(swex.response.status_code))
                     if swex.message:
                         print("    Message: " + swex.message)
@@ -105,7 +105,7 @@ class CheckBom(capycli.common.script_base.ScriptBase):
                     print(Fore.LIGHTRED_EX + "  Error retrieving release data: ")
                     print(
                         "  " + component.name + ", " + version)
-                    if swex.response:
+                    if swex.response is not None:
                         print("  Status Code: " + str(swex.response.status_code))
                     if swex.message:
                         print("    Message: " + swex.message)

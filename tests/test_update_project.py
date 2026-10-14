@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 
 from cyclonedx.model.bom import Bom
 from pytest import fixture, raises
+from requests import Response
 from sw360 import SW360Error
 
 from capycli.main.result_codes import ResultCode
@@ -51,12 +52,13 @@ class DummyResp:
 
 
 @fixture
-def dummy_response() -> Callable[[int, str], Callable[[int, str], MagicMock]]:
-    """Fixture to create a dummy response object."""
-    def _dummy_response(status_code: int, text: str) -> Callable[[int, str], MagicMock]:
-        result = MagicMock()
+def dummy_response() -> Callable[[int, str], Response]:
+    """Fixture to create a dummy response object with real requests.Response
+    so that bool(response) correctly returns False for non-2xx status codes."""
+    def _dummy_response(status_code: int, text: str) -> Response:
+        result = Response()
         result.status_code = status_code
-        result.text = text
+        result._content = text.encode("utf-8")
         return result
     return _dummy_response
 
