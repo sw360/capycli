@@ -192,7 +192,8 @@ class ScriptBase:
                         + " => ID = "
                         + pid
                     )
-                if project["version"].lower() == version.lower():
+                if (project["name"].lower() == name.lower()
+                        and project["version"].lower() == version.lower()):
                     return pid
 
         return ""
