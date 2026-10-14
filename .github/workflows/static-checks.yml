@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.14"]
 
     steps:
     - uses: actions/checkout@v3
@@ -40,6 +40,9 @@ jobs:
 
     - name: Lint with flake8
       run: |
+        # show flake8 version
+        poetry run flake8 --version
+
         # stop the build if there are Python syntax errors or undefined names
         poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
@@ -47,6 +50,10 @@ jobs:
 
     - name: Run isort
       run: |
+        # show isort version
+        poetry run isort --version
+
+        # run isort
         poetry run isort .
 
     - name: markdownlint-cli
@@ -61,4 +68,8 @@ jobs:
 
     - name: Run mypy
       run: |
+        # show mypy version
+        poetry run mypy --version
+        
+        # run mypy
         poetry run mypy .
