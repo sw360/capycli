@@ -7,11 +7,13 @@
 name: Static Checks
 
 on:
+  # run workflow on all branches
   push:
-    branches: [ "main" ]
+    branches:
+      - '*'
   pull_request:
-    branches: [ "main" ]
-
+    branches:
+      - '*'
 jobs:
   build:
 
