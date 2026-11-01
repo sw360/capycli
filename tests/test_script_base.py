@@ -166,6 +166,55 @@ class TestScriptBase(TestBase):
         self.assertEqual("007", val)
 
     @responses.activate
+    def test_find_project_success_multiple_results_same_version(self) -> None:
+        sut = ScriptBase()
+
+        self.add_login_response()
+
+        login = sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
+        self.assertTrue(login)
+
+        responses.add(
+            responses.GET,
+            url=self.MYURL + "resource/api/projects?name=MyName",
+            json={
+                "_embedded": {
+                    "sw360:projects": [{
+                        "name": "OtherMyName",
+                        "version": "MyVersion",
+                        "securityResponsibles": [],
+                        "considerReleasesFromExternalList": False,
+                        "projectType": "PRODUCT",
+                        "visibility": "EVERYONE",
+                        "_links": {
+                            "self": {
+                                "href": TestBase.MYURL + "resource/api/projects/007"
+                            }
+                        }
+                    }, {
+                        "name": "MyName",
+                        "version": "MyVersion",
+                        "securityResponsibles": [],
+                        "considerReleasesFromExternalList": False,
+                        "projectType": "PRODUCT",
+                        "visibility": "EVERYONE",
+                        "_links": {
+                            "self": {
+                                "href": TestBase.MYURL + "resource/api/projects/008"
+                            }
+                        }
+                    }]
+                }
+            },
+            status=200,
+            content_type="application/json",
+            adding_headers={"Authorization": "Token " + self.MYTOKEN},
+        )
+
+        val = sut.find_project("MyName", "MyVersion", True)
+        self.assertEqual("008", val)
+
+    @responses.activate
     def test_find_project_fail_sw360_error(self) -> None:
         sut = ScriptBase()
         self.add_login_response()
