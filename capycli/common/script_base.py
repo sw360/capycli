@@ -65,10 +65,61 @@ class ScriptBase:
                 print_red("  You are not authorized!")
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
             else:
-                print_red("  Error authorizing user: " + repr(swex))
-                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+                print_red("  Error accessing SW360 API!")
+                sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         return result
+
+    def login_with_args(self, app_args: Any, write_access: bool = False) -> bool:
+        """Login to SW360 handling Keycloak OAuth2 with app_args"""
+        url = getattr(app_args, "sw360_url", "")
+        if not url:
+            url = os.environ.get("SW360ServerUrl", "")
+
+        token = getattr(app_args, "sw360_token", "")
+        oauth2 = getattr(app_args, "oauth2", False)
+        keycloak_auth = None
+
+        if not token:
+            client_id = getattr(app_args, "client_id", "")
+            client_secret = getattr(app_args, "client_secret", "")
+            if not client_id and not client_secret:
+                client_id = os.getenv("SW360Client_id")
+                client_secret = os.getenv("SW360Client_secret")
+                if client_id and client_secret and getattr(app_args, "verbose", False):
+                    print_text("  Found client id and client secret in environment variables.")
+
+            if client_id and client_secret:
+                if not url:
+                    print_red("  SW360 URL not specified!")
+                    sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+                if getattr(app_args, "verbose", False):
+                    print_text("  Creating token using client id and secret...")
+
+                from sw360 import SW360Keycloak
+                kc = SW360Keycloak(url)
+                kc_token = kc.get_keycloak_token(client_id, client_secret, write_access=write_access)
+                if kc_token:
+                    token = kc_token
+                    oauth2 = True
+                    if hasattr(app_args, "sw360_token"):
+                        app_args.sw360_token = kc_token
+                    if hasattr(app_args, "oauth2"):
+                        app_args.oauth2 = True
+                    if getattr(app_args, "verbose", False):
+                        print_text("  Got token.")
+
+                    # Introduce abstraction for refreshing Keycloak credentials
+                    from capycli.common.keycloak_auth import KeycloakAuth
+                    keycloak_auth = KeycloakAuth(url, client_id, client_secret, write_access, kc_token)
+                else:
+                    print_red("  Failed to get token!")
+                    sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        success = self.login(token, url, oauth2)
+        if success and keycloak_auth and self.client:
+            self.client.keycloak_auth = keycloak_auth
+        return success
 
     def analyze_token(self, token: str) -> None:
         """Analyzes the user provided token.
