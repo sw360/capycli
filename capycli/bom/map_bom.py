@@ -743,8 +743,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             json.dump(data, outfile, indent=4)
 
     def refresh_component_cache(
-            self, cachefile: str, use_existing_data: bool, token: str, oauth2: bool,
-            sw360_url: str) -> List[Dict[str, Any]]:
+            self, cachefile: str, use_existing_data: bool) -> List[Dict[str, Any]]:
         """Refreshes the component cache."""
         cache_mgr = ComponentCacheManagement()
 
@@ -755,8 +754,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 " releases read from existing cache file.")
         print(" Refreshing component cache...")
         print(" This may take 1-3 minutes...")
-        rel_data = cache_mgr.refresh_component_cache(
-            cachefile, True, token, oauth2=oauth2, url=sw360_url)
+        # reuse our client so that a Keycloak token gets renewed during this long operation
+        rel_data = cache_mgr.refresh_component_cache(cachefile, True, client=self.client)
         return rel_data
 
     def map_bom_commons(self, component: Component) -> MapResult:
@@ -809,16 +808,14 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
             if args.refresh_cache:
                 print_text("  Running forced component cache refresh...")
-                self.releases = self.refresh_component_cache(
-                    cachefile, True, args.sw360_token, oauth2=args.oauth2, sw360_url=args.sw360_url)
+                self.releases = self.refresh_component_cache(cachefile, True)
 
             print_text("  Loading cache...")
             self.releases = ComponentCacheManagement.read_component_cache(cachefile)
             if self.releases:
                 print_text("  " + str(len(self.releases)) + " cached releases read from cache file.")
             else:
-                self.releases = self.refresh_component_cache(
-                    cachefile, False, args.sw360_token, oauth2=args.oauth2, sw360_url=args.sw360_url)
+                self.releases = self.refresh_component_cache(cachefile, False)
 
         if not self.releases:
             if args.nocache:
