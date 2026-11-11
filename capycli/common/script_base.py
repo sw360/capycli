@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import jwt
 import requests
 from cyclonedx.model.bom import Bom
-from sw360 import SW360, SW360Error
+from sw360 import SW360, SW360Error, SW360Keycloak
 
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
@@ -69,6 +69,48 @@ class ScriptBase:
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
         return result
+
+    def login_with_args(self, app_args: Any, write_access: bool = False) -> bool:
+        """Login to SW360 using the token or the Keycloak credentials given on
+        the command line or via environment variables."""
+        if not app_args.sw360_token:
+            # command line argument precede environment variables
+            client_id = app_args.client_id
+            client_secret = app_args.client_secret
+
+            if not client_id and (not client_secret):
+                # look for environment variables
+                client_id = os.getenv("SW360Client_id")
+                client_secret = os.getenv("SW360Client_secret")
+                if client_id and client_secret and app_args.verbose:
+                    print_text("  Found client id and client secret in environment variables.")
+
+            if client_id and client_secret:
+                url = app_args.sw360_url
+                if not url:
+                    url = os.environ.get("SW360ServerUrl", "")
+                if not url:
+                    print_red("  SW360 URL not specified!")
+                    sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+
+                if app_args.verbose:
+                    print_text("  Creating token using client id and secret...")
+                kc = SW360Keycloak(url)
+                app_args.sw360_token = kc.get_keycloak_token(
+                    client_id, client_secret, write_access=write_access)
+                if app_args.sw360_token:
+                    app_args.oauth2 = True
+                    if app_args.verbose:
+                        print_text("  Got token.")
+                else:
+                    print_red("  Failed to get token!")
+                    sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        if app_args.sw360_token and app_args.oauth2 and app_args.verbose:
+            self.analyze_token(app_args.sw360_token)
+            print_text("")
+
+        return self.login(token=app_args.sw360_token, url=app_args.sw360_url, oauth2=app_args.oauth2)
 
     def analyze_token(self, token: str) -> None:
         """Analyzes the user provided token.

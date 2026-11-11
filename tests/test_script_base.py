@@ -7,14 +7,16 @@
 # -------------------------------------------------------------------------------
 
 import os
+import time
 
+import jwt
 import pytest
 import responses
 from sw360.sw360error import SW360Error
 
 from capycli.common.script_base import ScriptBase
 from capycli.main.result_codes import ResultCode
-from tests.test_base import TestBase
+from tests.test_base import AppArguments, TestBase
 
 
 class ResponseMock():
@@ -107,6 +109,88 @@ class TestScriptBase(TestBase):
 
         value = sut.login(token=TestBase.MYTOKEN, url=TestBase.MYURL)
         self.assertTrue(value)
+
+    def add_keycloak_response(self) -> None:
+        """Add response for the Keycloak token endpoint."""
+        token = jwt.encode({"exp": int(time.time()) + 3600, "scope": "READ"}, "secret")  # type: ignore
+        responses.add(
+            responses.POST,
+            url=self.MYURL + "kc/realms/sw360/protocol/openid-connect/token",
+            json={"access_token": token},
+            status=200,
+            content_type="application/json",
+        )
+
+    @responses.activate
+    def test_login_with_args_token(self) -> None:
+        sut = ScriptBase()
+        args = AppArguments()
+        args.sw360_token = TestBase.MYTOKEN
+        args.sw360_url = TestBase.MYURL
+
+        self.add_login_response()
+
+        self.assertTrue(sut.login_with_args(args))
+
+    @responses.activate
+    def test_login_with_args_credentials(self) -> None:
+        sut = ScriptBase()
+        args = AppArguments()
+        args.sw360_url = TestBase.MYURL
+        args.client_id = "my_client_id"
+        args.client_secret = "my_client_secret"
+
+        self.add_keycloak_response()
+        self.add_login_response()
+
+        self.assertTrue(sut.login_with_args(args))
+
+    @responses.activate
+    def test_login_with_args_credentials_from_environment(self) -> None:
+        sut = ScriptBase()
+        args = AppArguments()
+        args.sw360_url = TestBase.MYURL
+
+        self.add_keycloak_response()
+        self.add_login_response()
+
+        os.environ["SW360Client_id"] = "my_client_id"
+        os.environ["SW360Client_secret"] = "my_client_secret"
+        try:
+            self.assertTrue(sut.login_with_args(args))
+        finally:
+            os.environ["SW360Client_id"] = ""
+            os.environ["SW360Client_secret"] = ""
+
+    @responses.activate
+    def test_login_with_args_token_precedes_credentials(self) -> None:
+        sut = ScriptBase()
+        args = AppArguments()
+        args.sw360_token = TestBase.MYTOKEN
+        args.sw360_url = TestBase.MYURL
+        args.client_id = "my_client_id"
+        args.client_secret = "my_client_secret"
+
+        self.add_login_response()
+
+        self.assertTrue(sut.login_with_args(args))
+
+    @responses.activate
+    def test_login_with_args_credentials_no_url(self) -> None:
+        if os.environ.get("SW360ServerUrl", None):
+            # SW360ServerUrl has a value that would mess up the test
+            return
+
+        sut = ScriptBase()
+        args = AppArguments()
+        args.client_id = "my_client_id"
+        args.client_secret = "my_client_secret"
+
+        try:
+            sut.login_with_args(args)
+            self.assertTrue(False, "Failed to report missing URL")
+        except SystemExit as ex:
+            self.assertEqual(ResultCode.RESULT_COMMAND_ERROR, ex.code)
 
     @pytest.mark.skip
     def test_analyze_token_ok(self) -> None:
