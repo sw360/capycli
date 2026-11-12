@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import jwt
 import requests
 from cyclonedx.model.bom import Bom
-from sw360 import SW360, SW360Error
+from sw360 import SW360, SW360Error, SW360KeycloakClient
 
 from capycli.common.print import print_red, print_text, print_yellow
 from capycli.main.result_codes import ResultCode
@@ -69,6 +69,68 @@ class ScriptBase:
                 sys.exit(ResultCode.RESULT_AUTH_ERROR)
 
         return result
+
+    def login_with_credentials(self, url: str, client_id: str, client_secret: str,
+                               write_access: bool = False, verbose: bool = False) -> bool:
+        """Login to SW360 using Keycloak client credentials. The resulting client
+        renews its token on its own, so that operations running longer than the
+        token lifetime do not fail."""
+        self.sw360_url = url
+        if self.sw360_url[-1] != "/":
+            self.sw360_url += "/"
+
+        try:
+            client = SW360KeycloakClient(
+                self.sw360_url, client_id, client_secret, write_access=write_access)
+            self.client = client
+            result = client.login_api()
+        except SW360Error as swex:
+            if (swex.response is not None) and (swex.response.status_code == requests.codes["unauthorized"]):
+                print_red("  You are not authorized!")
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+            else:
+                print_red("  Error authorizing user: " + repr(swex))
+                sys.exit(ResultCode.RESULT_AUTH_ERROR)
+
+        if result and verbose:
+            self.analyze_token(client.current_token)
+            print_text("")
+
+        return result
+
+    def login_with_args(self, app_args: Any, write_access: bool = False) -> bool:
+        """Login to SW360 using the token or the Keycloak credentials given on
+        the command line or via environment variables."""
+        if not app_args.sw360_token:
+            # command line argument precede environment variables
+            client_id = app_args.client_id
+            client_secret = app_args.client_secret
+
+            if not client_id and (not client_secret):
+                # look for environment variables
+                client_id = os.getenv("SW360Client_id")
+                client_secret = os.getenv("SW360Client_secret")
+                if client_id and client_secret and app_args.verbose:
+                    print_text("  Found client id and client secret in environment variables.")
+
+            if client_id and client_secret:
+                url = app_args.sw360_url
+                if not url:
+                    url = os.environ.get("SW360ServerUrl", "")
+                if not url:
+                    print_red("  SW360 URL not specified!")
+                    sys.exit(ResultCode.RESULT_COMMAND_ERROR)
+
+                if app_args.verbose:
+                    print_text("  Logging in using client id and secret...")
+                return self.login_with_credentials(
+                    url, client_id, client_secret, write_access, app_args.verbose)
+
+        if app_args.sw360_token and app_args.oauth2 and app_args.verbose:
+            self.analyze_token(app_args.sw360_token)
+            print_text("")
+
+        return self.login(token=app_args.sw360_token, url=app_args.sw360_url, oauth2=app_args.oauth2)
 
     def analyze_token(self, token: str) -> None:
         """Analyzes the user provided token.
