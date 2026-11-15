@@ -5,7 +5,7 @@
 
 # CaPyCli - Clearing Automation Python Command Line Tool for SW360
 
-## NEXT
+## 2.13.0
 
 * Fix for issue 241: Keycloak tokens are now renewed during long running
   operations. This is done by `SW360KeycloakClient` of the sw360 library,
@@ -17,6 +17,7 @@
 * Config file can be located in home directory or current working directory.
 * Document config file usage and add missing aliases so all command line
   options can be used in the config file.
+* Update dependencies.
 
 ## 2.12.0
 

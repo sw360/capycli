@@ -232,7 +232,7 @@ More examples and usage notes can be found in [examples.md](examples.md).
 Access to the SW360 REST API requires an access token.
 Tokens can be requested on SW360/Preferences/REST API Token.
 Starting with SW360 v20, access tokens can also be generated
-using a Keycloak client_id and _secret you can request from your
+using a Keycloak client_id and client_secret you can request from your
 SW360 admin team. For more information, see the SW360 documentation.
 
 You can provide a valid token in the config file (see next section),
@@ -296,12 +296,12 @@ in the configuration file.
 
 | config key alias | internal name (also accepted) |
 |------------------|-------------------------------|
-| `url`            | `sw360_url` |
-| `token`          | `sw360_token` |
-| `rr`             | `result_required` |
-| `if`             | `inputformat` |
-| `of`             | `outputformat` |
-| `X`              | `debug` |
+| `url`            | `sw360_url`                   |
+| `token`          | `sw360_token`                 |
+| `rr`             | `result_required`             |
+| `if`             | `inputformat`                 |
+| `of`             | `outputformat`                |
+| `X`              | `debug`                       |
 
 ## SBOM Format
 
