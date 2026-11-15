@@ -7,6 +7,8 @@
 
 ## NEXT
 
+* On order to reduce moderation requests on SW360, the "Binary Download URL"
+  is only added to a release if a **new** release is created.
 * Fix for issue 241: Keycloak tokens are now renewed during long running
   operations. This is done by `SW360KeycloakClient` of the sw360 library,
   which requires sw360 >= 1.13.0.
