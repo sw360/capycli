@@ -7,6 +7,7 @@
 # -------------------------------------------------------------------------------
 
 import responses
+import sw360
 
 from capycli.common.component_cache import ComponentCacheManagement
 from tests.test_base import TestBase
@@ -17,6 +18,12 @@ class TestComponentCache(TestBase):
     MYURL = "https://my.server.com/"
     ERROR_MSG_NO_LOGIN = "Unable to login"
     CACHE_FILE = "dummy_cache.json"
+
+    def test_get_rest_client_reuses_given_client(self) -> None:
+        sut = ComponentCacheManagement()
+        client = sw360.SW360(self.MYURL, self.MYTOKEN, False)
+
+        self.assertIs(client, sut.get_rest_client(client=client))
 
     @responses.activate
     def test_refresh_component_cache_with_cache(self) -> None:

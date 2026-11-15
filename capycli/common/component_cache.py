@@ -121,8 +121,12 @@ class ComponentCacheManagement():
             return 0
 
     def get_rest_client(self, token: Optional[str] = None, oauth2: bool = False,
-                        url: Optional[str] = None) -> sw360.SW360:
+                        url: Optional[str] = None,
+                        client: Optional[sw360.SW360] = None) -> sw360.SW360:
         """Get an instance of the REST API client"""
+        if client:
+            return client
+
         self.sw360_url = os.environ.get("SW360ServerUrl", "")
         sw360_api_token = os.environ.get("SW360ProductionToken", "")
 
@@ -218,13 +222,14 @@ class ComponentCacheManagement():
 
     def refresh_component_cache(
             self, cachefile: str, fast: bool, token: Optional[str] = None,
-            oauth2: bool = False, url: Optional[str] = None) -> List[Dict[str, Any]]:
+            oauth2: bool = False, url: Optional[str] = None,
+            client: Optional[sw360.SW360] = None) -> List[Dict[str, Any]]:
         """
         Read all releases from SW360. May take 90 minutes!
         The new multi-threaded approach takes about one hour for 25.000
         releases.
         """
-        client = self.get_rest_client(token, oauth2, url)
+        client = self.get_rest_client(token, oauth2, url, client)
 
         print(" Retrieving information on all release details (approx. 2 minutes)...")
         allnew = client.get_all_releases(all_details=True)

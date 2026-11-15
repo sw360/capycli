@@ -21,7 +21,7 @@ from cyclonedx.model import ExternalReference, ExternalReferenceType, XsUri
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component
 from packageurl import PackageURL
-from sw360 import SW360, SW360Keycloak
+from sw360 import SW360
 
 import capycli.common.file_support
 import capycli.common.script_base
@@ -743,8 +743,7 @@ class MapBom(capycli.common.script_base.ScriptBase):
             json.dump(data, outfile, indent=4)
 
     def refresh_component_cache(
-            self, cachefile: str, use_existing_data: bool, token: str, oauth2: bool,
-            sw360_url: str) -> List[Dict[str, Any]]:
+            self, cachefile: str, use_existing_data: bool) -> List[Dict[str, Any]]:
         """Refreshes the component cache."""
         cache_mgr = ComponentCacheManagement()
 
@@ -755,8 +754,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
                 " releases read from existing cache file.")
         print(" Refreshing component cache...")
         print(" This may take 1-3 minutes...")
-        rel_data = cache_mgr.refresh_component_cache(
-            cachefile, True, token, oauth2=oauth2, url=sw360_url)
+        # reuse our client so that a Keycloak token gets renewed during this long operation
+        rel_data = cache_mgr.refresh_component_cache(cachefile, True, client=self.client)
         return rel_data
 
     def map_bom_commons(self, component: Component) -> MapResult:
@@ -809,16 +808,14 @@ class MapBom(capycli.common.script_base.ScriptBase):
 
             if args.refresh_cache:
                 print_text("  Running forced component cache refresh...")
-                self.releases = self.refresh_component_cache(
-                    cachefile, True, args.sw360_token, oauth2=args.oauth2, sw360_url=args.sw360_url)
+                self.releases = self.refresh_component_cache(cachefile, True)
 
             print_text("  Loading cache...")
             self.releases = ComponentCacheManagement.read_component_cache(cachefile)
             if self.releases:
                 print_text("  " + str(len(self.releases)) + " cached releases read from cache file.")
             else:
-                self.releases = self.refresh_component_cache(
-                    cachefile, False, args.sw360_token, oauth2=args.oauth2, sw360_url=args.sw360_url)
+                self.releases = self.refresh_component_cache(cachefile, False)
 
         if not self.releases:
             if args.nocache:
@@ -935,44 +932,8 @@ class MapBom(capycli.common.script_base.ScriptBase):
         if self.verbosity > 1:
             print_text(" ", self.get_comp_count_text(sbom), "read from SBOM")
 
-        if not args.sw360_token:
-            # command line argument precede environment variables
-            client_id = args.client_id
-            client_secret = args.client_secret
-
-            if not args.client_id and (not args.client_secret):
-                # look for environment variables
-                client_id = os.getenv("SW360Client_id")
-                client_secret = os.getenv("SW360Client_secret")
-                if client_id and client_secret and args.verbose:
-                    print_text("\n  Found client id and client secret in environment variables.")
-
-            if client_id and client_secret:
-                url = args.sw360_url
-                if not url:
-                    url = os.environ.get("SW360ServerUrl", "")
-                if not url:
-                    print_red("  SW360 URL not specified!")
-                    sys.exit(ResultCode.RESULT_COMMAND_ERROR)
-
-                if args.verbose:
-                    print_text("  Creating token using client id and secret...")
-                kc = SW360Keycloak(url)
-                args.sw360_token = kc.get_keycloak_token(client_id, client_secret, write_access=False)
-                if args.sw360_token:
-                    args.oauth2 = True
-                    if args.verbose:
-                        print_text("  Got token.")
-                else:
-                    print_red("  Failed to get token!")
-                    sys.exit(ResultCode.RESULT_AUTH_ERROR)
-
-        if args.sw360_token and args.oauth2 and args.verbose:
-            self.analyze_token(args.sw360_token)
-            print_text("")
-
         print_text("  Checking access to SW360...")
-        if not self.login(token=args.sw360_token, url=args.sw360_url, oauth2=args.oauth2):
+        if not self.login_with_args(args):
             print_red("ERROR: login failed!")
             sys.exit(ResultCode.RESULT_AUTH_ERROR)
 

@@ -7,6 +7,11 @@
 
 ## NEXT
 
+* Fix for issue 241: Keycloak tokens are now renewed during long running
+  operations. This is done by `SW360KeycloakClient` of the sw360 library,
+  which requires sw360 >= 1.13.0.
+* The Keycloak handling of the single commands has been moved to the new
+  method `ScriptBase.login_with_args()`.
 * Warn if Keycloak client_id and client_secret are passed on the command line.
   See Readme.md for recommendations how to store them.
 * Config file can be located in home directory or current working directory.
