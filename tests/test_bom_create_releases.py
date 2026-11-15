@@ -915,7 +915,7 @@ class TestBomCreate:
             CaPyCliBom.BINARY_URL_COMMENT, "new_url")
         self.app.update_release(item2, release_data)
         captured = self.capsys.readouterr()  # type: ignore
-        assert "differs from BOM URL" in captured.out
+        assert "differs from BOM URL" not in captured.out
 
         # no existing URL, set new URL
         responses.add(
@@ -935,7 +935,7 @@ class TestBomCreate:
             item2, ExternalReferenceType.DISTRIBUTION,
             CaPyCliBom.BINARY_URL_COMMENT, "new_url")
         self.app.update_release(item2, release_data)
-        assert len(responses.calls) == 1
+        assert len(responses.calls) == 0  # no update!
 
         # existing URL empty, set new URL
         release_data = {
@@ -943,7 +943,7 @@ class TestBomCreate:
             "binaryDownloadurl": ""
         }
         self.app.update_release(item2, release_data)
-        assert len(responses.calls) == 2
+        assert len(responses.calls) == 0  # no update!
 
     @responses.activate
     def test_update_release_externalId(self) -> None:

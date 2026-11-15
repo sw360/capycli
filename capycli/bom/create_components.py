@@ -238,7 +238,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
 
         data["mainLicenseIds"] = licenses
 
-    def prepare_release_data(self, cx_comp: Component) -> Dict[str, Any]:
+    def prepare_release_data(self, cx_comp: Component, is_update: bool = False) -> Dict[str, Any]:
         """Create release data structure as expected by SW360 REST API
 
         :param item: a single bill of materials item - a release
@@ -255,9 +255,10 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
         if src_url:
             data["sourceCodeDownloadurl"] = src_url
 
-        bin_url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
-        if bin_url:
-            data["binaryDownloadurl"] = bin_url
+        if not is_update:
+            bin_url = str(CycloneDxSupport.get_ext_ref_binary_url(cx_comp))
+            if bin_url:
+                data["binaryDownloadurl"] = bin_url
 
         # recommended properties
         if cx_comp.purl:
@@ -375,7 +376,7 @@ class BomCreateComponents(capycli.common.script_base.ScriptBase):
             sys.exit(ResultCode.RESULT_ERROR_ACCESSING_SW360)
 
         release_id = self.get_sw360_id(release_data)
-        data = self.prepare_release_data(cx_comp)
+        data = self.prepare_release_data(cx_comp, True)
 
         update_data = {}
         if "sourceCodeDownloadurl" in data and data["sourceCodeDownloadurl"]:
